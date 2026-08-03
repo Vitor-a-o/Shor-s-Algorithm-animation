@@ -14,7 +14,7 @@ Transformar o filme único "Do Zero ao Algoritmo de Shor Quântico" (11 capítul
 | # | Vídeo | Capítulos | Arquivos | Situação da narração | Situação do roteiro novo |
 |---|---|---|---|---|---|
 | 1 | Introdução | — (100% novo) | — | não se aplica | ✅ `roteiro_video1_introducao.md` |
-| 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas (`C1N16` mudou de texto e precisa ser regravada) | ✅ `roteiro_video2_aritmetica_modular.md` |
+| 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas (`C1N11` mudou de texto e precisa ser regravada) | ✅ `roteiro_video2_aritmetica_modular.md` |
 | 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | não escrita | pendente |
 | 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | não escrita | pendente — é o final da série |
 
@@ -93,7 +93,8 @@ crescer muito na escrita da narração, a costura para abrir ali já está ident
   `narracao.md` (tags, fala, estimativa, sugestão de animação).
 - `roteiro_video2_aritmetica_modular.md` — roteiro completo do vídeo 2 (capítulos 1–5),
   no mesmo formato: reaproveita `C1N`–`C4N` do `narracao.md` original (com uma linha
-  reescrita, `C1N16`), escreve a narração inteira do capítulo 5 (`C5N01`–`C5N30`) e a
+  reescrita, `C1N11`, e o capítulo 1 renumerado sem buracos), escreve a narração inteira
+  do capítulo 5 (`C5N01`–`C5N30`) e a
   costura própria do vídeo (`V2N00`–`V2N03`).
 
 ## Próximo passo em aberto
@@ -115,7 +116,7 @@ produzir a seguir; nenhum dos dois tem narração escrita ainda.
 
 ## Pendências de código herdadas do roteiro do vídeo 2
 
-- `capitulo1.py`: regravar o áudio de `C1N16` — o texto mudou ("os próximos capítulos"
+- `capitulo1.py`: regravar o áudio de `C1N11` — o texto mudou ("os próximos capítulos"
   em vez de "os próximos três capítulos") porque o capítulo 5 passou a fechar o mesmo
   vídeo.
 - `capitulo2.py`: o laço de módulos crescentes (`for n in (8, 9, 10, 11)`) hoje abre um

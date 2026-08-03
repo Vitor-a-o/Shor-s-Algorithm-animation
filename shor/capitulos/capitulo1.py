@@ -38,7 +38,7 @@ def parte1(cena):
 
     s2 = traco(n2(2) + 0.5 * UP, n2(0) + 0.5 * UP, VERDE)
     r2 = T("2", 26, VERDE).next_to(s2, UP, buff=0.10)
-    with narra(cena, "C1N09", 2.1):
+    with narra(cena, "C1N04", 2.1):
         cena.play(ReplacementTransform(tenta, s2),
                   ReplacementTransform(r3x, r2),
                   FadeOut(xis), run_time=1.2 * VEL)
@@ -46,20 +46,20 @@ def parte1(cena):
     eq = formula(("2", VERDE), ("≡", PRETO), ("11", AZUL),
                  ("(mod ", PRETO), ("3", LARANJA), (")", PRETO),
                  tamanho=40).to_edge(UP, buff=0.55)
-    with narra(cena, "C1N10", 11.3):
+    with narra(cena, "C1N05", 11.3):
         cena.play(TransformFromCopy(r2, eq[0]), FadeIn(eq[1]), FadeIn(eq[3]),
                   FadeIn(eq[5]), TransformFromCopy(r11, eq[2]),
                   TransformFromCopy(r3s[0], eq[4]), run_time=2.0 * VEL)
 
-    so_fala(cena, "C1N11", 3.8)
+    so_fala(cena, "C1N06", 3.8)
     b8 = traco(n2(0) + 1.9 * UP, n2(8) + 1.9 * UP, VERMELHO)
     r8 = T("8", 26, VERMELHO).next_to(b8, RIGHT, buff=0.15)
     b5 = traco(n2(0) + 1.45 * UP, n2(5) + 1.45 * UP, CIANO)
     r5 = T("5", 26, CIANO).next_to(b5, RIGHT, buff=0.15)
     b2 = traco(n2(0) + 1.0 * UP, n2(2) + 1.0 * UP, ROSA)
     r2b = T("2", 26, ROSA).next_to(b2, RIGHT, buff=0.15)
-    for b, r, tag, est in ((b8, r8, "C1N12", 2.5), (b5, r5, "C1N13", 1.3),
-                           (b2, r2b, "C1N14", 2.9)):
+    for b, r, tag, est in ((b8, r8, "C1N07", 2.5), (b5, r5, "C1N08", 1.3),
+                           (b2, r2b, "C1N09", 2.9)):
         with narra(cena, tag, est):
             cena.play(Create(b), FadeIn(r), run_time=0.8 * VEL)
 
@@ -67,7 +67,7 @@ def parte1(cena):
                      ("≡", PRETO), ("5", CIANO), ("≡", PRETO), ("2", ROSA),
                      ("(mod ", PRETO), ("3", LARANJA), (")", PRETO),
                      tamanho=36).to_edge(UP, buff=0.55)
-    with narra(cena, "C1N15", 10.4):
+    with narra(cena, "C1N10", 10.4):
         cena.play(FadeOut(eq[0]), FadeOut(eq[1]), run_time=0.4 * VEL)
         cena.play(ReplacementTransform(eq[2], cadeia[0]),
                   FadeIn(cadeia[1]), TransformFromCopy(r8, cadeia[2]),
@@ -77,4 +77,4 @@ def parte1(cena):
                   ReplacementTransform(eq[4], cadeia[8]),
                   ReplacementTransform(eq[5], cadeia[9]), run_time=2.5 * VEL)
 
-    so_fala(cena, "C1N16", 7.1)
+    so_fala(cena, "C1N11", 7.1)

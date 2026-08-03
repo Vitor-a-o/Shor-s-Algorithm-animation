@@ -24,14 +24,14 @@ Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
 | C1N01 | Tudo o que vem a seguir acontece na aritmética modular. | 4,2 | `Create(reta)` |
 | C1N02 | A linguagem visual do vídeo vai lidar com números como comprimentos de reta. | 5,4 | `Create(b11)` |
 | C1N03 | O módulo é dado pelo resto da divisão de inteiros. | 4,2 | Todo o encaixe corre por baixo desta linha, sem pausa entre as etapas: os três blocos laranja nascem em cadeia da direita para a esquerda (`LaggedStart`), o quarto (`tenta`) avança e estoura o zero, e fecha com `Flash` + ✗ + `Wiggle` |
-| C1N09 | Esse é o resto: dois. | 2,1 | `tenta → s2` |
-| C1N10 | Dois é congruente a onze, módulo três. E o sinal de congruência, diferente da igualdade, é o aviso de que estamos falando de classes, não de números. | 11,3 | equação nasce |
-| C1N11 | O onze não é o único elemento dessa classe. | 3,8 | — |
-| C1N12 | O oito deixa o mesmo resto. | 2,5 | `b8` |
-| C1N13 | O cinco também. | 1,3 | `b5` |
-| C1N14 | E o dois é o próprio representante. | 2,9 | `b2` |
-| C1N15 | Módulo três, esses quatro números são equivalentes. É isso que faz a aritmética modular funcionar: soma, produto e potência ficam todos bem definidos nas classes. | 10,4 | cadeia |
-| C1N16 | Os próximos capítulos são exatamente isso: soma, produto e potência — e, no fim, um jeito de dividir. | 7,1 | — |
+| C1N04 | Esse é o resto: dois. | 2,1 | `tenta → s2` |
+| C1N05 | Dois é congruente a onze, módulo três. E o sinal de congruência, diferente da igualdade, é o aviso de que estamos falando de classes, não de números. | 11,3 | equação nasce |
+| C1N06 | O onze não é o único elemento dessa classe. | 3,8 | — |
+| C1N07 | O oito deixa o mesmo resto. | 2,5 | `b8` |
+| C1N08 | O cinco também. | 1,3 | `b5` |
+| C1N09 | E o dois é o próprio representante. | 2,9 | `b2` |
+| C1N10 | Módulo três, esses quatro números são equivalentes. É isso que faz a aritmética modular funcionar: soma, produto e potência ficam todos bem definidos nas classes. | 10,4 | cadeia |
+| C1N11 | Os próximos capítulos são exatamente isso: soma, produto e potência — e, no fim, um jeito de dividir. | 7,1 | — |
 
 **Subtotal: 59,8 s** (cartão + 11 locuções)
 
@@ -184,7 +184,7 @@ escada de segmentos receber.
 ## Checklist de gravação
 
 - [ ] Cartões — CAP01 a CAP05
-- [ ] Capítulo 1 — C1N01 a C1N03 e C1N09 a C1N16
+- [ ] Capítulo 1 — C1N01 a C1N11
 - [ ] Capítulo 2 — C2N01 a C2N11
 - [ ] Capítulo 3 — C3N01 a C3N14
 - [ ] Capítulo 4 — C4N01 a C4N16
