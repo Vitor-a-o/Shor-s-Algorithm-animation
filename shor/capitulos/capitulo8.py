@@ -41,6 +41,15 @@ def _chave(cor=AMARELO):
                        stroke_width=7))
 
 
+LEGIVEL, CIFRADO = "SEGREDO", "Xk9#R2q"   # sete glifos dos dois lados
+
+
+def _glifos(s):
+    """Os glifos da mensagem, um mobject por caractere — a fase 0 casa os sete
+    de um lado com os sete do outro, e o C8N12 os colapsa dentro do `a`."""
+    return VGroup(*[T(c, 28, BRANCO) for c in s]).arrange(RIGHT, buff=0.06)
+
+
 # ============================================================================
 # O PALCO FIGURATIVO — canal, olho, cadeado
 #
@@ -117,14 +126,18 @@ def _palco(cena):
                   cx[0].animate.set_fill(CARTAO_ESCURO, opacity=1),
                   run_time=rt * VEL)
 
-    def atravessar(mobj, sentido=RIGHT, captura=True, vaga=0, fim=None):
+    def atravessar(mobj, sentido=RIGHT, captura=True, vaga=0, fim=None,
+                   rt=1.25):
         """O percurso do canal, sempre no mesmo passo (rate_func linear): o
         objeto vai de uma ponta à outra e, no ponto médio, o olho leva uma
         cópia para a prateleira. sentido=LEFT é o único percurso invertido.
-        `fim` encurta a chegada quando a ponta já está ocupada."""
+        `fim` encurta a chegada quando a ponta já está ocupada.
+        `rt` é o tempo de CADA metade: a fase 0 anda mais devagar, porque é
+        cena figurativa sob falas longas; da fase A2 em diante o trânsito é
+        citação e tem de caber em falas de 4,6 s."""
         if fim is None:
             fim = X_D if sentido[0] > 0 else X_E
-        cena.play(mobj.animate.set_x(0.0), run_time=1.25 * VEL,
+        cena.play(mobj.animate.set_x(0.0), run_time=rt * VEL,
                   rate_func=linear)
         anims = [mobj.animate.set_x(fim)]
         copia = None
@@ -138,7 +151,7 @@ def _palco(cena):
             if not olho_aberto[0]:         # a primeira captura abre o olho
                 olho_aberto[0] = True
                 anims += [olho.animate.stretch(1 / 0.06, dim=1), Create(prat)]
-        cena.play(*anims, run_time=1.25 * VEL, rate_func=linear)
+        cena.play(*anims, run_time=rt * VEL, rate_func=linear)
         return copia
 
     def piscar(cor):
@@ -171,16 +184,15 @@ def _fase0(cena, p):
     """Devolve o que SOBREVIVE à fase: as duas chaves (elas só viram os
     retângulos (e, n) e (d, n) no C8N22 e no C8N24), a seta de ida (de dentro
     dela nasce o L) e a seta de volta despedaçada (volta no C8N36)."""
-    LEGIVEL, CIFRADO = "SEGREDO", "Xk9#R2q"   # sete glifos dos dois lados
     X_E, X_D = p["X_E"], p["X_D"]
     Y_CANAL = p["Y_CANAL"]
     Y_MAO, Y_POUSO = p["Y_MAO"], p["Y_POUSO"]
     olho, prat, xis, prateleira = p["olho"], p["prat"], p["xis"], p["prateleira"]
     _trancar, _abrir = p["trancar"], p["abrir"]
     _atravessar, _piscar = p["atravessar"], p["piscar"]
-
-    def _glifos(s):
-        return VGroup(*[T(c, 28, BRANCO) for c in s]).arrange(RIGHT, buff=0.06)
+    # a travessia da fase 0 é lenta: são falas de 8 a 14 s sobre uma cena
+    # figurativa, e o percurso é o que o espectador tem para olhar
+    RT_CANAL = 2.0
 
     def _nova_caixa():
         return _caixa_msg(_glifos(LEGIVEL), CARTAO_ESCURO, BRANCO, 28)
@@ -190,7 +202,7 @@ def _fase0(cena, p):
     with narra(cena, "C8N01", 9.2):
         cena.play(FadeIn(p["cenario"]), FadeIn(olho), run_time=1.2 * VEL)
         cena.play(FadeIn(caixa, shift=0.25 * UP), run_time=0.7 * VEL)
-        _atravessar(caixa, RIGHT, vaga=0)
+        _atravessar(caixa, RIGHT, vaga=0, rt=RT_CANAL)
 
     chave = _chave().move_to([X_E, Y_MAO, 0])
     with narra(cena, "C8N02", 8.3):
@@ -203,7 +215,7 @@ def _fase0(cena, p):
                   run_time=0.7 * VEL)
         cena.add(pacote)
         _trancar(pacote, _glifos(CIFRADO), letras=True)
-        _atravessar(pacote, RIGHT, vaga=0)
+        _atravessar(pacote, RIGHT, vaga=0, rt=RT_CANAL)
         cena.play(FadeIn(xis), run_time=0.4 * VEL)
 
     with narra(cena, "C8N03", 8.8):
@@ -211,7 +223,7 @@ def _fase0(cena, p):
         # velocidade da caixa, e o olho a copia no meio do caminho, como copiou
         # a cifra. Ela para antes da ponta: a cifra já ocupa a marca
         cena.play(chave.animate.move_to([X_E, Y_CANAL, 0]), run_time=0.8 * VEL)
-        _atravessar(chave, RIGHT, vaga=1, fim=X_D - 2.2)
+        _atravessar(chave, RIGHT, vaga=1, fim=X_D - 2.2, rt=RT_CANAL)
         # e desce para baixo da cifra, no meio das duas marcas em que o par do
         # C8N05 vai pousar: a chave já espera no lugar onde ela vai se partir
         cena.play(chave.animate.move_to([X_D, 0.5 * (-1.30 + Y_POUSO), 0]),
@@ -220,7 +232,15 @@ def _fase0(cena, p):
     with narra(cena, "C8N04", 8.8):
         # os dois objetos capturados, juntos, na prateleira do olho
         cena.play(Indicate(prateleira[1], color=AMARELO), run_time=0.6 * VEL)
+        # a fala afirma o gesto, então a tela tem de executá-lo: a chave
+        # capturada sobe da vaga até o cadeado capturado, abre, e volta para a
+        # vaga. É a ida que o C8N08 vai inverter — sem ela a inversão não lê
+        vaga_ch = prateleira[1].get_center()
+        cena.play(prateleira[1].animate.next_to(prateleira[0][1], LEFT,
+                                                buff=0.06),
+                  run_time=0.8 * VEL)
         _abrir(prateleira[0], _glifos(LEGIVEL), letras=True)
+        cena.play(prateleira[1].animate.move_to(vaga_ch), run_time=0.6 * VEL)
         cena.play(FadeOut(xis), run_time=0.4 * VEL)
         _piscar(VERMELHO)
 
@@ -229,7 +249,7 @@ def _fase0(cena, p):
     # lá na frente, no C8N22 e no C8N24
     ch_pub = _chave(CINZA).move_to([X_D, -1.30, 0])
     ch_priv = _chave(AMARELO).move_to([X_D, Y_POUSO, 0])
-    with narra(cena, "C8N05", 7.5):
+    with narra(cena, "C8N05", 8.3):
         cena.play(FadeOut(prateleira[0]), FadeOut(prateleira[1]),
                   FadeOut(pacote), run_time=0.7 * VEL)
         prateleira[0] = prateleira[1] = None
@@ -241,11 +261,13 @@ def _fase0(cena, p):
         cena.play(ReplacementTransform(meia1, ch_pub),
                   ReplacementTransform(meia2, ch_priv), run_time=1.3 * VEL)
 
-    with narra(cena, "C8N06", 11.7):
+    with narra(cena, "C8N06", 14.0):
         # o único objeto do capítulo que anda ao contrário
-        cena.play(ch_pub.animate.move_to([X_D, Y_CANAL, 0]), run_time=0.8 * VEL)
-        _atravessar(ch_pub, LEFT, vaga=1)
-        cena.play(ch_pub.animate.move_to([X_E, Y_POUSO, 0]), run_time=0.8 * VEL)
+        cena.play(ch_pub.animate.move_to([X_D, Y_CANAL, 0]), run_time=1.1 * VEL)
+        # a fala mais longa do capítulo, e o percurso é o argumento inteiro
+        # da assimetria: anda ainda mais devagar que o resto da fase
+        _atravessar(ch_pub, LEFT, vaga=1, rt=2.8)
+        cena.play(ch_pub.animate.move_to([X_E, Y_POUSO, 0]), run_time=1.1 * VEL)
 
     with narra(cena, "C8N07", 8.3):
         pacote = p["pacote"](_glifos(LEGIVEL), X_E, larg=None)
@@ -254,18 +276,27 @@ def _fase0(cena, p):
         cena.add(pacote)
         cena.play(ch_pub.animate.move_to([X_E, Y_MAO, 0]), run_time=0.8 * VEL)
         _trancar(pacote, _glifos(CIFRADO), letras=True)
+        # a chave cinza TENTA voltar atrás: o arco cede no sentido de abrir e
+        # volta antes de soltar. O Wiggle é o cadeado reclamando; isto aqui é
+        # a chave tentando, que é o que a fala afirma
+        arco = pacote[1][0]
+        piv = arco[2].get_bottom()
+        cena.play(Rotate(arco, 0.35 * _ABERTURA, about_point=piv),
+                  run_time=0.25 * VEL)
+        cena.play(Rotate(arco, -0.35 * _ABERTURA, about_point=piv),
+                  run_time=0.25 * VEL)
         # quem trancou também ficou de fora
         x2 = T("✗", 34, VERMELHO).next_to(pacote[1], RIGHT, buff=0.25)
         cena.play(Wiggle(pacote[1]), FadeIn(x2), run_time=1.0 * VEL)
         cena.play(FadeOut(x2), run_time=0.4 * VEL)
 
-    with narra(cena, "C8N08", 8.3):
+    with narra(cena, "C8N08", 9.5):
         # a rima com o C8N04: os mesmos dois objetos na prateleira
-        _atravessar(pacote, RIGHT, vaga=0)
+        _atravessar(pacote, RIGHT, vaga=0, rt=RT_CANAL)
         cena.play(Indicate(prateleira[1], color=CINZA), run_time=0.6 * VEL)
         cena.play(Wiggle(prateleira[0][1]), FadeIn(xis), run_time=1.1 * VEL)
 
-    with narra(cena, "C8N09", 3.3):
+    with narra(cena, "C8N09", 7.0):
         # a chave amarela nunca entrou no canal: acende parada na ponta e SOBE
         # até o cadeado, o mesmo gesto com que a cinza desceu para trancar
         cena.play(Indicate(ch_priv, color=AMARELO), run_time=0.6 * VEL)
@@ -410,7 +441,9 @@ def parte8(cena):
         cena.play(FadeOut(p["cenario"]), FadeOut(p["olho"]),
                   FadeOut(fase0["volta"]), FadeOut(fase0["pub"]),
                   FadeOut(fase0["priv"]),
-                  ReplacementTransform(fase0["ida"], L), run_time=1.2 * VEL)
+                  ReplacementTransform(fase0["ida"], L), run_time=2.5 * VEL)
+        # o gancho que o C7N14 deixou: o expoente que a fala vai manipular
+        cena.play(Indicate(L[0][1], color=LARANJA), run_time=0.9 * VEL)
 
     # slide 86: multiplicamos os dois lados por a
     L2 = VGroup(T("a", 34, ROXO), T("·", 34, PRETO),
@@ -419,7 +452,19 @@ def parte8(cena):
                 T("≡", 34, PRETO), T("a", 34, ROXO), T("·", 34, PRETO),
                 T("1", 34, VERDE), fmod("n", 32))
     L2.arrange(RIGHT, buff=0.16).move_to(L)
+    # a ponte texto→número: a caixa SEGREDO da fase 0 volta pequena e os sete
+    # glifos colapsam DENTRO do a. É a única vez que a mensagem figurativa
+    # encosta na álgebra, e a fala não tem outra imagem para se apoiar
+    msg_fig = _caixa_msg(_glifos(LEGIVEL), CARTAO_ESCURO, BRANCO, 28)
+    msg_fig.scale(0.55).next_to(L, LEFT, buff=0.8)
     with narra(cena, "C8N12", 8.3):
+        cena.play(FadeIn(msg_fig, shift=0.25 * RIGHT), run_time=0.6 * VEL)
+        cena.play(LaggedStart(*[FadeOut(g, target_position=L[0][0], scale=0.3)
+                                for g in msg_fig[1]], lag_ratio=0.12),
+                  # a caixa sai antes dos glifos: eles têm de viajar no branco
+                  Succession(FadeOut(msg_fig[0], scale=0.9), Wait()),
+                  run_time=1.2 * VEL)
+        cena.remove(msg_fig)
         # a única parada da dedução para dizer o que a letra é
         cena.play(Indicate(L[0][0], color=ROXO), run_time=0.7 * VEL)
         cena.play(ReplacementTransform(L, L2), run_time=1.1 * VEL)
@@ -476,7 +521,7 @@ def parte8(cena):
     # o "≡ a (mod n)" sai aqui e volta no C8N18, com o L5
     dir4 = VGroup(L4[1], L4[2], L4[3])
     with narra(cena, "C8N16", 5.0):
-        cena.play(FadeIn(tabela), FadeOut(dir4), run_time=1.0 * VEL)
+        cena.play(FadeIn(tabela), FadeOut(dir4), run_time=2.0 * VEL)
     L4.remove(*dir4)
 
     uns = VGroup(*[Circle(radius=0.16, color=VERDE, stroke_width=2)
@@ -489,10 +534,12 @@ def parte8(cena):
     nota = formula(("(e, d)", PRETO), ("= par de inversos", CINZA),
                    tamanho=22, buff=0.12).next_to(ed, DOWN, buff=0.3)
     with narra(cena, "C8N17", 9.2):
-        cena.play(LaggedStart(*[Create(c) for c in uns], lag_ratio=0.1),
+        # a fala descreve exatamente os círculos nascendo, um a um: eles
+        # precisam de lag para serem contados, não de simultaneidade
+        cena.play(LaggedStart(*[Create(c) for c in uns], lag_ratio=0.22),
                   Write(ed), FadeIn(nota),
                   Indicate(celulas[2][5], color=VERDE),
-                  Indicate(celulas[5][2], color=VERDE), run_time=2.0 * VEL)
+                  Indicate(celulas[5][2], color=VERDE), run_time=4.5 * VEL)
 
     # slide 90: substituímos e·d no expoente
     L5 = VGroup(pot("a", expoente(("e", VERMELHO), ("·", PRETO),
@@ -516,9 +563,13 @@ def parte8(cena):
         # expoente vira duas potências encadeadas
         cena.play(ReplacementTransform(L5, L6), FadeOut(tabela), FadeOut(uns),
                   FadeOut(nota), FadeOut(ed), run_time=1.2 * VEL)
-        # o par de setas do C8N10 virando álgebra — uma de cada vez
-        cena.play(Indicate(L6[0][0][1][1], color=VERMELHO), run_time=0.7 * VEL)
-        cena.play(Indicate(L6[0][1], color=AZUL), run_time=0.7 * VEL)
+        # o par de setas do C8N10 virando álgebra — uma de cada vez, e com uma
+        # pausa no meio: são duas operações encadeadas, e o par só é lido como
+        # par se houver silêncio entre elas
+        cena.play(Indicate(L6[0][0][1][1], color=VERMELHO), run_time=1.2 * VEL)
+        cena.play(Succession(Wait(0.5 * VEL),
+                             Indicate(L6[0][1], color=AZUL,
+                                      run_time=1.2 * VEL)))
 
     # ---------- FASE A2: o esquema simbólico REENCENADO NO PALCO -----------
     # é a segunda volta da fase 0 na MESMA ORDEM: quem recebe cria o par, a
@@ -545,7 +596,7 @@ def parte8(cena):
     # olho copia e guarda, à vista, sem nenhuma consequência — nada pisca
     f1s = VGroup(pot("a", "e", ROXO, VERMELHO, 24), fmod("n", 22))
     f1s.arrange(RIGHT, buff=0.12).move_to([-2.3, 0.35, 0])
-    with narra(cena, "C8N21", 5.4):
+    with narra(cena, "C8N21", 6.6):
         cena.play(ch_pub.animate.move_to([p["X_D"], p["Y_CANAL"], 0]),
                   ch_priv.animate.move_to([p["X_D"], Y_POUSO, 0]),
                   run_time=0.6 * VEL)
@@ -565,7 +616,7 @@ def parte8(cena):
     rpub.move_to(ch_pub)
     fpub.move_to(rpub)
     pubS = VGroup(rpub, fpub)
-    with narra(cena, "C8N22", 5.8):
+    with narra(cena, "C8N22", 2.9):
         cena.play(ReplacementTransform(ch_pub, rpub),
                   FadeIn(fpub[0]), FadeIn(fpub[1]), FadeIn(fpub[3]),
                   FadeIn(fpub[5]),
@@ -599,7 +650,7 @@ def parte8(cena):
     rpriv.move_to(ch_priv)
     fpriv.move_to(rpriv)
     privS = VGroup(rpriv, fpriv)
-    with narra(cena, "C8N24", 7.1):
+    with narra(cena, "C8N24", 9.1):
         cena.play(ReplacementTransform(ch_priv, rpriv),
                   FadeIn(fpriv[0]), FadeIn(fpriv[1]), FadeIn(fpriv[3]),
                   FadeIn(fpriv[5]),
@@ -636,8 +687,15 @@ def parte8(cena):
                                   ("))", PRETO), tam=34), ROXO, tam=34),
                 T("≡", 34, PRETO), T("a", 34, ROXO), fmod("33", 32))
     E1.arrange(RIGHT, buff=0.14).move_to([0, 1.6, 0])
+    # a fala promete que o módulo vem de algum lugar ainda não mostrado. O ?
+    # é a promessa em cena: nasce colado no 33 do esc, passa para o 33 do
+    # módulo no C8N33 e acompanha o exemplo numérico inteiro. Sai no C8N36
+    # com o resto do exemplo — a tela tem de ficar limpa para o argumento
+    # final —, e quem quita a dívida é o c3b do C8N42
+    inter = T("?", 22, CINZA).next_to(esc[2], UR, buff=0.05)
     with narra(cena, "C8N26", 7.1):
         cena.play(Write(esc), Write(E1), run_time=1.2 * VEL)
+        cena.play(FadeIn(inter, shift=0.18 * DOWN), run_time=0.6 * VEL)
 
     # 3) por enquanto, SÓ o valor: φ(33) = 20
     phi = formula(("φ(", PRETO), ("33", LARANJA), (")", PRETO), ("=", PRETO),
@@ -647,7 +705,7 @@ def parte8(cena):
                 T("≡", 34, PRETO), T("a", 34, ROXO), fmod("33", 32))
     E2.arrange(RIGHT, buff=0.14).move_to(E1)
     with narra(cena, "C8N27", 5.8):
-        cena.play(Write(phi), ReplacementTransform(E1, E2), run_time=1.2 * VEL)
+        cena.play(Write(phi), ReplacementTransform(E1, E2), run_time=2.4 * VEL)
 
     # 4) encontrar e e d inversos (mod 20): 3 × 7 = 21 ≡ 1 ✓  (slide 95)
     ed2 = formula(("e", VERMELHO), ("·", PRETO), ("d", AZUL), ("≡", PRETO),
@@ -668,13 +726,17 @@ def parte8(cena):
                    (", ", PRETO), ("33", LARANJA), (")", PRETO)),
                   AMARELO, 3.5)
     with narra(cena, "C8N29", 7.1):
-        cena.play(Create(pub[0]), Create(priv[0]),
+        # a fala tem ordem — "uma leva cada expoente, e as duas levam o mesmo
+        # módulo" — então os dois cartões nascem um de cada vez
+        cena.play(Create(pub[0]),
                   FadeIn(pub[1][0]), FadeIn(pub[1][1]), FadeIn(pub[1][3]),
                   FadeIn(pub[1][5]),
-                  FadeIn(priv[1][0]), FadeIn(priv[1][1]), FadeIn(priv[1][3]),
-                  FadeIn(priv[1][5]),
                   ReplacementTransform(edn[0].copy(), pub[1][2]),
                   ReplacementTransform(esc[2].copy(), pub[1][4]),
+                  run_time=1.4 * VEL)
+        cena.play(Create(priv[0]),
+                  FadeIn(priv[1][0]), FadeIn(priv[1][1]), FadeIn(priv[1][3]),
+                  FadeIn(priv[1][5]),
                   ReplacementTransform(edn[2].copy(), priv[1][2]),
                   ReplacementTransform(esc[2].copy(), priv[1][4]),
                   run_time=1.4 * VEL)
@@ -699,8 +761,11 @@ def parte8(cena):
                       ("5", ROXO), ("<", PRETO), ("33", LARANJA),
                       tamanho=26).move_to([0, 0.85, 0])
     with narra(cena, "C8N31", 5.0):
-        cena.play(FadeOut(phi), FadeOut(edn), Write(msg_esc),
-                  run_time=1.0 * VEL)
+        # a fala termina em "menor que o módulo": o < e o 33 chegam por último
+        cena.play(FadeOut(phi), FadeOut(edn),
+                  LaggedStart(Write(VGroup(*msg_esc[0:4])),
+                              Write(VGroup(*msg_esc[4:6])), lag_ratio=0.55),
+                  run_time=1.8 * VEL)
 
     par_53 = VGroup(T("(", 36, PRETO), pot("5", "3", ROXO, VERMELHO, 36),
                     T(")", 36, PRETO)).arrange(RIGHT, buff=0.04)
@@ -724,7 +789,10 @@ def parte8(cena):
     # C8N08 e do C8N21, e o (3, 33) fica à vista dele o exemplo inteiro
     pub_olho = pub.copy()
     with narra(cena, "C8N33", 4.6):
-        cena.play(FadeOut(esc), FadeIn(p["cenario"]), FadeIn(p["olho"]),
+        # o esc sai (a prateleira ocupa aquela faixa), mas a dívida do 33 não:
+        # o ? se transfere para o 33 do módulo, que segue em cena
+        cena.play(inter.animate.next_to(L7[3][1], UR, buff=0.04),
+                  FadeOut(esc), FadeIn(p["cenario"]), FadeIn(p["olho"]),
                   FadeIn(p["prat"]), FadeIn(pacB, shift=0.2 * UP),
                   pub.animate.scale(0.8).move_to([p["X_E"], p["Y_MAO"], 0]),
                   pub_olho.animate.scale(0.8 * 0.72)
@@ -786,7 +854,8 @@ def parte8(cena):
     leg = VGroup(lpre, lphi).arrange(RIGHT, buff=0.13)
     leg.move_to([_TAB_MEIO, 3.22, 0])
     with narra(cena, "C8N36", 12.1):
-        cena.play(FadeOut(VGroup(pacB, f1, f2, pub, priv, L7, fim3, msg_esc)),
+        cena.play(FadeOut(VGroup(pacB, f1, f2, pub, priv, L7, fim3, msg_esc,
+                                 inter)),
                   FadeOut(p["cenario"]), FadeOut(p["olho"]),
                   FadeOut(p["prat"]), FadeOut(p["xis"]), *p["esvaziar"](),
                   run_time=0.9 * VEL)
@@ -953,7 +1022,7 @@ def parte8(cena):
                   (")", PRETO), ("=", PRETO), ("2", ROSA), ("×", PRETO),
                   ("10", VERDE2), ("=", PRETO), ("20", PRETO),
                   tamanho=24, buff=0.08).move_to([X_F, -1.75, 0])
-    with narra(cena, "C8N42", 4.2):
+    with narra(cena, "C8N42", 7.0):
         cena.play(Write(VGroup(*c3[5:10])), run_time=0.7 * VEL)
         # o (p − 1) NASCE do p, e o (q − 1) do q — um de cada vez
         cena.play(FadeIn(c3[10]), FadeIn(c3[12]),
@@ -1005,4 +1074,5 @@ def parte8(cena):
                   VGroup(c1, c2, c3, c3b, volta3,
                          cacos3).animate.shift(X_F * LEFT),
                   run_time=1.2 * VEL)
-        cena.play(Write(c4), Create(caixa), run_time=1.3 * VEL)
+        # a tese fecha o capítulo: a caixa se desenha devagar em volta dela
+        cena.play(Write(c4), Create(caixa), run_time=3.0 * VEL)
