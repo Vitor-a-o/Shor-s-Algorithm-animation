@@ -8,6 +8,7 @@ abre e fecha na abertura do vídeo 1, ganha rótulos gravados no corpo
 """
 
 from manim import *
+import numpy as np
 
 from .paleta import CINZA, LARANJA, PRETO, VEL
 from .ferramentas import T
@@ -79,14 +80,28 @@ def gravar(cena, cad, texto, tamanho=26, cor=PRETO, run_time=0.9):
 
 def rachar(cena, cad, run_time=1.0):
     """Racha o arco pela metade sem que o cadeado se abra (V3N02) — a
-    quebra completa (arco estala, pedaços caem) fica para o vídeo 4."""
+    quebra completa (arco estala, pedaços caem) fica para o vídeo 4.
+
+    A fissura CORRE pelo arco: zigue-zagueia perpendicular à curva (não na
+    vertical) e com amplitude proporcional ao raio, para continuar colada
+    ao traço em qualquer escala do cadeado."""
     arco = cad[0][0]  # o Arc, não as pernas
-    p0 = arco.point_from_proportion(0.32)
-    p1 = arco.point_from_proportion(0.42) + 0.14 * UP
-    p2 = arco.point_from_proportion(0.50) + 0.11 * DOWN
-    p3 = arco.point_from_proportion(0.60)
-    rachadura = VMobject(stroke_color=CINZA, stroke_width=4)
-    rachadura.set_points_as_corners([p0, p1, p2, p3])
+    centro = arco.get_arc_center()
+    raio = float(np.linalg.norm(arco.point_from_proportion(0.5) - centro))
+    amp = 0.07 * raio          # ~ a espessura do traço: racha, não descola
+    # perfil da fissura: (proporção ao longo do arco, desvio radial em
+    # frações de amp). Irregular de propósito — serrilha regular lê como
+    # enfeite —, mas fixo, para o render ser reproduzível. Começa e acaba
+    # em cima do traço, então ela nasce e MORRE dentro do arco
+    perfil = ((0.30, 0.0), (0.36, -0.9), (0.42, 0.5), (0.47, -0.35),
+              (0.52, 1.0), (0.57, -0.5), (0.62, 0.0))
+    pontos = []
+    for t, d in perfil:
+        p = arco.point_from_proportion(t)
+        radial = (p - centro) / np.linalg.norm(p - centro)
+        pontos.append(p + d * amp * radial)
+    rachadura = VMobject(stroke_color=CINZA, stroke_width=3)
+    rachadura.set_points_as_corners(pontos)
     cena.play(Create(rachadura), run_time=run_time * VEL)
     cad.add(rachadura)
     return rachadura

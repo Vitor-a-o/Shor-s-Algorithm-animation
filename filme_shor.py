@@ -33,6 +33,8 @@
    manim -pql filme_shor.py Parte3             # um capítulo isolado
    manim -pql filme_shor.py VideoOperacoes     # vídeo 2 (preview)
    manim -pqh filme_shor.py VideoOperacoes     # vídeo 2 (final 1080p60)
+   manim -pql filme_shor.py VideoTeoremaRSA    # vídeo 3 (preview)
+   manim -pqh filme_shor.py VideoTeoremaRSA    # vídeo 3 (final 1080p60)
 ============================================================================
 """
 
@@ -41,7 +43,7 @@ from manim import *
 from shor.paleta import COR_FUNDO
 from shor.ferramentas import limpar
 from shor.montagem import TITULOS, PARTES, abertura, encerramento, abre_capitulo
-from shor.videos import video2
+from shor.videos import video2, video3
 
 
 class FilmeCompleto(Scene):
@@ -69,6 +71,25 @@ class VideoOperacoes(Scene):
             PARTES[i - 1](self)
             limpar(self)
         video2.encerramento(self)
+
+
+class VideoTeoremaRSA(Scene):
+    """Vídeo 3 — Do teorema ao RSA (capítulos 6 a 8)."""
+    def construct(self):
+        self.camera.background_color = COR_FUNDO
+        # a abertura já se emenda ao cartão do capítulo 6 (toca o CAP06),
+        # então o capítulo 6 entra sem abre_capitulo
+        video3.abertura(self)
+        PARTES[5](self)
+        limpar(self)
+        abre_capitulo(self, 7)
+        PARTES[6](self)
+        limpar(self)
+        abre_capitulo(self, 8)
+        # parte8 devolve a tese: o encerramento a reaproveita sem limpar()
+        # entre os dois (o cadeado do V3N01 pousa em cima dela)
+        tese = PARTES[7](self)
+        video3.encerramento(self, tese)
 
 
 def _construct_parte(cena, i):

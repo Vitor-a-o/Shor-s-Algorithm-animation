@@ -1076,3 +1076,7 @@ def parte8(cena):
                   run_time=1.2 * VEL)
         # a tese fecha o capítulo: a caixa se desenha devagar em volta dela
         cena.play(Write(c4), Create(caixa), run_time=3.0 * VEL)
+
+    # a tese (o texto E a moldura verde) sobrevive ao capítulo: o
+    # encerramento do vídeo 3 (V3N01) a reaproveita sem limpar() no meio
+    return VGroup(c4, caixa)
