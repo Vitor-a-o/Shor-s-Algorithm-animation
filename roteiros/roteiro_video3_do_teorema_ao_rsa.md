@@ -88,11 +88,11 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | C8N02 | Aplicar uma criptografia de chave simétrica resolve metade do problema: a mensagem que trafega deixa de fazer sentido para terceiros. | 8,3 | **Animação nova.** A viagem recomeça da esquerda. Antes de partir, uma chave amarela desce sobre a caixa e o `cadeado()` fecha com o flash seco do `V1N01`; **no mesmo `play`** as sete letras se embaralham no lugar (`Transform` letra a letra com `lag_ratio` pequeno, `SEGREDO → Xk9#R2q`) e o fundo vira o verde da cifra. A cópia que sobe à prateleira do olho agora é a embaralhada, e um ✗ vermelho nasce sobre ele. Vale isolar isso num `_trancar(caixa)`/`_abrir(caixa)`: o par é usado quatro vezes na fase 0 |
 | C8N03 | Só que quem tranca e quem abre a mensagem usam a mesma chave, e ela também tem que atravessar o canal. | 8,8 | **Animação nova.** A mesma chave amarela sai da ponta esquerda e entra no canal, atrás da cifra — o segundo objeto a fazer o percurso, com o mesmo movimento e a mesma velocidade da caixa. A prateleira do olho já tem a cifra esperando |
 | C8N04 | Um intruso ouvindo o canal pega as duas coisas juntas, e abre a mensagem com a própria chave que a trancou. | 8,8 | **Animação nova — é o beat que justifica o capítulo.** No meio do canal, uma cópia da chave sobe e pousa **ao lado** da cifra na prateleira: os dois objetos capturados, juntos, em cena. O olho aplica a chave, o cadeado abre, as letras desembaralham (`_abrir`) e a caixa da prateleira volta a ser a escura com `SEGREDO` legível. O ✗ vermelho sai e a tela pisca vermelho uma vez |
-| C8N05 | O RSA é uma das saídas para isso: duas chaves diferentes, uma que tranca e outra que abre. | 7,5 | **Animação nova.** Sobra a chave amarela, agora sozinha e **na ponta direita** — quem recebe é quem manda no par. Ela se **parte em duas** e as metades pousam como dois cartões **vazios**: `tranca` em cinza e `abre` em amarelo, o mesmo `RoundedRectangle` com `stroke_color` CINZA/AMARELO dos cartões `pubS` e `privS`. São as molduras que o `C8N22` e o `C8N24` preenchem com `(e, n)` e `(d, n)` |
-| C8N06 | Quem vai receber envia pelo canal a chave que tranca. Ela pode ser vista por todo mundo, porque com ela só dá para fechar — é a chave pública. | 11,7 | **Animação nova.** O cartão cinza percorre o canal **da direita para a esquerda**: é o único objeto do capítulo que anda ao contrário, e é o gesto inteiro da assimetria. O olho copia e guarda na prateleira, à vista, sem nenhuma consequência — nada pisca vermelho |
+| C8N05 | O RSA é uma das saídas para isso ele usa duas chaves diferentes, uma que tranca e outra que abre. | 8,3 | **Animação nova.** Sobra a chave amarela, agora sozinha e **na ponta direita** — quem recebe é quem manda no par. Ela se **parte em duas** e as metades pousam como dois cartões **vazios**: `tranca` em cinza e `abre` em amarelo, o mesmo `RoundedRectangle` com `stroke_color` CINZA/AMARELO dos cartões `pubS` e `privS`. São as molduras que o `C8N22` e o `C8N24` preenchem com `(e, n)` e `(d, n)` |
+| C8N06 | Quem vai receber a mensagem envia pelo canal sua chave que tranca. Ela pode ser vista por todo mundo, porque com ela só é possível trancar, por isso ela é chamada de chave pública. | 14,0 | **Animação nova.** O cartão cinza percorre o canal **da direita para a esquerda**: é o único objeto do capítulo que anda ao contrário, e é o gesto inteiro da assimetria. O olho copia e guarda na prateleira, à vista, sem nenhuma consequência — nada pisca vermelho |
 | C8N07 | Quem envia tranca a mensagem com ela — e nem ele mesmo consegue voltar atrás. A chave que fecha não abre. | 8,3 | **Animação nova.** Na ponta esquerda, o cartão cinza fecha o cadeado sobre `SEGREDO` e as letras se embaralham (`_trancar`, o mesmo movimento do `C8N02`). Em seguida o próprio remetente tenta reabrir com o cinza: `Wiggle` e ✗. Quem trancou também ficou de fora |
-| C8N08 | O intruso pega tudo o que atravessou o canal, a chave pública e a mensagem trancada, e nada disso abre. | 8,3 | **Animação nova — a rima com o `C8N04`, mesmo enquadramento e desfecho oposto.** A cifra atravessa e o olho captura a cópia: a prateleira fica com os **mesmos dois objetos** de antes, cifra e chave. Ele aplica o cinza, o cadeado chacoalha e não abre, as letras continuam embaralhadas, ✗ vermelho |
-| C8N09 | A chave que abre nunca entrou no canal. | 3,3 | **Animação nova.** O cartão amarelo, parado na ponta direita desde o `C8N05`, acende sozinho — sublinhar que ele nunca se moveu vale mais que qualquer rótulo. Ele abre o cadeado, as letras desembaralham e `SEGREDO` reaparece legível, do lado certo. Flash verde |
+| C8N08 | O intruso pega tudo o que atravessou o canal, a chave pública e a mensagem trancada, e nada disso é suficiente para abrir. | 9,5 | **Animação nova — a rima com o `C8N04`, mesmo enquadramento e desfecho oposto.** A cifra atravessa e o olho captura a cópia: a prateleira fica com os **mesmos dois objetos** de antes, cifra e chave. Ele aplica o cinza, o cadeado chacoalha e não abre, as letras continuam embaralhadas, ✗ vermelho |
+| C8N09 | A chave que abre nunca entra no canal, por isso ela também é chamada de chave privada. | 7,0 | **Animação nova.** O cartão amarelo, parado na ponta direita desde o `C8N05`, acende sozinho — sublinhar que ele nunca se moveu vale mais que qualquer rótulo. Ele abre o cadeado, as letras desembaralham e `SEGREDO` reaparece legível, do lado certo. Flash verde |
 | C8N10 | Na aritmética, isso é um par de operações: uma que qualquer um faz, e outra que ninguém desfaz sem uma informação que a primeira não entrega. | 10,8 | **Animação nova.** Tudo esmaece menos o canal, e sobre ele nascem duas setas: a de ida, verde e sólida; a de volta, vermelha, que se despedaça no meio do caminho — o mesmo gesto do `V1N01`. É a promessa que o `C8N36` vai cobrar. Os dois cartões continuam nas pontas, apagados (opacidade ~0,3) |
 | C8N11 | Vamos começar com o Teorema de Euler e mostrar como essas operações surgem dele. Para isso, fazemos algumas manipulações na congruência. | 8,8 | `Write(L)` nascendo **de dentro** da seta de ida, em [0, 1,6, 0], com o canal, o olho e os dois cartões apagados saindo em `FadeOut` no mesmo `play`. A fase 0 fecha e a fórmula assume a tela — um movimento só, sem corte no meio |
 | C8N12 | Esse número a é a mensagem — todo texto vira número antes de entrar aqui. Multiplicamos os dois lados por ele. | 8,3 | `L → L2`, precedido de um `Indicate` curto no `a` do lado direito. É a primeira e única vez que a dedução para para dizer o que a letra é, e agora também é onde a ponte texto→número é feita — a caixa `SEGREDO` da fase 0 nunca virou número em cena |
@@ -104,10 +104,10 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | C8N18 | Esse par pode então substituir o expoente. | 2,9 | `L4 → L5` + `Indicate(ed)` |
 | C8N19 | E um produto no expoente é o mesmo que uma potência de outra potência: duas operações encadeadas, uma desfazendo a outra. | 8,8 | `L5 → L6` emendado com o `FadeOut(tabela, uns, nota, ed)`. É aqui que o par de setas do `C8N10` vira álgebra — vale um `Indicate` curto nos dois expoentes, um de cada vez |
 | C8N20 | Cada peça da fórmula ganha um papel, começando pela mensagem. | 4,2 | `Indicate(L6[2])` emendado com `msgA` + `rotA` + `fA` |
-| C8N21 | A primeira potência embaralha a mensagem, e o que sai é a cifra. | 5,4 | `GrowArrow(s1)` + `Write(f1s)` emendados com `cifA` + `rotC` |
-| C8N22 | O expoente que embaralha, junto com o módulo, é aquela chave pública que circulou. | 5,8 | `pubS`, com o `e` e o `n` sendo puxados de `f1s`. **Ajuste da fase 0**: o `rpub` não é criado do zero — é o cartão cinza vazio do `C8N05` voltando à cena e se preenchendo |
+| C8N21 | A primeira potência junto com o módulo embaralham a mensagem, e o resultado é a cifra. | 6,6 | `GrowArrow(s1)` + `Write(f1s)` emendados com `cifA` + `rotC` |
+| C8N22 | Estes são a chave pública que circulou. | 2,9 | `pubS`, com o `e` e o `n` sendo puxados de `f1s`. **Ajuste da fase 0**: o `rpub` não é criado do zero — é o cartão cinza vazio do `C8N05` voltando à cena e se preenchendo |
 | C8N23 | A segunda potência desfaz a primeira e devolve a mensagem original. | 4,6 | `GrowArrow(s2)` + `Write(f2s)` emendados com `msgB` + `rotB` |
-| C8N24 | E o expoente que desfaz é a chave privada — essa não sai da mão de quem recebe. | 7,1 | `privS`, com o `d` e o `n` sendo puxados de `f2s`. Mesmo ajuste: o `rpriv` é o cartão amarelo vazio do `C8N05` |
+| C8N24 | E o expoente que desfaz junto com o módulo é a chave privada — essa não sai da mão de quem recebe. | 9,1 | `privS`, com o `d` e o `n` sendo puxados de `f2s`. Mesmo ajuste: o `rpriv` é o cartão amarelo vazio do `C8N05` |
 | C8N25 | O esquema está montado. Falta ver ele rodar com números. | 4,2 | `FadeOut` do esquema inteiro + `L6` |
 | C8N26 | Quem vai receber escolhe o módulo de uma maneira específica, que vai ser mostrada mais para frente. | 7,1 | `Write(esc)` + `Write(E1)` emendados. O `33` continua aparecendo sem origem, mas agora a linha marca isso como dívida — e o `C8N42` paga |
 | C8N27 | Com o módulo na mão, ele calcula fi de ene — o módulo do expoente. | 5,8 | `Write(phi)` + `E1 → E2` emendados |
@@ -125,11 +125,11 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | C8N39 | Para um módulo grande, contar um por um é impossível. | 4,2 | **Animação nova, segunda metade.** A contagem do que sobrou colapsa dentro do `φ(n)` do `c1`. Sem esse retorno, o espectador não tem por que achar que fi de ene é difícil |
 | C8N40 | Se o módulo fosse primo, a contagem sairia de graça — nenhum número abaixo de um primo compartilha fator com ele — e qualquer um teria a chave privada. | 11,2 | `Write(c2)`, com o `n − 1` chegando por último e um `Indicate` nele. O ✗ vermelho já existe no código |
 | C8N41 | Com o produto de dois primos, os únicos que compartilham fator são os múltiplos de p e os de q. | 8,3 | `Write(c3)`, só o lado esquerdo: `n = p × q`. O `p` rosa e o `q` verde-claro são os mesmos dois primos do `V1N02` |
-| C8N42 | Dá para descontar todos de uma vez, sem contar nada. | 4,2 | O lado direito do `c3` nascendo: o `(p − 1)` e o `(q − 1)` saem do `p` e do `q` do lado esquerdo, um de cada vez. **Mudança de código**: entra também a segunda linha instanciada, `33 = 3 × 11 ⇒ φ(33) = 2 × 10 = 20`, que paga a dívida aberta no `C8N26` — o `20` é o mesmo valor solto que o `C8N27` mostrou sem justificar |
+| C8N42 | Dá para descontar todos de uma vez com uma fórmula, sem ter que contar um por um. | 7,0 | O lado direito do `c3` nascendo: o `(p − 1)` e o `(q − 1)` saem do `p` e do `q` do lado esquerdo, um de cada vez. **Mudança de código**: entra também a segunda linha instanciada, `33 = 3 × 11 ⇒ φ(33) = 2 × 10 = 20`, que paga a dívida aberta no `C8N26` — o `20` é o mesmo valor solto que o `C8N27` mostrou sem justificar |
 | C8N43 | Mas o atalho só serve para quem conhece p e q. Quem só possui o produto dos dois teria que fatorar para descobrir. | 9,6 | **Animação nova, pequena.** Uma seta vermelha tenta o caminho de volta no `c3`, do `n` para o `p × q`, e se despedaça no meio — a mesma seta do `C8N10` e do `V1N01`, agora sobre números |
 | C8N44 | E a série se fecha em cima de si mesma: quebrar o RSA é fatorar esse número. | 7,1 | `Write(c4)` + `Create(caixa)` |
 
-**Subtotal: 303,7 s** (cartão + 44 locuções)
+**Subtotal: 314,8 s** (cartão + 44 locuções)
 
 ---
 
@@ -152,17 +152,18 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | Abertura | 1 | 8,8 s |
 | Capítulo 6 | 13 | 81,0 s |
 | Capítulo 7 | 15 | 86,6 s |
-| Capítulo 8 | 45 | 303,7 s |
+| Capítulo 8 | 45 | 314,8 s |
 | Encerramento | 2 | 15,8 s |
-| **Total** | **74** | **495,1 s** |
+| **Total** | **74** | **506,2 s** |
 
 Somando o `PAD` de 0,35 s por locução (25,9 s), os dois cartões silenciosos
-(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 8 min 58 s** —
-dentro da faixa de 8–9 min que a estimativa por `cena.play` previa. A fase 0 do capítulo 8
-responde por ~85,0 s desse total; as fases B e C continuam somando vinte e quatro `play`
+(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 09 s** —
+passa um pouco da faixa de 8–9 min que a estimativa por `cena.play` previa, puxada pelas
+falas reescritas da fase 0 e do fecho. A fase 0 do capítulo 8
+responde por ~93,0 s desse total; as fases B e C continuam somando vinte e quatro `play`
 sob catorze locuções curtas, porque a tela faz as contas sozinha.
 
-O capítulo 8 sozinho passa de 4 minutos e meio de fala, e a fase 0 é um quinto do vídeo.
+O capítulo 8 sozinho passa de 5 minutos de fala, e a fase 0 segue perto de um quinto do vídeo.
 Duas linhas já foram enxugadas ali — a moral do fracasso saiu inteira, e a premissa que o
 `C8N03` e o `C8N04` diziam duas vezes agora é dita uma. O que sobrou não tem gordura: o
 `C8N06` é o mais longo do bloco porque é ele que carrega a justificativa da fase inteira

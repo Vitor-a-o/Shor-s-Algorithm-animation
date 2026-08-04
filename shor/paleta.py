@@ -21,6 +21,7 @@ ROSA     = "#f050b0"   # p
 VERDE2   = "#58b32e"   # q (verde-claro dos slides)
 ROXO     = "#8c52ff"   # a no RSA / Euler
 CAIXA    = "#e3e3e3"   # caixas cinzas dos diagramas (slides 27 e 34)
+CARTAO_ESCURO = "#123a46"   # caixa da mensagem no RSA (azul-petróleo)
 CAIXA2   = "#c9c9c9"   # caixa do bit 0 (cinza mais escuro dos slides)
 
 COR_FUNDO, COR_TEXTO, COR_APAGADO = BRANCO, PRETO, CINZA
