@@ -29,8 +29,8 @@ e `from ..ferramentas import *`. Dentro de `shor/`: `from .paleta import …`.
 
 **Dois níveis de montagem.** `montagem.py` monta o filme inteiro (`FilmeCompleto`);
 `shor/videos/videoN.py` monta um vídeo da série, com abertura e encerramento
-próprios, reaproveitando os mesmos capítulos. O vídeo 2 (`video2.py`, cena
-`VideoOperacoes`) é o modelo a seguir para o vídeo 3.
+próprios, reaproveitando os mesmos capítulos. O vídeo 3 (`video3.py`) é o
+modelo a seguir para o vídeo 4.
 
 ---
 
@@ -113,10 +113,11 @@ imagem. Ler antes de mexer em qualquer capítulo.
 |---|---|
 | 1–5 | **Prontos e gravados. Não tocar.** |
 | 6, 7, 8 | Código existe, ainda sem `narra()`. É o trabalho do vídeo 3. |
-| 9, 9b, 10 | Vídeos futuros. **Não tocar.** |
+| 9, 9b, 10 | Código existe, ainda sem `narra()`. É o trabalho do vídeo 4. |
 
 As pendências por capítulo estão listadas no fim do
-`roteiro_video3_do_teorema_ao_rsa.md`. Elas são a lista de tarefas.
+`roteiro_video3_do_teorema_ao_rsa.md` e do `roteiro_video4_algoritmo_de_shor.md`.
+Elas são a lista de tarefas.
 
 ---
 

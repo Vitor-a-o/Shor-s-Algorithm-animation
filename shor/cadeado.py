@@ -107,6 +107,135 @@ def rachar(cena, cad, run_time=1.0):
     return rachadura
 
 
+# a fissura inteira, de ponta a ponta do arco. Os pontos entre 0,30 e 0,62
+# são os MESMOS do perfil do rachar(): a rachadura parcial não se mexe
+# quando a quebra a alcança, ela só ganha continuação — no mesmo passo
+# irregular — até as duas pontas
+_PERFIL_CHEIO = ((0.00, 0.0), (0.05, 0.85), (0.11, -0.45), (0.17, 0.6),
+                 (0.23, -0.8),
+                 (0.30, 0.0), (0.36, -0.9), (0.42, 0.5), (0.47, -0.35),
+                 (0.52, 1.0), (0.57, -0.5), (0.62, 0.0),
+                 (0.68, 0.75), (0.74, -0.6), (0.80, 0.4), (0.87, -0.85),
+                 (0.94, 0.55), (1.00, 0.0))
+
+
+def _fissura(arco, centro, amp, perfil):
+    """Pontos de uma fissura que CORRE pelo arco: cada (t, d) do perfil é um
+    ponto a `d * amp` do traço, na direção radial (nunca na vertical)."""
+    pontos = []
+    for t, d in perfil:
+        p = arco.point_from_proportion(t)
+        radial = (p - centro) / np.linalg.norm(p - centro)
+        pontos.append(p + d * amp * radial)
+    return pontos
+
+
+def quebrar(cena, cad, run_time=1.4):
+    """A quebra que o `rachar()` promete (V4N01). Recebe um `cad` que JÁ
+    passou pelo `rachar()` e carrega a rachadura parcial: a fissura termina
+    de correr até as duas pontas do arco, o arco estala em dois pedaços na
+    altura dela e os dois caem, girando e apagando.
+
+    O corpo NÃO cai — fica em cena com o rótulo gravado, que é o ponto: a
+    aposta é que quebra, não o número. Devolve VGroup(pedaço de fora, pedaço
+    de dentro), porque o V4N03 os remonta; os dois ficam em cena, no fundo e
+    invisíveis, onde caíram — para trazê-los de volta basta `set_opacity(1)`
+    (e um `bring_to_front` se tiverem de passar por cima de alguma coisa).
+
+    Depois desta chamada o cadeado não tem mais arco (`cad[0]` fica só com
+    os dois cotos): `abrir()` e `fechar()` não valem mais para ele."""
+    arco = cad[0][0]  # o Arc, não as pernas
+    centro = arco.get_arc_center()
+    raio = float(np.linalg.norm(arco.point_from_proportion(0.5) - centro))
+    amp = 0.07 * raio          # a mesma do rachar(): proporcional ao raio,
+                               # para colar no traço em qualquer escala
+    rachadura = cad[3] if len(cad) > 3 else None
+
+    # a fissura termina de correr: cada extensão nasce na ponta da rachadura
+    # parada e vai até a ponta do arco (por isso a esquerda vai invertida —
+    # o Create tem de partir de onde o vídeo 3 parou)
+    esq = _fissura(arco, centro, amp,
+                   tuple(reversed([p for p in _PERFIL_CHEIO if p[0] <= 0.30])))
+    dta = _fissura(arco, centro, amp,
+                   [p for p in _PERFIL_CHEIO if p[0] >= 0.62])
+    corridas = VGroup()
+    for pontos in (esq, dta):
+        t = VMobject(stroke_color=CINZA, stroke_width=3)
+        t.set_points_as_corners(pontos)
+        corridas.add(t)
+    cena.play(*[Create(t) for t in corridas], run_time=0.45 * run_time * VEL)
+
+    # o arco estala: os dois pedaços são os dois lados da fissura, cada um
+    # com metade da espessura do traço
+    pecas = VGroup()
+    for lado in (0.5, -0.5):       # meia amplitude para cada lado da fissura:
+                                   # juntos, os dois cobrem o traço de origem
+        pontos = _fissura(arco, centro, amp,
+                          [(t, d + lado) for t, d in _PERFIL_CHEIO])
+        peca = VMobject(stroke_color=PRETO, stroke_width=5)
+        peca.set_points_as_corners(pontos)
+        pecas.add(peca)
+    # a rachadura e as corridas saem tanto do cad quanto da cena: o Create
+    # as pendurou no topo da cena, tirar só do VGroup deixaria o rabisco lá
+    cad[0].remove(arco)
+    cena.remove(arco, *corridas)
+    if rachadura is not None:
+        cad.remove(rachadura)
+        cena.remove(rachadura)
+    cena.add(pecas)
+    cena.bring_to_back(pecas)  # os cacos caem ATRÁS do corpo, senão passam
+                               # riscando por cima do rótulo
+
+    # o estalo: os dois lados se apartam um dedo, ainda inteiros e opacos
+    fora, dentro = pecas
+    cena.play(fora.animate.shift(0.22 * raio * UP),
+              dentro.animate.shift(0.22 * raio * DOWN),
+              run_time=0.15 * run_time * VEL)
+    cena.play(
+        fora.animate.shift(4.5 * raio * DOWN + 1.6 * raio * RIGHT)
+            .rotate(-70 * DEGREES).set_opacity(0),
+        dentro.animate.shift(4.5 * raio * DOWN + 1.6 * raio * LEFT)
+            .rotate(55 * DEGREES).set_opacity(0),
+        run_time=0.40 * run_time * VEL)
+    return pecas
+
+
+def rede(n=7, semente=0):
+    """A rede de cadeados anônimos do V1N03, que volta intacta no V4N03:
+    pontos e arestas cinzas com um `cadeado()` de corpo vazio pousado em
+    cada aresta, tudo apagado em opacidade 0,3.
+
+    Determinística — o jitter sai de um gerador com `semente` fixa, então
+    dois renders dão exatamente a mesma rede. O miolo fica livre: é lá que
+    mora o cadeado aceso. Devolve VGroup(arestas, pontos, cadeados)."""
+    rng = np.random.default_rng(semente)
+    pos = []
+    for i in range(n):
+        ang = 2 * PI * i / n + float(rng.uniform(-0.18, 0.18))
+        r = 2.55 + float(rng.uniform(-0.35, 0.35))
+        pos.append(np.array([1.5 * r * np.cos(ang), r * np.sin(ang), 0.0]))
+
+    # o anel, mais cordas de dois em dois: nenhuma passa perto do centro
+    ligacoes = [(i, (i + 1) % n) for i in range(n)]
+    ligacoes += [(i, (i + 2) % n) for i in range(0, n, 3)]
+
+    arestas = VGroup(*[Line(pos[i], pos[j], color=CINZA, stroke_width=2.5)
+                       for i, j in ligacoes])
+    pontos = VGroup(*[Dot(p, radius=0.07, color=CINZA) for p in pos])
+
+    cads = VGroup()
+    for a in arestas:
+        c = cadeado()
+        c.remove(c[2])                      # corpo vazio: sem buraco, sem letras
+        c.scale(0.22).move_to(a.get_center())
+        c.shift(0.30 * c.height * DOWN)     # pendurado pelo arco na aresta
+        cads.add(c)
+
+    grupo = VGroup(arestas, pontos, cads)
+    grupo.set_opacity(0.3)
+    return grupo
+
+
 def abrir(cena, cad, run_time=0.7):
     """Abre o arco — inverso de `fechar`, sem flash (abrir é silencioso)."""
     pivot = cad[0][2].get_bottom()
