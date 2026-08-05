@@ -80,10 +80,6 @@ fala. Vocabulário usado ali:
   não um `Write` do vazio.
 - **"Animação nova"** = não existe nada equivalente no arquivo hoje.
 
-Quando o roteiro e o código divergirem, **o roteiro manda**. Se algo no roteiro
-for impossível ou inconsistente, **relate — não conserte por conta própria, e
-nunca reescreva uma fala.**
-
 ---
 
 ## Gramática visual da série

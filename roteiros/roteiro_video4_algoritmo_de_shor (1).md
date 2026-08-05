@@ -13,7 +13,7 @@ Atenção à numeração dos arquivos: o **capítulo 10** em tela é o `capitulo
 
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
-| V4N00 | A série inteira levou a uma frase: quebrar o RSA é fatorar um número grande. Este vídeo mostra o algoritmo que faz isso — e ele começa longe daí. | 13,1 | O cadeado do fim do vídeo 3 volta ao centro **no estado em que ficou**: `cadeado("fechado")`, "fatorar n" gravado no corpo e a rachadura já parada no meio do arco. `gravar()` e `rachar()` rodam antes da locução, em silêncio, para que o primeiro quadro do vídeo 4 seja o último quadro do vídeo 3. Em "quebrar o RSA é fatorar", `Indicate` no rótulo gravado. Em "o algoritmo que faz isso", a rachadura tenta avançar dois segmentos e **para de novo** — ela só termina no encerramento. Em "começa longe daí", o cadeado encolhe e sai por cima do ombro do quadro, já com o cartão de marca entrando por baixo |
+| V4N00 | A série inteira levou a uma frase: quebrar o RSA é fatorar um número grande. Este vídeo mostra o algoritmo que faz isso — e ele percorre um caminho longo até lá. | 13,1 | O cadeado do fim do vídeo 3 volta ao centro **no estado em que ficou**: `cadeado("fechado")`, "fatorar n" gravado no corpo e a rachadura já parada no meio do arco. `gravar()` e `rachar()` rodam antes da locução, em silêncio, para que o primeiro quadro do vídeo 4 seja o último quadro do vídeo 3. Em "quebrar o RSA é fatorar", `Indicate` no rótulo gravado. Em "o algoritmo que faz isso", a rachadura tenta avançar dois segmentos e **para de novo** — ela só termina no encerramento. Em "começa longe daí", o cadeado encolhe e sai por cima do ombro do quadro, já com o cartão de marca entrando por baixo |
 | — | *(cartão silencioso, ~4 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 4 de 4 — O algoritmo de Shor" embaixo dele. Mesma emenda dos vídeos 2 e 3: o subtítulo sai primeiro e o título encolhe por último, já com o `CAP09` entrando por baixo |
 
 **Subtotal: 13,1 s** (1 locução) + cartão ~4 s
@@ -26,26 +26,33 @@ O capítulo é uma pergunta só, feita na tabela que o capítulo 5 já ensinou a
 expoente é pular de linha, e a caminhada volta ao ponto de partida. A fala nunca lê o
 zigue-zague — ela diz o movimento, e a tela faz os números.
 
+A tabela é usada **duas vezes**. Na primeira (`C9N03`–`C9N11`), base 4 mod 9: o ciclo fecha
+em três passos e o `r = 3` nasce daí. Na segunda (`C9N13`), a mesma tabela recebe a base 5,
+que é raiz primitiva mod 9: o ciclo passa pelos seis restos invertíveis antes de devolver o
+1, e `r = 6` é exatamente `φ(9)` — o pior caso deixa de ser uma frase e passa a ser um
+caminho longo na tela. O `C9N14` fecha o argumento do custo com o módulo crescendo, no
+mesmo gesto do `C8N39` do vídeo 3.
+
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
-| CAP09 | O caminho até a fatoração começa por uma pergunta sobre expoentes. | 5,0 | cartão |
-| C9N01 | A exponenciação modular volta, com a mesma equação do capítulo quatro. Só que a pergunta agora é outra. | 8,3 | `Write(eq)` |
-| C9N02 | A base e o módulo ficam parados; quem anda é o expoente. E a base tem inverso, como o capítulo cinco pedia. | 9,6 | `FadeIn(escolha)`. Em "tem inverso", `Indicate` na palavra `inversível` cinza que a `escolha` já carrega |
-| C9N03 | A tabela de multiplicação do módulo volta, e é nela que a caminhada vai acontecer. | 6,7 | `head_c` + `head_l` + `lin_h` + `lin_v` e o `LaggedStart(linhas_cel)` correm emendados, num bloco só |
-| C9N04 | Só uma linha dela interessa: a da base. | 3,8 | `GrowArrow(seta4)` + `Indicate(head_l[4])` |
-| C9N05 | A caminhada parte do expoente zero, que vale um. | 4,2 | `Create(c00)` + `Write(f0)` |
-| C9N06 | E subir um degrau no expoente é multiplicar pela base — ou seja, pular para a linha dela. | 8,3 | `FadeIn(nota)` |
-| C9N07 | Cada passo desce até a linha da base, e o resultado vira a coluna do passo seguinte. | 7,5 | As **duas primeiras voltas do laço** inteiras — seis `play`: `desce`/`alvo`, `Write(fs[0])`, `sobe`/`topo`, `desce`/`alvo`, `Write(fs[1])`, `sobe`/`topo`. O `with narra` envolve o `for`, não cada iteração dele: mesma correção do `C2N07` e do `C5N11` |
-| C9N08 | Até que a caminhada devolve o um de onde saiu. | 4,6 | O terceiro passo do laço: `desce`/`alvo`, `Write(fs[2])` com o ✓, e o `Flash(ponto(4, 7))` — os três `play` sob esta linha |
-| C9N09 | O caminho é um ciclo fechado. Daqui em diante, ele só se repete. | 5,8 | `Create(fecha)` + `Indicate(c00)` |
-| C9N10 | Escrito como congruência, é isto: existe um expoente que devolve um. | 5,0 | `Write(VGroup(mult[0], mult[1], mult[2]))` |
-| C9N11 | E cada volta completa no ciclo devolve outro, e outro, para sempre. | 5,4 | Os quatro `play` das duas voltas extras num bloco só: `volta_no_ciclo()`, o `4⁶` nascendo por `TransformFromCopy`, `volta_no_ciclo()` de novo e o `4⁹` com o `(mod 9)`. É a irmã do "e assim por diante" do `C2N07` |
-| C9N12 | O menor deles é o que interessa. | 3,3 | `Write(rdef[0])` + `Write(rdef[1])` + `TransformFromCopy(mult[2][1], rdef[2])` — o `3` amarelo nasce do expoente que fechou o ciclo, não de um `Write` do vazio |
-| C9N13 | Ele é a ordem modular da base. | 3,3 | **A virada, igual à do `C6N12` e à do `C7N13`.** Um `play` só: a tabela (`head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `seta4`, `zig`) e a coluna direita inteira (`eq`, `escolha`, `f0`, `nota`, `fs`, `mult`) saem em `FadeOut`, e no mesmo bloco `caixa_d` e `borda` nascem já centrados. O `rdef` sai meio segundo atrasado em relação ao resto, e o `r` amarelo dele chega ao `r` do `d2`/`d3` por `TransformFromCopy` — o caso particular é a última coisa a desaparecer debaixo do geral. O `d1` já diz "ordem modular de a módulo n", então **não** entra título separado aqui |
-| C9N14 | E ela pode ser enorme: no pior caso, do tamanho da contagem de Euler. Procurar testando um expoente por vez custa tanto quanto atacar o RSA de frente. | 12,6 | `Write(d4)` sozinho, num `play` próprio. Em "a contagem de Euler", `Indicate` no `φ(` `n` `)` cinza do próprio `d4` — é a peça que o capítulo 7 definiu e o 8 gastou |
-| C9N15 | Guarde a pergunta: qual é o menor expoente que devolve um. O próximo capítulo mostra que ela é a fatoração disfarçada. | 9,6 | `so_fala` — a caixa parada em cena. Em "o menor expoente", `Indicate` no `r` amarelo do `d3` |
+| CAP09 | O caminho até a fatoração se baseia em uma propriedade muito importante da exponenciação modular. | 7,2 | cartão |
+| C9N01 | A mesma equação do capítulo quatro do segundo vídeo volta. Mas a pergunta agora não é mais descobrir o resto. | 8,5 | `Write(eq)` |
+| C9N02 | O módulo e a base não mudam; quem anda é o expoente. E a base tem inverso, como o capítulo cinco pedia. | 8,2 | `FadeIn(escolha)`. Em "tem inverso", `Indicate` na palavra `inversível` cinza que a `escolha` já carrega |
+| C9N03 | A tabela de multiplicação do módulo volta, e é nela que a caminhada vai acontecer. | 6,1 | `head_c` + `head_l` + `lin_h` + `lin_v` e o `LaggedStart(linhas_cel)` correm emendados, num bloco só |
+| C9N04 | Somente a linha da base interessa. | 2,6 | `GrowArrow(seta4)` + `Indicate(head_l[4])` |
+| C9N05 | A caminhada parte do expoente zero, que vale um. | 3,6 | `Create(c00)` + `Write(f0)` |
+| C9N06 | E subir um degrau no expoente é o mesmo que multiplicar pela base — ou seja, pular para a linha dela. | 7,5 | `FadeIn(nota)` |
+| C9N07 | Cada passo desce até a linha da base, e o resultado vira a coluna do passo seguinte. | 6,2 | As **duas primeiras voltas do laço** inteiras — seis `play`: `desce`/`alvo`, `Write(fs[0])`, `sobe`/`topo`, `desce`/`alvo`, `Write(fs[1])`, `sobe`/`topo`. O `with narra` envolve o `for`, não cada iteração dele: mesma correção do `C2N07` e do `C5N11`. **Seis `play` em 6,2 s** — ver a pendência 9 do capítulo |
+| C9N08 | Até que a caminhada devolve o um que é o mesmo ponto de partida. | 4,7 | O terceiro passo do laço: `desce`/`alvo`, `Write(fs[2])` com o ✓, e o `Flash(ponto(4, 7))` — os três `play` sob esta linha |
+| C9N09 | O caminho é um ciclo fechado. Daqui em diante, ele só se repete. | 5,1 | Dois `play` sob esta linha: `Create(fecha)` + `Indicate(c00)` e, em seguida, `Write(VGroup(mult[0], mult[1], mult[2]))`. **A congruência mudou de dono**: ela era a fala cortada e agora entra sob "ele só se repete" — sem isso o `mult` nunca nasce e os `TransformFromCopy` do `C9N10` e do `C9N11` ficam sem origem |
+| C9N10 | E cada volta completa no ciclo devolve potências congruentes ao mesmo resto. | 5,6 | Os quatro `play` das duas voltas extras num bloco só: `volta_no_ciclo()`, o `4⁶` nascendo por `TransformFromCopy`, `volta_no_ciclo()` de novo e o `4⁹` com o `(mod 9)`. É a irmã do "e assim por diante" do `C2N07` |
+| C9N11 | O menor deles é o que interessa. | 2,4 | `Write(rdef[0])` + `Write(rdef[1])` + `TransformFromCopy(mult[2][1], rdef[2])` — o `3` amarelo nasce do expoente que fechou o ciclo, não de um `Write` do vazio. Três `play` em 2,4 s: ver a pendência 9 |
+| C9N12 | Ele é a ordem modular dessa base. | 2,4 | **A virada, igual à do `C6N12` e à do `C7N13`.** Um `play` só: a tabela (`head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `seta4`, `zig`) e a coluna direita inteira (`eq`, `escolha`, `f0`, `nota`, `fs`, `mult`) saem em `FadeOut`, e no mesmo bloco `caixa_d` e `borda` nascem já centrados. O `rdef` sai meio segundo atrasado em relação ao resto, e o `r` amarelo dele chega ao `r` do `d2`/`d3` por `TransformFromCopy` — o caso particular é a última coisa a desaparecer debaixo do geral. O `d1` já diz "ordem modular de a módulo n", então **não** entra título separado aqui. **É a linha mais apertada do capítulo**: 2,4 s de fala para o movimento mais complexo dele — ver a pendência 9 |
+| C9N13 | E ela pode ser enorme: no pior caso, do tamanho da contagem de Euler. | 5,3 | **O pior caso ACONTECENDO, na mesma tabela e com outra base.** Quatro `play`: (1) `Write(d4)`; (2) a definição encolhe para a coluna da direita (`bloco.animate.scale(0.8).move_to([3.3, 0, 0])`) e por baixo dela a tabela mod 9 volta — `FadeIn(tab9)` + `lin_h` + `lin_v`, a legenda `a = 5` `(mod 9)` e o `GrowArrow(seta5)` na linha 5, com o `Create(ini5)` no 1 de partida; (3) o ciclo do 5 inteiro num `LaggedStart(*degraus, lag_ratio=0.8)` — `1 → 5 → 7 → 8 → 4 → 2 → 1`, seis degraus, um por resto invertível, a ida atravessando a tabela para a direita e a volta descendo pela esquerda até o `ini5`, que só pisca (`Indicate`) porque já está lá; (4) `Write(cont9)` (`r = 6 = φ(9)`) com o `Indicate` no `φ(` `n` `)` cinza do `d4` em "a contagem de Euler" — a peça que o capítulo 7 definiu e o 8 gastou. **A fala não lê nenhum degrau**: aqui não entra congruência escrita, o que a tela mostra é o comprimento do caminho. Base 5 é raiz primitiva mod 9, então o ciclo passa pelos seis invertíveis e `r` bate exatamente em `φ(9)` — é o `d4` virando exemplo. **Quatro `play` em 5,3 s** — ver a pendência 9 |
+| C9N14 | Procurar testando um expoente por vez custa muito caro para módulos grandes. | 5,9 | **O módulo cresce, como no `C8N39`.** Cinco `play`: (1) `tab9`, `caminho5`, `ini5` e `seta5` saem e as duas linhas da tabela mod 9 se desdobram na malha inteira — `ReplacementTransform(VGroup(lin_h, lin_v), malha21)`, a legenda vira `n = 21` e a contagem vira `φ(21) = 12`; (2) `malha21 → malha39` com `n = 39` e `φ(39) = 24`; (3) `malha39 → malha77` com `n = 77` e `φ(77) = ?`; (4) a contagem COLAPSA dentro do `φ(n)` do `d4` (`move_to(phi4).scale(0.2).set_opacity(0)` + `Indicate(phi4)`) — a conta que ninguém faz à mão; (5) a malha e a legenda saem e a definição retoma o centro em `scale(1 / 0.8)`. O quadrado do miolo é **fixo**: quem cresce é o número de células, por isso os dígitos saem e sobra só malha. **Cinco `play` em 5,9 s** — ver a pendência 9 |
+| C9N15 | Guarde a pergunta: qual é o menor expoente que devolve um. O próximo capítulo mostra que ela leva à fatoração. | 8,6 | `so_fala` — a caixa parada em cena. Em "o menor expoente", `Indicate` no `r` amarelo do `d3` |
 
-**Subtotal: 103,0 s** (cartão + 15 locuções)
+**Subtotal: 89,9 s** (cartão + 15 locuções)
 
 ---
 
@@ -194,14 +201,14 @@ de verdade.
 | Bloco | Locuções | Fala |
 |---|---|---|
 | Abertura | 1 | 13,1 s |
-| Capítulo 9 | 16 | 103,0 s |
+| Capítulo 9 | 15 | 89,9 s |
 | Capítulo 10 | 37 | 202,0 s |
 | Capítulo 11 | 45 | 249,4 s |
 | Encerramento | 4 | 40,9 s |
-| **Total** | **103** | **608,4 s** |
+| **Total** | **102** | **595,3 s** |
 
-Somando o `PAD` de 0,35 s por locução (36,1 s), os dois cartões silenciosos (~7 s) e os
-`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 11 min 02 s** — abaixo da
+Somando o `PAD` de 0,35 s por locução (35,7 s), os dois cartões silenciosos (~7 s) e os
+`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 10 min 48 s** — abaixo da
 faixa de 13–14 min que a estimativa por `cena.play` previa. A diferença vem de onde era
 esperado: os 118 `play` do bloco não pedem 118 falas, porque as duas árvores do capítulo 10
 e as varreduras do capítulo 11 são animações que se explicam sozinhas.
@@ -247,10 +254,10 @@ capítulo 10 fora de ordem.
    iterações inteiras sob `C9N07` (seis `play`) e a terceira mais o `Flash` sob `C9N08`
    (três `play`). Hoje o laço roda solto — mesma correção do `C2N07` e do `C5N11`.
 3. `with narra` envolvendo os quatro `play` das voltas extras — as duas chamadas de
-   `volta_no_ciclo()` e os dois crescimentos do `mult` (`C9N11`).
+   `volta_no_ciclo()` e os dois crescimentos do `mult` (`C9N10`).
 4. Os `cena.wait(0.8)` depois do `mult` e depois do `rdef` saem: quem dá o respiro é o
    `PAD`.
-5. **Final novo (`C9N13`)** — o pouso da definição, em um `play` único:
+5. **Final novo (`C9N12`)** — o pouso da definição, em um `play` único:
    - `FadeOut` de `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `seta4`, `zig`,
      `eq`, `escolha`, `f0`, `nota`, `fs` e `mult`;
    - no mesmo `play`, `caixa_d` e `borda` nascem **centrados** — hoje o `caixa_d` está em
@@ -262,12 +269,51 @@ capítulo 10 fora de ordem.
    É exatamente o movimento do `C6N12` e do `C7N13`. Se o `pousar_teorema(cena, formula,
    texto, resto)` foi extraído para `ferramentas.py` no vídeo 3, é ele aqui também, com o
    `texto` vazio: o `d1` já é o título.
-6. **Separar `Write(d4)`** do `Write(caixa_d)` — o pior caso é a fala `C9N14` e precisa de
+6. **Separar `Write(d4)`** do `Write(caixa_d)` — o pior caso é a fala `C9N13` e precisa de
    tempo próprio. O `borda` continua construído em volta do `caixa_d` inteiro (com o `d4`
    dentro) para que o layout não se mexa quando ele entrar.
+6b. **O ciclo do 5 e as malhas (`C9N13`/`C9N14`) — animação nova.** O que o arquivo precisa
+   ganhar:
+   - constantes de módulo `_TAM`, `_CANTO`, `_MEIO_X` e `_LADO`, para que a tabela mod 9
+     e as malhas grandes dividam a mesma geometria (o `parte9` passa a ler
+     `tam, canto = _TAM, _CANTO`);
+   - `_malha(m, w)` — a grade (mod m) inscrita **no mesmo quadrado** que o miolo da tabela
+     mod 9 ocupa. Quadrado fixo, célula encolhendo: é o `_tab_malha` do capítulo 8 com a
+     geometria daqui, e mora no capítulo porque só ele usa;
+   - `bloco = VGroup(borda, caixa_d)`, que é quem viaja para a direita no `C9N13` e volta ao
+     centro no fim do `C9N14`. A definição precisa **sobreviver** a essa ida e volta: o
+     `d3[0][1]` é o `r` que o `C9N15` pisca e o `C10N36` ainda cobra;
+   - o zigue-zague da base 5 **não reusa o `_passo`**, que tem as colunas do 4 escritas
+     dentro. Ele é um laço próprio sobre `ciclo5 = [1, 5, 7, 8, 4, 2, 1]`, e o `Indicate`
+     no `ini5` no lugar do `Create` fecha o ciclo no 1 que já estava em cena.
+
+   A tabela mod 9 volta por `FadeIn` dos **mesmos** mobjects que o `C9N12` tirou de cena —
+   `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`. Não é uma tabela nova: é a mesma
+   voltando, o que só funciona porque o `FadeOut` devolve a opacidade ao limpar a cena.
 7. O `cena.wait(1.8)` final sai: quem sustenta a caixa em cena é o `C9N15`.
 8. A saída da caixa para o cartão `CAP10` precisa ser **um movimento só**, com o `limpar()`
    emendado no cartão — mesma nota do fim dos capítulos 6 e 7.
+9. **Orçamento de `run_time` do capítulo.** As estimativas novas são de fala, e três blocos
+   ficaram com mais animação do que locução. Como o `narra()` roda o `play` inteiro e só
+   depois completa o silêncio, o que estoura entra por cima do áudio da linha seguinte.
+   Ajuste o `run_time`, nunca a fala:
+   - `C9N07` — seis `play` em 6,2 s: ~0,85 s cada, contra os ~1,0 s de hoje;
+   - `C9N11` — três `play` em 2,4 s: os dois `Write` do `rdef` emendam num `play` só, e
+     sobra o `TransformFromCopy`;
+   - `C9N12` — 2,4 s para a virada inteira. É um `play` só, mas com `FadeOut` atrasado
+     dentro dele; o atraso do `rdef` cai de 0,5 s para ~0,3 s e o `play` fecha em 2,4 s. Se
+     na gravação a locução vier ainda mais curta, o caso é deixar a virada estourar de
+     propósito, como o `C11N35` faz — mas aí a nota precisa estar escrita nesta tabela.
+   - `C9N13` — quatro `play` em 5,3 s: 0,8 + 1,2 + 2,2 + 0,9 = 5,1 s. O aperto está no
+     `LaggedStart` do ciclo: doze animações em 2,2 s, `lag_ratio=0.8`. Se a locução vier
+     mais curta, quem cede é o `LaggedStart`, nunca os degraus — o ciclo tem que ser visto
+     inteiro, é ele que mostra o pior caso;
+   - `C9N14` — cinco `play` em 5,9 s: 1,5 + 1,1 + 1,0 + 1,0 + 1,0 = 5,6 s. Se apertar, os
+     dois `ReplacementTransform` de malha caem para 0,9 s cada.
+10. **O `Write(VGroup(mult[0], mult[1], mult[2]))` mudou de dono** e agora é o segundo
+   `play` do `C9N09`. Ele não pode simplesmente sumir junto com a fala cortada: o
+   `TransformFromCopy` do `C9N10` e o `TransformFromCopy(mult[2][1], rdef[2])` do `C9N11`
+   dependem do `mult` já estar em cena.
 
 ## Pendências de código do capítulo 10 (`parte9b`)
 
@@ -323,7 +369,7 @@ capítulo 10 fora de ordem.
    `cadeado.py` quando o código do vídeo 1 for escrito, em vez de duplicar aqui.
 4. A trilha vertical dos quatro títulos do `V1N06` volta acesa no `V4N04` — mesma nota:
    ela nasce no vídeo 1 e é reaproveitada aqui.
-5. `CARTOES` em `montagem.py` ganha as entradas que faltam: `9: 5.0`, `10: 5.4`,
+5. `CARTOES` em `montagem.py` ganha as entradas que faltam: `9: 7.2`, `10: 5.4`,
    `11: 5.8`.
 6. `shor/videos/video4.py` com `abertura()` e `encerramento(cena, caixa)`, no molde do
    `video3.py`: a `abertura()` também toca o `CAP09` (quem a chama não deve chamar
