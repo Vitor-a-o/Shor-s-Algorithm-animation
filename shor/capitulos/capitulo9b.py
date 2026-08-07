@@ -17,7 +17,7 @@ from ..ferramentas import *
 #   7) o caso INÚTIL (a = 24): 13825 é múltiplo de n → fatores triviais
 #   8) por que isso quebra o RSA (lembrete do Capítulo 8)
 #
-# É o capítulo 10 EM TELA: as tags são C10N01–C10N32.
+# É o capítulo 10 EM TELA: as tags são C10N01–C10N33.
 # ============================================================================
 
 # --- a reta dos restos mod 35 (o palco do passeio ×8) -----------------------
@@ -302,12 +302,14 @@ def parte9b(cena):
               ReplacementTransform(d2[4].copy(), fA63), run_time=0.9 * VEL)
 
     # a conta da esquerda desce para a faixa da SUA árvore, espelhando o que a
-    # da direita fez no C10N10 — mesmo espaço reservado à direita
+    # da direita fez no C10N10 — mesmo espaço reservado à direita. A cauda
+    # nasce NÃO COMUTADA, igualzinha à da direita: no C10N14 são os MESMOS
+    # fatores atravessando a igualdade, e só no C10N15 eles se reagrupam
     eqA_a = VGroup(pot("8", "4", VERMELHO, AMARELO, 26), T("− 1 =", 26, PRETO),
                    T("65", 26, PRETO), T("·", 26, PRETO),
                    T("63", 26, PRETO)).arrange(RIGHT, buff=0.10)
-    eqA_b = VGroup(T("= (", 26, PRETO), T("p", 26, ROSA),
-                   T("· y) · (z ·", 26, PRETO), T("q", 26, VERDE2),
+    eqA_b = VGroup(T("= (z · y) · (", 26, PRETO), T("q", 26, VERDE2),
+                   T("·", 26, PRETO), T("p", 26, ROSA),
                    T(")", 26, PRETO)).arrange(RIGHT, buff=0.07)
     eqA = VGroup(eqA_a, eqA_b).arrange(RIGHT, buff=0.16)
     eqA.move_to([-3.5, 0.62, 0])
@@ -338,22 +340,20 @@ def parte9b(cena):
     j2 = formula(("65 · 63", PRETO), ("=", PRETO), ("(z · y) · (", PRETO),
                  ("q", VERDE2), ("·", PRETO), ("p", ROSA), (")", PRETO),
                  tamanho=30, buff=0.10).move_to(junta)
-    with narra(cena, "C10N13", 5.3):
+    with narra(cena, "C10N13", 8.3):
         cena.play(*[Create(l) for l in linB2], FadeIn(nB), run_time=0.9 * VEL)
         cena.play(Write(eqB_b), ReplacementTransform(junta, j2),
                   run_time=1.1 * VEL)
-        # "os dois primos" são os dois últimos do nB (a ordem é z, y, q, p);
-        # "números desconhecidos", os dois primeiros
-        cena.play(Indicate(nB[2], color=VERDE2), Indicate(nB[3], color=ROSA),
-                  run_time=0.7 * VEL)
-        cena.play(Indicate(nB[0], color=PRETO), Indicate(nB[1], color=PRETO),
-                  run_time=0.7 * VEL)
+        # cada galho acende JUNTO do que pende dele: "fatores de 35" são os
+        # dois primos (nB é z, y, q, p), "os de 117" são os dois batizados
+        cena.play(Indicate(fB35, color=LARANJA), Indicate(nB[2], color=VERDE2),
+                  Indicate(nB[3], color=ROSA), run_time=0.7 * VEL)
+        cena.play(Indicate(fB117, color=PRETO), Indicate(nB[0], color=PRETO),
+                  Indicate(nB[1], color=PRETO), run_time=0.7 * VEL)
 
-    # pela COMUTATIVIDADE, os mesmos quatro fatores se reagrupam em 65 e 63:
-    # primeiro a igualdade do meio se reescreve, depois os fatores descem
-    # para a árvore da esquerda e para a cauda reservada da equação dela
-    comut = T("pela comutatividade da multiplicação", 20,
-              CINZA).move_to([0, 1.35, 0])
+    # a igualdade do meio ATRAVESSA: os MESMOS quatro fatores, na MESMA ordem,
+    # descem para a cauda reservada da equação da esquerda. Nada comuta aqui —
+    # é só o direito de escrever os dois lados com os mesmos fatores
     nA = VGroup(T("p", 26, ROSA).move_to([-5.05, -2.55, 0]),
                 T("y", 26, PRETO).move_to([-3.85, -2.55, 0]),
                 T("z", 26, PRETO).move_to([-3.15, -2.55, 0]),
@@ -367,30 +367,44 @@ def parte9b(cena):
                  tamanho=30, buff=0.10).move_to(j2)
     with narra(cena, "C10N14", 6.7):
         # "como isso é uma igualdade": o sinal de igual do meio
-        cena.play(FadeIn(comut), Indicate(j2[1], color=PRETO),
+        cena.play(Indicate(j2[1], color=PRETO),
                   run_time=0.7 * VEL)
-        cena.play(ReplacementTransform(j2, j3), run_time=1.0 * VEL)
-        cena.play(*[Create(l) for l in linA2], FadeIn(nA), Write(eqA_b),
-                  run_time=1.1 * VEL)
+        # "os mesmos fatores do outro lado também": o lado direito do j2 voa
+        # inteiro, sem reagrupar nada, para a cauda da equação da esquerda —
+        # o j2 fica exatamente como está
+        cena.play(TransformFromCopy(j2[2:7], eqA_b), run_time=1.3 * VEL)
+        cena.add(eqA_b)
 
-    # o p mora no 65 E no 35; o q mora no 63 E no 35 — cada um caiu de um lado,
-    # e é dessa separação que os fatores úteis de n dependem
-    with narra(cena, "C10N15", 7.3):
+    # só AGORA a COMUTATIVIDADE: os mesmos quatro fatores se reagrupam em 65 e
+    # 63 nos dois lugares ao mesmo tempo — o lado esquerdo do j2 e a cauda da
+    # equação da árvore — e aí sim eles podem descer para a árvore da esquerda
+    eqA_b2 = VGroup(T("= (", 26, PRETO), T("p", 26, ROSA),
+                    T("· y) · (z ·", 26, PRETO), T("q", 26, VERDE2),
+                    T(")", 26, PRETO)).arrange(RIGHT, buff=0.07).move_to(eqA_b)
+
+    # a comutatividade reagrupa e, com sorte, separa: o p mora no 65 E no 35;
+    # o q, no 63 E no 35 — cada um caiu de um lado
+    with narra(cena, "C10N15", 8.7):
+        # o "65 · 63" do j2 vira o reagrupamento; o lado direito só acompanha
+        # o deslocamento, e a cauda da equação da árvore comuta junto
+        cena.play(ReplacementTransform(j2[0], j3[0:5]),
+                  ReplacementTransform(j2[1], j3[5]),
+                  *[ReplacementTransform(j2[i], j3[i + 4]) for i in range(2, 7)],
+                  ReplacementTransform(eqA_b, eqA_b2), run_time=1.2 * VEL)
+        cena.add(j3, eqA_b2)
+        # reagrupados, os fatores encontram os galhos da árvore da esquerda
+        cena.play(*[Create(l) for l in linA2], FadeIn(nA), run_time=0.9 * VEL)
         cena.play(Indicate(nA[0], color=ROSA), Indicate(nB[3], color=ROSA),
                   run_time=0.9 * VEL)
         cena.play(Indicate(nA[3], color=VERDE2), Indicate(nB[2], color=VERDE2),
                   run_time=0.9 * VEL)
-        cena.play(Indicate(obj[0], color=LARANJA), run_time=0.8 * VEL)
 
-    expl = formula(("65 e 63", PRETO), ("compartilham fatores com", CINZA),
-                   ("35", LARANJA), tamanho=22, buff=0.12).move_to(comut)
     with narra(cena, "C10N16", 8.4):
         # "os dois números que acabamos de calcular"
         cena.play(Indicate(fA65, color=PRETO), Indicate(fA63, color=PRETO),
                   run_time=0.9 * VEL)
-        cena.play(ReplacementTransform(comut, expl), run_time=0.8 * VEL)
-        # "o número que queremos fatorar"
-        cena.play(Indicate(expl[2], color=LARANJA), run_time=0.8 * VEL)
+        # "o número que queremos fatorar": o n do topo, herdado do C10N15
+        cena.play(Indicate(obj[0], color=LARANJA), run_time=0.8 * VEL)
 
     # o mdc PESCA os fatores compartilhados
     m1 = formula(("mdc(", PRETO), ("63", PRETO), (", ", PRETO),
@@ -426,11 +440,11 @@ def parte9b(cena):
     # ---------- o caso INÚTIL (slides 19–20): a = 24 ----------
     # a limpeza pertence a ESTA fala e vai EMENDADA no FadeIn: separada, ela
     # leria como fim de capítulo. O `fim` na moldura verde NÃO sai — o sucesso
-    # segue à vista enquanto a falha roda, e o C10N33 puxa φ(35) dele
+    # segue à vista enquanto a falha roda, e o C10N30 puxa φ(35) dele
     cap5 = T("às vezes a ordem modular não dá informação útil",
              24).move_to([0, 2.45, 0])
     with narra(cena, "C10N20", 9.6):
-        cena.play(FadeOut(VGroup(j3, expl, eqA, ra, linA, fA65, fA63, nA,
+        cena.play(FadeOut(VGroup(j3, eqA_a, eqA_b2, ra, linA, fA65, fA63, nA,
                                  linA2, eqB, rb, linB, fB117, fB35, nB, linB2,
                                  rper)),
                   FadeIn(cap5), run_time=0.8 * VEL)
@@ -441,7 +455,7 @@ def parte9b(cena):
     u0 = formula(("a", VERMELHO), ("=", PRETO), ("24", VERMELHO),
                  ("→", CINZA), ("r", AMARELO), ("=", PRETO), ("6", AMARELO),
                  tamanho=28).move_to([0, 1.7, 0])
-    with narra(cena, "C10N22", 3.7):
+    with narra(cena, "C10N22", 5.8):
         cena.play(Write(u0), run_time=0.9 * VEL)
         cena.play(Indicate(u0[6], color=AMARELO), run_time=0.8 * VEL)
 
@@ -489,7 +503,7 @@ def parte9b(cena):
     setam = Arrow(multi.get_bottom() + 0.05 * DOWN,
                   fu1.get_top() + 0.08 * UP, buff=0, color=PRETO,
                   stroke_width=3, max_tip_length_to_length_ratio=0.2)
-    with narra(cena, "C10N25", 3.8):
+    with narra(cena, "C10N25", 5.5):
         cena.play(FadeIn(multi), GrowArrow(setam),
                   Indicate(fu1, color=PRETO), run_time=1.1 * VEL)
         cena.play(Indicate(multi[1], color=LARANJA), run_time=0.7 * VEL)
@@ -504,11 +518,11 @@ def parte9b(cena):
     # o destaque no resultado vai em play PRÓPRIO, pela razão do C10N04:
     # dentro do Write ele guardaria o estado sem preenchimento do começo e o
     # devolveria no fim, deixando o resultado invisível o resto do capítulo
-    with narra(cena, "C10N26", 3.3):
+    with narra(cena, "C10N26", 3.5):
         cena.play(Write(m3), run_time=0.9 * VEL)
         cena.play(Indicate(m3[5], color=LARANJA), run_time=0.7 * VEL)
 
-    with narra(cena, "C10N27", 4.2):
+    with narra(cena, "C10N27", 5.7):
         cena.play(Write(m4), run_time=0.9 * VEL)
         cena.play(Indicate(m4[5], color=PRETO), run_time=0.7 * VEL)
 
@@ -516,12 +530,22 @@ def parte9b(cena):
                    tamanho=24, buff=0.12).move_to([3.7, -1.95, 0])
     sol = T("solução: escolher outro a e recomeçar", 20,
             CINZA).move_to([3.7, -2.5, 0])
-    # animação curta sob fala longa: o quadro fica parado no ✗ vermelho
-    # durante a segunda metade da linha, e é essa parada que faz a falha pesar
-    with narra(cena, "C10N28", 14.4):
-        cena.play(Write(triv), FadeIn(sol), run_time=1.0 * VEL)
+    # "os dois fatores triviais": o ✗ vermelho e os dois resultados do mdc que
+    # o justificam. O `sol` NÃO entra aqui — ele espera a fala que o explica
+    with narra(cena, "C10N28", 7.7):
+        cena.play(Write(triv), run_time=1.0 * VEL)
         cena.play(Indicate(m3[5], color=LARANJA), Indicate(m4[5], color=PRETO),
                   run_time=0.9 * VEL)
+
+    # animação curta sob fala longa: o cartão da solução aparece exatamente
+    # quando ela é dita, e o quadro fica parado no ✗ vermelho o resto da linha
+    # — é essa parada que faz a falha pesar.
+    # O destaque vai em play PRÓPRIO pela razão do C10N04 e do C10N26: junto do
+    # FadeIn, o Indicate guardaria o `sol` ainda invisível (o FadeIn zera a
+    # opacidade antes) e devolveria esse estado no fim — o cartão não apareceria
+    with narra(cena, "C10N29", 10.4):
+        cena.play(FadeIn(sol), run_time=0.8 * VEL)
+        cena.play(Indicate(sol, color=CINZA), run_time=0.7 * VEL)
 
     # ---------- POR QUE isso quebra o RSA (lembrete do Capítulo 8) ----------
     # com p e q em mãos, φ(n) sai de graça — e com φ(n), a chave privada d.
@@ -531,26 +555,38 @@ def parte9b(cena):
                  ("(", PRETO), ("5", ROSA), ("− 1)", PRETO), ("×", PRETO),
                  ("(", PRETO), ("7", VERDE2), ("− 1)", PRETO), ("=", PRETO),
                  ("24", PRETO), tamanho=30, buff=0.10).move_to([0, 1.8, 0])
-    with narra(cena, "C10N32", 7.1):
+    with narra(cena, "C10N30", 4.3):
         cena.play(FadeOut(VGroup(cap5, u0, u1, ru, linU, fu1, fu2, nU, linU2,
                                  multi, setam, m3, m4, triv, sol)),
                   ReplacementTransform(fim.copy(), r1), run_time=1.1 * VEL)
+        # "a contagem de Euler": o 24 que a conta acabou de entregar
+        cena.play(Indicate(r1[12], color=PRETO), run_time=0.7 * VEL)
 
     r2 = formula(("e", VERMELHO), ("·", PRETO), ("d", AZUL), ("≡", PRETO),
                  ("1", VERDE), ("(mod φ(", PRETO), ("n", LARANJA),
                  ("))", PRETO), ("⇒", PRETO), ("d", AZUL),
                  ("encontrado", PRETO),
                  tamanho=28, buff=0.10).move_to([0, 0.7, 0])
-    with narra(cena, "C10N33", 8.8):
+    with narra(cena, "C10N31", 6.7):
         cena.play(Write(r2), run_time=1.0 * VEL)
+        # "a chave privada" é o d; "o inverso da chave pública" é o e com o
+        # módulo da contagem — a tabela de inversos do C8N17 sendo cobrada
+        cena.play(Indicate(r2[2], color=AZUL), run_time=0.7 * VEL)
+        cena.play(Indicate(r2[0], color=VERMELHO),
+                  Indicate(VGroup(r2[5], r2[6], r2[7]), color=LARANJA),
+                  run_time=0.8 * VEL)
 
     r3 = formula(("fatorar", PRETO), ("n", LARANJA), ("=", PRETO),
                  ("descobrir a chave privada", PRETO),
                  tamanho=30).move_to([0, -0.6, 0])
     cxa2 = SurroundingRectangle(r3, color=VERDE, buff=0.2,
                                 corner_radius=0.14)
-    with narra(cena, "C10N34", 5.4):
+    with narra(cena, "C10N32", 5.9):
         cena.play(Write(r3), Create(cxa2), run_time=1.1 * VEL)
+        # o sinal de igual é literalmente "são a mesma coisa"
+        cena.play(Indicate(r3[2], color=VERDE), run_time=0.7 * VEL)
 
-    # a tese fica parada em cena enquanto a fala passa o bastão ao quântico
-    so_fala(cena, "C10N35", 9.2)
+    # a tese fica parada em cena enquanto a fala passa o bastão ao quântico —
+    # o r amarelo do C9N15 não serve aqui, o rper saiu no FadeOut do C10N20
+    with narra(cena, "C10N33", 8.3):
+        cena.play(Indicate(r3[1], color=LARANJA), run_time=0.8 * VEL)
