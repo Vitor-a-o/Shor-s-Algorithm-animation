@@ -58,59 +58,70 @@ mesmo gesto do `C8N39` do vídeo 3.
 
 ## Capítulo 10 — Da Ordem Modular à fatoração
 
-O capítulo tem três fases e uma coda. A **fatoração que dá certo** (`C10N01`–`C10N24`) roda
+O capítulo tem três fases e uma coda. A **fatoração que dá certo** (`C10N01`–`C10N19`) roda
 o método inteiro num alvo pequeno: acha a ordem, parte a potência em diferença de
-quadrados, e o mdc pesca os dois primos. O **caso inútil** (`C10N25`–`C10N32`) roda o mesmo
+quadrados, e o mdc pesca os dois primos. O **caso inútil** (`C10N20`–`C10N28`) roda o mesmo
 método com outra base e falha — é a fase que impede o algoritmo de virar mágica, e a fala
 dela é seca de propósito, porque a tela repete um trajeto que o espectador acabou de ver.
-A **coda** (`C10N33`–`C10N36`) cobra a dívida do capítulo 8: com os primos na mão, a chave
+A **coda** (`C10N29`–`C10N32`) cobra a dívida do capítulo 8: com os primos na mão, a chave
 privada sai por um inverso.
 
 As duas árvores de fatores são o coração visual do capítulo e correm quase mudas: elas
 mostram o mesmo número aberto de dois jeitos, e dizer isso em palavras é tudo o que a fala
-precisa fazer.
+precisa fazer. A ressalva é o `C10N08`: a árvore dos capítulos 3 e 4 **converge** — os
+resultados sobem para a soma e para o produto — e aqui ela **reparte**. É a mesma forma com
+o sentido invertido, e essa é a única linha do capítulo que gasta palavras com a imagem.
+
+Que as duas árvores abrem o mesmo número é dito **uma vez só**, no `C10N12`, porque é ali
+que a tela escreve `65 · 63 = 117 · 35` e ganha o direito de dizer. O `C10N10` fica na
+manobra e a segunda árvore nasce muda: qualquer fala em cima dela adiantaria o `C10N12`.
+
+O que a tela mostra é sempre `8⁴ − 1`, a **potência** menos um — nunca a ordem menos um. A
+ordem é 4, e 4 − 1 não é nada do que está escrito. A distinção vale para o `C10N07` e para
+o `C10N10`, que são as duas linhas que nomeiam esse número em voz alta.
+
+A comutatividade também não é sorte: ela vale sempre, e é ela que autoriza o reagrupamento
+do `C10N14`. O que é sorte é p e q caírem em **lados diferentes** — é isso que o `C10N15`
+promete e o `C10N24` quebra.
 
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
-| CAP10 | Com a ordem modular na mão, ela vira uma ferramenta de fatoração. | 5,4 | cartão |
-| C10N01 | Voltamos ao número do RSA: um produto de dois primos que ninguém entrega. | 5,8 | `Write(obj)` — o `p × q ?` com os primos ainda como letras |
-| C10N02 | E escolhemos uma base qualquer — qualquer mesmo, porque os primos a gente não tem. | 6,7 | `Write(base)` |
-| C10N03 | Dela procuramos a ordem, do mesmo jeito do capítulo anterior: multiplicando pela base até o um voltar. | 7,5 | Sete `play` num bloco só: `Write(rotulo)`, `FadeIn(caixas[0])`, as três iterações do `for` (`seta` + `rot` + `caixas[i+1]`), `Create(volta)` + `rv` e o `Flash`. O `with narra` envolve o laço inteiro |
-| C10N04 | Quatro passos, e ela está achada. | 2,9 | `Write(rper)` com os `Indicate` nos quatro rótulos `×8` |
-| C10N05 | Escrita como congruência, ela é o começo de tudo o que vem. | 5,4 | `Write(e1)` + `Indicate(rper)` |
-| C10N06 | Basta passar o um para o outro lado. | 3,8 | A saída da cadeia (`caixas`, `setas_o`, `volta`, `rv`, `base`, `rotulo`) com o `rper` subindo para o canto corre no **começo** desta linha; em seguida, `ReplacementTransform(e1, e2)` |
-| C10N07 | E o que a ordem entrega é um múltiplo do número que queremos fatorar. | 6,3 | `FadeIn(nota)` |
-| C10N08 | Todo múltiplo é esse número vezes alguma coisa. | 3,8 | `ReplacementTransform(e2, e3)` + `FadeOut(nota)` |
-| C10N09 | Isso já é uma fatoração: de um lado o que procuramos, do outro o que sobrou. | 7,1 | Os dois `play` da primeira árvore sob esta linha: o tronco `rb` nascendo por `ReplacementTransform` de uma cópia da própria conta, e `Create(linB)` com o `35` e o `x` descendo dos termos de `e3` |
-| C10N10 | O que sobrou sai de uma divisão, e o valor dele não importa. | 5,4 | `Write(ex)` e, em seguida, `ReplacementTransform(e3, e4)` com `FadeOut(ex)` e `fBx → fB117` — dois `play` sob esta linha |
-| C10N11 | Agora a condição que o método precisa: a ordem tem que ser par. | 5,8 | `Write(d0)` |
-| C10N12 | Sendo par, a potência menos um é uma diferença de quadrados — e diferença de quadrados sempre se abre em dois fatores. | 9,6 | `ReplacementTransform(d0, d1)` |
-| C10N13 | Dois fatores que saem direto da base, sem passar pelo número grande. | 5,4 | `ReplacementTransform(d1, d2)` |
-| C10N14 | É a segunda fatoração do mesmo número. | 3,3 | Os dois `play` da segunda árvore num bloco só: o tronco `ra` e `Create(linA)` com `fA65`/`fA63` nascendo dos termos de `d2` |
-| C10N15 | O mesmo número, aberto de dois jeitos diferentes. | 3,8 | `ReplacementTransform(d2, junta)` + `Indicate(e4, color=CINZA)` — a linha de cima acende para dizer de onde a igualdade veio |
-| C10N16 | Do lado que a gente já conhecia, os dois primos estão lá dentro. | 5,8 | `Create(linB2)` + `FadeIn(nB)` + `junta → j2` |
-| C10N17 | E como a ordem dos fatores não altera o produto, eles têm que reaparecer do outro lado também. | 8,3 | `FadeIn(comut)` e, em seguida, `Create(linA2)` + `FadeIn(nA)` + `j2 → j3` — dois `play` sob esta linha |
-| C10N18 | Um deles mora nos dois. | 2,5 | `Indicate(nA[0])` + `Indicate(nB[0])` |
-| C10N19 | O outro também. | 1,7 | `Indicate(nA[3])` + `Indicate(nB[1])` |
-| C10N20 | Ou seja: os dois números que acabamos de calcular compartilham fator com o número que queremos fatorar. | 7,5 | `ReplacementTransform(comut, expl)` |
-| C10N21 | E achar fator comum é rápido: é o algoritmo de Euclides, o mesmo que apareceu de passagem no capítulo cinco. | 9,2 | `Write(m1)` com os `Indicate` no par verde-claro |
-| C10N22 | Um de cada lado. | 2,1 | `Write(m2)` com os `Indicate` no par rosa |
-| C10N23 | E os primos caem. | 2,1 | `ReplacementTransform(VGroup(m1, m2), fim)` + `Create(cxa)` |
-| C10N24 | O número que abriu o capítulo está fatorado. | 3,8 | `ReplacementTransform(obj, obj2)` — o `p × q ?` do topo vira os dois primos com ✓ |
-| C10N25 | Só que nem toda base serve. | 2,9 | O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda |
-| C10N26 | Outra escolha, outra ordem — e essa também é par. | 4,2 | `Write(u0)` |
-| C10N27 | O caminho roda inteiro, sem nenhum erro. | 3,3 | `Write(u1a)` e `ReplacementTransform(u1a, u1)` — dois `play` sob esta linha |
-| C10N28 | Só que desta vez os dois primos caem juntos, do mesmo lado. | 5,4 | Os três `play` da árvore do azar num bloco só: tronco `ru`, `Create(linU)` com `fu1`/`fu2`, e `Create(linU2)` + `FadeIn(nU)` |
-| C10N29 | E esse lado é múltiplo do número inteiro. | 3,8 | `FadeIn(multi)` + `GrowArrow(setam)` + os `Indicate` em `nU[0]`/`nU[1]` |
-| C10N30 | Então um mdc devolve o próprio número... | 3,3 | `Write(m3)` |
-| C10N31 | ...e o outro não tem nada em comum com ele. | 4,2 | `Write(m4)` |
-| C10N32 | São os dois fatores que a gente já tinha. Quando dá nisso, troca-se a base e roda de novo — e cada tentativa nova tem pelo menos meia chance de acertar. | 13,4 | `Write(triv)` + `FadeIn(sol)`. Animação curta sob fala longa: o quadro fica parado no ✗ vermelho durante a segunda metade da linha, e é essa parada que faz a falha pesar |
-| C10N33 | Com os dois primos na mão, a contagem de Euler sai da fórmula do capítulo oito. | 7,1 | O `FadeOut` do caso inútil emendado com `ReplacementTransform(fim.copy(), r1)` — a contagem **nasce de dentro** dos dois primos que ficaram na moldura verde, num `play` só |
-| C10N34 | E com ela, a chave privada é só um inverso — a mesma conta que quem montou o RSA fez. | 8,8 | `Write(r2)`. Em "só um inverso", `Indicate` no `(mod φ(n))` — é a tabela de inversos do `C8N17` sendo cobrada |
-| C10N35 | Fatorar o módulo e descobrir a chave privada são a mesma coisa. | 5,4 | `Write(r3)` + `Create(cxa2)` |
-| C10N36 | Falta uma peça só: achar a ordem sem testar um expoente por vez. É o que o computador quântico faz. | 9,2 | `so_fala` — a moldura parada em cena. Em "achar a ordem", `Indicate` no `r` amarelo que sobreviveu do `C9N15`, se ele ainda estiver na tela; senão, no `n` laranja do `r3` |
+| CAP10 | Como a ordem modular vira uma ferramenta de fatoração. | 4,3 | cartão |
+| C10N01 | Voltamos ao número do RSA: um produto de dois primos muito difícil de fatorar. | 6,3 | `Write(obj)` — o `p × q ?` com os primos ainda como letras |
+| C10N02 | E escolhemos uma base qualquer. | 2,3 | `Write(base)` |
+| C10N03 | Dela procuramos a ordem modular, do mesmo jeito do capítulo anterior: multiplicando pela base até acontecer um loop. | 8,3 | Sete `play` num bloco só: `Write(rotulo)`, `FadeIn(caixas[0])`, as três iterações do `for` (`seta` + `rot` + `caixas[i+1]`), `Create(volta)` + `rv` e o `Flash`. O `with narra` envolve o laço inteiro |
+| C10N04 | Quatro passos foram dados, então o valor da ordem é quatro. | 4,9 | `Write(rper)` com os `Indicate` nos quatro rótulos `×8` |
+| C10N05 | Podemos então escrever a seguinte congruência. | 3,0 | `Write(e1)` + `Indicate(rper)` |
+| C10N06 | Diminuindo um de ambos os lados, podemos notar que a ordem entrega um múltiplo do número que queremos fatorar. | 8,4 | **Três `play` num bloco só.** A saída da cadeia (`caixas`, `setas_o`, `volta`, `rv`, `base`, `rotulo`) com o `rper` subindo para o canto; `ReplacementTransform(e1, e2)`; `FadeIn(nota)` em "um múltiplo do número" — a `nota` escreve a frase que a fala acaba de dizer |
+| C10N07 | Em outras palavras, a potência menos um é igual a 35 vezes x. | 5,3 | `ReplacementTransform(e2, e3)` + `FadeOut(nota)` |
+| C10N08 | Aqui essa árvore não junta, ela reparte: o tronco em cima e os fatores embaixo. | 6,9 | Os dois `play` da primeira árvore sob esta linha: o tronco `rb` nascendo por `ReplacementTransform` de uma cópia da própria conta, e `Create(linB)` com o `35` e o `x` descendo dos termos de `e3` |
+| C10N09 | Para descobrir o x é só isolar a variável na equação, mas isso não é tão importante. | 7,9 | Três `play` sob esta linha: `Write(ex)`; `ReplacementTransform(e3, e4)` com `FadeOut(ex)` e `fBx → fB117`; e `ReplacementTransform(e4, eqB_a)`, que desce a conta para `eqB_a` em `[3.5, 0.62, 0]` — só a cabeça nasce agora, com o espaço da cauda (`eqB_b`) reservado à direita; ela chega no `C10N13` |
+| C10N10 | Para encontrar outros fatores dessa potência menos um, podemos utilizar a diferença de quadrados dos produtos notáveis. | 8,8 | Dois `play` sob esta linha: `Indicate(eqB_a)`; e `Write(dgen)`, num traço lento (2,0), a identidade GENÉRICA `x² − 1 = (x − 1)(x + 1)` aparecendo **direto** — o nome "diferença de quadrados" fica só na fala, nunca escrito na tela, e nunca um número por extenso. A linha `d0` + `dgen` já nasce diagramada e centrada em `[0, 2.15, 0]`: `dgen` entra no lugar definitivo e o espaço do `r par ⇒` fica reservado à esquerda, para nada refluir no `C10N11` |
+| C10N11 | Para isso, note que a ordem r precisa ser par. | 4,6 | **Um `play` só, a linha inteira para ele.** `TransformFromCopy(rper[0], d0[0])` + `Write(d0[1:3])` — o `r par ⇒` crescendo **na frente** do que já está escrito, com o `r` amarelo nascendo do `rper` parado no canto (mesmo gesto do `C9N11`). Sem mais nenhuma manobra competindo pelo tempo, a condição "r precisa ser par" pesa sozinha antes de a álgebra continuar |
+| — | *(sem fala — a substituição roda muda, como a segunda árvore do `C10N12`)* | — | Três `play` em silêncio, fora de qualquer `with narra`, logo depois do `C10N11`, todos folgados de propósito — é a passagem mais suave do capítulo: primeiro o `FadeOut` do `r par ⇒` sozinho (já cumpriu o papel), para que a troca de token não dispute a atenção; depois o `x → 8²` token a token (1,6) — `FadeOut` no `x²`/`− 1 =` genéricos, `TransformFromCopy(eqB_a[0:2], d1[0:2])` trazendo o `8⁴ − 1 =` de volta como cópia da conta que já está em cena, e um `ReplacementTransform` por token (`dgen[2:7] → d1[2:7]`) mostrando o `x` virando `8²` nos dois parênteses; por fim `ReplacementTransform(d1, d2)` (1,3), que fecha a manobra em `65 · 63`. Nem `C10N10` nem `C10N11` dizem "oito" em voz alta — por isso a conta pode ficar muda até aqui |
+| C10N12 | Portanto, ficamos com o mesmo número aberto de dois jeitos diferentes. | 5,5 | Antes desta linha, **em silêncio** (os dois `play` fora de qualquer `with narra`, depois da substituição acima): o tronco `ra` por `ReplacementTransform` de uma cópia de `d2[0:2]`, e `Create(linA)` com `fA65`/`fA63` descendo de `d2[2]`/`d2[4]`. Sob esta linha, dois `play`: `ReplacementTransform(d2, eqA_a)`, que desce a conta para `eqA_a` em `[-3.5, 0.62, 0]` — espelhando `eqB_a`, cauda `eqA_b` também reservada à direita; e o nascimento de `junta`, que não é mais um `ReplacementTransform` de `d2`: ela nasce por `TransformFromCopy(eqA_a[2:5], junta[0])` e `TransformFromCopy(eqB_a[2:5], junta[2:4])`, um lado direito voando de cada equação, com só o `Write(junta[1])` (o sinal de igual) sendo escrito |
+| C10N13 | Do lado direito, os dois primos e números desconhecidos são fatores. | 5,3 | Dois `play` sob esta linha: `Create(linB2)` + `FadeIn(nB)` — `nB` na ordem `z, y, q, p`, z e y pendurados no `fB117`, q e p pendurados no `fB35`; depois `Write(eqB_b)` + `ReplacementTransform(junta, j2)`, que preenche a cauda reservada de `eqB_a` com os mesmos quatro fatores |
+| C10N14 | Como isso é uma igualdade, os mesmos fatores têm que aparecer do outro lado também. | 6,7 | Três `play` sob esta linha: `FadeIn(comut)`; `ReplacementTransform(j2, j3)`, a igualdade do meio se reescrevendo pela comutatividade; e `Create(linA2)` + `FadeIn(nA)` + `Write(eqA_b)`, os fatores descendo para a árvore da esquerda e preenchendo a cauda reservada de `eqA_a` — `nA` na ordem `p, y, z, q`, espelhando `nB` |
+| C10N15 | Existe uma boa chance de eles se separarem, um em cada lado, e é disso que dependem os fatores úteis de n. | 7,3 | **Dois `play` num bloco só:** `Indicate(nA[0])` + `Indicate(nB[0])` no par rosa, depois `Indicate(nA[3])` + `Indicate(nB[1])` no par verde-claro |
+| C10N16 | Então podemos perceber que os dois números que acabamos de calcular compartilham fator com o número que queremos fatorar. | 8,4 | `ReplacementTransform(comut, expl)` |
+| C10N17 | E achar fator comum é fácil, utilizando o algoritmo de Euclides, o mesmo que apareceu de passagem no capítulo cinco. | 9,6 | **Dois `play` num bloco só:** `Write(m1)` com os `Indicate` no par verde-claro, depois `Write(m2)` com os `Indicate` no par rosa |
+| C10N18 | Finalmente conseguimos descobrir os fatores p e q, o que parecia uma tarefa impossível. | 7,3 | `ReplacementTransform(VGroup(m1, m2), fim)` + `Create(cxa)` |
+| C10N19 | O número que abriu o capítulo está fatorado. | 3,8 | `ReplacementTransform(obj, obj2)` — o `p × q ?` do topo vira os dois primos com ✓ |
+| C10N20 | Como nem tudo são flores, existe a chance de coisas darem errado — por exemplo, a base pode resultar em uma ordem ímpar. | 9,6 | O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda |
+| C10N21 | Ou a ordem pode não dar informações úteis. | 3,3 | `so_fala` — o quadro parado. `Indicate(cap5)`, que é exatamente a frase que a fala diz |
+| C10N22 | Vamos ver outro exemplo, também com a ordem par. | 3,7 | `Write(u0)` |
+| C10N23 | O caminho roda inteiro, sem nenhum erro. | 3,3 | `Write(u1a)` e `ReplacementTransform(u1a, u1)` — dois `play` sob esta linha. `u1a` já nasce como `24⁶ − 1 = (24³ − 1)(24³ + 1)` em tokens coloridos (`pot` para as duas potências de base 24), a mesma manobra do `C10N10`–`C10N11` com o `x` já substituído — sem texto corrido nem cor fora da paleta |
+| C10N24 | Só que desta vez os dois primos não se separam: caem juntos, do mesmo lado. | 5,5 | Os três `play` da árvore do azar num bloco só: tronco `ru`, `Create(linU)` com `fu1`/`fu2`, e `Create(linU2)` + `FadeIn(nU)` |
+| C10N25 | E esse lado é múltiplo do número inteiro. | 3,8 | `FadeIn(multi)` + `GrowArrow(setam)` + os `Indicate` em `nU[0]`/`nU[1]` |
+| C10N26 | Então um mdc devolve o próprio número... | 3,3 | `Write(m3)` |
+| C10N27 | ...e o outro não tem nada em comum com ele. | 4,2 | `Write(m4)` |
+| C10N28 | São os dois fatores que a gente já tinha. Quando dá nisso, troca-se a base e roda de novo — e cada tentativa nova tem pelo menos cinquenta por cento de chance de acertar. | 14,4 | `Write(triv)` + `FadeIn(sol)`. Animação curta sob fala longa: o quadro fica parado no ✗ vermelho durante a segunda metade da linha, e é essa parada que faz a falha pesar |
+| C10N29 | Com os dois primos na mão, encontramos a contagem de Euler. | 4,3 | O `FadeOut` do caso inútil emendado com `ReplacementTransform(fim.copy(), r1)` — a contagem **nasce de dentro** dos dois primos que ficaram na moldura verde, num `play` só |
+| C10N30 | E com ela, a chave privada é só o inverso da chave pública, fácil de encontrar. | 6,7 | `Write(r2)`. Em "o inverso da chave pública", `Indicate` no `(mod φ(n))` — é a tabela de inversos do `C8N17` sendo cobrada |
+| C10N31 | Fatorar o módulo e descobrir a chave privada são a mesma coisa. | 5,4 | `Write(r3)` + `Create(cxa2)` |
+| C10N32 | Falta uma peça só: acelerar a busca da ordem modular. É o que o computador quântico faz. | 7,5 | `so_fala` — a moldura parada em cena. Em "a ordem modular", `Indicate` no `r` amarelo que sobreviveu do `C9N15`, se ele ainda estiver na tela; senão, no `n` laranja do `r3` |
 
-**Subtotal: 202,0 s** (cartão + 36 locuções)
+**Subtotal: 199,9 s** (cartão + 32 locuções)
 
 ---
 
@@ -171,7 +182,7 @@ passagem é o trecho em que a animação é longa e a fala é curta, propositalm
 | C11N39 | Um método antigo, de frações contínuas, devolve a fração pequena que se esconde ali. | 6,3 | `Write(linhas[1])` |
 | C11N40 | E o denominador é a ordem. | 2,9 | `Write(linhas[2])` |
 | C11N41 | Vale conferir: a potência devolve um, como tinha que devolver. | 4,6 | `Write(linhas[3])` — a congruência com o ✓ verde |
-| C11N42 | Daqui em diante é o capítulo anterior inteiro, sem nada de quântico. | 5,4 | `Write(linhas[4])` — a diferença de quadrados, a mesma manobra do `C10N12` |
+| C11N42 | Daqui em diante é o capítulo anterior inteiro, sem nada de quântico. | 5,4 | `Write(linhas[4])` — a diferença de quadrados, a mesma manobra do `C10N10`–`C10N11` |
 | C11N43 | Diferença de quadrados, dois máximos divisores comuns... | 3,3 | `Write(linhas[5])` |
 | C11N44 | ...e o número está fatorado. | 2,5 | `Write(linhas[6])` + `Create(caixa)` emendados, num `play` só — os três números grandes e coloridos que a série inteira estava devendo |
 
@@ -202,20 +213,20 @@ de verdade.
 |---|---|---|
 | Abertura | 1 | 13,1 s |
 | Capítulo 9 | 15 | 89,9 s |
-| Capítulo 10 | 37 | 202,0 s |
+| Capítulo 10 | 33 | 199,9 s |
 | Capítulo 11 | 45 | 249,4 s |
 | Encerramento | 4 | 40,9 s |
-| **Total** | **102** | **595,3 s** |
+| **Total** | **98** | **593,2 s** |
 
-Somando o `PAD` de 0,35 s por locução (35,7 s), os dois cartões silenciosos (~7 s) e os
-`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 10 min 48 s** — abaixo da
+Somando o `PAD` de 0,35 s por locução (34,3 s), os dois cartões silenciosos (~7 s) e os
+`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 10 min 45 s** — abaixo da
 faixa de 13–14 min que a estimativa por `cena.play` previa. A diferença vem de onde era
 esperado: os 118 `play` do bloco não pedem 118 falas, porque as duas árvores do capítulo 10
 e as varreduras do capítulo 11 são animações que se explicam sozinhas.
 
 Uma única linha tem animação mais longa que a fala: `C11N35`, a curva de interferência
 nascendo em dez segundos sob sete e meio de locução. Some uns 3 s ao render real. Os
-demais trechos longos (`C11N30`, `C11N32`, `C10N32`) cabem dentro da fala com folga, e a
+demais trechos longos (`C11N30`, `C11N32`, `C10N10`, `C10N28`) cabem dentro da fala com folga, e a
 folga é silêncio com imagem correndo — o padrão da série.
 
 Com o vídeo em 11 minutos, a costura para abrir o capítulo 11 num quinto vídeo **não
@@ -229,7 +240,7 @@ decidido no plano.
 - [ ] Abertura — V4N00
 - [ ] Cartões — CAP09 a CAP11
 - [ ] Capítulo 9 — C9N01 a C9N15
-- [ ] Capítulo 10 — C10N01 a C10N36
+- [ ] Capítulo 10 — C10N01 a C10N32
 - [ ] Capítulo 11 — C11N01 a C11N44
 - [ ] Encerramento — V4N01 a V4N04
 - [ ] `python medir.py`
@@ -282,7 +293,7 @@ capítulo 10 fora de ordem.
      geometria daqui, e mora no capítulo porque só ele usa;
    - `bloco = VGroup(borda, caixa_d)`, que é quem viaja para a direita no `C9N13` e volta ao
      centro no fim do `C9N14`. A definição precisa **sobreviver** a essa ida e volta: o
-     `d3[0][1]` é o `r` que o `C9N15` pisca e o `C10N36` ainda cobra;
+     `d3[0][1]` é o `r` que o `C9N15` pisca e o `C10N32` ainda cobra;
    - o zigue-zague da base 5 **não reusa o `_passo`**, que tem as colunas do 4 escritas
      dentro. Ele é um laço próprio sobre `ciclo5 = [1, 5, 7, 8, 4, 2, 1]`, e o `Indicate`
      no `ini5` no lugar do `Create` fecha o ciclo no 1 que já estava em cena.
@@ -317,20 +328,51 @@ capítulo 10 fora de ordem.
 
 ## Pendências de código do capítulo 10 (`parte9b`)
 
-1. `with narra` envolvendo `Write(rotulo)`, `FadeIn(caixas[0])`, o `for i in range(3)`
-   inteiro, `Create(volta)` e o `Flash` — sete `play` sob `C10N03`.
-2. Os onze `cena.wait()` do arquivo saem, todos.
-3. Blocos que precisam de um `with narra` cobrindo mais de um `play`, sem emendar os
-   `play` entre si: `C10N06` (saída da cadeia + `e1 → e2`), `C10N09` (tronco + ramos da
-   primeira árvore), `C10N10` (`ex` + `e3 → e4`), `C10N14` (tronco + ramos da segunda),
-   `C10N17` (`comut` + reagrupamento), `C10N27` (`u1a` + `u1a → u1`) e `C10N28` (os três
-   `play` da árvore do azar).
-4. Blocos que precisam ser **emendados num `play` só**: `C10N25` (o `FadeOut` das árvores
-   com o `FadeIn(cap5)`) e `C10N33` (o `FadeOut` do caso inútil com o
-   `ReplacementTransform(fim.copy(), r1)`). Nos dois, a limpeza pertence à fala seguinte —
-   separada, ela lê como fim de capítulo.
-5. `C10N36` é `so_fala` com o `r3`/`cxa2` parados em cena; o `cena.wait(1.8)` final sai.
-6. A saída para o cartão `CAP11` em um movimento só, com o `limpar()` emendado.
+O `capitulo9b.py` já tem `narra()`/`so_fala()` em todas as linhas, um por tag, sem nenhum
+`cena.wait()` sobrando, com o passeio inteiro do `C10N03` num único `with narra` de sete
+`play`, e com os blocos multi-`play` e os blocos emendados num `play` só já implementados
+na maioria das linhas. O que falta é só o delta contra a tabela acima:
+
+1. **Renumeração `C10N01`–`C10N35` → `C10N01`–`C10N32`.** O código hoje usa 35 tags; a
+   tabela usa 32. A diferença fecha com os itens 3–5 abaixo: três fusões de bloco e a
+   realocação do item 4 removem quatro tags, a locução nova do item 5 devolve uma — líquido
+   de três tags a menos. Da metade do capítulo em diante (a partir de onde a primeira fusão
+   acontece) cada tag existente desloca de posição; conferir a numeração inteira contra a
+   tabela, não só os pontos citados aqui.
+2. **`est=` de toda tag revisada** para o valor em segundos da coluna da tabela — vários já
+   mudaram bastante do que está no código hoje (ex.: `C10N03` 7,9 → 8,3, `C10N05` 1,9 → 3,0,
+   `C10N06` 3,8 → 8,4).
+3. **As três fusões de bloco:**
+   - o `FadeIn(nota)`, que hoje é a fala própria `C10N07`, entra como terceiro `play` do
+     bloco que hoje é `C10N06` (a saída da cadeia + `e1 → e2`) — a tag `C10N07` isolada some;
+   - os dois `with narra` de `Indicate` que hoje são `C10N17` e `C10N18` (o par rosa e o par
+     verde-claro em `nA`/`nB`) viram um `with narra` só, com os dois `play` dentro — a tag
+     que sobe some;
+   - os dois `with narra` que hoje são `C10N20` e `C10N21` (`Write(m1)` + `Indicate` verde,
+     depois `Write(m2)` + `Indicate` rosa) viram um `with narra` só, mesma lógica — a tag
+     que sobe some, e o nome `C10N21` fica livre para o item 5.
+4. **Realocação do `ReplacementTransform(d1, d2)`.** Hoje ele é sua própria fala (tag que
+   vem logo depois do `d0 → d1`). Na tabela nova ele é o terceiro `play` do bloco que hoje
+   é `C10N11` (`Write(d0[0:3])` + `d0 → d1` + `d1 → d2`, os três num `with narra` só) — a
+   tag isolada do `d1 → d2` some.
+5. **Locução nova `C10N21`.** Não existe hoje nada entre o `FadeOut` das árvores/`FadeIn(cap5)`
+   (que vira `C10N20`) e o `Write(u0)` (que vira `C10N22`). É `so_fala` — o quadro parado —
+   com um `Indicate(cap5)`: a fala diz exatamente a frase que o `cap5` já tem escrita.
+6. **O `so_fala` final vira `narra` com destaque.** Hoje a última linha do capítulo
+   (`C10N35` no código, `C10N32` na tabela) é um `so_fala` puro. A tabela pede um `Indicate`
+   em "a ordem modular": no `r` amarelo do `C9N15`, se ele ainda estiver em cena, senão no
+   `n` laranja do `r3`.
+7. **Passada de destaques (`Indicate`/`Flash`) nos objetos que a tabela cita e o código
+   ainda não anima** — por exemplo o `Indicate` no `(mod φ(n))` do bloco que vira `C10N30`.
+   O `Indicate(e4, color=CINZA)` que uma versão antiga desta lista pedia no bloco da
+   `junta` **não cabe mais**: o `e4` não sobrevive até lá — a conta desce direto para
+   `eqA_a`/`eqB_a`, e a `junta` nasce por `TransformFromCopy` dos dois lados direitos, não
+   de um `ReplacementTransform` do `e4`/`d2`.
+8. **A segunda árvore já roda fora de qualquer `with narra`** (o tronco `ra` e as ligações
+   `linA`/`fA65`/`fA63`, logo antes do bloco que vira `C10N12`) — isso é o comportamento
+   correto, não uma pendência: quem dá o respiro para esses dois `play` mudos é o `PAD` do
+   `with narra` anterior (`C10N11`, o `d1 → d2`). Não existe nenhum `cena.wait()` ali nem em
+   nenhum outro lugar do arquivo — não adicionar um "para dar tempo".
 
 ## Pendências de código do capítulo 11 (`parte10`)
 
