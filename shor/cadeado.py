@@ -130,6 +130,84 @@ def _fissura(arco, centro, amp, perfil):
     return pontos
 
 
+# a fatia do perfil cheio que o rachar() desenha no V3N02 — são os MESMOS
+# pontos do perfil escrito lá dentro, escritos aqui uma vez só para que o
+# estado_v3() e o avancar() saibam onde a fissura parou
+_PARCIAL = tuple(p for p in _PERFIL_CHEIO if 0.30 <= p[0] <= 0.62)
+_JANELA_V3 = (_PERFIL_CHEIO.index(_PARCIAL[0]), _PERFIL_CHEIO.index(_PARCIAL[-1]))
+
+
+def _traco_fissura(arco, centro, amp, perfil):
+    """O risco cinza da fissura — mesmo traço do rachar() e do quebrar()."""
+    t = VMobject(stroke_color=CINZA, stroke_width=3)
+    t.set_points_as_corners(_fissura(arco, centro, amp, perfil))
+    return t
+
+
+def estado_v3(escala=1.25):
+    """O cadeado exatamente como o vídeo 3 o deixou no fim do V3N02, montado
+    de uma vez e SEM animação: `cadeado("fechado")` na escala do V3N01, com
+    "fatorar n" gravado no corpo e a rachadura parada no meio do arco.
+
+    É o primeiro quadro do vídeo 4 (V4N00): como cada vídeo é renderizado
+    separado, o estado final de lá é reconstruído aqui em vez de animado, e
+    o primeiro quadro daqui casa com o último quadro de lá — o perfil da
+    fissura é fixo, então os dois renders batem exatamente.
+
+    Devolve o mesmo VGroup de sempre — [arco, corpo, rótulo, fissura] —,
+    então `avancar()` e `quebrar()` valem para ele."""
+    cad = cadeado("fechado").scale(escala)
+    # o buraco de fechadura dá lugar ao rótulo, como o gravar() do V3N01 fez
+    # (o rótulo nasce DEPOIS da escala, senão não seria o mesmo tamanho)
+    cad.remove(cad[2])
+    cad.add(_rotulo(cad[1], "fatorar n", 24))
+
+    arco = cad[0][0]
+    centro = arco.get_arc_center()
+    raio = float(np.linalg.norm(arco.point_from_proportion(0.5) - centro))
+    fissura = _traco_fissura(arco, centro, 0.07 * raio, _PARCIAL)
+    fissura.janela = _JANELA_V3
+    cad.add(fissura)
+    return cad
+
+
+def avancar(cena, cad, segmentos=2, run_time=1.6):
+    """A fissura corre mais `segmentos` pontos do perfil para cada lado e
+    PARA de novo (V4N00) — ela só chega às pontas no `quebrar()`.
+
+    O `rate_func` desacelerando até zero é o "para de novo": a rachadura
+    arranca, avança e estanca, sem nada quebrar.
+
+    A fissura continua sendo `cad[3]`, agora mais comprida: as duas corridas
+    novas saem da cena e entram no VGroup junto com o pedaço velho, que não
+    é redesenhado — ela só ganha continuação, no mesmo passo irregular."""
+    arco = cad[0][0]
+    centro = arco.get_arc_center()
+    raio = float(np.linalg.norm(arco.point_from_proportion(0.5) - centro))
+    amp = 0.07 * raio
+    fissura = cad[3]
+    i, j = getattr(fissura, "janela", _JANELA_V3)
+    ni = max(0, i - segmentos)
+    nj = min(len(_PERFIL_CHEIO) - 1, j + segmentos)
+
+    # cada corrida nasce na ponta onde a fissura parou (por isso a esquerda
+    # vai invertida — o Create tem de partir de dentro, nunca de fora)
+    esq = _traco_fissura(arco, centro, amp,
+                         tuple(reversed(_PERFIL_CHEIO[ni:i + 1])))
+    dta = _traco_fissura(arco, centro, amp, _PERFIL_CHEIO[j:nj + 1])
+    cena.play(Create(esq), Create(dta), run_time=run_time * VEL,
+              rate_func=rush_from)
+
+    # as corridas trocam a cena pelo VGroup: solta na cena, cada uma andaria
+    # sozinha quando o cadeado se mexesse
+    cena.remove(esq, dta)
+    cad.remove(fissura)
+    nova = VGroup(esq, fissura, dta)
+    nova.janela = (ni, nj)
+    cad.add(nova)
+    return nova
+
+
 def quebrar(cena, cad, run_time=1.4):
     """A quebra que o `rachar()` promete (V4N01). Recebe um `cad` que JÁ
     passou pelo `rachar()` e carrega a rachadura parcial: a fissura termina

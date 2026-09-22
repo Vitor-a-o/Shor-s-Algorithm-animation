@@ -22,6 +22,8 @@ shor/
   cadeado.py               o cadeado da série
   capitulos/capituloN.py   um capítulo por arquivo (1–8, 9, 9b, 10)
   videos/videoN.py         abertura e encerramento próprios de cada vídeo da série
+                           (video2.py, video3.py, video4.py)
+  videos/comum.py          peças que servem a mais de um vídeo (ex.: trilha_videos)
 ```
 
 Imports dentro de `shor/capitulos/` e `shor/videos/`: `from ..paleta import *`
@@ -109,10 +111,11 @@ imagem. Ler antes de mexer em qualquer capítulo.
 |---|---|
 | 1–5 | **Prontos e gravados. Não tocar.** |
 | 6, 7, 8 | Código existe, ainda sem `narra()`. É o trabalho do vídeo 3. |
-| 9, 9b, 10 | Código existe, ainda sem `narra()`. É o trabalho do vídeo 4. |
+| 9, 9b, 10 | Código com `narra()` em toda linha, costura do vídeo 4 (`video4.py`) pronta. Prontos em código, aguardando gravação. `capitulo10.py` é o capítulo 11 em tela. |
 
-As pendências por capítulo estão listadas no fim do
-`roteiro_video3_do_teorema_ao_rsa.md` e do `roteiro_video4_algoritmo_de_shor.md`.
+As pendências dos capítulos 6, 7 e 8 estão listadas no fim do
+`roteiro_video3_do_teorema_ao_rsa.md`. As do trabalho corrente (capítulos 9, 9b e 10,
+vídeo 4) estão no fim de `roteiros/roteiro_video4_algoritmo_de_shor.md`.
 Elas são a lista de tarefas.
 
 ---
@@ -127,6 +130,7 @@ python conferir.py 8          # confere o capítulo 8 contra o roteiro
 python conferir.py            # confere tudo
 
 manim -pql filme_shor.py Parte8       # preview de um capítulo
+manim -pql filme_shor.py VideoShor    # preview do vídeo 4 inteiro
 manim -pqh filme_shor.py FilmeCompleto  # final 1080p60
 ```
 

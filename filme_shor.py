@@ -35,6 +35,8 @@
    manim -pqh filme_shor.py VideoOperacoes     # vídeo 2 (final 1080p60)
    manim -pql filme_shor.py VideoTeoremaRSA    # vídeo 3 (preview)
    manim -pqh filme_shor.py VideoTeoremaRSA    # vídeo 3 (final 1080p60)
+   manim -pql filme_shor.py VideoShor          # vídeo 4 (preview)
+   manim -pqh filme_shor.py VideoShor          # vídeo 4 (final 1080p60)
 ============================================================================
 """
 
@@ -43,7 +45,7 @@ from manim import *
 from shor.paleta import COR_FUNDO
 from shor.ferramentas import limpar
 from shor.montagem import TITULOS, PARTES, abertura, encerramento, abre_capitulo
-from shor.videos import video2, video3
+from shor.videos import video2, video3, video4
 
 
 class FilmeCompleto(Scene):
@@ -90,6 +92,25 @@ class VideoTeoremaRSA(Scene):
         # entre os dois (o cadeado do V3N01 pousa em cima dela)
         tese = PARTES[7](self)
         video3.encerramento(self, tese)
+
+
+class VideoShor(Scene):
+    """Vídeo 4 — O algoritmo de Shor (capítulos 9 a 11)."""
+    def construct(self):
+        self.camera.background_color = COR_FUNDO
+        # a abertura já se emenda ao cartão do capítulo 9 (toca o CAP09),
+        # então o capítulo 9 entra sem abre_capitulo
+        video4.abertura(self)
+        PARTES[8](self)
+        limpar(self)
+        abre_capitulo(self, 10)
+        PARTES[9](self)
+        limpar(self)
+        abre_capitulo(self, 11)
+        # parte10 devolve a moldura verde: o encerramento a reaproveita sem
+        # limpar() entre os dois (o cadeado do V4N01 pousa em cima dela)
+        caixa = PARTES[10](self)
+        video4.encerramento(self, caixa)
 
 
 def _construct_parte(cena, i):

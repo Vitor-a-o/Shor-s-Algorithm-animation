@@ -25,8 +25,9 @@ CARTAO_ESCURO = "#123a46"   # caixa da mensagem no RSA (azul-petróleo)
 CAIXA2   = "#c9c9c9"   # caixa do bit 0 (cinza mais escuro dos slides)
 
 COR_FUNDO, COR_TEXTO, COR_APAGADO = BRANCO, PRETO, CINZA
-# aliases do capítulo 10
-COR_PENTE, COR_FASOR, COR_SOMA, COR_RUIM, COR_PICO = VERDE, AZUL, LARANJA, VERMELHO, CIANO
+# aliases do capítulo 10 — o pente é AZUL porque cada dente é um b;
+# verde é o resto, e um pente verde leria como uma fila de c
+COR_PENTE, COR_FASOR, COR_SOMA, COR_RUIM, COR_PICO = AZUL, AZUL, LARANJA, VERMELHO, CIANO
 
 # --- parâmetros do Shor quântico (n = 21, a = 2, medimos c = 4) ---
 N, R, B0 = 512, 6, 2

@@ -15,8 +15,8 @@ Transformar o filme único "Do Zero ao Algoritmo de Shor Quântico" (11 capítul
 |---|---|---|---|---|---|
 | 1 | Introdução | — (100% novo) | — | não se aplica | ✅ `roteiro_video1_introducao.md` |
 | 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas (`C1N11` mudou de texto e precisa ser regravada) | ✅ `roteiro_video2_aritmetica_modular.md` |
-| 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | não escrita | pendente |
-| 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | não escrita | pendente — é o final da série |
+| 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | ✅ em código (`narra()` em toda linha) — pendências pontuais seguem no roteiro | ✅ `roteiro_video3_do_teorema_ao_rsa.md` |
+| 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | ✅ em código (`narra()` em toda linha) — pendências pontuais seguem no roteiro | ✅ `roteiro_video4_algoritmo_de_shor.md` — vídeo 4 inteiro em código (capítulos + `video4.py`), aguardando gravação |
 
 Atenção à numeração dos arquivos: o **capítulo 10** em tela é o `capitulo9b.py` (Da Ordem
 Modular à fatoração) e o **capítulo 11** é o `capitulo10.py` (Shor Quântico: a QFT
@@ -99,10 +99,16 @@ crescer muito na escrita da narração, a costura para abrir ali já está ident
 
 ## Próximo passo em aberto
 
-Vídeos 1 e 2 estão com roteiro fechado. Falta escolher entre escrever a narração dos
-capítulos 6–8 (vídeo 3, teorema ao RSA) ou a dos capítulos 9–11 (vídeo 4, algoritmo de
-Shor — o final da série). O que travar primeiro depende de qual vídeo vocês querem
-produzir a seguir; nenhum dos dois tem narração escrita ainda.
+O vídeo 4 (algoritmo de Shor — o final da série) está inteiro em código: capítulos 9, 9b
+e 10 com `narra()` em toda linha, mais a costura própria (`video4.py`, abertura e
+encerramento). O próximo passo é a gravação dele.
+
+Em paralelo seguem abertas as duas frentes que já estavam listadas aqui:
+
+- o código do vídeo 1 (100% novo — ver "Pendências de código herdadas do roteiro do
+  vídeo 1", abaixo);
+- as pendências pontuais do vídeo 3, listadas no fim do
+  `roteiro_video3_do_teorema_ao_rsa.md`.
 
 ## Pendências de código herdadas do roteiro do vídeo 1
 
