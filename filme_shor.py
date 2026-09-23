@@ -31,6 +31,8 @@
    manim -pql filme_shor.py FilmeCompleto      # preview
    manim -pqh filme_shor.py FilmeCompleto      # final 1080p60
    manim -pql filme_shor.py Parte3             # um capítulo isolado
+   manim -pql filme_shor.py VideoIntro         # vídeo 1 (preview)
+   manim -pqh filme_shor.py VideoIntro         # vídeo 1 (final 1080p60)
    manim -pql filme_shor.py VideoOperacoes     # vídeo 2 (preview)
    manim -pqh filme_shor.py VideoOperacoes     # vídeo 2 (final 1080p60)
    manim -pql filme_shor.py VideoTeoremaRSA    # vídeo 3 (preview)
@@ -160,12 +162,9 @@ class Parte11(Scene):
     def construct(self): _construct_parte(self, 11)
 
 
-class Parte_V1Abertura(Scene):
-    """Vídeo 1 em construção — por ora a abertura (V1N00, cartão, V1N01),
-    a fatoração (V1N02), o RSA na rede (V1N03), a quebra (V1N04), a série
-    na trilha (V1N05–V1N06), as prévias dos vídeos 2, 3 e 4 (V1N07–V1N10)
-    e o encerramento (V1N11). Quando o vídeo 1 estiver completo, vira a
-    Scene VideoIntro."""
+class VideoIntro(Scene):
+    """Vídeo 1 — Introdução (não há capítulos por trás: o vídeo inteiro
+    mora em shor/videos/video1.py)."""
     def construct(self):
         self.camera.background_color = COR_FUNDO
         cad, bloco, interrogacoes = video1.abertura(self)
