@@ -187,7 +187,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N07 | E dois qubits podem ainda ficar emaranhados. | 3,8 | `FadeIn(qa)` e, emendado, `Create(fio)` + `FadeIn(no)` + `FadeIn(qb)` — os dois `play` num bloco só. **O `t2` não entra aqui**: a palavra emaranhamento passou para a fala, e escrevê-la no mesmo `play` em que ela é dita seria legenda. O par sobe sem título por estes quatro segundos, e é a fala que o nomeia |
 | C11N08 | Desse jeito, nenhum dos dois tem mais uma resposta própria. | 5,5 | `FadeIn(t2)` + `FadeIn(nota)`, num `play` só — **o rótulo `emaranhamento` entra aqui**, uma fala depois de a palavra ter sido dita. Escrito assim ele não legenda, ele confirma, e a metade direita do quadro recupera o título que faz par com a `superposição` da esquerda. A `nota` cinza, essa sim, diz na tela a frase que a locução seguinte fala — o mesmo par deliberado do `C10N21` com o `cap5` |
 | C11N09 | Então medir um deles já decide o valor do outro na mesma hora. | 5,4 | `Flash(qa)` + `ReplacementTransform(VGroup(qa, qb), par_1)` e, emendado, `ReplacementTransform(par_1, par_0)` — os dois colapsam juntos, primeiro em `1` e `1` e depois em `0` e `0`. **O segundo colapso não tem locução própria, e isso é decisão de roteiro, não descuido**: ele corre no fim da fala, dizendo sem palavra nenhuma que o par podia ter caído do outro lado. O que fica em cena espera em `cena.grupo_fundamentos`; a limpeza é do `C11N10` |
-| C11N10 | Vamos a outro exemplo, com um n que caiba no registrador: n = 21. De física é só isso, e mais nada: a conta que o circuito faz é a exponenciação modular do capítulo quatro. | 12,5 | `FadeOut(cena.grupo_fundamentos)` emendado com o `Write(eqc)` da congruência `c ≡ 2ᵇ (mod 21)`, num `play` só — a limpeza pertence a esta fala, não ao silêncio entre blocos. A primeira frase é o mesmo gesto do `C10N22` ("vamos a outro exemplo"): marca em voz alta a troca do n do capítulo 10 (35) para o n deste capítulo (21) |
+| C11N10 | De física é só isso, e mais nada. Agora vamos a outro exemplo, com um n que caiba no registrador, e a conta que o circuito faz é a exponenciação modular do capítulo quatro. | 15,0 | Um `play` só. `FadeOut(cena.grupo_fundamentos)` logo no começo, em "De física é só isso" — a limpeza pertence a esta fala, não ao silêncio entre blocos. Em "outro exemplo", atrasado por `Succession` no mesmo padrão do `C11N35`, o `Write(eqc)` da congruência `c ≡ 2ᵇ (mod 21)`: o `21` entra quando o exemplo novo é anunciado, e a fala não o lê. "Vamos a outro exemplo" é o mesmo gesto do `C10N22`: marca em voz alta a troca do n do capítulo 10 (35) para o n deste capítulo (21) |
 | C11N11 | E ela já tinha um desenho no final daquele capítulo: cada bit do expoente liga ou desliga uma potência. | 9,0 | Dois `play` emendados: `LaggedStart` das quatro caixas de bit `bᵢ` com o `…`, e depois `LaggedStart` de `GrowArrow` + `FadeIn` das quatro caixas cinzas `2^(2ⁱ) (mod 21)`. Tudo genérico, sem exemplo numérico — o circuito não vai rodar um expoente, vai rodar todos, e um número aqui diria o contrário |
 | C11N12 | O produto de tudo que sai das caixas é a potência inteira, e ela devolve o resto. | 7,0 | Três `play` emendados: as quatro `setas2` convergindo, o `FadeIn(prod)` da caixa do produto — que é a própria fórmula do alto do quadro — e o `GrowArrow(seta3)` + `TransformFromCopy(eqc[0], saida)`, com o `c` da saída nascendo do `c` da congruência |
 | C11N13 | O circuito quântico é esse mesmo desenho, com cada peça trocada pela equivalente quântica. | 7,8 | Quatro `play` emendados, na ordem em que a tradução precisa acontecer: a metade de baixo do esquema se recolhe e o `c` atravessa para a ponta do fio alvo; as caixas cinzas descem já virando `_caixa_porta`; as caixas de bit atravessam para a esquerda e as setas esticam virando as ligações de controle; e só então os fios ligam tudo. Nada sai por `FadeOut` — o esquema **vira** o circuito |
@@ -225,7 +225,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N45 | Dois máximos divisores comuns depois... | 3,4 | `Write(linhas[5])` |
 | C11N46 | ...e finalmente o número está fatorado. | 3,5 | `Write(linhas[6])` + `Create(caixa)`. A moldura verde sobrevive ao capítulo: o `V4N01` pousa o cadeado em cima dela, sem `limpar()` no meio |
 
-**Subtotal: 337,8 s** (cartão + 46 locuções)
+**Subtotal: 340,3 s** (cartão + 46 locuções)
 
 ---
 
@@ -431,7 +431,7 @@ As sessões estruturais rodaram e o `capitulo10.py` está com as 54 locuções, 
 a divisão do `C11N15`/`C11N16`, as duas locuções novas antes da TQF, a medida hipotética do
 `C11N22`, a entrada na transformada, o r escondido até a cascata, a passada de destaques e
 os `est=` até a pendência 5, o instrumento das ondas, a saída da transformada e o parêntese
-da medida que não serve. Sobra a pendência 2.
+da medida que não serve. Não sobra nenhuma.
 
 1. ~~`est=` a aplicar.~~ **Resolvida.** Conferido bloco a bloco: os 54 `est=` do
    `capitulo10.py` batiam com a coluna "Est." da tabela antes da pendência 5, que corta uma
@@ -443,13 +443,18 @@ da medida que não serve. Sobra a pendência 2.
    o gesto pronto no `C10N22` ("vamos a outro exemplo"). Ou o `C11N10` ganha uma frase e o
    `est=` sobe, ou o capítulo 10 passa a fatorar 21. As duas saídas mexem em roteiro.
 
-   **Decisão (2026-09-21): a primeira saída.** O `C11N10` ganha a frase "Vamos a outro
+   ~~**Decisão (2026-09-21): a primeira saída.** O `C11N10` ganha a frase "Vamos a outro
    exemplo, com um n que caiba no registrador: n = 21." antes da fala que já existia, e o
    `est=` sobe de 9,0 para 12,5 — já ajustado na linha da tabela acima. **Falta só o
    código**: o `run_time` do `play` de `C11N10` em `capitulo10.py` (hoje `FadeOut(...)` +
    `Write(eqc)` num `play` só, `run_time=1.0 * VEL`) precisa de folga para a locução mais
    longa, ou de um segundo `play`/gesto próprio para a frase nova — decisão de código, para
-   a próxima sessão. Não mexi em `capitulo10.py` nesta auditoria.
+   a próxima sessão. Não mexi em `capitulo10.py` nesta auditoria.~~
+
+   **Resolvida.** A fala foi reescrita com a física fechando antes de o exemplo novo abrir
+   e sem o número dito ("um n que caiba no registrador", e o `21` só na congruência), o
+   `est=` passou a 15,0 e o `Write(eqc)` cai em "outro exemplo" (~4,2 s), atrasado por
+   `Succession` dentro do mesmo `play` do `FadeOut`.
 3. ~~O `C11N22` deixa de ser `so_fala`.~~ **Resolvida.** As cinco batidas estão no código,
    com o `M` fantasma como peça nova e o bloco devolvendo a cena ao quadro do `C11N21`. Uma
    consequência que a pendência 4 precisa saber: depois do bloco, `lista_b` e `pergunta_r`

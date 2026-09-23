@@ -194,8 +194,9 @@ def p10_fundamentos(cena):
     os fenômenos que dão o paralelismo do computador quântico.
 
     A limpeza do bloco NÃO mora aqui: o `FadeOut` de fim pertence ao
-    `C11N10` e roda no topo do `p10_circuito`, emendado com o `Write(eqc)`
-    num `play` só. O que fica em cena espera em `cena.grupo_fundamentos`."""
+    `C11N10` e roda no topo do `p10_esquema`, logo no começo da fala, em
+    "De física é só isso" — o `Write(eqc)` só entra depois, atrasado. O que
+    fica em cena espera em `cena.grupo_fundamentos`."""
     fila = _fila_classica()
     rot_cl = T("computação clássica", 26, CINZA).next_to(fila, UP, buff=0.55)
     with narra(cena, "C11N01", 7.9):
@@ -301,15 +302,23 @@ def p10_esquema(cena):
     `b`, ele roda todos, e um número na tela aqui diria o contrário.
 
     Abre limpando o bloco anterior: o `FadeOut` do `p10_fundamentos` é do
-    `C11N10` e entra emendado com o `Write(eqc)`, num `play` só. O que fica
-    em cena espera em `cena.esquema` — o `p10_circuito` transforma peça por
-    peça no equivalente do circuito."""
+    `C11N10` e entra logo no começo da fala, em "De física é só isso". O
+    `Write(eqc)` vem no mesmo `play`, mas atrasado por `Succession` até
+    "outro exemplo" (~4,2 s) — entre uma batida e outra o quadro fica
+    limpo, que é o que a fala pede: a física fecha antes de o exemplo novo
+    abrir. O que fica em cena espera em `cena.esquema` — o `p10_circuito`
+    transforma peça por peça no equivalente do circuito."""
     eqc = VGroup(T("c", 30, VERDE), T("≡", 30, PRETO),
                  pot("2", "b", VERMELHO, AZUL, 30), fmod("21", 28))
     eqc.arrange(RIGHT, buff=0.14).to_edge(UP, buff=0.4)
-    with narra(cena, "C11N10", 9.0):
-        cena.play(FadeOut(cena.grupo_fundamentos), Write(eqc),
-                  run_time=1.0 * VEL)
+    with narra(cena, "C11N10", 15.0):
+        cena.play(
+            # "De física é só isso": a limpeza abre a fala
+            FadeOut(cena.grupo_fundamentos, run_time=1.0 * VEL),
+            # "outro exemplo" (~4,2 s): a congruência com o 21 entra quando
+            # a fala anuncia o exemplo novo, e a fala não lê o número. O
+            # atraso é o mesmo `Succession` do `C11N35`
+            Succession(Wait(4.2 * VEL), Write(eqc, run_time=1.2 * VEL)))
 
     # linha de cima: os bits do expoente, um por coluna; embaixo, a caixa
     # que cada um liga ou desliga
