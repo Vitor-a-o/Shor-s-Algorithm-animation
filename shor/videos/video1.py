@@ -5,8 +5,8 @@
 from manim import *
 import numpy as np
 
-from ..paleta import (AMARELO, AZUL, CIANO, CINZA, LARANJA, PRETO, ROSA,
-                      VERDE, VERDE2, VERMELHO, VEL)
+from ..paleta import (AMARELO, AZUL, BRANCO, CARTAO_ESCURO, CIANO, CINZA,
+                      LARANJA, PRETO, ROSA, VERDE, VERDE2, VERMELHO, VEL)
 from ..ferramentas import T, formula, narra, pot, traco
 from ..cadeado import cadeado, fechar, gravar, quebrar, rachar, rede
 from .comum import VIDEOS, trilha_videos
@@ -588,8 +588,11 @@ def _previa_v2(cena, regiao):
     para uma trilha futura poder ajustar o timing de um trecho sem mexer
     nos outros.
 
-    Devolve `ainv`, o `a⁻¹` que fecha o último trecho: ele fica em cena e
-    o V1N08 (sessão futura) o herda, por cima da primeira miniatura dele."""
+    Devolve `ainv`, um VGroup com o `a⁻¹` que fecha o último trecho E o
+    resto da grade/círculos que nunca saiu de cena (o roteiro só promete
+    "fica em cena" para o a⁻¹, mas as linhas sobreviventes ficam juntas
+    dele — sem tempo sobrando no V1N07 para as descartar ali). O V1N08 os
+    engole inteiros, por cima da primeira miniatura dele."""
     centro, _, _ = regiao
     cx, cy = centro[0], centro[1]
 
@@ -775,7 +778,14 @@ def _previa_v2(cena, regiao):
         cena.play(Create(risco), run_time=0.2 * VEL)
         cena.play(ReplacementTransform(VGroup(div, risco), ainv),
                   run_time=0.4 * VEL)
-        return ainv
+        # a tabela e os círculos NÃO somem — "fica em cena" no roteiro do
+        # V1N07 é só sobre o a⁻¹, mas as três linhas restantes da grade
+        # nunca saem. Embrulhados junto com o a⁻¹, o V1N08 os engole
+        # inteiros num único FadeOut, no lugar de descartá-los aqui e
+        # gastar tempo do V1N07 (que já soma exatos 17,1 s, sem folga)
+        resto = VGroup(*[grade[i] for i in range(9) if i not in (0, 3, 6)],
+                       circulos, mortos)
+        return VGroup(ainv, resto)
 
     _trecho1()
     _trecho2()
@@ -808,3 +818,228 @@ def corpo_previa2(cena, titulo, trilha, marca):
         ainv = _previa_v2(cena, regiao)
 
     return titulo, alvo, moldura, ainv
+
+
+def _previa_v3a(cena, moldura, regiao, alvo, ainv):
+    """V1N08 — cap. 6 (Fermat: a permutação da tabela mod 7) e cap. 7
+    (Euler: o contra-exemplo mod 9), na ordem exata da tabela.
+
+    A moldura é a MESMA do V1N07 — ninguém chama _janela_previa de novo.
+    Os rótulos "Fermat" e "Euler" entram em 0,0 e 5,4 dentro da MESMA
+    locução, coisa que _janela_previa não sabe fazer (ela só rotula no
+    instante em que a moldura nasce), então o troca-rótulo mora aqui,
+    reproduzindo a mesma posição dela (next_to UP, align LEFT na moldura).
+
+    `alvo` é o "2 · Aritmética modular" que o V1N07 deixou: aqui ele vira
+    o "3 · Do teorema ao RSA", nascendo dele mesmo — é o "título 3 acende
+    sozinho" da tabela.
+
+    Devolve o "3" que substitui `alvo`: o V1N09 o herda em cena, sem
+    tocar nele."""
+    centro, _, _ = regiao
+    cx, cy = centro[0], centro[1]
+
+    tres = VGroup(T("3", 26, LARANJA), T(VIDEOS[2], 26, PRETO))
+    tres.arrange(RIGHT, buff=0.35).scale(0.85)
+    tres.move_to(alvo).align_to(alvo, LEFT)
+
+    fermat = T("Fermat", 24, LARANJA)
+    fermat.next_to(moldura, UP, buff=0.15).align_to(moldura, LEFT)
+
+    # 0,0–2,2 · cap. 6: a tabela mod 7 se preenchendo linha a linha em
+    # LaggedStart — o quadro aparecendo é a imagem, ninguém precisa ler os
+    # números. O "3" nasce do "2" no mesmo play, e o a⁻¹ do V1N07 é
+    # engolido junto
+    tam = 0.5
+    canto = np.array([cx - 1.5, cy + 1.1, 0.0])
+
+    def ponto(i, j):
+        return canto + np.array([j * tam, -i * tam, 0.0])
+
+    linhas = [VGroup(*[T(str((i * j) % 7), 16, PRETO).move_to(ponto(i, j))
+                       for j in range(1, 7)]) for i in range(1, 5)]
+    cena.play(ReplacementTransform(alvo, tres),
+              FadeIn(fermat, shift=0.15 * DOWN), FadeOut(ainv),
+              LaggedStart(*[FadeIn(l) for l in linhas], lag_ratio=0.25),
+              run_time=1.8 * VEL)
+
+    # 2,2–5,4 · cap. 6: a elipse verde marca a linha 1, que sai da tabela e
+    # flutua; a elipse desce para a linha 3, que cai exatamente sob ela —
+    # já alinhada embaixo da linha 1 flutuada; os arcos ligam os pares (a
+    # mesma permutação (3·j) mod 7 do capítulo 6) e a tela fecha num
+    # feixe de arcos
+    linha1, linha3 = linhas[0], linhas[2]
+    el = Ellipse(width=6 * tam + 0.5, height=0.4, color=VERDE,
+                stroke_width=2.5).move_to(linha1)
+    yA, yB = cy + 1.7, cy + 1.15
+    xs = np.linspace(cx - 2.0, cx + 2.5, 6)
+    A = VGroup(*[T(str(j + 1), 20, PRETO).move_to([xs[j], yA, 0])
+                for j in range(6)])
+    Bv = [(3 * j) % 7 for j in range(1, 7)]
+    B = VGroup(*[T(str(Bv[j]), 20, VERMELHO).move_to([xs[j], yB, 0])
+                for j in range(6)])
+    cena.play(Create(el), LaggedStart(*[TransformFromCopy(linha1[j], A[j])
+                                        for j in range(6)], lag_ratio=0.12),
+              run_time=1.1 * VEL)
+    cena.play(el.animate.move_to(linha3),
+              LaggedStart(*[TransformFromCopy(linha3[j], B[j])
+                            for j in range(6)], lag_ratio=0.12),
+              run_time=1.1 * VEL)
+    arcos = VGroup()
+    for j in range(6):
+        idx = Bv.index(j + 1)
+        arcos.add(ArcBetweenPoints(A[j].get_bottom() + 0.05 * DOWN,
+                                   B[idx].get_top() + 0.05 * UP,
+                                   angle=(0.6 if idx > j else -0.6),
+                                   color=VERDE, stroke_width=2))
+    cena.play(LaggedStart(*[Create(a) for a in arcos], lag_ratio=0.1),
+              run_time=0.7 * VEL)
+    cena.play(FadeOut(VGroup(*linhas, el, A, B)), run_time=0.3 * VEL)
+
+    # 5,4–7,6 · cap. 7: corta para a tabela mod 9 — duas linhas que não têm
+    # inverso (as dos múltiplos de 3, que colidem em vez de permutar) — a
+    # elipse agora vermelha marca as duas e elas apagam sob ela. "Euler"
+    # substitui "Fermat" no mesmo instante
+    euler = T("Euler", 24, LARANJA).move_to(fermat, aligned_edge=LEFT)
+    y0 = cy + 1.4
+    header = VGroup(*[T(str(j), 18, AZUL).move_to([cx - 3.0 + 0.85 * (j - 1),
+                                                   y0, 0]) for j in range(1, 9)])
+    row3 = VGroup(*[T(str((3 * j) % 9), 16, PRETO)
+                    .move_to([cx - 3.0 + 0.85 * (j - 1), y0 - 0.5, 0])
+                    for j in range(1, 9)])
+    row6 = VGroup(*[T(str((6 * j) % 9), 16, PRETO)
+                    .move_to([cx - 3.0 + 0.85 * (j - 1), y0 - 0.9, 0])
+                    for j in range(1, 9)])
+    el9 = Ellipse(width=7.2, height=1.0, color=VERMELHO,
+                 stroke_width=2.5).move_to(VGroup(row3, row6))
+    cena.play(FadeOut(arcos), ReplacementTransform(fermat, euler),
+              FadeIn(header), run_time=0.6 * VEL)
+    cena.play(FadeIn(row3), FadeIn(row6), run_time=0.5 * VEL)
+    cena.play(Create(el9), run_time=0.4 * VEL)
+    cena.play(FadeOut(row3), FadeOut(row6), run_time=0.7 * VEL)
+
+    # 7,6–9,6 · cap. 7: duas cruzes riscam os múltiplos de 3 no cabeçalho —
+    # os únicos sem inverso — e sobram seis, reunidos entre chaves
+    cruzes = VGroup(Cross(header[2], stroke_color=VERMELHO, stroke_width=3),
+                    Cross(header[5], stroke_color=VERMELHO, stroke_width=3))
+    cena.play(Create(cruzes), FadeOut(el9), run_time=0.6 * VEL)
+    restantes = VGroup(*[header[i] for i in range(8) if i not in (2, 5)])
+    cena.play(FadeOut(header[2]), FadeOut(header[5]), FadeOut(cruzes),
+              restantes.animate.arrange(RIGHT, buff=0.3).move_to([cx, y0, 0]),
+              run_time=0.8 * VEL)
+    chave_e = T("{", 30, PRETO).next_to(restantes, LEFT, buff=0.1)
+    chave_d = T("}", 30, PRETO).next_to(restantes, RIGHT, buff=0.1)
+    cena.play(FadeIn(chave_e), FadeIn(chave_d), run_time=0.6 * VEL)
+
+    # 9,6–11,0 · cap. 7: a caixa verde se fecha em volta do que sobrou
+    caixa = SurroundingRectangle(VGroup(chave_e, restantes, chave_d),
+                                 color=VERDE, buff=0.15, corner_radius=0.08,
+                                 stroke_width=2.5)
+    cena.play(Create(caixa), run_time=1.0 * VEL)
+    cena.play(Indicate(caixa, color=VERDE, scale_factor=1.03),
+              run_time=0.4 * VEL)
+
+    # 11,0–12,1: o cadeado com as letras RSA reaparece por meio segundo,
+    # intacto — rima com o V1N01
+    mini_cad = cadeado("fechado", "RSA").scale(0.45).move_to([cx, cy, 0])
+    cena.play(FadeOut(VGroup(chave_e, restantes, chave_d, caixa)),
+              FadeIn(mini_cad), run_time=0.5 * VEL)
+    cena.play(FadeOut(mini_cad), run_time=0.6 * VEL)
+
+    return tres, euler
+
+
+def _previa_v3b(cena, regiao):
+    """V1N09 — cap. 8: o esquema do RSA (mensagem → cifra → mensagem),
+    as duas chaves, o exemplo rodando e o n se partindo nos primos do
+    V1N02. A janela e o rótulo "Euler" continuam exatamente como o
+    _previa_v3a deixou — nada aqui os reabre, porque o título 3 é o único
+    da trilha que não troca de número nesta fala."""
+    centro, _, _ = regiao
+    cx, cy = centro[0], centro[1]
+
+    def _caixa(txt, cor_fundo, cor_txt=BRANCO, largura=1.0):
+        r = RoundedRectangle(width=largura, height=0.75, corner_radius=0.12,
+                             stroke_width=0).set_fill(cor_fundo, opacity=1)
+        f = T(txt, 22, cor_txt).move_to(r)
+        return VGroup(r, f)
+
+    # 0,0–2,6 · cap. 8: o esquema se monta da esquerda para a direita —
+    # caixa da mensagem, seta, caixa da cifra, seta, mensagem de volta
+    msg1 = _caixa("M", CARTAO_ESCURO).move_to([cx - 3.4, cy + 0.4, 0])
+    seta1 = Arrow(msg1.get_right(), msg1.get_right() + [1.1, 0, 0], buff=0.1,
+                 color=PRETO, stroke_width=4)
+    cif = _caixa("C", PRETO).next_to(seta1, RIGHT, buff=0.1)
+    seta2 = Arrow(cif.get_right(), cif.get_right() + [1.1, 0, 0], buff=0.1,
+                 color=PRETO, stroke_width=4)
+    msg2 = _caixa("M", CARTAO_ESCURO).next_to(seta2, RIGHT, buff=0.1)
+    cena.play(LaggedStart(FadeIn(msg1, shift=0.2 * RIGHT), GrowArrow(seta1),
+                          FadeIn(cif, shift=0.2 * RIGHT), GrowArrow(seta2),
+                          FadeIn(msg2, shift=0.2 * RIGHT), lag_ratio=0.5),
+              run_time=2.6 * VEL)
+
+    # 2,6–5,6 · cap. 8: os dois cartões nascem e se plugam nas setas — o
+    # cinza "pública" na primeira, o amarelo "privada" na segunda
+    pub = _caixa("pública", CINZA, PRETO, largura=1.5).scale(0.75)
+    pub.move_to(seta1.get_center() + [0, 0.9, 0])
+    priv = _caixa("privada", AMARELO, PRETO, largura=1.5).scale(0.75)
+    priv.move_to(seta2.get_center() + [0, 0.9, 0])
+    cena.play(FadeIn(pub, shift=0.3 * DOWN), run_time=0.8 * VEL)
+    cena.play(pub.animate.move_to(seta1.get_center() + [0, 0.35, 0]),
+              run_time=0.5 * VEL)
+    cena.play(FadeIn(priv, shift=0.3 * DOWN), run_time=0.8 * VEL)
+    cena.play(priv.animate.move_to(seta2.get_center() + [0, 0.35, 0]),
+              run_time=0.5 * VEL)
+    cena.play(Indicate(priv, color=AMARELO), run_time=0.4 * VEL)
+
+    # 5,6–8,0 · cap. 8: o exemplo roda dentro do mesmo esquema, cada caixa
+    # acendendo na sua vez, sem nenhuma conta aparecendo por baixo
+    cena.play(Indicate(msg1, color=CIANO, scale_factor=1.15), run_time=0.8 * VEL)
+    cena.play(Indicate(cif, color=CIANO, scale_factor=1.15), run_time=0.8 * VEL)
+    cena.play(Indicate(msg2, color=CIANO, scale_factor=1.15), run_time=0.8 * VEL)
+
+    # 8,0–10,2 · cap. 8: o n se parte em p rosa e q verde-claro — os MESMOS
+    # primos do V1N02 — e os dois cartões de chave piscam junto, porque
+    # foi dali que nasceram
+    n_txt = T(_N, 26, LARANJA).move_to([cx, cy - 1.3, 0])
+    p_txt = T(_P, 24, ROSA).move_to(n_txt.get_center() + [-0.5, -0.7, 0])
+    q_txt = T(_Q, 24, VERDE2).move_to(n_txt.get_center() + [0.5, -0.7, 0])
+    cena.play(FadeIn(n_txt, scale=1.3), run_time=0.5 * VEL)
+    cena.play(TransformFromCopy(n_txt, p_txt), TransformFromCopy(n_txt, q_txt),
+              FadeOut(n_txt), run_time=0.9 * VEL)
+    cena.play(Indicate(pub, color=CINZA), Indicate(priv, color=AMARELO),
+              run_time=0.8 * VEL)
+
+    # 10,2–12,5: a caixa verde final se fecha; sobre ela, a seta de
+    # despedaçar do V1N01 volta por meio segundo — rima visual
+    caixa_final = SurroundingRectangle(
+        VGroup(msg1, seta1, cif, seta2, msg2, pub, priv, p_txt, q_txt),
+        color=VERDE, buff=0.25, corner_radius=0.12, stroke_width=2.5)
+    cena.play(Create(caixa_final), run_time=1.1 * VEL)
+    mini_volta = Arrow([cx + 1.2, cy - 0.5, 0], [cx - 1.2, cy - 0.5, 0],
+                       buff=0, color=PRETO, stroke_width=4)
+    mini_q = VGroup(*[T("?", 20, CINZA) for _ in range(3)])
+    for q, x in zip(mini_q, np.linspace(0.9, -0.9, 3)):
+        q.move_to([cx + x, cy - 0.5, 0])
+    cena.play(GrowArrow(mini_volta), run_time=0.2 * VEL)
+    cena.play(ReplacementTransform(mini_volta, mini_q),
+              *[q.animate.shift([0.3 * dx, 0.3 * dy, 0])
+               for q, (dx, dy, _) in zip(mini_q, _ESPALHA[:3])],
+              run_time=0.3 * VEL)
+    cena.play(FadeOut(mini_q), run_time=0.7 * VEL)
+
+
+def corpo_previa3(cena, titulo, alvo, moldura, ainv):
+    """V1N08 e V1N09. A MESMA moldura do V1N07 continua em cena — nenhuma
+    das duas falas reabre _janela_previa. "Fermat"/"Euler" nascem e trocam
+    dentro do V1N08; o V1N09 não toca no rótulo, porque só o título 3 da
+    trilha continua aceso, e é `alvo3` (não a janela) que carrega isso."""
+    regiao = (_JANELA_CENTRO, _JANELA_LARGURA, _JANELA_ALTURA)
+
+    with narra(cena, "V1N08", 12.1):
+        alvo3, _ = _previa_v3a(cena, moldura, regiao, alvo, ainv)
+
+    with narra(cena, "V1N09", 12.5):
+        _previa_v3b(cena, regiao)
+
+    return titulo, alvo3, moldura
