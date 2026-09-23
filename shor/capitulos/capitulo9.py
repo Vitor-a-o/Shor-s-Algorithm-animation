@@ -362,3 +362,8 @@ def parte9(cena):
     # seguinte vem cobrar
     with narra(cena, "C9N15", 8.6):
         cena.play(Indicate(d3[0][1], color=AMARELO), run_time=0.9 * VEL)
+
+    # a caixa da definição (a borda E o conteúdo) sobrevive ao capítulo: ela
+    # não sai por um limpar(), sai DENTRO do play em que o cartão do capítulo
+    # seguinte entra — mesma entrega da tese no fim do parte8
+    return bloco

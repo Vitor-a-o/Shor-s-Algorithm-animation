@@ -134,15 +134,21 @@ def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36):
     return digs
 
 
-def cartao_capitulo(cena, rotulo, titulo, tag=None, est=3.0):
+def cartao_capitulo(cena, rotulo, titulo, tag=None, est=3.0, sai=None):
+    """`sai` é a última peça viva do capítulo anterior, entregue por ele: em
+    vez de um limpar() genérico antes do cartão, ela apaga DENTRO do mesmo
+    play em que o cartão entra — a emenda do t1 no CAP09 (video4.py), sem
+    quadro vazio entre os dois."""
     r = T(rotulo, 26, LARANJA)
     t = T(titulo, 38)
     g = VGroup(r, t).arrange(DOWN, buff=0.35)
     linha = Line(3 * LEFT, 3 * RIGHT, color=CINZA, stroke_width=1.5)
     linha.next_to(g, DOWN, buff=0.45)
+    entra = [FadeIn(r, shift=0.3 * DOWN), Write(t), Create(linha)]
+    if sai is not None:
+        entra.insert(0, FadeOut(sai, scale=0.5))
     with narra(cena, tag or rotulo.replace(" ", ""), est):
-        cena.play(FadeIn(r, shift=0.3 * DOWN), Write(t), Create(linha),
-                  run_time=1.3 * VEL)
+        cena.play(*entra, run_time=1.3 * VEL)
     cena.play(FadeOut(g), FadeOut(linha), run_time=0.5 * VEL)
 
 

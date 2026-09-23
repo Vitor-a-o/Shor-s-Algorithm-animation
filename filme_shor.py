@@ -44,7 +44,8 @@ from manim import *
 
 from shor.paleta import COR_FUNDO
 from shor.ferramentas import limpar
-from shor.montagem import TITULOS, PARTES, abertura, encerramento, abre_capitulo
+from shor.montagem import (TITULOS, PARTES, EMENDA, abertura, encerramento,
+                           abre_capitulo)
 from shor.videos import video2, video3, video4
 
 
@@ -52,10 +53,15 @@ class FilmeCompleto(Scene):
     def construct(self):
         self.camera.background_color = COR_FUNDO
         abertura(self)
+        sai = None
         for i, fn in enumerate(PARTES, start=1):
-            abre_capitulo(self, i)
-            fn(self)
-            limpar(self)
+            abre_capitulo(self, i, sai=sai)
+            peca = fn(self)
+            # o capítulo que se emenda entrega viva a peça que sai no play do
+            # cartão seguinte; os outros fecham com o limpar() de sempre
+            sai = peca if i in EMENDA else None
+            if sai is None:
+                limpar(self)
         encerramento(self)
 
 
@@ -101,9 +107,10 @@ class VideoShor(Scene):
         # a abertura já se emenda ao cartão do capítulo 9 (toca o CAP09),
         # então o capítulo 9 entra sem abre_capitulo
         video4.abertura(self)
-        PARTES[8](self)
-        limpar(self)
-        abre_capitulo(self, 10)
+        # parte9 devolve a caixa da definição: ela sai DENTRO do play em que o
+        # cartão do capítulo 10 entra, sem limpar() entre os dois
+        caixa9 = PARTES[8](self)
+        abre_capitulo(self, 10, sai=caixa9)
         PARTES[9](self)
         limpar(self)
         abre_capitulo(self, 11)

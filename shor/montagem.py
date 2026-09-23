@@ -25,7 +25,7 @@ IMG_ABERTURA = (Path(__file__).resolve().parent.parent
 CARTOES = {
     1: 4.6, 2: 4.6, 3: 4.6, 4: 5.0, 5: 4.2,
     6: 4.6, 7: 5.4, 8: 5.4,
-    9: 7.2, 10: 5.4, 11: 5.8,
+    9: 7.2, 10: 4.3, 11: 5.8,
 }
 
 TITULOS = [
@@ -44,9 +44,13 @@ TITULOS = [
 PARTES = [parte1, parte2, parte3, parte4, parte5,
           parte6, parte7, parte8, parte9, parte9b, parte10]
 
-def abre_capitulo(cena, i):
+# capítulos que ENTREGAM viva a última peça em cena, para ela sair no mesmo
+# play em que o cartão seguinte entra, sem limpar() no meio
+EMENDA = {9}
+
+def abre_capitulo(cena, i, sai=None):
     cartao_capitulo(cena, f"Capítulo {i}", TITULOS[i - 1],
-                    tag=f"CAP{i:02d}", est=CARTOES.get(i, 3.0))
+                    tag=f"CAP{i:02d}", est=CARTOES.get(i, 3.0), sai=sai)
 
 def abertura(cena):
     # Arte de abertura full-bleed: preenche a tela toda (a imagem é levemente
