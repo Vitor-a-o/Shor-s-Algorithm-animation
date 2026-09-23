@@ -15,8 +15,8 @@ Transformar o filme único "Do Zero ao Algoritmo de Shor Quântico" (11 capítul
 |---|---|---|---|---|---|
 | 1 | Introdução | — (100% novo) | — | não se aplica | ✅ `roteiro_video1_introducao.md` |
 | 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas (`C1N11` mudou de texto e precisa ser regravada) | ✅ `roteiro_video2_aritmetica_modular.md` |
-| 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | ✅ em código (`narra()` em toda linha) — pendências pontuais seguem no roteiro | ✅ `roteiro_video3_do_teorema_ao_rsa.md` |
-| 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | ✅ em código (`narra()` em toda linha) — pendências pontuais seguem no roteiro | ✅ `roteiro_video4_algoritmo_de_shor.md` — vídeo 4 inteiro em código (capítulos + `video4.py`), aguardando gravação |
+| 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | ✅ em código (`narra()`/`so_fala()` em toda linha) — pendências pontuais de agrupamento de `play` seguem no roteiro | ✅ `roteiro_video3_do_teorema_ao_rsa.md` |
+| 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | ✅ em código (`narra()` em toda linha), sem pendências abertas | ✅ `roteiro_video4_algoritmo_de_shor.md` — vídeo 4 inteiro em código (capítulos + `video4.py`), aguardando gravação |
 
 Atenção à numeração dos arquivos: o **capítulo 10** em tela é o `capitulo9b.py` (Da Ordem
 Modular à fatoração) e o **capítulo 11** é o `capitulo10.py` (Shor Quântico: a QFT
@@ -42,17 +42,16 @@ encontra o período). A lista `PARTES` em `montagem.py` já está na ordem certa
 
 ## Projeção de duração
 
-Os vídeos 1 e 2 já têm roteiro fechado, então a projeção deles vem da contagem real de
-locuções, não mais de proxy. Os capítulos 6–11 ainda não têm narração escrita; a projeção
-deles segue estimada por `cena.play`, calibrada pelos ~6,5 s de fala por `play` medidos no
-`narracao.md` original (73 `play` → 467,8 s).
+Os quatro vídeos já têm roteiro fechado, então a projeção de todos vem da contagem real de
+locuções, não mais de proxy por `cena.play`. A coluna `play` abaixo é a contagem original,
+anterior à narração escrita, mantida como referência.
 
 | Vídeo | Capítulos | `play` | Projeção |
 |---|---|---|---|
 | 1 Introdução | novo | — | ~2 min 45 s (roteiro fechado) |
 | 2 Aritmética modular | 1–5 | 101 | ~11 min 45 s (roteiro fechado) |
-| 3 Do teorema ao RSA | 6–8 | 74 | ~8–9 min |
-| 4 O algoritmo de Shor | 9–11 | 118 | ~13–14 min |
+| 3 Do teorema ao RSA | 6–8 | 74 | ~9 min 09 s (roteiro fechado) |
+| 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 34 s (roteiro fechado) |
 
 O vídeo 2 veio ~45 s acima do teto da faixa estimada — o capítulo 5 (inverso modular)
 saiu denso, com a leitura da tabela de multiplicação (`C5N19`–`C5N29`) sendo o trecho mais
@@ -62,17 +61,21 @@ sobra folga.
 O vídeo 4 continua sendo o maior, com a fronteira clássico/quântico dentro dele (os
 capítulos 9 e 10 são clássicos, só o 11 é quântico). A decisão foi **não** separar: quem
 chega no quarto vídeo veio para ver a fatoração acontecer, e cortar entre "reduzi fatorar
-a achar a ordem" e "o quântico acha a ordem" é interromper o clímax. Se o capítulo 11
-crescer muito na escrita da narração, a costura para abrir ali já está identificada.
+a achar a ordem" e "o quântico acha a ordem" é interromper o clímax. O capítulo 11 cresceu
+bastante na escrita da narração (46 locuções, metade da fala do vídeo), mas o vídeo fechou
+em ~12 min 34 s — a costura para abrir um quinto vídeo continua identificada, mas segue
+**sem precisar ser usada**.
 
 ## Ordem de trabalho combinada
 
 1. ~~Fechar a arquitetura da série (quantos vídeos, o que entra em cada um)~~ ✅ feito
-2. **Escrever o roteiro de fala completo, ANTES de mexer no código** — mesma lógica do
-   `narracao.md`: o texto com tags e estimativas de duração é o que dá o tempo real de
-   cada animação. Vídeos 1 e 2 fechados (roteiro + costura). Faltam: a narração dos
-   capítulos 6–11 e o roteiro de costura dos vídeos 3 e 4 (abertura/encerramento
-   próprios, já que hoje só existe uma abertura/encerramento para o filme inteiro).
+2. ~~**Escrever o roteiro de fala completo, ANTES de mexer no código**~~ ✅ feito para os
+   quatro vídeos — mesma lógica do `narracao.md`: o texto com tags e estimativas de
+   duração é o que dá o tempo real de cada animação. Vídeos 1 e 2 fechados (roteiro +
+   costura). A narração dos capítulos 6–11 está escrita (`roteiro_video3_do_teorema_ao_rsa.md`
+   e `roteiro_video4_algoritmo_de_shor.md`), e cada um já tem seu próprio roteiro de
+   costura (`V3N00`–`V3N02` e `V4N00`–`V4N04`), em vez da abertura/encerramento único do
+   filme completo.
 3. **Só então reestruturar o código** — via Claude Code (não no chat do projeto, que só
    enxerga uma cópia somente-leitura). Plano de arquitetura sugerido:
    - Manter `capitulo1.py`...`capitulo10.py`, `ferramentas.py`, `paleta.py` como estão

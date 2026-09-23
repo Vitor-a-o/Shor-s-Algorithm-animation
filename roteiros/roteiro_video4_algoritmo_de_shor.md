@@ -225,7 +225,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N45 | Dois máximos divisores comuns depois... | 3,4 | `Write(linhas[5])` |
 | C11N46 | ...e finalmente o número está fatorado. | 3,5 | `Write(linhas[6])` + `Create(caixa)`. A moldura verde sobrevive ao capítulo: o `V4N01` pousa o cadeado em cima dela, sem `limpar()` no meio |
 
-**Subtotal: 340,3 s** (cartão + 46 locuções)
+**Subtotal: 343,8 s** (cartão + 46 locuções)
 
 ---
 
@@ -252,13 +252,13 @@ de verdade.
 |---|---|---|
 | Abertura | 1 | 13,1 s |
 | Capítulo 9 | 15 | 89,9 s |
-| Capítulo 10 | 33 | 199,9 s |
-| Capítulo 11 | 47 | 337,8 s |
+| Capítulo 10 | 33 | 214,8 s |
+| Capítulo 11 | 46 | 343,8 s |
 | Encerramento | 4 | 40,9 s |
-| **Total** | **100** | **681,6 s** |
+| **Total** | **99** | **702,5 s** |
 
-Somando o `PAD` de 0,35 s por locução (35,0 s), os dois cartões silenciosos (~7 s) e os
-`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 14 s** — abaixo da
+Somando o `PAD` de 0,35 s por locução (34,7 s), os dois cartões silenciosos (~7 s) e os
+`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 34 s** — abaixo da
 faixa de 13–14 min que a estimativa por `cena.play` previa. A diferença vem de onde era
 esperado: os 118 `play` do bloco não pedem 118 falas, porque as duas árvores do capítulo 10
 e as varreduras do capítulo 11 são animações que se explicam sozinhas.
@@ -268,11 +268,11 @@ registrador, dez segundos sob sete e meio de locução. Some uns 3 s ao render r
 demais trechos longos (`C11N31`, `C11N32`, `C10N10`, `C10N28`) cabem dentro da fala com folga, e a
 folga é silêncio com imagem correndo — o padrão da série.
 
-Com o vídeo perto de 12 min 14 s, a costura para abrir o capítulo 11 num quinto vídeo
+Com o vídeo perto de 12 min 34 s, a costura para abrir o capítulo 11 num quinto vídeo
 continua **sem precisar ser usada** — a fronteira clássico/quântico fica dentro do mesmo
 upload, como decidido no plano. A margem, porém, acabou: o bloco de fundamentos cresceu de
 5 para 10 locuções e paga 35 s; a medida no circuito (`C11N36`) e o parêntese da medida que
-não serve (`C11N41`–`C11N43`) somam outros 19,5 s. O capítulo 11 tem hoje 47 locuções e é
+não serve (`C11N41`–`C11N43`) somam outros 19,5 s. O capítulo 11 tem hoje 46 locuções e é
 sozinho metade da fala do vídeo. **Da próxima vez que ele crescer, a decisão não é mais de
 roteiro: é reabrir a costura e fazer o quinto vídeo.**
 
@@ -283,7 +283,7 @@ roteiro: é reabrir a costura e fazer o quinto vídeo.**
 - [ ] Abertura — V4N00
 - [ ] Cartões — CAP09 a CAP11
 - [ ] Capítulo 9 — C9N01 a C9N15
-- [ ] Capítulo 10 — C10N01 a C10N32
+- [ ] Capítulo 10 — C10N01 a C10N33
 - [ ] Capítulo 11 — C11N01 a C11N46
 - [ ] Encerramento — V4N01 a V4N04
 - [ ] `python medir.py`
@@ -430,7 +430,7 @@ na maioria das linhas. O que falta é só o delta contra a tabela acima:
 
 ## Pendências de código do capítulo 11 (`parte10`)
 
-As sessões estruturais rodaram e o `capitulo10.py` está com as 54 locuções, a renumeração,
+As sessões estruturais rodaram e o `capitulo10.py` está com as 46 locuções, a renumeração,
 a divisão do `C11N15`/`C11N16`, as duas locuções novas antes da TQF, a medida hipotética do
 `C11N22`, a entrada na transformada, o r escondido até a cascata, a passada de destaques e
 os `est=` até a pendência 5, o instrumento das ondas, a saída da transformada e o parêntese
