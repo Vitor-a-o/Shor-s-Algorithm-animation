@@ -5,9 +5,9 @@
 from manim import *
 import numpy as np
 
-from ..paleta import CINZA, LARANJA, PRETO, VEL
+from ..paleta import CINZA, LARANJA, PRETO, ROSA, VERDE2, VEL
 from ..ferramentas import T, narra
-from ..cadeado import cadeado, fechar
+from ..cadeado import cadeado, fechar, gravar, rede
 from .comum import VIDEOS
 
 # o gancho do V1N00, já quebrado nas três linhas em que ele nasce
@@ -24,6 +24,11 @@ _FAIXA = -2.3
 _ESPALHA = ((-0.7, 0.95, 18), (-0.35, -0.85, -12), (0.15, 1.15, 8),
             (0.3, -0.7, 22), (-0.1, 0.8, -20), (0.55, -1.0, -6),
             (0.8, 0.9, 14))
+
+# os dois primos do V1N02 e o produto — os MESMOS do exemplo do capítulo 8
+# (33 = 3 × 11), porque o V1N09 promete que o n de lá se parte "exatamente
+# nos primos do V1N02"
+_P, _Q, _N = "3", "11", "33"
 
 
 def _frase(linhas, tamanho=40):
@@ -173,3 +178,139 @@ def abertura(cena):
                   Wiggle(cad), run_time=1.2 * VEL)
 
     return cad, bloco, interrogacoes
+
+
+def _anos(e):
+    """O contador do V1N02: 10^e − 1 anos, com ponto de milhar."""
+    return f"{int(10 ** e) - 1:,}".replace(",", ".")
+
+
+def corpo_fatoracao(cena, cad, bloco, interrogacoes):
+    """V1N02. Recebe o que a abertura deixou em cena e termina com o
+    cadeado sozinho no centro.
+
+    O bloco é o MESMO do V1N01 do começo ao fim: as duas metades se
+    reabrem nos fatores cinzas, ganham a cor de p e q e se fundem de novo,
+    sempre por Transform — nenhuma peça nasce do zero.
+
+    Devolve as interrogações novas (fora de cena, mas nas posições onde
+    pararam): o V1N04 as traz de volta e as remonta nos dois primos."""
+    fat = T("fatoração", 72).move_to([0, _FAIXA, 0])
+
+    # a forma do bloco fechado, guardada para a volta; e os dois fatores
+    # cinzas em que ele se reabre, nas medidas do f1 e do f2 do V1N01
+    fechado = bloco.copy()
+    cinzas = VGroup(Square(0.55), Square(0.8))
+    cinzas.set_fill(CINZA, opacity=1).set_stroke(width=0)
+    cinzas[0].move_to([2.45, _FAIXA, 0])
+    cinzas[1].move_to([4.2, _FAIXA, 0])
+    p = T(_P, 36, ROSA).next_to(cinzas[0], UP, buff=0.2)
+    q = T(_Q, 36, VERDE2).next_to(cinzas[1], UP, buff=0.2)
+    n = T(_N, 36, LARANJA).next_to(fechado, UP, buff=0.2)
+
+    volta = Arrow([2.4, _FAIXA, 0], [-2.55, _FAIXA, 0], buff=0, color=PRETO,
+                  stroke_width=5)
+    cacos = VGroup(*[T("?", 36, CINZA) for _ in _ESPALHA])
+    for c, x in zip(cacos, np.linspace(2.2, -2.35, len(_ESPALHA))):
+        c.move_to([x, _FAIXA, 0])
+
+    e = ValueTracker(0)
+    ponto = [0, _FAIXA, 0]
+    contador = always_redraw(
+        lambda: T(_anos(e.get_value()), 44)
+        .scale(1 + e.get_value() / 10).move_to(ponto))
+
+    with narra(cena, "V1N02", 18.3):
+        # "fatoração" nasce grande em cima das interrogações, que somem
+        # sob ela; depois sobe e vira o rótulo do trecho, como a "aposta"
+        cena.play(Write(fat), FadeOut(interrogacoes), run_time=1.4 * VEL)
+        cena.play(Succession(
+            fat.animate(run_time=1.2 * VEL).scale(0.55).to_edge(UP, buff=0.4),
+            Wait(0.5 * VEL)))
+
+        # "multiplicar dois primos grandes": o bloco se reabre pela emenda
+        # e cada metade volta a ser o fator cinza de que era feita...
+        cena.play(Transform(bloco[0], cinzas[0]),
+                  Transform(bloco[1], cinzas[1]), run_time=1.0 * VEL)
+        # ...que ganha identidade: rosa é p, verde-claro é q, e cada número
+        # nasce de dentro do seu quadrado
+        cena.play(bloco[0].animate.set_fill(ROSA),
+                  bloco[1].animate.set_fill(VERDE2),
+                  GrowFromPoint(p, cinzas[0].get_center()),
+                  GrowFromPoint(q, cinzas[1].get_center()),
+                  run_time=0.9 * VEL)
+        # os dois deslizam um contra o outro e se fundem de novo no mesmo
+        # bloco laranja; os números se juntam no produto, por cima dele
+        cena.play(Transform(bloco[0], fechado[0]),
+                  Transform(bloco[1], fechado[1]),
+                  ReplacementTransform(VGroup(p, q), n), run_time=1.2 * VEL)
+
+        # "voltar do produto para os primos": a volta tenta de novo e se
+        # despedaça, no mesmo espalhar do V1N01
+        cena.play(GrowArrow(volta), run_time=1.0 * VEL)
+        cena.play(ReplacementTransform(volta, cacos), run_time=0.6 * VEL)
+        cena.play(Succession(
+            AnimationGroup(*[c.animate.shift([dx, dy, 0]).rotate(ang * DEGREES)
+                             for c, (dx, dy, ang) in zip(cacos, _ESPALHA)],
+                           run_time=1.2 * VEL),
+            Wait(0.6 * VEL)))
+
+        # "bilhões de anos": a faixa se esvazia sob o contador, que dispara
+        # — cada casa decimal custa o mesmo tempo — e estoura para fora
+        # (as metades, uma a uma: o V1N01 as pôs soltas na cena, e um
+        # FadeOut do grupo tiraria só o grupo e as deixaria lá)
+        cena.play(FadeOut(cacos), *[FadeOut(m) for m in bloco], FadeOut(n),
+                  FadeIn(contador), run_time=0.8 * VEL)
+        cena.play(e.animate.set_value(10), run_time=3.0 * VEL,
+                  rate_func=linear)
+        contador.clear_updaters()
+        cena.play(FadeOut(contador, scale=4), run_time=0.6 * VEL)
+
+        # o cadeado fica sozinho, no centro
+        cena.play(FadeOut(fat), cad.animate.move_to(ORIGIN),
+                  run_time=1.2 * VEL)
+
+    return cacos
+
+
+def corpo_rsa(cena, cad):
+    """V1N03. O cadeado ganha as letras RSA e encolhe no miolo de uma rede
+    de cadeados anônimos, que brotam de trás dele.
+
+    Devolve a rede — VGroup(arestas, pontos, cadeados), tudo em cena — para
+    o V1N04 piscá-la e estalá-la."""
+    malha = rede()
+    arestas, pontos, anonimos = malha
+
+    with narra(cena, "V1N03", 20.0):
+        # "é o RSA": o cadeado cresce e as letras se gravam com o flash seco
+        # do travamento
+        cena.play(cad.animate.scale(1.4), run_time=2.2 * VEL)
+        gravar(cena, cad, "RSA")
+        # o aceso vai na frente de tudo o que nascer daqui em diante: a rede
+        # é desenhada DEPOIS dele e mesmo assim fica atrás (depois do
+        # gravar(), para as letras subirem junto com o corpo)
+        cad.set_z_index(1)
+
+        # "não é o único" (~10 s): o cadeado encolhe e a rede se desenha ao
+        # fundo, já apagada
+        cena.play(Succession(
+            Wait(7.0 * VEL),
+            AnimationGroup(cad.animate.scale(0.8 / 1.4),
+                           Create(arestas),
+                           LaggedStart(*[GrowFromCenter(d) for d in pontos],
+                                       lag_ratio=0.15),
+                           run_time=1.6 * VEL)))
+        # os anônimos brotam de trás dele e pousam cada um na sua aresta
+        for c in anonimos:
+            c.generate_target()
+            c.move_to(cad[1])
+        cena.add(anonimos)
+        cena.play(LaggedStart(*[MoveToTarget(c) for c in anonimos],
+                              lag_ratio=0.12), run_time=1.8 * VEL)
+
+        # "nem vai ser o único a cair": todos pulsam uma vez, junto
+        cena.play(*[c.animate.scale(1.35) for c in anonimos],
+                  rate_func=there_and_back, run_time=0.8 * VEL)
+
+    return malha

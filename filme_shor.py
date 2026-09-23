@@ -161,8 +161,11 @@ class Parte11(Scene):
 
 
 class Parte_V1Abertura(Scene):
-    """Vídeo 1 em construção — por ora só a abertura (V1N00, cartão, V1N01).
-    Quando o vídeo 1 estiver completo, vira a Scene VideoIntro."""
+    """Vídeo 1 em construção — por ora a abertura (V1N00, cartão, V1N01),
+    a fatoração (V1N02) e o RSA na rede (V1N03). Quando o vídeo 1 estiver
+    completo, vira a Scene VideoIntro."""
     def construct(self):
         self.camera.background_color = COR_FUNDO
-        video1.abertura(self)
+        cad, bloco, interrogacoes = video1.abertura(self)
+        video1.corpo_fatoracao(self, cad, bloco, interrogacoes)
+        video1.corpo_rsa(self, cad)
