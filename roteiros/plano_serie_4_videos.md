@@ -51,7 +51,7 @@ anterior à narração escrita, mantida como referência.
 | 1 Introdução | novo | — | ~2 min 45 s (roteiro fechado) |
 | 2 Aritmética modular | 1–5 | 101 | ~11 min 45 s (roteiro fechado) |
 | 3 Do teorema ao RSA | 6–8 | 74 | ~9 min 09 s (roteiro fechado) |
-| 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 34 s (roteiro fechado) |
+| 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 54 s (roteiro fechado) |
 
 O vídeo 2 veio ~45 s acima do teto da faixa estimada — o capítulo 5 (inverso modular)
 saiu denso, com a leitura da tabela de multiplicação (`C5N19`–`C5N29`) sendo o trecho mais
@@ -63,7 +63,7 @@ capítulos 9 e 10 são clássicos, só o 11 é quântico). A decisão foi **não
 chega no quarto vídeo veio para ver a fatoração acontecer, e cortar entre "reduzi fatorar
 a achar a ordem" e "o quântico acha a ordem" é interromper o clímax. O capítulo 11 cresceu
 bastante na escrita da narração (46 locuções, metade da fala do vídeo), mas o vídeo fechou
-em ~12 min 34 s — a costura para abrir um quinto vídeo continua identificada, mas segue
+em ~12 min 54 s — a costura para abrir um quinto vídeo continua identificada, mas segue
 **sem precisar ser usada**.
 
 ## Ordem de trabalho combinada

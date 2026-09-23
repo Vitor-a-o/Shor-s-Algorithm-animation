@@ -150,11 +150,20 @@ def encerramento(cena, caixa):
     piso = [0, -1.5, 0]
     cad = estado_v3()
     cad.next_to(caixa.copy().move_to(piso), UP, buff=0)
-    with narra(cena, "V4N01", 9.6):
-        cena.play(caixa.animate.move_to(piso),
-                  FadeIn(cad, shift=0.7 * DOWN), run_time=1.4 * VEL)
-        # "tem uma saída": a fissura chega às duas pontas, o arco estala e
-        # os pedaços caem — a quebra que o V3N02 prometeu
+    with narra(cena, "V4N01", 11.9):
+        # a descida abre a fala; depois o quadro fica PARADO no pedestal até
+        # "vencer a aposta" (~6,2 s), enquanto a fala lembra a promessa do
+        # vídeo 1. O Wait é rabo deste play — não cena.wait() solto —, no
+        # mesmo padrão de atraso do C11N10
+        cena.play(Succession(
+            AnimationGroup(caixa.animate.move_to(piso),
+                           FadeIn(cad, shift=0.7 * DOWN),
+                           run_time=1.4 * VEL),
+            Wait(4.8 * VEL)))
+        # "vencer a aposta" (~6,2 s): a fissura chega às duas pontas, o arco
+        # estala e os pedaços caem — a quebra que o V3N02 prometeu. Acaba em
+        # ~9,0 s, e "E agora a gente sabe como" cai sobre o cadeado já
+        # quebrado, sem animação nova
         cacos = quebrar(cena, cad, run_time=2.8)
 
     # o número que acabou de sair do algoritmo tem dois dígitos; os do RSA
@@ -215,48 +224,66 @@ def encerramento(cena, caixa):
     novo = _cadeado_novo()
     novo.shift(cad[1].get_center() - novo[1].get_center())
     novo[0].shift(0.55 * UP)        # chega aberto: a armação ainda vai descer
+    fundo.set_z_index(-1)           # atrás de tudo sem bring_to_back: ela só
+                                    # entra em cena no meio da fala, e até lá
+                                    # não há o que mandar para trás
 
-    with narra(cena, "V4N03", 9.6):
-        # "a aposta não caiu": a rede do V1N03 volta ao fundo, apagada e
-        # intacta — nenhum dos cadeados dela quebrou
-        cena.add(fundo)
-        cena.bring_to_back(fundo)
-        cena.play(FadeIn(fundo), run_time=1.2 * VEL)
-        # "ela ganhou prazo": os cacos reacendem e sobem, desfazendo o
-        # tombo do V4N01 (set_stroke, não set_opacity: eles são só traço,
-        # e um fill em cima do traço vira borrão)
+    with narra(cena, "V4N03", 16.2):
+        # "pode ficar tranquilo": a primeira frase não tem imagem nova — de
+        # 0 a ~3,7 s o quadro é só o cadeado quebrado. O Wait dentro do
+        # Succession segura a entrada (a rede nem entra em cena antes da
+        # hora), como o Write atrasado do C11N10
+        # "a aposta continua de pé" (~3,7 s): a rede do V1N03 volta ao
+        # fundo, apagada e intacta — nenhum dos cadeados dela quebrou
+        cena.play(Succession(Wait(3.7 * VEL),
+                             FadeIn(fundo, run_time=1.2 * VEL)))
+        # "ela só ganhou um prazo de validade" (~5,9 s): os cacos reacendem
+        # e sobem, desfazendo o tombo do V4N01 (set_stroke, não set_opacity:
+        # eles são só traço, e um fill em cima do traço vira borrão)
         cena.bring_to_front(cacos)
         alto = novo[0].get_center()
-        cena.play(
+        cena.play(Succession(Wait(1.0 * VEL), AnimationGroup(
             cacos[0].animate.set_stroke(opacity=1).rotate(70 * DEGREES)
                 .scale(0.75).move_to(alto + 0.18 * LEFT + 0.10 * UP),
             cacos[1].animate.set_stroke(opacity=1).rotate(-55 * DEGREES)
                 .scale(0.75).move_to(alto + 0.18 * RIGHT + 0.10 * DOWN),
-            run_time=2.6 * VEL)
-        # "a resposta já está sendo construída": os cacos se remontam na
-        # armação e o corpo novo nasce enquanto o velho sai — num bloco só
-        cena.play(ReplacementTransform(cacos, novo[0]),
-                  FadeIn(novo[1]), FadeIn(novo[2]), FadeOut(velho),
-                  run_time=2.4 * VEL)
-        # "que não vive de fatorar": fecha inteiro no lugar do antigo, com
-        # o mesmo flash seco do fechar()
-        cena.play(novo[0].animate.shift(0.55 * DOWN),
-                  Flash(novo[1].get_top(), color=PRETO, flash_radius=0.55,
-                        line_length=0.22),
-                  run_time=1.4 * VEL)
+            run_time=2.6 * VEL)))
+        # "E a resposta já está sendo preparada" (~9,0 s): os cacos se
+        # remontam na armação e o corpo novo nasce enquanto o velho sai —
+        # num bloco só
+        cena.play(Succession(Wait(0.5 * VEL), AnimationGroup(
+            ReplacementTransform(cacos, novo[0]),
+            FadeIn(novo[1]), FadeIn(novo[2]), FadeOut(velho),
+            run_time=2.4 * VEL)))
+        # "uma criptografia que não depende de fatorar" (~12,3 s): fecha
+        # inteiro no lugar do antigo, com o mesmo flash seco do fechar()
+        cena.play(Succession(Wait(0.9 * VEL), AnimationGroup(
+            novo[0].animate.shift(0.55 * DOWN),
+            Flash(novo[1].get_top(), color=PRETO, flash_radius=0.55,
+                  line_length=0.22),
+            run_time=1.4 * VEL)))
 
     trilha = trilha_videos(acesos=(1, 2, 3, 4))
     trilha.to_edge(LEFT, buff=1.2).shift(0.4 * DOWN)
     titulo = T("Do Zero ao Algoritmo de Shor Quântico", 42).to_edge(UP, buff=0.7)
-    with narra(cena, "V4N04", 7.1):
-        # "foram quatro vídeos": a rede sai e a trilha do V1N06 volta, agora
-        # com os quatro acesos
+    with narra(cena, "V4N04", 18.3):
+        # a rede, o cadeado novo e a moldura saem no começo; em "Quatro
+        # vídeos atrás" a trilha do V1N06 volta, agora com os quatro acesos
         cena.play(FadeOut(fundo), FadeOut(novo), FadeOut(caixa),
                   run_time=0.8 * VEL)
         cena.play(LaggedStart(*[FadeIn(l, shift=0.3 * RIGHT) for l in trilha],
                               lag_ratio=0.35), run_time=2.4 * VEL)
-        # "obrigado por ter chegado até o fim": o título pousa por cima
-        cena.play(FadeIn(titulo, shift=0.5 * DOWN), run_time=1.6 * VEL)
+        # "O caminho foi seu" (~11,7 s): a trilha inteira pulsa uma vez —
+        # um destaque só, porque o caminho que a fala nomeia já está na tela
+        cena.play(Succession(Wait(8.5 * VEL),
+                             Indicate(trilha, color=AMARELO,
+                                      scale_factor=1.06,
+                                      run_time=1.2 * VEL)))
+        # "Obrigado por ter vindo até o fim" (~15,5 s): o título pousa por
+        # cima deles
+        cena.play(Succession(Wait(2.6 * VEL),
+                             FadeIn(titulo, shift=0.5 * DOWN,
+                                    run_time=1.6 * VEL)))
 
     # cartão final silencioso (~3 s), no molde do video3.py
     fim = T("fim", 32, CINZA)

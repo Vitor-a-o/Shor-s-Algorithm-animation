@@ -236,13 +236,13 @@ de verdade.
 
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
-| V4N01 | Foi isso que a série prometeu no primeiro vídeo: a aposta que protege a internet tem uma saída, e ela tem nome. | 9,6 | Mesma composição do `V3N01`, invertida no resultado. A `caixa` verde do `C11N46` desce e vira o pedestal; o cadeado do `V4N00` volta por cima dela, com "fatorar n" gravado e a rachadura parada onde o vídeo 3 deixou. Em "tem uma saída", a rachadura **termina de correr** pelo arco inteiro, o arco estala em dois e os pedaços caem — a quebra que o `V3N02` prometeu |
+| V4N01 | Era essa a promessa do primeiro vídeo: um computador quântico consegue vencer a aposta que protege a internet. E agora a gente sabe como. | 11,9 | Mesma composição do `V3N01`, invertida no resultado. A `caixa` verde do `C11N46` desce e vira o pedestal; o cadeado do `V4N00` volta por cima dela, com "fatorar n" gravado e a rachadura parada onde o vídeo 3 deixou. Até "vencer a aposta" ele espera parado no pedestal, enquanto a fala lembra a promessa do vídeo 1. Em "vencer a aposta", a rachadura **termina de correr** pelo arco inteiro, o arco estala em dois e os pedaços caem — a quebra que o `V3N02` prometeu. "E agora a gente sabe como" cai sobre o cadeado já quebrado, sem animação nova |
 | V4N02 | Só que o exemplo que acabou de rodar tem dois dígitos. Os números do RSA têm centenas, e para eles seriam necessários milhares de qubits estáveis. Nenhuma máquina de hoje chega perto disso. | 14,6 | Em "tem dois dígitos", o número da moldura verde cresce em quantidade de dígitos até estourar as bordas do quadro. Em "milhares de qubits", um punhado de cartões-qubit do `C11N05` entra ao lado e **continua do mesmo tamanho** enquanto os dígitos correm — a desproporção é o argumento, e nenhuma legenda precisa dizê-la. O cadeado quebrado e a moldura **ficam onde estão, intactos**: nada apaga, nada é empurrado — a faixa dos dígitos corre acima dos cotos e as cartas entram pelo flanco direito, e no fim sai só o que este bloco pôs em cena, para o `V4N03` receber o quadro do `V4N01` sem uma vírgula de diferença |
-| V4N03 | A aposta não caiu: ela ganhou prazo. E a resposta já está sendo construída — uma criptografia que não vive de fatorar. | 9,6 | A rede de cadeados anônimos do `V1N03` volta ao fundo, apagada e **intacta**. Os cacos do cadeado quebrado sobem e se remontam num cadeado de outra forma, que fecha inteiro no lugar dele — sem letras gravadas, porque ainda não é assunto desta série |
-| V4N04 | Do resto de uma divisão até aqui foram quatro vídeos. Obrigado por ter chegado até o fim. | 7,1 | A rede sai e os quatro títulos voltam na trilha vertical do `V1N06`, agora todos acesos; o título da série pousa por cima deles |
+| V4N03 | Então, por enquanto, pode ficar tranquilo: a aposta continua de pé, ela só ganhou um prazo de validade. E a resposta já está sendo preparada: uma criptografia que não depende de fatorar. | 16,2 | A primeira frase ("pode ficar tranquilo") não tem imagem nova: é a fala se dirigindo a quem ouve, com o cadeado quebrado ainda diante dele. Em "a aposta continua de pé", a rede de cadeados anônimos do `V1N03` volta ao fundo, apagada e **intacta** — nenhum dos cadeados dela quebrou. Em "ela só ganhou um prazo de validade", os cacos reacendem e sobem. Em "E a resposta já está sendo preparada", eles se remontam na armação de um cadeado de outra forma, enquanto o velho sai. Em "uma criptografia que não depende de fatorar", ele fecha inteiro no lugar do antigo, com o flash seco do `fechar()` — sem letras gravadas, porque ainda não é assunto desta série |
+| V4N04 | Quatro vídeos atrás, a gente começou com o resto de uma divisão. Hoje você entende o algoritmo que pode mudar a segurança da internet. O caminho foi seu, eu só mostrei as peças. Obrigado por ter vindo até o fim. | 18,3 | A rede, o cadeado novo e a moldura saem no começo. Em "Quatro vídeos atrás", os quatro títulos voltam na trilha vertical do `V1N06`, agora todos acesos. Em "O caminho foi seu", a trilha inteira pulsa uma vez (`Indicate`) — é o caminho que a fala nomeia, e ele já está na tela. Em "Obrigado por ter vindo até o fim", o título da série pousa por cima deles |
 | — | *(cartão final, ~3 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" e, embaixo, "fim" |
 
-**Subtotal: 40,9 s** (4 locuções) + cartão ~3 s
+**Subtotal: 61,0 s** (4 locuções) + cartão ~3 s
 
 ---
 
@@ -254,11 +254,11 @@ de verdade.
 | Capítulo 9 | 15 | 89,9 s |
 | Capítulo 10 | 33 | 214,8 s |
 | Capítulo 11 | 46 | 343,8 s |
-| Encerramento | 4 | 40,9 s |
-| **Total** | **99** | **702,5 s** |
+| Encerramento | 4 | 61,0 s |
+| **Total** | **99** | **722,6 s** |
 
 Somando o `PAD` de 0,35 s por locução (34,7 s), os dois cartões silenciosos (~7 s) e os
-`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 34 s** — abaixo da
+`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 54 s** — abaixo da
 faixa de 13–14 min que a estimativa por `cena.play` previa. A diferença vem de onde era
 esperado: os 118 `play` do bloco não pedem 118 falas, porque as duas árvores do capítulo 10
 e as varreduras do capítulo 11 são animações que se explicam sozinhas.
@@ -268,7 +268,7 @@ registrador, dez segundos sob sete e meio de locução. Some uns 3 s ao render r
 demais trechos longos (`C11N31`, `C11N32`, `C10N10`, `C10N28`) cabem dentro da fala com folga, e a
 folga é silêncio com imagem correndo — o padrão da série.
 
-Com o vídeo perto de 12 min 34 s, a costura para abrir o capítulo 11 num quinto vídeo
+Com o vídeo perto de 12 min 54 s, a costura para abrir o capítulo 11 num quinto vídeo
 continua **sem precisar ser usada** — a fronteira clássico/quântico fica dentro do mesmo
 upload, como decidido no plano. A margem, porém, acabou: o bloco de fundamentos cresceu de
 5 para 10 locuções e paga 35 s; a medida no circuito (`C11N36`) e o parêntese da medida que
