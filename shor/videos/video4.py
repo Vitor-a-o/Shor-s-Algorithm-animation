@@ -4,10 +4,11 @@
 
 from manim import *
 
-from ..paleta import CINZA, LARANJA, PRETO, VERDE, VERMELHO, VEL
-from ..ferramentas import T, narra, so_fala
+from ..paleta import AMARELO, CINZA, LARANJA, PRETO, VERDE, VERMELHO, VEL
+from ..ferramentas import T, narra
 from ..montagem import TITULOS, CARTOES
 from ..cadeado import avancar, estado_v3, quebrar, rede
+from ..capitulos.capitulo10 import _carta_qubit
 from .comum import trilha_videos
 
 
@@ -99,14 +100,45 @@ def _cadeado_novo(escala=1.15):
     return VGroup(armacao, corpo, reticulado).scale(escala)
 
 
+# os dígitos de fantasia do V4N02 — nenhum destes números é um módulo RSA de
+# verdade —, mas FIXOS: dois renders dão exatamente a mesma fila, como a
+# semente da rede(). Os 2·_LADO primeiros montam a fila, o resto é a rolagem
+_FANTASIA = ("2664737828830059612330669705"
+             "8715021107285672207313391187"
+             "8635286457865764012707189839")
+_LADO = 20      # dígitos de cada lado do "21": no corpo de 42 pt a fila fica
+                # com 15,1 de largura e as bordas do quadro (14,2) cortam um
+                # dígito de cada lado ao meio — é assim que ela estoura
+_BANDA = 2.6    # a faixa dos dígitos, 1,2 acima dos cotos do cadeado quebrado
+
+
+def _fila_digitos(semente):
+    """A fila do V4N02: o "21" da moldura no meio e os dígitos de fantasia
+    para os dois lados, mais larga que o quadro.
+
+    `semente` é uma CÓPIA do "21" do C11N46, e é dela que os dígitos herdam
+    fonte, corpo (42) e cor (LARANJA) — o número que estoura o quadro é o
+    mesmo que acabou de sair do algoritmo, com mais dígitos. O buff é o vão
+    natural medido DENTRO do "21", para a fila ler como um número só e não
+    como dígitos soltos.
+
+    O par de ordem i é (fila[_LADO - i], fila[_LADO + i]): é por ele que o
+    número cresce, um dígito de cada lado por vez."""
+    dig = [T(c, 42, LARANJA) for c in _FANTASIA[:2 * _LADO]]
+    fila = VGroup(*dig[:_LADO], semente, *dig[_LADO:])
+    return fila.arrange(RIGHT, buff=0.098).move_to([0, _BANDA, 0])
+
+
 def encerramento(cena, caixa):
     """`caixa` é a moldura verde do C11N46 (o "21 = 3 × 7" E o retângulo) que
     o parte10 devolve viva: ela chega aqui intacta, porque quem chama esta
     função NÃO passa por limpar() entre os dois. É o pedestal do V4N01 — o
     cadeado pousa em cima dela, como no V3N01 pousou em cima da tese.
 
-    O V4N02 (os dígitos crescendo contra os cartões-qubit) ainda é só a
-    locução: é o único bloco do encerramento que falta animar."""
+    No V4N02 nada do que está em cena se mexe: a faixa de dígitos corre
+    acima do cadeado quebrado, as cartas-qubit entram pelo flanco e no fim
+    tudo o que o bloco pôs sai — o V4N03 recebe o quadro do V4N01 inteiro,
+    com o velho, os cacos e a moldura onde estavam."""
     # o resto do capítulo 11 sai em silêncio, antes da primeira fala —
     # mesma entrada do encerramento do vídeo 3
     sobra = [m for m in cena.mobjects if m not in caixa.submobjects]
@@ -125,7 +157,57 @@ def encerramento(cena, caixa):
         # os pedaços caem — a quebra que o V3N02 prometeu
         cacos = quebrar(cena, cad, run_time=2.8)
 
-    so_fala(cena, "V4N02", 14.6)
+    # o número que acabou de sair do algoritmo tem dois dígitos; os do RSA
+    # têm centenas. A fila nasce de uma CÓPIA do "21" da moldura, que fica
+    # onde está: o V4N03 e o V4N04 contam com ela inteira
+    semente = caixa[0][0].copy()
+    fila = _fila_digitos(semente)
+    pares = [(fila[_LADO - i], fila[_LADO + i]) for i in range(1, _LADO + 1)]
+    # as cartas do C11N05, no tamanho em que sempre estiveram: elas entram
+    # no flanco direito, livres do corpo do cadeado (que acaba em x = 1,2)
+    cartas = VGroup(*[_carta_qubit() for _ in range(5)])
+    cartas.arrange(RIGHT, buff=0.26).move_to([4.25, 1.05, 0])
+    # a rolagem do último trecho: os dígitos que o quadro mostra viram
+    # outros. A semente fica de fora — o "21" que veio da moldura é o único
+    # que não muda, e é ele que diz de onde o número saiu
+    rola = [d for d in fila
+            if d is not semente and abs(d.get_center()[0]) < 7.1]
+    novos = [T(c, 42, LARANJA).move_to(d)
+             for c, d in zip(_FANTASIA[2 * _LADO:], rola)]
+
+    with narra(cena, "V4N02", 14.6):
+        # "o exemplo que acabou de rodar": o 21 da moldura. Indicate porque
+        # ele devolve a peça idêntica — a moldura tem de chegar inteira lá
+        cena.play(Indicate(caixa[0][0], color=AMARELO, scale_factor=1.25),
+                  run_time=1.5 * VEL)
+        # "tem dois dígitos": o número sobe da moldura para a faixa, do
+        # mesmo tamanho — dois dígitos sozinhos no alto do quadro
+        cena.play(TransformFromCopy(caixa[0][0], semente), run_time=1.3 * VEL)
+        # e começa a crescer, um dígito de cada lado por vez
+        cena.play(LaggedStart(*[AnimationGroup(FadeIn(e, scale=0.4),
+                                               FadeIn(d, scale=0.4))
+                                for e, d in pares[:5]], lag_ratio=0.8),
+                  run_time=1.5 * VEL)
+        # "os números do RSA têm centenas": o mesmo passo, sem parar, até a
+        # fila sair pelas duas bordas do quadro
+        cena.play(LaggedStart(*[AnimationGroup(FadeIn(e, scale=0.4),
+                                               FadeIn(d, scale=0.4))
+                                for e, d in pares[5:]], lag_ratio=0.8),
+                  run_time=4.9 * VEL)
+        # "milhares de qubits": as cartas entram enquanto os dígitos ainda
+        # correm — num bloco só, porque é a simultaneidade que argumenta.
+        # Elas não crescem nem se multiplicam: são cinco, do tamanho de
+        # sempre, contra um número que já não cabe na tela
+        cena.play(Succession(LaggedStart(*[FadeIn(c, scale=0.7)
+                                           for c in cartas],
+                                         lag_ratio=0.45, run_time=1.4 * VEL),
+                             Wait(0.8 * VEL)),
+                  LaggedStart(*[Transform(d, n) for d, n in zip(rola, novos)],
+                              lag_ratio=0.15),
+                  run_time=2.2 * VEL)
+        # "nenhuma máquina de hoje chega perto disso": saem só as peças
+        # deste bloco, e o que fica é o quadro do fim do V4N01
+        cena.play(FadeOut(fila), FadeOut(cartas), run_time=1.6 * VEL)
 
     # o que sobrou do cadeado: os dois cotos, o corpo e o rótulo gravado
     velho = VGroup(cad[0], cad[1], cad[2])

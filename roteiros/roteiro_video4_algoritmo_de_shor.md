@@ -237,7 +237,7 @@ de verdade.
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
 | V4N01 | Foi isso que a série prometeu no primeiro vídeo: a aposta que protege a internet tem uma saída, e ela tem nome. | 9,6 | Mesma composição do `V3N01`, invertida no resultado. A `caixa` verde do `C11N46` desce e vira o pedestal; o cadeado do `V4N00` volta por cima dela, com "fatorar n" gravado e a rachadura parada onde o vídeo 3 deixou. Em "tem uma saída", a rachadura **termina de correr** pelo arco inteiro, o arco estala em dois e os pedaços caem — a quebra que o `V3N02` prometeu |
-| V4N02 | Só que o exemplo que acabou de rodar tem dois dígitos. Os números do RSA têm centenas, e para eles seriam necessários milhares de qubits estáveis. Nenhuma máquina de hoje chega perto disso. | 14,6 | Em "tem dois dígitos", o número da moldura verde cresce em quantidade de dígitos até estourar as bordas do quadro. Em "milhares de qubits", um punhado de cartões-qubit do `C11N05` entra ao lado e **continua do mesmo tamanho** enquanto os dígitos correm — a desproporção é o argumento, e nenhuma legenda precisa dizê-la |
+| V4N02 | Só que o exemplo que acabou de rodar tem dois dígitos. Os números do RSA têm centenas, e para eles seriam necessários milhares de qubits estáveis. Nenhuma máquina de hoje chega perto disso. | 14,6 | Em "tem dois dígitos", o número da moldura verde cresce em quantidade de dígitos até estourar as bordas do quadro. Em "milhares de qubits", um punhado de cartões-qubit do `C11N05` entra ao lado e **continua do mesmo tamanho** enquanto os dígitos correm — a desproporção é o argumento, e nenhuma legenda precisa dizê-la. O cadeado quebrado e a moldura **ficam onde estão, intactos**: nada apaga, nada é empurrado — a faixa dos dígitos corre acima dos cotos e as cartas entram pelo flanco direito, e no fim sai só o que este bloco pôs em cena, para o `V4N03` receber o quadro do `V4N01` sem uma vírgula de diferença |
 | V4N03 | A aposta não caiu: ela ganhou prazo. E a resposta já está sendo construída — uma criptografia que não vive de fatorar. | 9,6 | A rede de cadeados anônimos do `V1N03` volta ao fundo, apagada e **intacta**. Os cacos do cadeado quebrado sobem e se remontam num cadeado de outra forma, que fecha inteiro no lugar dele — sem letras gravadas, porque ainda não é assunto desta série |
 | V4N04 | Do resto de uma divisão até aqui foram quatro vídeos. Obrigado por ter chegado até o fim. | 7,1 | A rede sai e os quatro títulos voltam na trilha vertical do `V1N06`, agora todos acesos; o título da série pousa por cima deles |
 | — | *(cartão final, ~3 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" e, embaixo, "fim" |
@@ -546,6 +546,9 @@ da medida que não serve. Não sobra nenhuma.
    (a `rede()` volta ao fundo e os cacos se remontam no `_cadeado_novo()`, que fecha com
    flash) e o `V4N04` + cartão final (a `trilha_videos()` acesa, o título por cima e o
    "fim" embaixo). A classe `VideoShor` do `filme_shor.py` monta o vídeo inteiro.
-   **Falta só o `V4N02`**, que continua `so_fala()`: os dígitos crescendo contra os
-   cartões-qubit são o próximo bloco.
+   O `V4N02` também está **FEITO**: o "21" da moldura sobe por cópia para uma faixa
+   acima do cadeado e cresce, um dígito de cada lado por vez, até a fila ser cortada
+   pelas duas bordas do quadro; as cartas-qubit do `C11N05` entram pelo flanco no
+   tamanho de sempre enquanto os dígitos ainda correm, e no fim tudo o que o bloco pôs
+   sai sem tocar no cadeado nem na moldura. **O encerramento inteiro está animado.**
 
