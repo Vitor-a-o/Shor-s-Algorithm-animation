@@ -46,7 +46,7 @@ from shor.paleta import COR_FUNDO
 from shor.ferramentas import limpar
 from shor.montagem import (TITULOS, PARTES, EMENDA, abertura, encerramento,
                            abre_capitulo)
-from shor.videos import video2, video3, video4
+from shor.videos import video1, video2, video3, video4
 
 
 class FilmeCompleto(Scene):
@@ -158,3 +158,11 @@ class Parte10(Scene):
 
 class Parte11(Scene):
     def construct(self): _construct_parte(self, 11)
+
+
+class Parte_V1Abertura(Scene):
+    """Vídeo 1 em construção — por ora só a abertura (V1N00, cartão, V1N01).
+    Quando o vídeo 1 estiver completo, vira a Scene VideoIntro."""
+    def construct(self):
+        self.camera.background_color = COR_FUNDO
+        video1.abertura(self)
