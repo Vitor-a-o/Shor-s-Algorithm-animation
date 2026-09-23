@@ -163,8 +163,9 @@ class Parte11(Scene):
 class Parte_V1Abertura(Scene):
     """Vídeo 1 em construção — por ora a abertura (V1N00, cartão, V1N01),
     a fatoração (V1N02), o RSA na rede (V1N03), a quebra (V1N04), a série
-    na trilha (V1N05–V1N06) e as prévias dos vídeos 2 e 3 (V1N07–V1N09).
-    Quando o vídeo 1 estiver completo, vira a Scene VideoIntro."""
+    na trilha (V1N05–V1N06), as prévias dos vídeos 2, 3 e 4 (V1N07–V1N10)
+    e o encerramento (V1N11). Quando o vídeo 1 estiver completo, vira a
+    Scene VideoIntro."""
     def construct(self):
         self.camera.background_color = COR_FUNDO
         cad, bloco, interrogacoes = video1.abertura(self)
@@ -174,4 +175,8 @@ class Parte_V1Abertura(Scene):
         titulo, trilha, marca = video1.corpo_serie(self, cacos)
         titulo, alvo, moldura, ainv = video1.corpo_previa2(self, titulo, trilha,
                                                             marca)
-        video1.corpo_previa3(self, titulo, alvo, moldura, ainv)
+        titulo, alvo, moldura = video1.corpo_previa3(self, titulo, alvo,
+                                                     moldura, ainv)
+        titulo, trilha, fatoracao = video1.corpo_previa4(self, titulo, alvo,
+                                                         moldura)
+        video1.encerramento(self, titulo, trilha, fatoracao)

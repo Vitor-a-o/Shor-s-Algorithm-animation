@@ -5,8 +5,8 @@
 from manim import *
 import numpy as np
 
-from ..paleta import (AMARELO, AZUL, BRANCO, CARTAO_ESCURO, CIANO, CINZA,
-                      LARANJA, PRETO, ROSA, VERDE, VERDE2, VERMELHO, VEL)
+from ..paleta import (AMARELO, AZUL, BRANCO, CAIXA, CARTAO_ESCURO, CIANO,
+                      CINZA, LARANJA, PRETO, ROSA, VERDE, VERDE2, VERMELHO, VEL)
 from ..ferramentas import T, formula, narra, pot, traco
 from ..cadeado import cadeado, fechar, gravar, quebrar, rachar, rede
 from .comum import VIDEOS, trilha_videos
@@ -1043,3 +1043,283 @@ def corpo_previa3(cena, titulo, alvo, moldura, ainv):
         _previa_v3b(cena, regiao)
 
     return titulo, alvo3, moldura
+
+
+def _previa_v4(cena, regiao):
+    """V1N10 — os cinco trechos dos capítulos 9, 10 e 11 dentro da mesma
+    moldura, e a seta laranja pousando num pico. Como nas prévias
+    anteriores, cada trecho recria só o gesto mínimo da célula, sem
+    importar capitulo9/9b/10.
+
+    A decupagem do roteiro vai até 14,0 s e ainda põe a trilha voltando
+    depois; a fala tem 13,8. Cada trecho perdeu ~0,2 s para tudo caber:
+    0,6–3,3 · 3,3–5,4 · 5,4–7,2 · 7,2–9,1 · 9,1–11,0 · seta até 11,4.
+    A 15 fps o arredondamento de quadros soma ~0,5 s; conferido com
+    folga dentro do PAD.
+
+    Devolve (curva, seta), em cena: o corte para o 21 = 3 × 7 é do
+    chamador, que também tira a moldura no mesmo quadro."""
+    centro, _, _ = regiao
+    cx, cy = centro[0], centro[1]
+
+    def _zigue_zague():
+        # cap. 9: a ordem de 2 mod 21. Expoentes em cima, restos embaixo;
+        # o verde desce de cada expoente ao seu resto e sobe para o
+        # próximo, o último arco fecha o ciclo de volta no começo e um
+        # flash amarelo dá a volta inteira no caminho
+        xs = np.linspace(cx - 3.5, cx + 3.0, 6)
+        yT, yB = cy + 0.9, cy - 0.2
+        expoentes = VGroup(*[T(str(k + 1), 24, AMARELO).move_to([x, yT, 0])
+                             for k, x in enumerate(xs)])
+        restos = VGroup(*[T(str(2 ** (k + 1) % 21), 24, PRETO)
+                          .move_to([x, yB, 0]) for k, x in enumerate(xs)])
+        desce = [Arrow(e.get_bottom(), r.get_top(), buff=0.08, color=VERDE,
+                       stroke_width=3, max_tip_length_to_length_ratio=0.3)
+                 for e, r in zip(expoentes, restos)]
+        sobe = [ArcBetweenPoints(restos[k].get_right() + 0.1 * RIGHT,
+                                 expoentes[k + 1].get_left() + 0.1 * LEFT,
+                                 angle=0.6, color=VERDE, stroke_width=3)
+                for k in range(5)]
+        circulos = [Circle(radius=0.26, color=VERDE, stroke_width=2.5)
+                    .move_to(r) for r in restos]
+        fecha = ArcBetweenPoints(restos[5].get_bottom() + 0.2 * DOWN,
+                                 restos[0].get_bottom() + 0.2 * DOWN,
+                                 angle=-0.9, color=VERDE, stroke_width=3)
+        passos = []
+        for k in range(6):
+            passos.append(AnimationGroup(GrowArrow(desce[k]),
+                                         Create(circulos[k])))
+            if k < 5:
+                passos.append(Create(sobe[k]))
+        # o caminho do flash: as descidas sem a ponta, os arcos, o fecho
+        caminho = []
+        for k in range(6):
+            caminho.append(Line(desce[k].get_start(), desce[k].get_end()))
+            caminho.append(sobe[k] if k < 5 else fecha)
+        caminho = [p.copy().set_stroke(AMARELO, width=7) for p in caminho]
+
+        cena.play(FadeIn(expoentes), FadeIn(restos), run_time=0.35 * VEL)
+        cena.play(LaggedStart(*passos, lag_ratio=1.0), run_time=1.3 * VEL)
+        cena.play(Create(fecha), run_time=0.25 * VEL)
+        cena.play(LaggedStart(*[ShowPassingFlash(p, time_width=1.0)
+                                for p in caminho], lag_ratio=1.0),
+                  run_time=0.55 * VEL)
+        cena.play(FadeOut(VGroup(expoentes, restos, *desce, *sobe,
+                                 *circulos, fecha)), run_time=0.25 * VEL)
+
+    def _arvores():
+        # cap. 10: um tronco, duas árvores; os ramos que se repetem nos dois
+        # lados acendem juntos, o resto cai e sobram dois números pequenos
+        # (o 7 e o 9 do 2³ − 1 e do 2³ + 1 — ainda não o 3 × 7)
+        ponta = np.array([cx, cy + 1.45, 0])
+        garfo = np.array([cx, cy + 0.9, 0])
+
+        def ramo(a, b):
+            return Line(a, b, color=PRETO, stroke_width=3)
+
+        tronco = ramo(ponta, garfo)
+        filhos, netos, folhas = [], [], []
+        acesos, apagam, pontas_internas = [], [], []
+        for lado in (-1, 1):
+            f = garfo + [2.2 * lado, -0.6, 0]
+            filhos.append(ramo(garfo, f))
+            for s in (-1, 1):
+                g = f + [1.0 * s, -0.7, 0]
+                n = ramo(f, g)
+                netos.append(n)
+                for t in (-1, 1):
+                    h = g + [0.5 * t, -0.7, 0]
+                    fo = ramo(g, h)
+                    folhas.append(fo)
+                    # o caminho que vai para o centro é o que se repete
+                    # nos dois lados, espelhado
+                    if s == -lado and t == -lado:
+                        acesos += [n, fo]
+                        pontas_internas.append(h)
+                    elif s != -lado:
+                        apagam.append(fo)
+                if s != -lado:
+                    apagam.append(n)
+        numeros = VGroup(T("7", 28, CINZA), T("9", 28, CINZA))
+        for num, h in zip(numeros, pontas_internas):
+            num.move_to(h + 0.3 * DOWN)
+        outras = [fo for fo in folhas if fo not in acesos and fo not in apagam]
+
+        cena.play(Create(tronco), run_time=0.35 * VEL)
+        cena.play(*[Create(f) for f in filhos], run_time=0.4 * VEL)
+        cena.play(LaggedStart(*[Create(n) for n in netos],
+                              *[Create(fo) for fo in folhas],
+                              lag_ratio=0.12), run_time=0.5 * VEL)
+        cena.play(*[r.animate.set_stroke(AMARELO, width=5) for r in acesos],
+                  run_time=0.3 * VEL)
+        cena.play(*[FadeOut(r) for r in apagam + outras],
+                  *[GrowFromPoint(num, h) for num, h
+                    in zip(numeros, pontas_internas)], run_time=0.35 * VEL)
+        cena.play(FadeOut(VGroup(tronco, *filhos, *acesos, numeros)),
+                  run_time=0.2 * VEL)
+
+    def _qubits():
+        # cap. 11: o mesmo círculo ciano dos qubits da linha do tempo do
+        # V1N04, grande, com o gradiente dos bits 1 e 0 dentro (a
+        # superposição); o fio liga os dois e eles colapsam juntos, no
+        # mesmo quadro, no ciano chapado
+        par = VGroup()
+        for x in (cx - 2.0, cx + 2.0):
+            q = _qubit().scale(5.5).set_stroke(width=4)
+            q.set_fill([CIANO, AMARELO], opacity=0.9).set_sheen_direction(UR)
+            par.add(q.move_to([x, cy + 0.1, 0]))
+        fio = Line(par[0].get_right(), par[1].get_left(), color=PRETO,
+                   stroke_width=3)
+        cena.play(LaggedStart(*[GrowFromCenter(q) for q in par],
+                              lag_ratio=0.3), run_time=0.5 * VEL)
+        cena.play(Create(fio), run_time=0.4 * VEL)
+        cena.play(*[q.animate.set_fill(CIANO, opacity=1) for q in par],
+                  *[Flash(q, color=CIANO, line_length=0.25, flash_radius=0.5)
+                    for q in par],
+                  Indicate(fio, color=CIANO, scale_factor=1.0),
+                  run_time=0.6 * VEL)
+        cena.play(FadeOut(par), FadeOut(fio), run_time=0.3 * VEL)
+
+    def _circuito():
+        # cap. 11: três fios, as portas descendo no fio de baixo (cada uma
+        # presa a um fio de cima por um ponto de controle) e o flash da
+        # medição na ponta
+        x0, x1 = cx - 3.8, cx + 3.0
+        ys = (cy + 0.9, cy + 0.2, cy - 0.5)
+        fios = VGroup(*[Line([x0, y, 0], [x1, y, 0], color=PRETO,
+                             stroke_width=2.5) for y in ys])
+        portas = VGroup()
+        for x, y_ctrl in ((cx - 2.0, ys[0]), (cx - 0.4, ys[1]),
+                          (cx + 1.2, ys[0])):
+            caixa = (Square(0.55).set_fill(CAIXA, opacity=1)
+                     .set_stroke(PRETO, width=2.5).move_to([x, ys[2], 0]))
+            haste = Line([x, y_ctrl, 0], caixa.get_top(), color=PRETO,
+                         stroke_width=2.5)
+            ctrl = Dot([x, y_ctrl, 0], radius=0.07, color=PRETO)
+            portas.add(VGroup(haste, ctrl, caixa))
+        medidor = (Square(0.55).set_fill(BRANCO, opacity=1)
+                   .set_stroke(PRETO, width=2.5).move_to([x1, ys[2], 0]))
+        mostrador = Arc(radius=0.18, start_angle=PI / 6, angle=2 * PI / 3,
+                        color=PRETO, stroke_width=2.5)
+        mostrador.move_to(medidor.get_center() + 0.02 * DOWN)
+        agulha = Line(medidor.get_center() + 0.12 * DOWN,
+                      medidor.get_center() + [0.14, 0.14, 0], color=PRETO,
+                      stroke_width=2.5)
+        medida = VGroup(medidor, mostrador, agulha)
+
+        cena.play(LaggedStart(*[Create(f) for f in fios], lag_ratio=0.2),
+                  run_time=0.5 * VEL)
+        cena.play(LaggedStart(*[FadeIn(p, shift=1.2 * DOWN) for p in portas],
+                              lag_ratio=0.4), run_time=0.8 * VEL)
+        cena.play(FadeIn(medida),
+                  Flash(medidor, color=AMARELO, line_length=0.3,
+                        flash_radius=0.45), run_time=0.4 * VEL)
+        cena.play(FadeOut(VGroup(fios, portas, medida)), run_time=0.2 * VEL)
+
+    def _ondas():
+        # cap. 11: quatro ondas empilhadas descem e se somam numa curva de
+        # interferência com os picos espaçados — o período delas é o mesmo
+        # 2,8 da tela, então os picos caem em cx e cx ± 2,8
+        w = 2 * PI / 2.8
+        a, b = cx - 4.2, cx + 4.2
+        y0 = cy - 1.15
+        ondas = VGroup(*[FunctionGraph(
+            lambda x, j=j: cy + 1.35 - 0.35 * (j - 1)
+            + 0.14 * np.cos(j * w * (x - cx)),
+            x_range=[a, b, 0.02], color=AZUL, stroke_width=2.5)
+            for j in range(1, 5)])
+        curva = FunctionGraph(
+            lambda x: y0 + 0.25 * sum(np.cos(j * w * (x - cx))
+                                      for j in range(1, 5)),
+            x_range=[a, b, 0.01], color=PRETO, stroke_width=4)
+        cena.play(LaggedStart(*[Create(o) for o in ondas], lag_ratio=0.2),
+                  run_time=0.8 * VEL)
+        copias = [curva.copy() for _ in ondas]
+        cena.play(*[ReplacementTransform(o, c) for o, c in zip(ondas, copias)],
+                  run_time=0.9 * VEL)
+        cena.remove(*copias)
+        cena.add(curva)
+        cena.play(Indicate(curva, color=PRETO, scale_factor=1.03),
+                  run_time=0.2 * VEL)
+        return curva, np.array([cx + 2.8, y0 + 1.0, 0])
+
+    _zigue_zague()
+    _arvores()
+    _qubits()
+    _circuito()
+    curva, pico = _ondas()
+
+    # a seta laranja pousa no pico da direita
+    seta = Arrow(pico + 1.3 * UP, pico + 0.08 * UP, buff=0, color=LARANJA,
+                 stroke_width=6)
+    cena.play(FadeIn(seta, shift=0.5 * DOWN), run_time=0.4 * VEL)
+    return curva, seta
+
+
+def corpo_previa4(cena, titulo, alvo3, moldura):
+    """V1N10. O "3" do V1N08 vira o "4", a prévia do vídeo 4 roda na mesma
+    moldura e, no corte, o 21 = 3 × 7 entra grande no centro — a única
+    fórmula fixa das prévias (roteiro, "Critério das prévias"): nasce de
+    um corte seco, sem Write e sem transformar outra fórmula. Por fim a
+    trilha volta com os quatro títulos acesos, o "4" deslizando para o
+    lugar dele, e pulsa uma vez.
+
+    Devolve (titulo, trilha, fatoracao), em cena: o encerramento os tira
+    de baixo para cima."""
+    regiao = (_JANELA_CENTRO, _JANELA_LARGURA, _JANELA_ALTURA)
+
+    quatro = VGroup(T("4", 26, LARANJA), T(VIDEOS[3], 26, PRETO))
+    quatro.arrange(RIGHT, buff=0.35).scale(0.85)
+    quatro.move_to(alvo3).align_to(alvo3, LEFT)
+
+    fatoracao = formula(("21", LARANJA), ("=", PRETO), ("3", ROSA),
+                        ("×", PRETO), ("7", VERDE2), tamanho=96, buff=0.3)
+    trilha = trilha_videos(acesos=(1, 2, 3, 4)).to_edge(LEFT, buff=1.3)
+
+    with narra(cena, "V1N10", 13.8):
+        # o V1N09 deixou o esquema do RSA inteiro na janela, com o rótulo
+        # "Euler"; sai tudo o que não é o título, o "3" e a moldura
+        sobra = [m for m in cena.mobjects
+                 if all(m is not x for x in (titulo, alvo3, moldura))]
+        cena.play(*[FadeOut(m) for m in sobra],
+                  ReplacementTransform(alvo3, quatro), run_time=0.6 * VEL)
+
+        curva, seta = _previa_v4(cena, regiao)
+
+        # o corte: a janela some no mesmo quadro em que o 21 = 3 × 7 entra
+        cena.remove(moldura, curva, seta)
+        cena.add(fatoracao)
+
+        # a trilha volta, toda acesa: o "4" desliza para o lugar dele e os
+        # outros três entram junto; o 21 = 3 × 7 abre espaço à direita
+        cena.play(Succession(Wait(0.7 * VEL), AnimationGroup(
+            ReplacementTransform(quatro, trilha[3]),
+            *[FadeIn(trilha[i], shift=0.2 * RIGHT) for i in range(3)],
+            fatoracao.animate.move_to([2.4, 0, 0]), run_time=0.7 * VEL)))
+        for linha in trilha:
+            cena.remove(*linha)
+        cena.add(trilha)
+        # e pulsa uma vez
+        cena.play(trilha.animate(rate_func=there_and_back).scale(1.1),
+                  run_time=0.5 * VEL)
+
+    return titulo, trilha, fatoracao
+
+
+def encerramento(cena, titulo, trilha, fatoracao):
+    """V1N11. Tudo sai de baixo para cima, por altura na tela — o 4, o 3,
+    o 21 = 3 × 7, o 2, o 1 e o título da série —, menos o "2 ·
+    Aritmética modular": esse vira a palavra "resto", no verde de c, no
+    centro. É a costura para o corte: termina com "resto" sozinho em cena,
+    e a abertura do vídeo 2 entra no corte seguinte."""
+    resto = T("resto", 72, VERDE)
+    pecas = sorted([*trilha, fatoracao, titulo], key=lambda m: m.get_y())
+
+    with narra(cena, "V1N11", 8.8):
+        # "com o resto de uma divisão" (~3,4 s): o 2 chega em "resto"
+        # junto com a palavra
+        cena.play(Succession(Wait(1.4 * VEL), LaggedStart(
+            *[ReplacementTransform(m, resto) if m is trilha[1] else FadeOut(m)
+              for m in pecas], lag_ratio=0.25, run_time=2.6 * VEL)))
+
+    return resto
