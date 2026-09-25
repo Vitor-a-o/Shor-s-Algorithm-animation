@@ -1908,16 +1908,17 @@ def _previa_v4a(cena, moldura, t0):
 
 
 def _previa_v4b(cena, moldura, ciclo, t0):
-    """V1N11 — o contador do V1N02 e os três trechos do cap. 11 dentro da
-    MESMA moldura: nada aqui a reabre, porque o 4 não troca de número
-    nesta fala, o mesmo recurso do V1N09. Os trechos são os da prévia de
-    uma fala só; mudam só de lugar e de tempo, e as ondas ganham os vales
-    e os picos que o roteiro pede sob "se cancelam" e "se reforçam".
+    """V1N11 — os três trechos do cap. 11 dentro da MESMA moldura: nada
+    aqui a reabre, porque o 4 não troca de número nesta fala, o mesmo
+    recurso do V1N09. Os trechos são os da prévia de uma fala só; mudam
+    só de lugar e de tempo, e as ondas ganham os vales e os picos que o
+    roteiro pede sob "se cancelam" e "se reforçam".
 
-    `ciclo` é o que a _previa_v4a deixou em cena; `t0`, o começo do narra
-    do V1N11. Termina com a seta laranja no pico: a _fecha_janela vem
-    logo depois, no corpo_previa4."""
-    tag, est = "V1N11", 17.4
+    `ciclo` é o que a _previa_v4a deixou em cena, e sai por FadeOut assim
+    que a fala chega em "quântico"; `t0` é o começo do narra do V1N11.
+    Termina com a seta laranja no pico: a _fecha_janela vem logo depois,
+    no corpo_previa4."""
+    tag, est = "V1N11", 18.7
     k = _k(tag, est)
 
     def ancora(frac):
@@ -2052,38 +2053,28 @@ def _previa_v4b(cena, moldura, ciclo, t0):
         cena.remove(*copias)
         cena.add(picos, vales)
 
-        ancora(0.723)                       # "se cancelam"
+        ancora(0.737)                       # "se cancelam"
         cena.play(*[Transform(v, r) for v, r in zip(vales, vales_rasos)],
                   run_time=0.4 * VEL * k)
-        ancora(0.809)                       # "se reforçam"
+        ancora(0.817)                       # "se reforçam"
         cena.play(*[Transform(p, h) for p, h in zip(picos, picos_altos)],
                   run_time=0.5 * VEL * k)
-        ancora(0.862)                       # "E esse é o algoritmo de Shor"
+        ancora(0.866)                       # "E esse é o algoritmo de Shor"
         cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.5 * VEL * k)
 
-    # 0,0–5,8: a janela congela no ciclo fechado do V1N10; em "tão lento
-    # quanto fatorar" (≈ 0,223) o ciclo sai e o contador do V1N02 — o
-    # mesmo _contador — dispara de novo no centro da janela e estoura para
-    # fora dela no FadeOut(scale=4) de lá. Comprimido para fechar antes do
-    # 5,8: 0,3 + 1,2 + 0,4 no lugar dos 0,8 + 3,0 + 0,6 do V1N02
-    e = ValueTracker(0)
-    contador = _contador(e, moldura.get_center())
-    ancora(0.223)
-    cena.play(FadeOut(ciclo), FadeIn(contador), run_time=0.3 * VEL * k)
-    cena.play(e.animate.set_value(10), run_time=1.2 * VEL * k,
-              rate_func=linear)
-    contador.clear_updaters()
-    cena.play(FadeOut(contador, scale=4), run_time=0.4 * VEL * k)
+    # 0,0–6,2: a janela fica parada no ciclo fechado que o V1N10 deixou,
+    # até "quântico" (≈ 0,332), quando o ciclo sai
+    ancora(0.332)
+    cena.play(FadeOut(ciclo), run_time=0.3 * VEL * k)
 
-    # 5,8–9,0 · cap. 11 (≈ 0,333, "Então"): os qubits, 1,6× mais lentos
-    ancora(0.333)
+    # 6,2–9,4 · cap. 11 ("Então"): os qubits, 1,6× mais lentos
     _qubits(1.6 * k)
-    # 9,0–11,4 · cap. 11 (≈ 0,517, "circuito"): o circuito, 1,2×
-    ancora(0.517)
+    # 9,4–12,6 · cap. 11 (≈ 0,503, "circuito"): o circuito, 1,2×
+    ancora(0.503)
     _circuito(1.2 * k)
-    # 11,4–15,5 · cap. 11 (≈ 0,655): as ondas começam 0,6 s antes do 12,0
-    # da decupagem para a curva já estar inteira quando chega "se cancelam"
-    ancora(0.655)
+    # 12,6–16,4 · cap. 11 (≈ 0,674): as ondas se somam na curva de
+    # interferência
+    ancora(0.674)
     _ondas()
 
 
@@ -2108,8 +2099,8 @@ def corpo_previa4(cena, titulo, trilha):
         moldura, _ = _abre_janela(cena, titulo, trilha, 3, k)
         ciclo = _previa_v4a(cena, moldura, t0)
 
-    with narra(cena, "V1N11", 17.4):
-        tag, est = "V1N11", 17.4
+    with narra(cena, "V1N11", 18.7):
+        tag, est = "V1N11", 18.7
         k = _k(tag, est)
         t0 = _agora(cena)
         _previa_v4b(cena, moldura, ciclo, t0)
