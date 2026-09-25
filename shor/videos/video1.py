@@ -1453,8 +1453,9 @@ def _previa_v3a(cena, moldura, fermat, t0):
     (Euler: o contra-exemplo mod 9), na ordem exata da tabela.
 
     `fermat` é o rótulo que a _abre_janela pôs na moldura; em 5,4 ele vira
-    "Euler" no mesmo lugar, e o "Euler" fica para o V1N09 (a _fecha_janela
-    do fim do V1N09 o leva junto com o conteúdo).
+    "Euler" no mesmo lugar. Devolve o "Euler" (em cena): o V1N09 o recebe
+    e o vira "RSA" no mesmo canto, e só a _fecha_janela do fim do V1N09
+    leva esse rótulo junto com o conteúdo.
 
     Três encaixes: a tabela mod 7 com os arcos (0,0–5,4, a mesma cena), a
     mod 9 com as cruzes, as chaves e a caixa (5,4–11,0), o cadeado."""
@@ -1575,13 +1576,21 @@ def _previa_v3a(cena, moldura, fermat, t0):
               FadeIn(mini_cad), run_time=0.5 * VEL * k)
     cena.play(FadeOut(mini_cad), run_time=0.6 * VEL * k)
 
+    return euler
 
-def _previa_v3b(cena, moldura):
+
+def _previa_v3b(cena, moldura, euler, t0):
     """V1N09 — cap. 8: o esquema do RSA (mensagem → cifra → mensagem),
     as duas chaves, o exemplo rodando e o n se partindo nos primos do
-    V1N02. A janela e o rótulo "Euler" continuam exatamente como o
-    _previa_v3a deixou — nada aqui os reabre, porque o título 3 é o único
-    da trilha que não troca de número nesta fala.
+    V1N02. A janela continua exatamente como a _previa_v3a deixou — nada
+    aqui a reabre, porque o título 3 é o único da trilha que não troca de
+    número nesta fala.
+
+    `euler` é o rótulo que a _previa_v3a deixou no canto da moldura; na
+    palavra "RSA" da fala (≈ 0,236, `t0` é o começo do narra desta tag)
+    ele vira "RSA" no mesmo canto e tamanho da troca Fermat → Euler. O
+    "RSA" fica em cena — só a _fecha_janela do fim desta fala o leva
+    junto com o conteúdo.
 
     O esquema fica em cena de 0,0 a 12,5, então o encaixe é um só, com os
     cartões nas duas posições, os "?" já espalhados e a caixa final.
@@ -1608,6 +1617,10 @@ def _previa_v3b(cena, moldura):
     msg2 = _caixa("M", CARTAO_ESCURO).next_to(seta2, RIGHT, buff=0.1)
     # o meio do esquema: o n e a seta de despedaçar ficam embaixo dele
     xm = VGroup(msg1, msg2).get_center()[0]
+
+    # o rótulo da janela: "Euler" vira "RSA" no mesmo canto e tamanho da
+    # troca Fermat → Euler da _previa_v3a
+    rsa = T("RSA", 24, LARANJA).move_to(euler, aligned_edge=LEFT)
 
     # 2,6–5,6 · cap. 8: os dois cartões nascem acima das setas e descem até
     # elas — o cinza "pública" na primeira, o amarelo "privada" na segunda
@@ -1650,6 +1663,12 @@ def _previa_v3b(cena, moldura):
                           FadeIn(msg2, shift=0.2 * s * RIGHT), lag_ratio=0.5),
               run_time=2.6 * VEL * k)
 
+    # "RSA" ≈ 0,236 da fala (38 / 161 caracteres, o começo da palavra
+    # "RSA" no texto do V1N09): "Euler" vira "RSA" no rótulo da janela
+    cena.play(Succession(
+        _ate(cena, t0, tag, est, 0.236),
+        ReplacementTransform(euler, rsa, run_time=0.4 * VEL * k)))
+
     cena.play(FadeIn(pub, shift=0.3 * s * DOWN), run_time=0.8 * VEL * k)
     cena.play(pub.animate.move_to(pub_fim), run_time=0.5 * VEL * k)
     cena.play(FadeIn(priv, shift=0.3 * s * DOWN), run_time=0.8 * VEL * k)
@@ -1691,11 +1710,12 @@ def corpo_previa3(cena, titulo, trilha):
         t0 = _agora(cena)
         moldura, fermat = _abre_janela(cena, titulo, trilha, 2, k,
                                        rotulo="Fermat")
-        _previa_v3a(cena, moldura, fermat, t0)
+        euler = _previa_v3a(cena, moldura, fermat, t0)
 
     with narra(cena, "V1N09", 12.5):
         k = _k("V1N09", 12.5)
-        _previa_v3b(cena, moldura)
+        t0 = _agora(cena)
+        _previa_v3b(cena, moldura, euler, t0)
         _fecha_janela(cena, titulo, trilha, 2, moldura, k)
 
     return titulo, trilha
