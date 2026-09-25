@@ -38,7 +38,7 @@ encontra o período). A lista `PARTES` em `montagem.py` já está na ordem certa
   1–5, 6–8, 9–11.
 - **Convenção de tags de áudio**: tags de capítulo continuam como estão (`C1N01`...); tags
   novas de costura de cada vídeo (abertura/recap/gancho) usam prefixo `V{n}N`. O vídeo 1
-  vai de `V1N00` a `V1N11`, doze locuções.
+  vai de `V1N00` a `V1N12`, treze locuções.
 
 ## Projeção de duração
 
