@@ -68,10 +68,10 @@ def parte7(cena):
 
     # POR QUE a divisão é proibida: dividir por um fator é MULTIPLICAR
     # pelo inverso dele — e 1/3 e 1/6 NÃO EXISTEM módulo 9
-    exp1 = T("dividir = multiplicar pelo inverso", 22,
+    exp1 = T(tx("c7.dividir_e_multiplicar"), 22,
              PRETO).move_to([3.7, 1.75, 0])
-    exp2 = formula(("1/", PRETO), ("3", ROXO), ("e", PRETO), ("1/", PRETO),
-                   ("6", ROXO), ("não existem", VERMELHO), *MOD("9"),
+    exp2 = formula(("1/", PRETO), ("3", ROXO), (tx("geral.e"), PRETO), ("1/", PRETO),
+                   ("6", ROXO), (tx("c7.nao_existem"), VERMELHO), *MOD("9"),
                    tamanho=22, buff=0.08).move_to([3.7, 1.2, 0])
     with narra(cena, "C7N04", 8.3):
         cena.play(FadeIn(exp1), Write(exp2), run_time=1.0 * VEL)
@@ -144,7 +144,7 @@ def parte7(cena):
     # saem, e no mesmo bloco o geral sobe e cresce — sobrevivendo à limpeza,
     # o mesmo mobject viajando, sem ser redesenhado — enquanto o título
     # nasce. res é a última coisa a sumir, debaixo do geral que o generaliza.
-    titulo = T("Teorema de Euler", 40).move_to([0, 0.9, 0])
+    titulo = T(tx("c7.teorema_euler"), 40).move_to([0, 0.9, 0])
     saida = AnimationGroup(
         FadeOut(head_c), FadeOut(head_l), FadeOut(lin_h), FadeOut(lin_v),
         *[FadeOut(l) for l in linhas_cel],

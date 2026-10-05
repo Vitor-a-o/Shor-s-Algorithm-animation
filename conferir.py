@@ -6,9 +6,14 @@ virar exatamente uma chamada de narra()/so_fala() no capítulo correspondente,
 na mesma ordem e com a mesma estimativa.
 
 Uso:
-    python conferir.py                 # confere tudo o que encontrar
+    python conferir.py                 # confere roteiros/ (pt) contra o código
     python conferir.py 6 7 8           # só esses capítulos
     python conferir.py --quiet         # só os problemas
+    python conferir.py --en            # confere roteiros/en/ contra o código
+
+Em --en a coluna Est. do roteiro NÃO é comparada com o est= do código (o
+est= do código é o do pt; em inglês quem manda é o DUR medido). Se não
+houver nenhum roteiro em roteiros/en/, avisa e sai com 0.
 
 Sai com código 1 se houver qualquer ERRO (avisos não derrubam).
 Só leitura: este script nunca escreve nada.
@@ -38,12 +43,19 @@ TAG = re.compile(r"^(?:C(\d+)N(\d+)|V(\d+)N(\d+)|CAP(\d+))$")
 EST = re.compile(r"^\d+,\d$")
 
 
-def le_roteiros():
-    """{tag: (est, arquivo, ordem_global)} a partir das tabelas dos .md."""
+def le_roteiros(en=False):
+    """{tag: (est, arquivo, ordem_global)} a partir das tabelas dos .md.
+
+    pt: só roteiros/*.md. en: só roteiros/en/*.md (mesmos nomes de arquivo
+    dos pt) — as duas pastas nunca são lidas juntas, senão tag duplicada."""
     fala = {}
-    arquivos = varre("**/roteiro_video*.md")
+    pasta = RAIZ / "roteiros" / "en" if en else RAIZ / "roteiros"
+    arquivos = sorted(pasta.glob("roteiro_video*.md"))
     if not arquivos:
-        print("!! nenhum roteiro_video*.md encontrado a partir de", RAIZ)
+        if en:
+            print("!! nenhum roteiro em roteiros/en/")
+        else:
+            print("!! nenhum roteiro_video*.md encontrado em", pasta)
     for md in arquivos:
         i = 0
         for linha in md.read_text(encoding="utf-8").splitlines():
@@ -76,7 +88,8 @@ def le_codigo():
     uso = {}
     # todo .py do projeto, menos as ferramentas de linha de comando
     arquivos = [f for f in varre("**/*.py")
-                if f.name not in ("conferir.py", "medir.py", "duracoes.py")]
+                if f.name not in ("conferir.py", "medir.py", "idioma.py",
+                                   "duracoes_pt.py", "duracoes_en.py")]
     for py in arquivos:
         for n, linha in enumerate(py.read_text(encoding="utf-8").splitlines(), 1):
             for m in CHAMADA.finditer(linha):
@@ -111,8 +124,11 @@ def capitulo_da_tag(tag):
 def main():
     alvo = {int(a) for a in sys.argv[1:] if a.isdigit()}
     quieto = "--quiet" in sys.argv
+    modo_en = "--en" in sys.argv
 
-    fala, mds = le_roteiros()
+    fala, mds = le_roteiros(en=modo_en)
+    if modo_en and not mds:
+        return 0
     uso, pys = le_codigo()
     cartoes, mont = cartoes_de_montagem()
 
@@ -166,12 +182,12 @@ def main():
                     onde = ", ".join(f"{p.name}:{ln}" for _, p, ln, _ in uso[tag])
                     erro(f"{tag}: chamado {len(uso[tag])} vezes ({onde})")
                 e = uso[tag][0][0]
-                if e is not None and abs(e - est) > 0.051:
+                if not modo_en and e is not None and abs(e - est) > 0.051:
                     erro(f"{tag}: est={e} no código e {est:.1f} no roteiro")
             elif n not in cartoes:
                 erro(f"{tag}: sem entrada em CARTOES do montagem.py "
                      f"(roteiro pede {est:.1f} s, o código vai usar o padrão 3.0)")
-            elif abs(cartoes[n] - est) > 0.051:
+            elif not modo_en and abs(cartoes[n] - est) > 0.051:
                 erro(f"{tag}: CARTOES[{n}] = {cartoes[n]:.1f} mas o roteiro diz {est:.1f}")
             continue
         if tag not in uso:
@@ -183,7 +199,7 @@ def main():
         est_cod = uso[tag][0][0]
         if est_cod is None:
             aviso(f"{tag}: narra() sem est= — vai cair no padrão 3.0 se faltar áudio")
-        elif abs(est_cod - est) > 0.051:
+        elif not modo_en and abs(est_cod - est) > 0.051:
             p, n = uso[tag][0][1], uso[tag][0][2]
             erro(f"{tag}: est={est_cod} no código ({p.name}:{n}) "
                  f"e {est:.1f} no roteiro")

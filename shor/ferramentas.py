@@ -7,15 +7,19 @@ import numpy as np
 from .paleta import COR_TEXTO, CINZA, PRETO, CAIXA, CIANO, AMARELO, LARANJA, VEL, R, N, M
 
 from contextlib import contextmanager
+from importlib import import_module
 from pathlib import Path
 
+from .idioma import IDIOMA
+from .textos import tx
+
 try:
-    from .duracoes import DUR
+    DUR = import_module(f".duracoes_{IDIOMA}", __package__).DUR
 except ImportError:
     DUR = {}
 
 RAIZ = Path(__file__).resolve().parent.parent
-AUDIO = RAIZ / "audio"
+AUDIO = RAIZ / "audio" / IDIOMA
 NARRA = True      # False = preview mudo, sem as pausas de fala
 PAD = 0.35        # respiro no fim de cada linha
 
@@ -121,7 +125,7 @@ def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36):
                  fonte.get_bottom() + 0.72 * DOWN,
                  buff=0, color=PRETO, stroke_width=3,
                  max_tip_length_to_length_ratio=0.35)
-    mini = T("binário", 16, CINZA).next_to(seta, RIGHT, buff=0.12)
+    mini = T(tx("geral.binario"), 16, CINZA).next_to(seta, RIGHT, buff=0.12)
     digs = VGroup(*[T(b, tam, CIANO if b == "1" else AMARELO) for b in bits])
     digs.arrange(RIGHT, buff=espac)
     digs.next_to(seta, DOWN, buff=0.18) if ref is None else digs.move_to(ref)

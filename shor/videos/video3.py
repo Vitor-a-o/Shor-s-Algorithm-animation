@@ -7,6 +7,8 @@ from manim import *
 from ..paleta import CINZA, LARANJA, PRETO, VEL
 from ..ferramentas import T, narra, pot
 from ..montagem import TITULOS
+from ..textos import tx
+from .comum import VIDEOS
 from ..cadeado import cadeado, gravar, rachar
 
 
@@ -48,15 +50,15 @@ def abertura(cena):
               run_time=0.5 * VEL)
 
     # cartão de marca: mesma emenda do vídeo 2, agora para o CAP06
-    t1 = T("Do Zero ao Algoritmo de Shor Quântico", 42)
-    t2 = T("Vídeo 3 de 4 — Do teorema ao RSA", 28, CINZA)
+    t1 = T(tx("geral.titulo_serie"), 42)
+    t2 = T(tx("geral.video_n_de_4").format(n=3, nome=VIDEOS[2]), 28, CINZA)
     VGroup(t1, t2).arrange(DOWN, buff=0.5)
     cena.play(Write(t1), run_time=1.1 * VEL)
     cena.play(FadeIn(t2, shift=0.25 * UP), run_time=0.8 * VEL)
     cena.wait(1.3 * VEL)
     cena.play(FadeOut(t2), run_time=0.6 * VEL)
 
-    r = T("Capítulo 6", 26, LARANJA)
+    r = T(tx("geral.capitulo").format(i=6), 26, LARANJA)
     t = T(TITULOS[5], 38)
     g = VGroup(r, t).arrange(DOWN, buff=0.35)
     linha = Line(3 * LEFT, 3 * RIGHT, color=CINZA, stroke_width=1.5)
@@ -91,7 +93,7 @@ def encerramento(cena, tese):
     with narra(cena, "V3N01", 7.9):
         cena.play(FadeIn(cad, shift=0.7 * DOWN), run_time=1.4 * VEL)
         # "ninguém sabe fatorar": a frase se grava no corpo do cadeado
-        gravar(cena, cad, "fatorar n", tamanho=24, run_time=1.2)
+        gravar(cena, cad, tx("geral.fatorar_n"), tamanho=24, run_time=1.2)
 
     # a rachadura CORRE pelo arco e para no meio — devagar, porque é a
     # última imagem do vídeo. Ele não quebra: a quebra é o vídeo 4
@@ -99,7 +101,7 @@ def encerramento(cena, tese):
         rachar(cena, cad, run_time=2.4)
 
     # cartão final silencioso (~3 s)
-    fim = T("Vídeo 4 de 4 — O algoritmo de Shor", 32)
+    fim = T(tx("geral.video_n_de_4").format(n=4, nome=VIDEOS[3]), 32)
     cena.play(FadeOut(*tese), FadeOut(cad), FadeIn(fim), run_time=0.8 * VEL)
     cena.wait(1.6 * VEL)
     cena.play(FadeOut(fim), run_time=0.6 * VEL)

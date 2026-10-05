@@ -198,7 +198,7 @@ def p10_fundamentos(cena):
     "De física é só isso" — o `Write(eqc)` só entra depois, atrasado. O que
     fica em cena espera em `cena.grupo_fundamentos`."""
     fila = _fila_classica()
-    rot_cl = T("computação clássica", 26, CINZA).next_to(fila, UP, buff=0.55)
+    rot_cl = T(tx("c11.computacao_classica"), 26, CINZA).next_to(fila, UP, buff=0.55)
     with narra(cena, "C11N01", 7.9):
         cena.play(LaggedStart(*[FadeIn(c, scale=0.8) for c in fila],
                               lag_ratio=0.12),
@@ -226,7 +226,7 @@ def p10_fundamentos(cena):
     with narra(cena, "C11N04", 7.4):
         cena.play(ReplacementTransform(bit_0, qub), run_time=1.3 * VEL)
 
-    t1 = T("superposição", 26, PRETO).move_to([-4.0, 2.6, 0])
+    t1 = T(tx("c11.superposicao"), 26, PRETO).move_to([-4.0, 2.6, 0])
     q1 = _carta_qubit().scale(1.15).move_to([-4.0, 1.3, 0])
     with narra(cena, "C11N05", 7.0):
         cena.play(FadeIn(t1), ReplacementTransform(qub, q1),
@@ -238,7 +238,7 @@ def p10_fundamentos(cena):
         cena.play(*[TransformFromCopy(q1[0], b) for b in barras],
                   run_time=1.2 * VEL)
 
-    t2 = T("emaranhamento", 26, PRETO).move_to([2.6, 2.6, 0])
+    t2 = T(tx("c11.emaranhamento"), 26, PRETO).move_to([2.6, 2.6, 0])
     qa = _carta_qubit().move_to([1.2, 1.3, 0])
     qb = _carta_qubit().move_to([3.9, -0.3, 0])
     no = Dot([3.9, 1.3, 0], radius=0.07, color=PRETO)
@@ -252,7 +252,7 @@ def p10_fundamentos(cena):
                   run_time=0.9 * VEL)
 
     # medir UM decide o OUTRO: os dois colapsam juntos (1,1) — ou (0,0)
-    nota = T("medir um decide o outro", 22, CINZA).move_to([2.6, -1.8, 0])
+    nota = T(tx("c11.medir_um_decide_o_outro"), 22, CINZA).move_to([2.6, -1.8, 0])
     with narra(cena, "C11N08", 5.5):
         cena.play(FadeIn(nota), FadeIn(t2), run_time=0.7 * VEL)
     par_1 = VGroup(_carta_fixa("1", VERDE).move_to(qa),
@@ -638,7 +638,7 @@ def p10_circuito(cena):
     tqf = RoundedRectangle(corner_radius=0.12, width=1.35,
                            height=ys[0] - ys[3] + 0.9, stroke_width=0)
     tqf.set_fill(CAIXA2, opacity=1).move_to([XTQF, (ys[0] + ys[3]) / 2, 0])
-    rot_tqf = T("TQF", 30, PRETO).move_to(tqf)
+    rot_tqf = T(tx("c11.tqf"), 30, PRETO).move_to(tqf)
     nq = formula(("N", PRETO), ("=", PRETO), ("2⁹", PRETO), ("=", PRETO),
                  ("512", PRETO), tamanho=24,
                  buff=0.08).next_to(tqf, UP, buff=0.2)
@@ -905,7 +905,7 @@ def p10_ondas(cena):
         # o pente tem 85 dentes: as outras 81 ondas não cabem no quadro, e
         # dizer quantas são é o que mantém a soma honesta
         resto_ondas = VGroup(T("⋮", 26, CINZA),
-                             T("+ 81 ondas", 17, CINZA)).arrange(DOWN,
+                             T(tx("c11.mais_81_ondas"), 17, CINZA)).arrange(DOWN,
                                                                  buff=0.12)
         resto_ondas.move_to([OX0 - 0.55, 0.10, 0])
         cena.play(FadeIn(resto_ondas), run_time=0.6 * VEL)
@@ -1003,7 +1003,7 @@ def p10_ondas(cena):
 
     base_soma = Line([OX0, SY, 0], [OX1, SY, 0], color=CINZA,
                      stroke_width=1.5)
-    rot_soma = T("soma", 17, CINZA).move_to([OX0 + 0.35, SY - 0.28, 0])
+    rot_soma = T(tx("c11.soma"), 17, CINZA).move_to([OX0 + 0.35, SY - 0.28, 0])
 
     with narra(cena, "C11N30", 9.8):
         # (1) o cursor, com um ponto em cada onda: "em cada ponto"
@@ -1252,7 +1252,7 @@ def p10_ato4(cena):
                 tamanho=32, buff=0.10),
         formula(("85", LARANJA), ("/", PRETO), ("512", PRETO), ("≈", PRETO),
                 ("1", PRETO), ("/", PRETO), ("6", PRETO),
-                ("(frações contínuas)", CINZA), tamanho=28, buff=0.10),
+                (tx("c11.fracoes_continuas"), CINZA), tamanho=28, buff=0.10),
         formula(("r", AMARELO), ("=", PRETO), ("6", AMARELO), tamanho=40),
         VGroup(pot("2", "6", VERMELHO, AMARELO, 30), T("≡", 30, PRETO),
                T("1", 30, VERDE), fmod("21", 28),
@@ -1260,10 +1260,10 @@ def p10_ato4(cena):
         formula(("2⁶ − 1", PRETO), ("=", PRETO),
                 ("(2³ − 1)(2³ + 1)", PRETO), ("=", PRETO),
                 ("7 · 9", PRETO), tamanho=26, buff=0.10),
-        VGroup(formula(("mdc(", PRETO), ("7", PRETO), (", ", PRETO),
+        VGroup(formula((tx("geral.mdc"), PRETO), ("7", PRETO), (", ", PRETO),
                        ("21", LARANJA), (") =", PRETO), ("7", VERDE2),
                        tamanho=26, buff=0.08),
-               formula(("mdc(", PRETO), ("9", PRETO), (", ", PRETO),
+               formula((tx("geral.mdc"), PRETO), ("9", PRETO), (", ", PRETO),
                        ("21", LARANJA), (") =", PRETO), ("3", ROSA),
                        tamanho=26, buff=0.08)).arrange(RIGHT, buff=0.7),
         formula(("21", LARANJA), ("=", PRETO), ("3", ROSA), ("×", PRETO),

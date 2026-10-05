@@ -41,7 +41,7 @@ def _chave(cor=AMARELO):
                        stroke_width=7))
 
 
-LEGIVEL, CIFRADO = "SEGREDO", "Xk9#R2q"   # sete glifos dos dois lados
+LEGIVEL, CIFRADO = tx("c8.segredo"), "Xk9#R2q"   # sete glifos dos dois lados
 
 
 def _glifos(s):
@@ -76,9 +76,9 @@ def _palco(cena):
                    stroke_width=3, dash_length=0.22),
         Dot([-6.1, Y_CANAL, 0], radius=0.11, color=PRETO),
         Dot([6.1, Y_CANAL, 0], radius=0.11, color=PRETO),
-        T("quem envia", 20, CINZA).move_to([-5.95, -1.05, 0]),
-        T("canal público", 20, CINZA).move_to([0, -1.05, 0]),
-        T("quem recebe", 20, CINZA).move_to([5.95, -1.05, 0]))
+        T(tx("c8.quem_envia"), 20, CINZA).move_to([-5.95, -1.05, 0]),
+        T(tx("c8.canal_publico"), 20, CINZA).move_to([0, -1.05, 0]),
+        T(tx("c8.quem_recebe"), 20, CINZA).move_to([5.95, -1.05, 0]))
     olho = _olho().move_to([-2.3, 3.30, 0]).stretch(0.06, dim=1)
     prat = Line([-0.9, 2.55, 0], [3.9, 2.55, 0], color=CINZA, stroke_width=3)
     # grande de propósito: vermelho sobre vermelho só lê se ultrapassar o olho
@@ -513,7 +513,7 @@ def parte8(cena):
     grade = VGroup(head_c, head_l, lin_h, lin_v, *celulas)
     # a legenda diz em que módulo a tabela vive — sem ela, a grade fica ao lado
     # de um (mod n) e os dois módulos se confundem
-    legenda = formula(("tabela multiplicativa ", CINZA), ("(mod φ(", PRETO),
+    legenda = formula((tx("c8.tabela_multiplicativa") + " ", CINZA), ("(mod φ(", PRETO),
                       ("n", LARANJA), ("))", PRETO),
                       tamanho=20, buff=0.06).next_to(grade, DOWN, buff=0.30)
     tabela = VGroup(grade, legenda)
@@ -531,7 +531,7 @@ def parte8(cena):
     ed = formula(("e", VERMELHO), ("·", PRETO), ("d", AZUL), ("≡", PRETO),
                  ("1", VERDE), ("(mod φ(", PRETO), ("n", LARANJA),
                  ("))", PRETO), tamanho=30, buff=0.10).move_to([3.0, -0.4, 0])
-    nota = formula(("(e, d)", PRETO), ("= par de inversos", CINZA),
+    nota = formula(("(e, d)", PRETO), (tx("c8.par_de_inversos"), CINZA),
                    tamanho=22, buff=0.12).next_to(ed, DOWN, buff=0.3)
     with narra(cena, "C8N17", 9.2):
         # a fala descreve exatamente os círculos nascendo, um a um: eles
@@ -608,7 +608,7 @@ def parte8(cena):
 
     # só AGORA a chave vira aritmética dentro do retângulo: o e e o n saem do
     # próprio f1s que acabou de trancar a caixa
-    fpub = formula(("pública", CINZA), ("(", PRETO), ("e", VERMELHO),
+    fpub = formula((tx("geral.publica"), CINZA), ("(", PRETO), ("e", VERMELHO),
                    (", ", PRETO), ("n", LARANJA), (")", PRETO),
                    tamanho=22, buff=0.10)
     rpub = RoundedRectangle(corner_radius=0.14, width=fpub.width + 0.7,
@@ -641,7 +641,7 @@ def parte8(cena):
                   Write(f2s), run_time=0.9 * VEL)
         p["abrir"](pacA, T("a", 32, ROXO))
 
-    fpriv = formula(("privada", AMARELO), ("(", PRETO), ("d", AZUL),
+    fpriv = formula((tx("geral.privada"), AMARELO), ("(", PRETO), ("d", AZUL),
                     (", ", PRETO), ("n", LARANJA), (")", PRETO),
                     tamanho=22, buff=0.10)
     rpriv = RoundedRectangle(corner_radius=0.14, width=fpriv.width + 0.7,
@@ -719,10 +719,10 @@ def parte8(cena):
         cena.play(ReplacementTransform(ed2, edn), run_time=0.9 * VEL)
 
     # as chaves NASCEM dos números encontrados: (3, 33) e (7, 33)
-    pub = cartao((("pública", CINZA), ("(", PRETO), ("3", VERMELHO),
+    pub = cartao(((tx("geral.publica"), CINZA), ("(", PRETO), ("3", VERMELHO),
                   (", ", PRETO), ("33", LARANJA), (")", PRETO)),
                  CINZA, -3.5)
-    priv = cartao((("privada", AMARELO), ("(", PRETO), ("7", AZUL),
+    priv = cartao(((tx("geral.privada"), AMARELO), ("(", PRETO), ("7", AZUL),
                    (", ", PRETO), ("33", LARANJA), (")", PRETO)),
                   AMARELO, 3.5)
     with narra(cena, "C8N29", 7.1):
@@ -757,7 +757,7 @@ def parte8(cena):
         cena.play(ReplacementTransform(E3, E4), run_time=1.0 * VEL)
 
     # …e a mensagem escolhida: a = 5, que precisa ser menor que o módulo
-    msg_esc = formula(("mensagem:", CINZA), ("a", ROXO), ("=", PRETO),
+    msg_esc = formula((tx("c8.mensagem"), CINZA), ("a", ROXO), ("=", PRETO),
                       ("5", ROXO), ("<", PRETO), ("33", LARANJA),
                       tamanho=26).move_to([0, 0.85, 0])
     with narra(cena, "C8N31", 5.0):
@@ -848,7 +848,7 @@ def parte8(cena):
     eixo_e = T("e", 22, VERMELHO).move_to([_TAB_CANTO[0] - 0.42, _TAB_MEIOY, 0])
     eixo_d = T("d", 22, AZUL).move_to([_TAB_MEIO, _TAB_CANTO[1] + 0.40, 0])
     uns = _tab_uns(9)
-    lpre = T("tabela multiplicativa", 20, CINZA)
+    lpre = T(tx("c8.tabela_multiplicativa"), 20, CINZA)
     lphi = formula(("(mod ", PRETO), ("φ(", PRETO), ("n", LARANJA),
                    (")", PRETO), (")", PRETO), tamanho=20, buff=0.05)
     leg = VGroup(lpre, lphi).arrange(RIGHT, buff=0.13)
@@ -957,14 +957,14 @@ def parte8(cena):
 
     # slide 100: n primo entrega φ(n) de graça — não serve. A grade volta a um
     # tamanho legível, e agora NENHUMA linha é riscada
-    c2 = formula(("n", LARANJA), ("primo:", PRETO), ("φ(", PRETO),
+    c2 = formula(("n", LARANJA), (tx("c8.primo_dois_pontos"), PRETO), ("φ(", PRETO),
                  ("n", LARANJA), (")", PRETO), ("=", PRETO), ("n", LARANJA),
                  ("− 1", PRETO), ("✗", VERMELHO),
                  tamanho=28, buff=0.10).move_to([X_F, 0.6, 0])
     tab11 = _tabela(11)
     uns11 = _tab_uns(11)
     l2d = formula(("n", LARANJA), ("=", PRETO), ("11", LARANJA),
-                  ("primo", CINZA), tamanho=20, buff=0.12).move_to(l2)
+                  (tx("c8.primo"), CINZA), tamanho=20, buff=0.12).move_to(l2)
     conta11 = formula(("φ(", PRETO), ("11", LARANJA), (") =", PRETO),
                       ("10", VERDE), tamanho=24, buff=0.08).move_to(conta)
     with narra(cena, "C8N40", 11.2):
@@ -1065,7 +1065,7 @@ def parte8(cena):
                               lag_ratio=0.18), run_time=1.1 * VEL)
 
     # a grade cumpriu o papel e sai; a tese fica sozinha, no meio da tela
-    c4 = formula(("quebrar RSA", PRETO), ("=", PRETO), ("fatorar", PRETO),
+    c4 = formula((tx("c8.quebrar_rsa"), PRETO), ("=", PRETO), (tx("geral.fatorar"), PRETO),
                  ("n", LARANJA), tamanho=32).move_to([0, -3.0, 0])
     caixa = SurroundingRectangle(c4, color=VERDE, buff=0.2,
                                  corner_radius=0.14)

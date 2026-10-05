@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
-"""Lê audio/*.wav e regenera shor/duracoes.py com as durações reais."""
-import json, pathlib, subprocess
+"""Lê audio/<idioma>/*.wav e regenera shor/duracoes_<idioma>.py com as
+durações reais.
 
-AUDIO = pathlib.Path("audio")
-SAIDA = pathlib.Path("shor/duracoes.py")
+Uso:
+    python medir.py pt
+    python medir.py en
+"""
+import json, pathlib, subprocess, sys
+
+if len(sys.argv) != 2 or sys.argv[1] not in ("pt", "en"):
+    print("uso: python medir.py pt|en")
+    sys.exit(1)
+
+IDIOMA = sys.argv[1]
+AUDIO = pathlib.Path("audio") / IDIOMA
+SAIDA = pathlib.Path(f"shor/duracoes_{IDIOMA}.py")
 
 d = {}
 for f in sorted(AUDIO.glob("*.wav")):

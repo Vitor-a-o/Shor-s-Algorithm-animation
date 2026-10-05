@@ -75,15 +75,15 @@ def parte9b(cena):
                   run_time=0.8 * VEL)
 
     # escolhemos a base a = 8
-    base = formula(("base:", CINZA), ("a", VERMELHO), ("=", PRETO),
+    base = formula((tx("c10.base"), CINZA), ("a", VERMELHO), ("=", PRETO),
                    ("8", VERMELHO), tamanho=28).move_to([0, 2.90, 0])
     with narra(cena, "C10N02", 2.3):
         cena.play(Write(base), run_time=0.8 * VEL)
 
     # ENCONTRANDO a ordem modular de 8 módulo 35 (o gesto do Capítulo 9,
     # traduzido da tabela para a reta — ver o cabeçalho do arquivo)
-    rotulo = formula(("encontrando a", CINZA), ("ordem modular", PRETO),
-                     ("de", CINZA), ("8", VERMELHO), ("módulo", CINZA),
+    rotulo = formula((tx("c10.encontrando_a"), CINZA), (tx("c10.ordem_modular"), PRETO),
+                     (tx("c10.de"), CINZA), ("8", VERMELHO), (tx("geral.modulo"), CINZA),
                      ("35", LARANJA), tamanho=24,
                      buff=0.12).move_to([0, 2.45, 0])
 
@@ -159,7 +159,7 @@ def parte9b(cena):
     # a conta sobe para a faixa que o passeio acabou de liberar: daqui em
     # diante ela é o teto do capítulo, e as árvores crescem debaixo dela
     e2.arrange(RIGHT, buff=0.15).move_to([0, 2.15, 0])
-    nota = formula(("8⁴ − 1", PRETO), ("é múltiplo de", CINZA),
+    nota = formula(("8⁴ − 1", PRETO), (tx("c10.e_multiplo_de"), CINZA),
                    ("35", LARANJA), tamanho=24,
                    buff=0.12).next_to(e2, DOWN, buff=0.28)
     # os dois destaques desta linha (o "− 1" e o 35 da nota) vão em play
@@ -238,7 +238,7 @@ def parte9b(cena):
     # O nome "diferença de quadrados" fica só na fala: na tela entra direto a
     # identidade GENÉRICA, com o x ainda solto, sem base nenhuma — é ela que
     # vai virar a conta do 8
-    d0 = formula(("r", AMARELO), ("par", PRETO), ("⇒", PRETO), tamanho=24,
+    d0 = formula(("r", AMARELO), (tx("c10.par"), PRETO), ("⇒", PRETO), tamanho=24,
                  buff=0.12)
     dgen = VGroup(T("x²", 24, PRETO), T("− 1 =", 24, PRETO),
                   T("(", 24, PRETO), T("x", 24, PRETO),
@@ -407,10 +407,10 @@ def parte9b(cena):
         cena.play(Indicate(obj[0], color=LARANJA), run_time=0.8 * VEL)
 
     # o mdc PESCA os fatores compartilhados
-    m1 = formula(("mdc(", PRETO), ("63", PRETO), (", ", PRETO),
+    m1 = formula((tx("geral.mdc"), PRETO), ("63", PRETO), (", ", PRETO),
                  ("35", LARANJA), (") =", PRETO), ("7", VERDE2),
                  tamanho=26, buff=0.08).move_to([-0.2, -1.55, 0])
-    m2 = formula(("mdc(", PRETO), ("65", PRETO), (", ", PRETO),
+    m2 = formula((tx("geral.mdc"), PRETO), ("65", PRETO), (", ", PRETO),
                  ("35", LARANJA), (") =", PRETO), ("5", ROSA),
                  tamanho=26, buff=0.08).move_to([-0.2, -2.25, 0])
     with narra(cena, "C10N17", 9.6):
@@ -441,7 +441,7 @@ def parte9b(cena):
     # a limpeza pertence a ESTA fala e vai EMENDADA no FadeIn: separada, ela
     # leria como fim de capítulo. O `fim` na moldura verde NÃO sai — o sucesso
     # segue à vista enquanto a falha roda, e o C10N30 puxa φ(35) dele
-    cap5 = T("às vezes a ordem modular não dá informação útil",
+    cap5 = T(tx("c10.as_vezes_inutil"),
              24).move_to([0, 2.45, 0])
     with narra(cena, "C10N20", 9.6):
         cena.play(FadeOut(VGroup(j3, eqA_a, eqA_b2, ra, linA, fA65, fA63, nA,
@@ -498,7 +498,7 @@ def parte9b(cena):
         cena.play(Indicate(nU[0], color=ROSA), Indicate(nU[1], color=VERDE2),
                   run_time=0.9 * VEL)
 
-    multi = formula(("múltiplo de", CINZA), ("35", LARANJA),
+    multi = formula((tx("c10.multiplo_de"), CINZA), ("35", LARANJA),
                     tamanho=20, buff=0.10).move_to([-5.45, -0.5, 0])
     setam = Arrow(multi.get_bottom() + 0.05 * DOWN,
                   fu1.get_top() + 0.08 * UP, buff=0, color=PRETO,
@@ -509,10 +509,10 @@ def parte9b(cena):
         cena.play(Indicate(multi[1], color=LARANJA), run_time=0.7 * VEL)
 
     # o mdc devolve só fatores TRIVIAIS: 35 e 1
-    m3 = formula(("mdc(", PRETO), ("13825", PRETO), (", ", PRETO),
+    m3 = formula((tx("geral.mdc"), PRETO), ("13825", PRETO), (", ", PRETO),
                  ("35", LARANJA), (") =", PRETO), ("35", LARANJA),
                  tamanho=26, buff=0.08).move_to([3.7, -0.6, 0])
-    m4 = formula(("mdc(", PRETO), ("13823", PRETO), (", ", PRETO),
+    m4 = formula((tx("geral.mdc"), PRETO), ("13823", PRETO), (", ", PRETO),
                  ("35", LARANJA), (") =", PRETO), ("1", PRETO),
                  tamanho=26, buff=0.08).move_to([3.7, -1.25, 0])
     # o destaque no resultado vai em play PRÓPRIO, pela razão do C10N04:
@@ -526,9 +526,9 @@ def parte9b(cena):
         cena.play(Write(m4), run_time=0.9 * VEL)
         cena.play(Indicate(m4[5], color=PRETO), run_time=0.7 * VEL)
 
-    triv = formula(("fatores triviais", VERMELHO), ("✗", VERMELHO),
+    triv = formula((tx("c10.fatores_triviais"), VERMELHO), ("✗", VERMELHO),
                    tamanho=24, buff=0.12).move_to([3.7, -1.95, 0])
-    sol = T("solução: escolher outro a e recomeçar", 20,
+    sol = T(tx("c10.solucao_outro_a"), 20,
             CINZA).move_to([3.7, -2.5, 0])
     # "os dois fatores triviais": o ✗ vermelho e os dois resultados do mdc que
     # o justificam. O `sol` NÃO entra aqui — ele espera a fala que o explica
@@ -565,7 +565,7 @@ def parte9b(cena):
     r2 = formula(("e", VERMELHO), ("·", PRETO), ("d", AZUL), ("≡", PRETO),
                  ("1", VERDE), ("(mod φ(", PRETO), ("n", LARANJA),
                  ("))", PRETO), ("⇒", PRETO), ("d", AZUL),
-                 ("encontrado", PRETO),
+                 (tx("c10.encontrado"), PRETO),
                  tamanho=28, buff=0.10).move_to([0, 0.7, 0])
     with narra(cena, "C10N31", 6.7):
         cena.play(Write(r2), run_time=1.0 * VEL)
@@ -576,8 +576,8 @@ def parte9b(cena):
                   Indicate(VGroup(r2[5], r2[6], r2[7]), color=LARANJA),
                   run_time=0.8 * VEL)
 
-    r3 = formula(("fatorar", PRETO), ("n", LARANJA), ("=", PRETO),
-                 ("descobrir a chave privada", PRETO),
+    r3 = formula((tx("geral.fatorar"), PRETO), ("n", LARANJA), ("=", PRETO),
+                 (tx("c10.descobrir_chave_privada"), PRETO),
                  tamanho=30).move_to([0, -0.6, 0])
     cxa2 = SurroundingRectangle(r3, color=VERDE, buff=0.2,
                                 corner_radius=0.14)

@@ -12,6 +12,7 @@ import numpy as np
 
 from .paleta import CINZA, LARANJA, PRETO, VEL
 from .ferramentas import T
+from .textos import tx
 
 # ângulo entre o arco fechado (como construído) e aberto — usado tanto na
 # construção (estado="aberto") quanto nas animações abrir()/fechar()
@@ -160,7 +161,7 @@ def estado_v3(escala=1.25):
     # o buraco de fechadura dá lugar ao rótulo, como o gravar() do V3N01 fez
     # (o rótulo nasce DEPOIS da escala, senão não seria o mesmo tamanho)
     cad.remove(cad[2])
-    cad.add(_rotulo(cad[1], "fatorar n", 24))
+    cad.add(_rotulo(cad[1], tx("geral.fatorar_n"), 24))
 
     arco = cad[0][0]
     centro = arco.get_arc_center()

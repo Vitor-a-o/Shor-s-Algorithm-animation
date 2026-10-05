@@ -41,8 +41,8 @@ def parte9(cena):
     with narra(cena, "C9N01", 8.5):
         cena.play(Write(eq), run_time=1.0 * VEL)
     escolha = formula(("n", LARANJA), ("=", PRETO), ("9", LARANJA),
-                      ("e", CINZA), ("a", VERMELHO), ("=", PRETO),
-                      ("4", VERMELHO), ("inversível", CINZA),
+                      (tx("geral.e"), CINZA), ("a", VERMELHO), ("=", PRETO),
+                      ("4", VERMELHO), (tx("geral.inversivel"), CINZA),
                       tamanho=22, buff=0.12).move_to([3.6, 2.55, 0])
     with narra(cena, "C9N02", 8.2):
         cena.play(FadeIn(escolha), run_time=0.7 * VEL)
@@ -97,7 +97,7 @@ def parte9(cena):
         cena.play(Create(c00), Write(f0), run_time=0.9 * VEL)
 
     # slide 112: somar 1 em b = multiplicar o resultado anterior por 4
-    nota = T("somar 1 em b = multiplicar por 4", 20,
+    nota = T(tx("c9.somar_1_em_b"), 20,
              CINZA).move_to([3.6, 1.2, 0])
     with narra(cena, "C9N06", 7.5):
         cena.play(FadeIn(nota), run_time=0.7 * VEL)
@@ -216,15 +216,15 @@ def parte9(cena):
                   TransformFromCopy(mult[2][1], rdef[2]), run_time=0.9 * VEL)
 
     # slide 117 (definição) + slide 119 (pior caso r = φ(n))
-    d1 = formula(("ordem modular de", PRETO), ("a", VERMELHO),
-                 ("módulo", PRETO), ("n", LARANJA), (":", PRETO),
+    d1 = formula((tx("c9.ordem_modular_de"), PRETO), ("a", VERMELHO),
+                 (tx("geral.modulo"), PRETO), ("n", LARANJA), (":", PRETO),
                  tamanho=26, buff=0.14)
-    d2 = formula(("o menor", PRETO), ("r", AMARELO), ("tal que", PRETO),
+    d2 = formula((tx("c9.o_menor"), PRETO), ("r", AMARELO), (tx("c9.tal_que"), PRETO),
                  tamanho=24, buff=0.14)
     d3 = VGroup(pot("a", "r", VERMELHO, AMARELO, 30), T("≡", 30, PRETO),
                 T("1", 30, VERDE), fmod("n", 28))
     d3.arrange(RIGHT, buff=0.15)
-    d4 = formula(("pior caso:", CINZA), ("r", AMARELO), ("=", CINZA),
+    d4 = formula((tx("c9.pior_caso"), CINZA), ("r", AMARELO), ("=", CINZA),
                  ("φ(", CINZA), ("n", LARANJA), (")", CINZA),
                  tamanho=20, buff=0.08)
     caixa_d = VGroup(d1, d2, d3, d4).arrange(DOWN, buff=0.24)

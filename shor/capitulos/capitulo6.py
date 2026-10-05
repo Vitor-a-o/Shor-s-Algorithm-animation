@@ -27,7 +27,7 @@ def parte6(cena):
     lin_v = Line(canto + [0.5 * tam, -0.5 * tam, 0],
                  canto + [0.5 * tam, -6.45 * tam, 0], color=PRETO,
                  stroke_width=1.5)
-    titulo_tab = T("Tabela multiplicativa (mod 7)", 26).move_to([-4.2, 2.85, 0])
+    titulo_tab = T(tx("geral.tabela_mult_mod").format(n=7), 26).move_to([-4.2, 2.85, 0])
     linhas_cel = [VGroup(*[T(str((i * j) % 7), 24, PRETO).move_to(ponto(i, j))
                            for j in range(1, 7)]) for i in range(1, 7)]
     with narra(cena, "C6N01", 5.4):
@@ -111,7 +111,7 @@ def parte6(cena):
                   (")(", PRETO), ("3", VERMELHO), ("·5", PRETO),
                   (")(", PRETO), ("3", VERMELHO), ("·6", PRETO),
                   (")", PRETO), tamanho=24, buff=0.04).move_to([0, -2.35, 0])
-    nota = T("multiplicação é comutativa", 20, CINZA).move_to([0, -1.75, 0])
+    nota = T(tx("c6.comutativa"), 20, CINZA).move_to([0, -1.75, 0])
     tre = pot("3", "6", VERMELHO, AZUL, 26)
     eq = VGroup(tre, T("· (1·2·3·4·5·6)", 26, PRETO), T("≡", 26, PRETO),
                 T("(1·2·3·4·5·6)", 26, PRETO), fmod("7", 24))
@@ -130,7 +130,7 @@ def parte6(cena):
 
     # dividir os dois lados pela MESMA multiplicação (slides 64–65) — a
     # narração separa em dois tempos: primeiro o porquê (inverso), depois o ato
-    nota2 = T("dividir os dois lados pela mesma multiplicação", 20,
+    nota2 = T(tx("c6.dividir_os_dois_lados"), 20,
               CINZA).move_to([0, -1.75, 0])
     with narra(cena, "C6N08", 6.7):
         cena.play(FadeIn(nota2), run_time=0.6 * VEL)
@@ -153,7 +153,7 @@ def parte6(cena):
     geral = VGroup(pot("a", expoente(("n", LARANJA), ("−1", PRETO), tam=28),
                        VERMELHO, tam=28),
                    T("≡", 28, PRETO), T("1", 28, VERDE), fmod("n", 26),
-                   T("(n primo)", 22, CINZA))
+                   T(tx("c6.n_primo"), 22, CINZA))
     geral.arrange(RIGHT, buff=0.16).move_to([0, -3.35, 0])
     with narra(cena, "C6N11", 8.8):
         cena.play(Write(geral), run_time=1.2 * VEL)
@@ -162,7 +162,7 @@ def parte6(cena):
     # bloco o geral sobe e cresce — sobrevivendo à limpeza — enquanto o
     # título do teorema nasce. resultado é a última coisa a sumir,
     # desaparecendo um instante depois, debaixo do geral que a generaliza.
-    titulo = T("Pequeno Teorema de Fermat", 40).move_to([0, 0.9, 0])
+    titulo = T(tx("geral.titulo_cap6"), 40).move_to([0, 0.9, 0])
     saida = AnimationGroup(
         FadeOut(titulo_tab), FadeOut(head_c), FadeOut(head_l),
         FadeOut(lin_h), FadeOut(lin_v), *[FadeOut(l) for l in linhas_cel],

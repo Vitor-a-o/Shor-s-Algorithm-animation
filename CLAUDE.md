@@ -9,15 +9,18 @@ Cada vídeo tem um roteiro em markdown; o código do filme está no pacote `shor
 
 ```
 filme_shor.py              ponto de entrada do Manim (FilmeCompleto, Parte1…Parte11)
-medir.py                   lê audio/*.wav e REGENERA shor/duracoes.py
+medir.py                   lê audio/<idioma>/*.wav e REGENERA shor/duracoes_<idioma>.py
 conferir.py                confere roteiro × código (rodar sempre ao terminar)
-audio/                     TAG.wav, uma locução por arquivo (namespace global)
+audio/<idioma>/            TAG.wav, uma locução por arquivo (namespace global por idioma)
 media/                     saída do Manim — nunca editar, nunca versionar
-roteiros/                  os roteiros e a diretriz — a especificação do que animar
+roteiros/                  os roteiros em pt e a diretriz — a especificação do que animar
+roteiros/en/               os mesmos roteiros em inglês, mesmos nomes de arquivo
 shor/
+  idioma.py                IDIOMA ativo (env var IDIOMA, "pt" ou "en") — tudo importa daqui
   paleta.py                cores e parâmetros globais (VEL, COR_TEXTO, …)
   ferramentas.py           T, formula, MOD, traco, limpar, narra, so_fala, PAD
-  duracoes.py              GERADO pelo medir.py — nunca editar à mão
+  duracoes_pt.py           GERADO pelo medir.py pt — nunca editar à mão
+  duracoes_en.py           GERADO pelo medir.py en — nunca editar à mão
   montagem.py              ordem dos capítulos, TITULOS, CARTOES, abertura do filme
   cadeado.py               o cadeado da série
   capitulos/capituloN.py   um capítulo por arquivo (1–8, 9, 9b, 10)
@@ -59,9 +62,10 @@ Regras que caem daí:
   animação é propositalmente mais longa que a fala.
 - **Nada de `cena.wait()` solto para dar respiro.** Quem dá o respiro é o `PAD`.
   `wait()` só é aceitável para segurar um quadro final antes de um `limpar()`.
-- **`est=` é provisório.** Depois da gravação, `python medir.py` regenera
-  `shor/duracoes.py` com as durações reais e o `est=` vira só fallback. Não
-  preencher `duracoes.py` na mão.
+- **`est=` é provisório.** Depois da gravação, `python medir.py pt` (ou `en`)
+  regenera `shor/duracoes_<idioma>.py` com as durações reais e o `est=` vira
+  só fallback. Não preencher `duracoes_pt.py`/`duracoes_en.py` na mão. O `est=`
+  no código é sempre o do pt — em inglês quem manda é o DUR medido.
 - **Cartões de capítulo** (`CAP06`, `CAP07`, …) não são chamados com a tag
   literal: `montagem.py` monta com f-string e lê a duração de `CARTOES`. Ao
   fechar um capítulo, adicionar/ajustar a entrada em `CARTOES` com o valor do
@@ -127,7 +131,7 @@ cd ~/Desktop/Algoritmos_quanticos/animação
 source ../meu_ambiente_quantico/bin/activate
 
 python conferir.py 8          # confere o capítulo 8 contra o roteiro
-python conferir.py            # confere tudo
+python conferir.py            # confere tudo (pt)
 
 manim -pql filme_shor.py Parte8       # preview de um capítulo
 manim -pql filme_shor.py VideoShor    # preview do vídeo 4 inteiro
@@ -136,6 +140,39 @@ manim -pqh filme_shor.py FilmeCompleto  # final 1080p60
 
 Para preview sem as pausas de narração, `NARRA = False` em `ferramentas.py`
 (lembrar de voltar para `True`).
+
+---
+
+## Idiomas
+
+O projeto é bilíngue (pt/en) só na camada de dados — nenhuma cena, `play` ou
+duração muda entre os dois. O idioma ativo vem da variável de ambiente
+`IDIOMA` (`shor/idioma.py`), lida por `shor/ferramentas.py` para escolher
+`audio/<idioma>/` e `shor/duracoes_<idioma>.py`. Sem a variável, o padrão é
+`pt` — então nada muda para quem não mexe nela.
+
+- **Escolher o idioma:**
+  - bash: `IDIOMA=en manim -pql filme_shor.py Parte1`
+  - PowerShell: `$env:IDIOMA="en"; manim -pql filme_shor.py Parte1`
+- **Áudio:** `audio/pt/TAG.wav` e `audio/en/TAG.wav` (mesmo nome de tag nos
+  dois; `audio/` inteiro é ignorado pelo git).
+- **Durações:** `shor/duracoes_pt.py` e `shor/duracoes_en.py`, cada um gerado
+  por `python medir.py pt` / `python medir.py en`.
+- **Roteiros:** `roteiros/*.md` (pt) e `roteiros/en/*.md` (en), mesmos nomes
+  de arquivo. **O roteiro em inglês tem exatamente as mesmas tags, na mesma
+  ordem, do português — tradução não funde nem divide fala.**
+- **Conferir:** `python conferir.py` confere só o pt (como sempre);
+  `python conferir.py --en` confere `roteiros/en/` contra o código (mesmas
+  tags, mesma ordem; a coluna Est. do inglês não é comparada ao `est=` do
+  código, que é sempre o do pt).
+- **Largura dos textos em inglês:** `python checar_textos.py` (sem renderizar)
+  mede pt × en no tamanho de fonte real de cada chave e sai com código 1 se
+  algum "en" passar de 90% do quadro — rodar antes de cada render em inglês.
+- **Render separado por idioma** (para não sobrescrever o pt):
+  ```bash
+  manim -pql filme_shor.py Parte1                              # pt → media/
+  IDIOMA=en manim -pql --media_dir media/en filme_shor.py Parte1  # en → media/en/
+  ```
 
 ---
 

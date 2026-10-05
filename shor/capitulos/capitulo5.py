@@ -85,7 +85,7 @@ def parte5(cena):
         cena.play(ReplacementTransform(eq2, eq3), run_time=0.9 * VEL)
 
     par = formula(("5", PRETO), ("≡", PRETO), ("1", VERDE), ("/", PRETO),
-                  ("2", VERMELHO), ("e", CINZA), ("2", VERMELHO),
+                  ("2", VERMELHO), (tx("geral.e"), CINZA), ("2", VERMELHO),
                   ("≡", PRETO), ("1", VERDE), ("/", PRETO), ("5", PRETO),
                   *MOD("9"), tamanho=30).move_to([0, -2.4, 0])
     with narra(cena, "C5N07", 6.7):
@@ -132,7 +132,7 @@ def parte5(cena):
     # e a escada roda embaixo — o módulo laranja medido pelo vermelho, a
     # sobra virando a régua do passo seguinte, até o pedaço de tamanho um.
     # Roda rápido e sai antes do eq3 → eq4.
-    titulo_euc = T("Algoritmo de Euclides estendido", 30).move_to([0, 1.9, 0])
+    titulo_euc = T(tx("c5.euclides_estendido"), 30).move_to([0, 1.9, 0])
     xe = -1.9
     esc1_mod = traco([xe, 0.2, 0], [xe + 9 * u, 0.2, 0], LARANJA, w=6)
     esc1_reg = VGroup(*[traco([xe + i * 2 * u, 0.5, 0],
@@ -209,7 +209,7 @@ def parte5(cena):
     with narra(cena, "C5N13", 5.4):
         cena.play(FadeIn(xis, scale=1.5), run_time=0.8 * VEL)
 
-    mdc3 = formula(("mdc(", PRETO), ("3", VERMELHO), (", ", PRETO),
+    mdc3 = formula((tx("geral.mdc"), PRETO), ("3", VERMELHO), (", ", PRETO),
                    ("9", LARANJA), (") = 3", PRETO),
                    tamanho=30, buff=0.08).move_to([0, -3.4, 0])
     with narra(cena, "C5N14", 5.0):
@@ -233,11 +233,11 @@ def parte5(cena):
     lin_v = Line(canto + [0.55 * tam, -0.5 * tam, 0],
                  canto + [0.55 * tam, -9.5 * tam, 0], color=PRETO,
                  stroke_width=1.5)
-    titulo_tab = T("Tabela multiplicativa (mod 9)", 26).move_to([-3.3, 3.1, 0])
+    titulo_tab = T(tx("geral.tabela_mult_mod").format(n=9), 26).move_to([-3.3, 3.1, 0])
     # COMO a tabela funciona, ANTES de preenchê-la:
     # cada célula é linha · coluna (mod 9)
-    como = formula(("célula", PRETO), ("=", PRETO), ("linha", VERMELHO),
-                   ("·", PRETO), ("coluna", AZUL), *MOD("9"),
+    como = formula((tx("c5.celula"), PRETO), ("=", PRETO), (tx("c5.linha"), VERMELHO),
+                   ("·", PRETO), (tx("c5.coluna"), AZUL), *MOD("9"),
                    tamanho=24, buff=0.10).move_to([3.6, 1.9, 0])
     with narra(cena, "C5N15", 7.5):
         cena.play(FadeOut(linhas3), FadeOut(ciclo), FadeOut(mdc3),
@@ -268,7 +268,7 @@ def parte5(cena):
     inv1 = formula(("a", VERMELHO), ("·", PRETO), ("b", AZUL), ("≡", PRETO),
                    ("1", VERDE), *MOD("9"),
                    tamanho=26, buff=0.10).move_to([3.6, 1.7, 0])
-    inv2 = T("⇒ a e b são inversos", 24, PRETO).next_to(inv1, DOWN, buff=0.25)
+    inv2 = T(tx("c5.a_e_b_inversos"), 24, PRETO).next_to(inv1, DOWN, buff=0.25)
     circulos = VGroup(*[Circle(radius=0.21, color=VERDE, stroke_width=2.5)
                         .move_to(ponto(i, j))
                         for i in range(1, 9) for j in range(1, 9)
@@ -281,7 +281,7 @@ def parte5(cena):
 
     # RESSALTA o exemplo das retas: 2 e 5 são inversos
     rec1 = formula(("2", VERMELHO), ("·", PRETO), ("5", AZUL), ("≡", PRETO),
-                   ("1", VERDE), ("→ inversos", VERDE), ("✓", VERDE),
+                   ("1", VERDE), (tx("c5.seta_inversos"), VERDE), ("✓", VERDE),
                    tamanho=22, buff=0.10).move_to([3.6, 0.5, 0])
     with narra(cena, "C5N18", 3.8):
         cena.play(Write(rec1), Indicate(linhas_cel[2][5], color=VERDE),
@@ -293,9 +293,9 @@ def parte5(cena):
                                            buff=0.06, corner_radius=0.08,
                                            stroke_width=2)
                       for i in (0, 3, 6)])
-    m_rot = formula(("0, 3, 6", VERMELHO), (": não inversíveis", PRETO),
+    m_rot = formula(("0, 3, 6", VERMELHO), (tx("c5.nao_inversiveis"), PRETO),
                     tamanho=24, buff=0.12).move_to([3.6, -0.5, 0])
-    rec2 = formula(("3", VERMELHO), ("· x", PRETO), ("nunca ≡", PRETO),
+    rec2 = formula(("3", VERMELHO), ("· x", PRETO), (tx("c5.nunca_congruente"), PRETO),
                    ("1", VERDE), ("✗", VERMELHO),
                    tamanho=22, buff=0.10).move_to([3.6, -1.05, 0])
     with narra(cena, "C5N19", 9.2):
@@ -308,10 +308,10 @@ def parte5(cena):
                   run_time=1.0 * VEL)
 
     # conclusão em duas linhas (sem cortar na borda)
-    c1 = formula(("mdc(", PRETO), ("a", VERMELHO), (", ", PRETO),
+    c1 = formula((tx("geral.mdc"), PRETO), ("a", VERMELHO), (", ", PRETO),
                  ("9", LARANJA), (") = 1", PRETO),
                  tamanho=26, buff=0.08)
-    c2 = formula(("⇔", PRETO), ("a", VERMELHO), ("inversível", VERDE),
+    c2 = formula(("⇔", PRETO), ("a", VERMELHO), (tx("geral.inversivel"), VERDE),
                  tamanho=26, buff=0.14)
     concl = VGroup(c1, c2).arrange(DOWN, buff=0.22).move_to([3.6, -1.9, 0])
     caixa = SurroundingRectangle(concl, color=VERDE, buff=0.2,

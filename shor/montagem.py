@@ -7,6 +7,7 @@ from manim import *
 
 from .paleta import CINZA, LARANJA, VERDE2, PRETO, ROSA, BRANCO, VEL
 from .ferramentas import T, formula, cartao_capitulo, narra
+from .textos import tx
 from .capitulos.capitulo1 import parte1
 from .capitulos.capitulo2 import parte2
 from .capitulos.capitulo3 import parte3
@@ -29,17 +30,17 @@ CARTOES = {
 }
 
 TITULOS = [
-    "Aritmética modular",
-    "Adição modular",
-    "Multiplicação modular — Double and Add",
-    "Exponenciação modular — Square and Multiply",
-    "Inverso multiplicativo modular",
-    "Pequeno Teorema de Fermat",
-    "A generalização de Euler: φ(n)",
-    "O algoritmo RSA",
-    "Ordem Modular",
-    "Da Ordem Modular à fatoração",
-    "Shor Quântico: a QFT encontra o período",
+    tx("geral.titulo_cap1"),
+    tx("geral.titulo_cap2"),
+    tx("geral.titulo_cap3"),
+    tx("geral.titulo_cap4"),
+    tx("geral.titulo_cap5"),
+    tx("geral.titulo_cap6"),
+    tx("geral.titulo_cap7"),
+    tx("geral.titulo_cap8"),
+    tx("geral.titulo_cap9"),
+    tx("geral.titulo_cap10"),
+    tx("geral.titulo_cap11"),
 ]
 PARTES = [parte1, parte2, parte3, parte4, parte5,
           parte6, parte7, parte8, parte9, parte9b, parte10]
@@ -49,7 +50,7 @@ PARTES = [parte1, parte2, parte3, parte4, parte5,
 EMENDA = {9}
 
 def abre_capitulo(cena, i, sai=None):
-    cartao_capitulo(cena, f"Capítulo {i}", TITULOS[i - 1],
+    cartao_capitulo(cena, tx("geral.capitulo").format(i=i), TITULOS[i - 1],
                     tag=f"CAP{i:02d}", est=CARTOES.get(i, 3.0), sai=sai)
 
 def abertura(cena):
@@ -63,7 +64,7 @@ def abertura(cena):
     faixa = Rectangle(width=config.frame_width, height=2.1,
                       stroke_width=0, fill_color=PRETO, fill_opacity=0.6)
     faixa.to_edge(DOWN, buff=0)
-    t1 = T("Do Zero ao Algoritmo de Shor Quântico", 42, BRANCO)
+    t1 = T(tx("geral.titulo_serie"), 42, BRANCO)
     t1.move_to(faixa)
 
     with narra(cena, "ABN01", 8.3):
@@ -77,7 +78,7 @@ def abertura(cena):
 def encerramento(cena):
     t1 = formula(("21", LARANJA), ("=", PRETO), ("3", ROSA), ("×", PRETO),
                  ("7", VERDE2), tamanho=54)
-    t2 = T("fim", 24, CINZA)
+    t2 = T(tx("geral.fim"), 24, CINZA)
     g = VGroup(t1, t2).arrange(DOWN, buff=0.6)
     with narra(cena, "FIM01", 6.0):
         cena.play(FadeIn(t1, scale=1.3), run_time=1.1 * VEL)

@@ -10,7 +10,9 @@ from ..paleta import (AMARELO, AZUL, BRANCO, CAIXA, CARTAO_ESCURO, CIANO,
 from ..ferramentas import DUR, T, _agora, formula, narra, pot, traco
 from ..cadeado import (_ABERTURA, abrir, cadeado, gravar, quebrar, rachar,
                        rede)
+from ..textos import tx
 from .comum import VIDEOS, trilha_videos
+from .sincronias_v1 import _f
 
 # só para testar com uma voz mais lenta (sessão de acerto de ritmo): 1.0 fora
 # de teste. Multiplica a duração que _dur() devolve, simulando uma locução
@@ -70,7 +72,7 @@ _QUBITS = ((0.12, 1), (0.22, 1), (0.47, 2), (0.66, 2), (0.77, 3),
            (0.86, 4), (0.95, 6))
 
 # o título da série, que o V1N05 remonta com os cacos dos cadeados
-_TITULO = "Do Zero ao Algoritmo de Shor Quântico"
+_TITULO = tx("geral.titulo_serie")
 
 # a janela de prévia (V1N07 em diante): uma região fixa da tela, abaixo de
 # onde o título da série fica ancorado no topo depois do V1N06. Cada
@@ -269,8 +271,8 @@ def abertura(cena):
     # --- montagem do V1N00 -----------------------------------------------
     tag, est = "V1N00", 9.6
     k = _k(tag, est)
-    t_zoom = _em(tag, est, 0.185)          # "protege"
-    t_para = _em(tag, est, 0.546)          # fim de "internet"
+    t_zoom = _em(tag, est, _f(tag, "protege"))
+    t_para = _em(tag, est, _f(tag, "internet"))      # fim da palavra
     freio = 1.8 * VEL * k                  # o escolhido freia até parar
 
     # a rede do V1N03 (mesma semente: é a mesma rede que volta lá), sem os
@@ -423,28 +425,28 @@ def abertura(cena):
         # "e ela não é": o envelope sai de baixo do cadeado e vira o campo
         t = t_para
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.563) - t)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "e ela não é")) - t)),
             AnimationGroup(ReplacementTransform(envelope[0], campo),
                            FadeOut(envelope[1], scale=0.4,
                                    target_position=campo.get_center()),
                            run_time=0.6 * VEL * k)))
-        t = _em(tag, est, 0.563) + 0.6 * VEL * k
+        t = _em(tag, est, _f(tag, "e ela não é")) + 0.6 * VEL * k
         # "uma senha forte" ≈ 0,66: os pontos entram um a um, cada um num
         # estalo, com a pausa da digitação entre eles
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.664) - t)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "senha forte")) - t)),
             LaggedStart(*[GrowFromCenter(d) for d in senha], lag_ratio=3.0,
                         run_time=1.2 * VEL * k)))
-        t = _em(tag, est, 0.664) + 1.2 * VEL * k
+        t = _em(tag, est, _f(tag, "senha forte")) + 1.2 * VEL * k
         # "que você possa" ≈ 0,80: riscado de vermelho...
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.798) - t)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "que você possa")) - t)),
             Create(risco, run_time=0.35 * VEL * k)))
-        t = _em(tag, est, 0.798) + 0.35 * VEL * k
+        t = _em(tag, est, _f(tag, "que você possa")) + 0.35 * VEL * k
         # ...e em "escolher" ≈ 0,92 some. O cadeado não se mexeu: no fim da
         # fala ele está sozinho, grande, no centro
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.924) - t)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "escolher")) - t)),
             AnimationGroup(*[FadeOut(m, shift=0.4 * DOWN)
                              for m in (campo, *senha, risco)],
                            run_time=0.6 * VEL * k)))
@@ -454,8 +456,8 @@ def abertura(cena):
     # encolhendo para cima — sem sair de cena. Ele sai mais depressa e o
     # título começa um pouco depois: quando a escrita chega ao meio da
     # linha, o cadeado já não está lá
-    t1 = T("Do Zero ao Algoritmo de Shor Quântico", 42)
-    t2 = T(f"Vídeo 1 de 4 — {VIDEOS[0]}", 28, CINZA)
+    t1 = T(tx("geral.titulo_serie"), 42)
+    t2 = T(tx("geral.video_n_de_4").format(n=1, nome=VIDEOS[0]), 28, CINZA)
     VGroup(t1, t2).arrange(DOWN, buff=0.5)
     cena.play(cad.animate(run_time=0.7 * VEL).scale(_SELO / _GRANDE)
                  .next_to(t1, UP, buff=0.45),
@@ -471,8 +473,8 @@ def abertura(cena):
     cad.target.scale(1 / _SELO)
     cad.target.shift([0, 0.9, 0] - cad.target[1].get_center())
 
-    itens = VGroup(T("contas bancárias", 30), T("compras online", 30),
-                   T("mensagens privadas", 30))
+    itens = VGroup(T(tx("v1.contas_bancarias"), 30), T(tx("v1.compras_online"), 30),
+                   T(tx("v1.mensagens_privadas"), 30))
     itens[0].next_to(cad.target[1], LEFT, buff=1.2)
     itens[1].next_to(cad.target[1], RIGHT, buff=1.2)
     itens[2].next_to(cad.target[1], DOWN, buff=0.5)
@@ -506,13 +508,18 @@ def abertura(cena):
         cena.play(MoveToTarget(cad), run_time=1.2 * VEL * k)
         abrir(cena, cad, run_time=0.8 * k)
         # "contas bancárias" ≈ 0,11 (o play acima já cobre) · "compras
-        # online" ≈ 0,20 · "mensagens privadas" ≈ 0,29 — uma a cada respiro
+        # online" ≈ 0,20 · "mensagens privadas" ≈ 0,29 — uma a cada respiro.
+        # Cada Wait conta a partir da âncora anterior mais os run_time que
+        # vieram depois dela, não de um total somado à mão: trocar a fração
+        # de uma âncora não desloca as seguintes
         cena.play(FadeIn(itens[0], shift=0.3 * RIGHT), run_time=0.8 * VEL * k)
-        cena.play(Succession(Wait(max(0.0, _em(tag, est, 0.202) - k * 2.8)),
+        t_compras = _em(tag, est, _f(tag, "compras online"))
+        cena.play(Succession(Wait(max(0.0, t_compras - k * 2.8)),
                              FadeIn(itens[1], shift=0.3 * LEFT,
                                     run_time=0.8 * VEL * k)))
+        t_msgs = _em(tag, est, _f(tag, "mensagens privadas"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.290) - k * 3.668)),
+            Wait(max(0.0, t_msgs - (t_compras + 0.8 * VEL * k))),
             FadeIn(itens[2], shift=0.3 * UP, run_time=0.8 * VEL * k)))
         # e se condensam dentro dele
         cena.play(*[it.animate.scale(0.05).move_to(cad[1]).set_opacity(0)
@@ -525,8 +532,10 @@ def abertura(cena):
                   run_time=1.2 * VEL * k)
         # "fáceis de fazer numa direção" ≈ 0,61: a seta varre para a
         # direita...
+        # (desde "mensagens": FadeIn 0,8 + condensa 1,2 + fatores 1,2)
+        t_ida = _em(tag, est, _f(tag, "fáceis de fazer"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.611) - k * 7.318)),
+            Wait(max(0.0, t_ida - (t_msgs + 3.2 * VEL * k))),
             GrowArrow(ida, run_time=1.6 * VEL * k)))
         # ...e os fatores se fundem no bloco no instante em que o cadeado
         # trava — o play é o do _fechar() (o fechar() com o pivô no pé)
@@ -536,8 +545,10 @@ def abertura(cena):
                        _fechar, cad, run_time=0.6 * k)
 
         # "impraticáveis de desfazer" ≈ 0,77: a volta tenta e se despedaça
+        # (desde "fáceis": seta 1,6 + trava 0,6)
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.772) - k * 10.876)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "impraticáveis"))
+                     - (t_ida + 2.2 * VEL * k))),
             GrowArrow(volta, run_time=1.0 * VEL * k)))
         cena.play(ReplacementTransform(volta, interrogacoes),
                   run_time=0.6 * VEL * k)
@@ -572,7 +583,7 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
 
     Devolve as interrogações novas (fora de cena, mas nas posições onde
     pararam): o V1N04 as traz de volta e as remonta nos dois primos."""
-    fat = T("fatoração", 72).move_to([0, _FAIXA, 0])
+    fat = T(tx("v1.fatoracao"), 72).move_to([0, _FAIXA, 0])
 
     # a forma do bloco fechado, guardada para a volta; e os dois fatores
     # cinzas em que ele se reabre, nas medidas do f1 e do f2 do V1N01
@@ -609,8 +620,9 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
 
         # "Multiplicar dois primos grandes" ≈ 0,20: o bloco se reabre pela
         # emenda e cada metade volta a ser o fator cinza de que era feita...
+        t_mult = _em(tag, est, _f(tag, "multiplicar"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.195) - k * 3.1)),
+            Wait(max(0.0, t_mult - k * 3.1)),
             AnimationGroup(Transform(bloco[0], cinzas[0]),
                           Transform(bloco[1], cinzas[1]),
                           run_time=1.0 * VEL * k)))
@@ -628,9 +640,12 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
                   ReplacementTransform(VGroup(p, q), n), run_time=1.2 * VEL * k)
 
         # "voltar do produto para os primos" ≈ 0,37: a volta tenta de novo
-        # e se despedaça, no mesmo espalhar do V1N01
+        # e se despedaça, no mesmo espalhar do V1N01 (os Wait contam da
+        # âncora anterior, como no V1N01; desde "multiplicar": reabre 1,0 +
+        # cores 0,9 + funde 1,2)
+        t_volta = _em(tag, est, _f(tag, "voltar do produto"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.365) - k * 6.6685)),
+            Wait(max(0.0, t_volta - (t_mult + 3.1 * VEL * k))),
             GrowArrow(volta, run_time=1.0 * VEL * k)))
         cena.play(ReplacementTransform(volta, cacos), run_time=0.6 * VEL * k)
         cena.play(Succession(
@@ -643,9 +658,12 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
         # bloco (contador + saída) já soma 5,6 s fixos: puxar para a fração
         # exata estouraria a locução em ~1,3 s. Capado no último instante
         # que ainda cabe (12,7 s de 18,3 — fração efetiva ≈0,69), para o
-        # bloco fechar exatamente no fim da fala, sem sobra nem estouro
+        # bloco fechar exatamente no fim da fala, sem sobra nem estouro.
+        # A palavra entra no min() como no V1N04: só manda se cair antes do
+        # teto. (desde "voltar": seta 1,0 + cacos 0,6 + espalha 1,2 + 0,6)
+        alvo = min(_em(tag, est, _f(tag, "bilhões de anos")), k * (est - 5.6))
         cena.play(Succession(
-            Wait(max(0.0, k * (est - 5.6 - 10.0795))),
+            Wait(max(0.0, alvo - (t_volta + 3.4 * VEL * k))),
             AnimationGroup(FadeOut(cacos), *[FadeOut(m) for m in bloco],
                           FadeOut(n), FadeIn(contador),
                           run_time=0.8 * VEL * k)))
@@ -675,8 +693,9 @@ def corpo_rsa(cena, cad):
         k = _k(tag, est)
         # "é o RSA" ≈ 0,22: o cadeado cresce e as letras se gravam com o
         # flash seco do travamento
+        t_rsa = _em(tag, est, _f(tag, "RSA"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.219))),
+            Wait(max(0.0, t_rsa)),
             cad.animate(run_time=2.2 * VEL * k).scale(1.4)))
         gravar(cena, cad, "RSA", run_time=0.9 * k)
         # o aceso vai na frente de tudo o que nascer daqui em diante: a rede
@@ -685,9 +704,11 @@ def corpo_rsa(cena, cad):
         cad.set_z_index(1)
 
         # "não é o único" ≈ 0,68: o cadeado encolhe e a rede se desenha ao
-        # fundo, já apagada
+        # fundo, já apagada (os Wait contam da âncora anterior, como no
+        # V1N01; desde "RSA": cresce 2,2 + grava 0,9)
+        t_unico = _em(tag, est, _f(tag, "não é o único"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.683) - k * 7.48)),
+            Wait(max(0.0, t_unico - (t_rsa + 3.1 * VEL * k))),
             AnimationGroup(cad.animate.scale(0.8 / 1.4),
                            Create(arestas),
                            LaggedStart(*[GrowFromCenter(d) for d in pontos],
@@ -702,8 +723,10 @@ def corpo_rsa(cena, cad):
                               lag_ratio=0.12), run_time=1.8 * VEL * k)
 
         # "nem vai ser o único a cair" ≈ 0,88: todos pulsam uma vez, junto
+        # (desde "não é o único": rede 1,6 + anônimos 1,8)
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.879) - k * 17.06)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "único a cair"))
+                     - (t_unico + 3.4 * VEL * k))),
             AnimationGroup(*[c.animate.scale(1.35) for c in anonimos],
                           rate_func=there_and_back, run_time=0.8 * VEL * k)))
 
@@ -766,7 +789,7 @@ def corpo_shor(cena, cad, malha, interrogacoes):
     d94 = Dot([x0, _LINHA, 0], radius=0.08, color=PRETO)
     hoje = Dot([x1, _LINHA, 0], radius=0.08, color=PRETO)
     r94 = T("1994", 22, CINZA).next_to(d94, DOWN, buff=0.15)
-    rhoje = T("hoje", 22, CINZA).next_to(hoje, DOWN, buff=0.15)
+    rhoje = T(tx("v1.hoje"), 22, CINZA).next_to(hoje, DOWN, buff=0.15)
     tag, est = "V1N04", 17.9
     kv = _k(tag, est)
     qubits, quando = VGroup(), []
@@ -780,7 +803,8 @@ def corpo_shor(cena, cad, malha, interrogacoes):
     with narra(cena, "V1N04", 17.9):
         # "vence essa aposta" ≈ 0,37: as interrogações voltam onde pararam e
         # o espalhar se desfaz, de trás para frente, até a linha da seta...
-        cena.play(Succession(Wait(max(0.0, _em(tag, est, 0.368))),
+        t_vence = _em(tag, est, _f(tag, "vence essa aposta"))
+        cena.play(Succession(Wait(max(0.0, t_vence)),
                              FadeIn(interrogacoes, run_time=0.2 * VEL * kv)))
         cena.play(*[c.animate.rotate(-ang * DEGREES).shift([-dx, -dy, 0])
                     for c, (dx, dy, ang) in zip(interrogacoes, _ESPALHA)],
@@ -794,10 +818,13 @@ def corpo_shor(cena, cad, malha, interrogacoes):
         # "não só a do RSA" ≈ 0,46: os anônimos piscam uma vez, acesos por
         # inteiro (o arco pelo traço: um fill no arco tamparia a aresta atrás
         # dele). O there_and_back vai em cada um, não no grupo: o finish() do
-        # grupo leva cada animação ao fim dela, e eles ficariam acesos
+        # grupo leva cada animação ao fim dela, e eles ficariam acesos.
+        # Os Wait contam da âncora anterior, como no V1N01 (desde "vence":
+        # FadeIn 0,2 + desfaz 0,4 + primos 0,6)
         pisca = dict(rate_func=there_and_back)
+        t_pisca = _em(tag, est, _f(tag, "não só a do RSA"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.461) - kv * 7.7872)),
+            Wait(max(0.0, t_pisca - (t_vence + 1.2 * VEL * kv))),
             AnimationGroup(
                 *[c[1].animate(**pisca).set_opacity(1) for c in anonimos],
                 *[c[0].animate(**pisca).set_stroke(opacity=1) for c in anonimos],
@@ -806,9 +833,11 @@ def corpo_shor(cena, cad, malha, interrogacoes):
         # "nos últimos anos" ≈ 0,61: os primos se recolhem no ponto de
         # 1994... (glifo a glifo, cada um num ponto: do Text inteiro para o
         # Dot, os glifos sumiam no lugar em vez de viajar)
+        # (desde "não só": pisca 0,8)
         copias = [d94.copy() for _ in range(len(p) + len(q) - 1)]
+        t_anos = _em(tag, est, _f(tag, "últimos anos"))
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.605) - kv * 9.0519)),
+            Wait(max(0.0, t_anos - (t_pisca + 0.8 * VEL * kv))),
             AnimationGroup(
                 *[ReplacementTransform(g, d)
                   for g, d in zip([*p, *q], [d94, *copias])],
@@ -829,8 +858,12 @@ def corpo_shor(cena, cad, malha, interrogacoes):
         # a rede, 3,31 s fixos) não cabe atrás dela: capado no último
         # instante que ainda fecha o bloco sem estourar (fração efetiva
         # ≈0,82, bem perto do que o Wait(0,4) antigo já fazia por tentativa)
-        alvo7 = min(_em(tag, est, 0.921), kv * (est - 3.31))
-        cena.play(Succession(Wait(max(0.0, alvo7 - kv * 14.1245)),
+        # (desde "últimos anos": recolhe 0,8 + a linha até o último qubit
+        # da coluna de 6, 0,95 × 2,1 + 0,05 × 5 + 0,25 = 2,495)
+        alvo7 = min(_em(tag, est, _f(tag, "prazo de validade")),
+                    kv * (est - 3.31))
+        cena.play(Succession(Wait(max(0.0, alvo7
+                                      - (t_anos + 3.295 * VEL * kv))),
                              AnimationGroup(
             *[FadeOut(m) for m in (linha, d94, hoje, r94, rhoje, *qubits)],
             cad.animate.scale(1.2 / 0.8), run_time=0.8 * VEL * kv)))
@@ -920,7 +953,7 @@ def corpo_serie(cena, cacos):
         # "esta série" ≈ 0,75: os quatro vídeos saem de trás do título,
         # apagados
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, 0.750) - k * 3.0)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "esta série")) - k * 3.0)),
             AnimationGroup(
                 *[FadeIn(n, target_position=[n.get_x(), 0, 0]) for n in nomes],
                 run_time=1.0 * VEL * k)))
@@ -946,7 +979,7 @@ def corpo_serie(cena, cacos):
         # nesse algoritmo", não tem contrapartida visual). Empurrado para o
         # piso de 85% em vez de concentrado no início, como pede a regra de
         # distribuir gestos soltos ao longo da fala
-        alvo = max(_em(tag, est, 0.263),
+        alvo = max(_em(tag, est, _f(tag, "neles eu passo")),
                    0.85 * _dur(tag, est) - 0.8 * VEL * k)
         cena.play(Succession(Wait(max(0.0, alvo - k * 2.4)), AnimationGroup(
             Restore(trilha[0]), GrowFromCenter(marca),
@@ -1256,10 +1289,12 @@ def _previa_v2(cena, moldura, t0):
     def rt(s):
         return s * VEL * k
 
-    def ancora(seg, sai=None):
-        """Espera até `seg` s da fala e apaga `sai` nos 0,12 s antes."""
+    def ancora(nome, sai=None):
+        """Espera até a âncora `nome` da fala e apaga `sai` nos 0,12 s
+        antes. As âncoras são o começo de cada trecho da decupagem, em
+        segundos dos 20,3 s do roteiro (sincronias_v1.py)."""
         fo = rt(0.12) if sai is not None else 0.0
-        espera = _ate(cena, t0 - fo, tag, est, seg / est)
+        espera = _ate(cena, t0 - fo, tag, est, _f(tag, nome))
         if espera.run_time > 1e-3:
             cena.play(espera)
         if sai is not None:
@@ -1295,7 +1330,7 @@ def _previa_v2(cena, moldura, t0):
         # encostadas ponta a ponta, uma play cada, como no original
         reta, soma = cap2()[:2]
         b6, r6, a5, r5 = soma
-        ancora(5.6, sai)
+        ancora("somar", sai)
         cena.play(Create(reta), run_time=rt(0.43))
         cena.play(Create(b6), FadeIn(r6), run_time=rt(0.37))
         cena.play(Create(a5), FadeIn(r5), run_time=rt(0.37))
@@ -1309,7 +1344,7 @@ def _previa_v2(cena, moldura, t0):
         _encaixa(base, moldura)
         _confere(base, moldura, "V1N07 cap. 3")
         segs, rots = base
-        ancora(7.2, sai)
+        ancora("multiplicar", sai)
         cena.play(LaggedStart(*[AnimationGroup(Create(s), FadeIn(r))
                                 for s, r in zip(segs, rots)],
                               lag_ratio=0.15), run_time=rt(1.03))
@@ -1323,7 +1358,7 @@ def _previa_v2(cena, moldura, t0):
         quadro = VGroup(prod, segs)
         _encaixa(quadro, moldura)
         _confere(quadro, moldura, "V1N07 cap. 4")
-        ancora(8.6, sai)
+        ancora("potências", sai)
         cena.play(LaggedStart(*[FadeIn(prod[i]) for i in range(0, 11, 2)],
                               lag_ratio=0.12),
                   *[FadeIn(prod[i]) for i in range(1, 11, 2)],
@@ -1342,7 +1377,7 @@ def _previa_v2(cena, moldura, t0):
         # ReplacementTransform — o x engorda e o c vira um ponto
         reta, soma, atual, estados = cap2()
         n7, x2, cver, rn, rx, rc = atual
-        ancora(10.1, sai)
+        ancora("num mundo", sai)
         cena.play(FadeIn(reta), FadeIn(soma), run_time=rt(0.12))
         cena.play(AnimationGroup(
             Create(n7, run_time=rt(0.63), rate_func=linear),
@@ -1351,7 +1386,7 @@ def _previa_v2(cena, moldura, t0):
         cena.play(FadeIn(rn), FadeIn(rx), run_time=rt(0.18))
         cena.play(Create(cver), FadeIn(rc), run_time=rt(0.25))
 
-        ancora(11.6)
+        ancora("dão a volta")
         for novo in estados:
             cena.play(*[ReplacementTransform(a, b)
                         for a, b in zip(atual, novo)], run_time=rt(0.19))
@@ -1364,7 +1399,7 @@ def _previa_v2(cena, moldura, t0):
         # Wiggle) e vira o 2 verde
         (reta, b11, r11, tres, r3s, tenta, r3x, xis, s2, r2,
          bate, s) = cap1()
-        ancora(12.8, sai)
+        ancora("só o que sobra", sai)
         cena.play(FadeIn(reta), FadeIn(b11), FadeIn(r11), run_time=rt(0.12))
         cena.play(LaggedStart(*[AnimationGroup(Create(t), FadeIn(r))
                                 for t, r in zip(tres, r3s)],
@@ -1389,7 +1424,7 @@ def _previa_v2(cena, moldura, t0):
         quadro = VGroup(filas2, filas3)
         _encaixa(quadro, moldura)
         _confere(quadro, moldura, "V1N07 cap. 5 (filas)")
-        ancora(14.6, sai)
+        ancora("no fim", sai)
         for f in filas2:
             cena.play(Succession(
                 AnimationGroup(FadeIn(f[0]), Create(f[2]),
@@ -1398,7 +1433,7 @@ def _previa_v2(cena, moldura, t0):
                             run_time=rt(0.16)),
                 AnimationGroup(*[FadeIn(m) for m in f[3:]],
                                run_time=rt(0.14))))
-        ancora(16.2, filas2)
+        ancora("jeito de dividir", filas2)
         for f in filas3:
             cena.play(FadeIn(f[0]), Create(f[2]),
                       LaggedStart(*[Create(s) for s in f[1]], lag_ratio=0.2),
@@ -1415,7 +1450,7 @@ def _previa_v2(cena, moldura, t0):
         quadro = VGroup(*pecas)
         _encaixa(quadro, moldura)
         _confere(quadro, moldura, "V1N07 cap. 5 (tabela)")
-        ancora(18.0, sai)
+        ancora("sem dividir", sai)
         cena.play(FadeIn(head_c), FadeIn(head_l),
                   Create(lin_h), Create(lin_v), run_time=rt(0.25))
         cena.play(LaggedStart(*[FadeIn(l) for l in linhas_cel],
@@ -1513,7 +1548,7 @@ def _previa_v3a(cena, moldura, fermat, t0):
               run_time=1.3 * VEL * k)
     # ≈ 0,182 da fala: a elipse entra e liga a linha 1 à sua fileira de cima
     cena.play(Succession(
-        _ate(cena, t0, tag, est, 0.182),
+        _ate(cena, t0, tag, est, _f(tag, "teoremas")),
         AnimationGroup(Create(el), LaggedStart(
             *[TransformFromCopy(linha1[j], A[j]) for j in range(6)],
             lag_ratio=0.12), run_time=1.1 * VEL * k)))
@@ -1632,9 +1667,9 @@ def _previa_v3b(cena, moldura, euler, t0):
 
     # 2,6–5,6 · cap. 8: os dois cartões nascem acima das setas e descem até
     # elas — o cinza "pública" na primeira, o amarelo "privada" na segunda
-    pub = _caixa("pública", CINZA, PRETO, largura=1.5).scale(0.75)
+    pub = _caixa(tx("geral.publica"), CINZA, PRETO, largura=1.5).scale(0.75)
     pub.move_to(seta1.get_center() + [0, 0.9, 0])
-    priv = _caixa("privada", AMARELO, PRETO, largura=1.5).scale(0.75)
+    priv = _caixa(tx("geral.privada"), AMARELO, PRETO, largura=1.5).scale(0.75)
     priv.move_to(seta2.get_center() + [0, 0.9, 0])
     pub_fim = pub.copy().move_to(seta1.get_center() + [0, 0.35, 0])
     priv_fim = priv.copy().move_to(seta2.get_center() + [0, 0.35, 0])
@@ -1674,7 +1709,7 @@ def _previa_v3b(cena, moldura, euler, t0):
     # "RSA" ≈ 0,236 da fala (38 / 161 caracteres, o começo da palavra
     # "RSA" no texto do V1N09): "Euler" vira "RSA" no rótulo da janela
     cena.play(Succession(
-        _ate(cena, t0, tag, est, 0.236),
+        _ate(cena, t0, tag, est, _f(tag, "RSA")),
         ReplacementTransform(euler, rsa, run_time=0.4 * VEL * k)))
 
     cena.play(FadeIn(pub, shift=0.3 * s * DOWN), run_time=0.8 * VEL * k)
@@ -1801,8 +1836,8 @@ def _previa_v4a(cena, moldura, t0):
     tag, est = "V1N10", 11.0
     k = _k(tag, est)
 
-    def ancora(frac):
-        espera = _ate(cena, t0, tag, est, frac)
+    def ancora(nome):
+        espera = _ate(cena, t0, tag, est, _f(tag, nome))
         if espera.run_time > 1e-3:
             cena.play(espera)
 
@@ -1878,7 +1913,7 @@ def _previa_v4a(cena, moldura, t0):
     # ≈ 0,319 "entra a ordem modular" (C9N05–C9N08): o 1 de partida acende
     # e o zigue-zague desce, sobe, desce, sobe, desce — para no 1 da
     # linha 4, sem o arco que fecha o ciclo
-    ancora(0.319)
+    ancora("ordem modular")
     cena.play(Create(c00), run_time=0.25 * VEL * k)
     cena.play(LaggedStart(*[AnimationGroup(
         GrowArrow(seg) if isinstance(seg, Arrow) else Create(seg),
@@ -1887,7 +1922,7 @@ def _previa_v4a(cena, moldura, t0):
 
     # 5,2–8,4 · cap. 10 (≈ 0,473, "Com ela"): a tabela sai e as árvores
     # entram, com os gestos 1,3× mais longos que na prévia de uma fala só
-    ancora(0.473)
+    ancora("com ela")
     cena.play(FadeOut(no_ar), run_time=0.2 * VEL * k)
     _arvores(1.3 * k)
 
@@ -1895,9 +1930,9 @@ def _previa_v4a(cena, moldura, t0):
     # zigue-zague onde parou; em "procurar" (≈ 0,870) o último arco fecha o
     # ciclo de volta no 1 de partida (C9N09) e o flash amarelo dá uma
     # volta inteira no caminho
-    ancora(0.764)
+    ancora("divisores")
     cena.play(FadeIn(no_ar), run_time=0.4 * VEL * k)
-    ancora(0.870)
+    ancora("procurar")
     cena.play(Create(fecha), Indicate(c00, color=VERDE),
               run_time=0.6 * VEL * k)
     cena.play(LaggedStart(*[ShowPassingFlash(
@@ -1921,8 +1956,8 @@ def _previa_v4b(cena, moldura, ciclo, t0):
     tag, est = "V1N11", 18.7
     k = _k(tag, est)
 
-    def ancora(frac):
-        espera = _ate(cena, t0, tag, est, frac)
+    def ancora(nome):
+        espera = _ate(cena, t0, tag, est, _f(tag, nome))
         if espera.run_time > 1e-3:
             cena.play(espera)
 
@@ -2053,28 +2088,28 @@ def _previa_v4b(cena, moldura, ciclo, t0):
         cena.remove(*copias)
         cena.add(picos, vales)
 
-        ancora(0.737)                       # "se cancelam"
+        ancora("se cancelam")
         cena.play(*[Transform(v, r) for v, r in zip(vales, vales_rasos)],
                   run_time=0.4 * VEL * k)
-        ancora(0.817)                       # "se reforçam"
+        ancora("se reforçam")
         cena.play(*[Transform(p, h) for p, h in zip(picos, picos_altos)],
                   run_time=0.5 * VEL * k)
-        ancora(0.866)                       # "E esse é o algoritmo de Shor"
+        ancora("algoritmo de Shor")          # "E esse é o algoritmo de Shor"
         cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.5 * VEL * k)
 
     # 0,0–6,2: a janela fica parada no ciclo fechado que o V1N10 deixou,
     # até "quântico" (≈ 0,332), quando o ciclo sai
-    ancora(0.332)
+    ancora("quântico")
     cena.play(FadeOut(ciclo), run_time=0.3 * VEL * k)
 
     # 6,2–9,4 · cap. 11 ("Então"): os qubits, 1,6× mais lentos
     _qubits(1.6 * k)
     # 9,4–12,6 · cap. 11 (≈ 0,503, "circuito"): o circuito, 1,2×
-    ancora(0.503)
+    ancora("lógica diferente")
     _circuito(1.2 * k)
     # 12,6–16,4 · cap. 11 (≈ 0,674): as ondas se somam na curva de
     # interferência
-    ancora(0.674)
+    ancora("respostas erradas")
     _ondas()
 
 
@@ -2115,7 +2150,7 @@ def corpo_previa4(cena, titulo, trilha):
 
         # ≈ 0,950: os quatro títulos acendem juntos, e a trilha pulsa uma vez
         cena.play(Succession(
-            _ate(cena, t0, tag, est, 0.950),
+            _ate(cena, t0, tag, est, _f(tag, "Shor")),
             trilha.animate(run_time=0.3 * VEL * k).set_opacity(1)))
         cena.play(trilha.animate(rate_func=there_and_back).scale(1.1),
                   run_time=0.4 * VEL * k)
@@ -2129,7 +2164,7 @@ def encerramento(cena, titulo, trilha, fatoracao):
     Aritmética modular": esse vira a palavra "resto", no verde de c, no
     centro. É a costura para o corte: termina com "resto" sozinho em cena,
     e a abertura do vídeo 2 entra no corte seguinte."""
-    resto = T("resto", 72, VERDE)
+    resto = T(tx("v1.resto"), 72, VERDE)
     pecas = sorted([*trilha, fatoracao, titulo], key=lambda m: m.get_y())
 
     with narra(cena, "V1N12", 8.8):
@@ -2139,7 +2174,8 @@ def encerramento(cena, titulo, trilha, fatoracao):
         # ÚNICA animação do bloco: presa à fração exata, o quadro final
         # ficaria parado por quase 30% da fala. Empurrada para o piso de
         # 85% em vez de concentrada no início
-        alvo = max(_em(tag, est, 0.414), 0.85 * _dur(tag, est) - 2.6 * VEL * k)
+        alvo = max(_em(tag, est, _f(tag, "resto")),
+                   0.85 * _dur(tag, est) - 2.6 * VEL * k)
         cena.play(Succession(Wait(max(0.0, alvo)), LaggedStart(
             *[ReplacementTransform(m, resto) if m is trilha[1] else FadeOut(m)
               for m in pecas], lag_ratio=0.25, run_time=2.6 * VEL * k)))

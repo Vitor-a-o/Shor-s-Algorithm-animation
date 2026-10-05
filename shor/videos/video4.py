@@ -9,7 +9,8 @@ from ..ferramentas import T, narra
 from ..montagem import TITULOS, CARTOES
 from ..cadeado import avancar, estado_v3, quebrar, rede
 from ..capitulos.capitulo10 import _carta_qubit
-from .comum import trilha_videos
+from ..textos import tx
+from .comum import VIDEOS, trilha_videos
 
 
 def abertura(cena):
@@ -27,8 +28,8 @@ def abertura(cena):
 
     # o cartão de marca nasce durante a última frase da locução, então ele é
     # montado aqui: t1 precisa cair no lugar que terá quando t2 chegar
-    t1 = T("Do Zero ao Algoritmo de Shor Quântico", 42)
-    t2 = T("Vídeo 4 de 4 — O algoritmo de Shor", 28, CINZA)
+    t1 = T(tx("geral.titulo_serie"), 42)
+    t2 = T(tx("geral.video_n_de_4").format(n=4, nome=VIDEOS[3]), 28, CINZA)
     VGroup(t1, t2).arrange(DOWN, buff=0.5)
 
     with narra(cena, "V4N00", 13.1):
@@ -56,7 +57,7 @@ def abertura(cena):
     cena.wait(1.3 * VEL)
     cena.play(FadeOut(t2), run_time=0.6 * VEL)
 
-    r = T("Capítulo 9", 26, LARANJA)
+    r = T(tx("geral.capitulo").format(i=9), 26, LARANJA)
     t = T(TITULOS[8], 38)
     g = VGroup(r, t).arrange(DOWN, buff=0.35)
     linha = Line(3 * LEFT, 3 * RIGHT, color=CINZA, stroke_width=1.5)
@@ -265,7 +266,7 @@ def encerramento(cena, caixa):
 
     trilha = trilha_videos(acesos=(1, 2, 3, 4))
     trilha.to_edge(LEFT, buff=1.2).shift(0.4 * DOWN)
-    titulo = T("Do Zero ao Algoritmo de Shor Quântico", 42).to_edge(UP, buff=0.7)
+    titulo = T(tx("geral.titulo_serie"), 42).to_edge(UP, buff=0.7)
     with narra(cena, "V4N04", 18.3):
         # a rede, o cadeado novo e a moldura saem no começo; em "Quatro
         # vídeos atrás" a trilha do V1N06 volta, agora com os quatro acesos
@@ -286,7 +287,7 @@ def encerramento(cena, caixa):
                                     run_time=1.6 * VEL)))
 
     # cartão final silencioso (~3 s), no molde do video3.py
-    fim = T("fim", 32, CINZA)
+    fim = T(tx("geral.fim"), 32, CINZA)
     alvo = VGroup(titulo.copy(), fim).arrange(DOWN, buff=0.55).move_to(ORIGIN)
     cena.play(FadeOut(trilha), titulo.animate.move_to(alvo[0]), FadeIn(fim),
               run_time=0.8 * VEL)

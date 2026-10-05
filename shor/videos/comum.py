@@ -9,11 +9,12 @@ from manim import *
 
 from ..paleta import COR_TEXTO, LARANJA
 from ..ferramentas import T
+from ..textos import tx
 
 # os quatro vídeos, nos mesmos nomes dos cartões de marca de cada um
 # (video2.py, video3.py, video4.py e o cartão do V1N00 no roteiro do 1)
-VIDEOS = ("Introdução", "Aritmética modular",
-          "Do teorema ao RSA", "O algoritmo de Shor")
+VIDEOS = (tx("geral.video1"), tx("geral.titulo_cap1"),
+          tx("geral.video3"), tx("geral.video4"))
 
 
 def trilha_videos(acesos=(), tamanho=26, apagado=0.25):
