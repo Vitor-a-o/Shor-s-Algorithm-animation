@@ -1,17 +1,21 @@
-# Vídeo 1 — sincronias por ordem de palavra
+# Sincronias por ordem de palavra
 
 As âncoras abaixo marcam **onde, dentro de uma fala, cai a palavra que
-dispara um gesto** do vídeo 1. Estão em `shor/videos/sincronias_v1.py`,
-na tabela `SINC`. Em inglês a ordem das palavras muda, então cada fração
-precisa ser medida de novo no áudio em inglês.
+dispara um gesto**. A tabela `SINC` é a de `shor/sincronias.py`: as do
+vídeo 1 moram em `shor/videos/sincronias_v1.py` e entram nela inteiras; as
+do `C11N10` e do encerramento do vídeo 4 estão no próprio
+`shor/sincronias.py`. Em inglês a ordem das palavras muda, então cada
+fração precisa ser medida de novo no áudio em inglês.
 
 **Como preencher o inglês:** para cada linha, escolha na fala em inglês a
 palavra que corresponde à palavra-alvo em pt. Depois da gravação, meça em
-que fração da locução ela cai e escreva em `SINC["en"]` com **a mesma
-chave** (tag, âncora em pt), por exemplo
+que fração da locução ela cai e escreva em `SINC["en"]` (no
+`sincronias_v1.py` para as do vídeo 1, no `sincronias.py` para as outras)
+com **a mesma chave** (tag, âncora em pt), por exemplo
 `("V1N03", "RSA"): 0.31`. Âncora que faltar em `"en"` usa a fração do pt, e
 o render avisa uma vez por âncora (`sincronia V1N03 "RSA": sem fração em en…`).
-Traduzir é só trocar números: o `video1.py` não muda.
+Traduzir é só trocar números: o `video1.py`, o `video4.py` e o
+`capitulo10.py` não mudam.
 
 As frações do pt foram estimadas pela contagem de caracteres da fala, menos
 as do V1N07, que são o começo de cada trecho da decupagem do roteiro, em
@@ -87,12 +91,45 @@ segundos dos 20,3 s estimados.
   - V1N09: o resto da decupagem, em sequência depois de `RSA`;
   - V1N11: os qubits ("Então"), logo depois de `quântico`.
 
+## Âncoras do C11N10 e do encerramento do vídeo 4 (8)
+
+Antes eram `Wait` em segundos fixos dentro de `Succession`. Agora o `Wait`
+é `_ate()` (`shor/sincronias.py`): o instante da âncora (fração × duração
+da fala) menos o tempo já corrido desde o começo do `narra`, nunca
+negativo. A fração pt é o instante que o comentário do código dava,
+dividido pelo `est=` da tag; com o `est=`, o gesto cai exatamente onde o
+`Wait` fixo o punha. A palavra em inglês é a da tabela "Ordem das palavras
+que a animação exige" de `roteiros/en/roteiro_video4_algoritmo_de_shor.md`.
+
+| tag | âncora | palavra-alvo em pt | palavra em inglês | fração pt | `Wait` que substituiu |
+|---|---|---|---|---|---|
+| C11N10 | `outro exemplo` | "Agora vamos a outro exemplo" [o `Write` da congruência com o 21] | "another example" | 0,280 (4,2 s / 15,0) | `Wait(4.2)`, no começo do play |
+| V4N01 | `vencer a aposta` | "consegue vencer a aposta" [a fissura chega às pontas, o arco estala] | "win the bet" | 0,521 (6,2 s / 11,9) | `Wait(4.8)`, depois da descida de 1,4 s |
+| V4N03 | `a aposta continua de pé` | "a aposta continua de pé" [a rede volta ao fundo] | "the bet still stands" | 0,228 (3,7 s / 16,2) | `Wait(3.7)` |
+| V4N03 | `prazo de validade` | "ela só ganhou um prazo de validade" [os cacos reacendem e sobem] | "expiration date" | 0,364 (5,9 s / 16,2) | `Wait(1.0)`, depois de 3,7 + 1,2 s |
+| V4N03 | `a resposta já está` | "E a resposta já está sendo preparada" [os cacos viram a armação nova] | "the answer is already being prepared" | 0,556 (9,0 s / 16,2) | `Wait(0.5)`, depois de 4,9 + 1,0 + 2,6 s |
+| V4N03 | `não depende de fatorar` | "uma criptografia que não depende de fatorar" [a armação fecha] | "cryptography that doesn't depend on factoring" | 0,759 (12,3 s / 16,2) | `Wait(0.9)`, depois de 9,0 + 2,4 s |
+| V4N04 | `o caminho foi seu` | "O caminho foi seu" [a trilha pulsa] | "The path was yours" | 0,639 (11,7 s / 18,3) | `Wait(8.5)`, depois de 0,8 + 2,4 s |
+| V4N04 | `obrigado` | "Obrigado por ter vindo até o fim" [o título pousa] | "Thanks for coming all the way to the end" | 0,847 (15,5 s / 18,3) | `Wait(2.6)`, depois de 3,2 + 8,5 + 1,2 s |
+
+Falas pt completas:
+
+- **C11N10:** De física é só isso, e mais nada. Agora vamos a outro exemplo, com um n que caiba no registrador, e a conta que o circuito faz é a exponenciação modular do capítulo quatro.
+- **V4N01:** Era essa a promessa do primeiro vídeo: um computador quântico consegue vencer a aposta que protege a internet. E agora a gente sabe como.
+- **V4N03:** Então, por enquanto, pode ficar tranquilo: a aposta continua de pé, ela só ganhou um prazo de validade. E a resposta já está sendo preparada: uma criptografia que não depende de fatorar.
+- **V4N04:** Quatro vídeos atrás, a gente começou com o resto de uma divisão. Hoje você entende o algoritmo que pode mudar a segurança da internet. O caminho foi seu, eu só mostrei as peças. Obrigado por ter vindo até o fim.
+
+Gestos dessas falas **sem âncora própria**, que em inglês acompanham a
+âncora anterior ou o começo da fala: no V4N01, "E agora a gente sabe como"
+cai sobre o cadeado já quebrado, sem animação; no V4N04, a saída da cena e
+a trilha ("Quatro vídeos atrás") abrem a fala.
+
 ## Outras sincronias por ordem de palavra
 
 Fora do vídeo 1, nos capítulos. São comentários que amarram a animação à
 ordem das palavras dentro de uma fala. **Nada disso usa fração:** a ordem
-está nos próprios `play` em sequência, ou num `Wait` fixo. Nenhum código
-mudou. Os comentários estão aqui para conferir quando a fala em inglês for
+está nos próprios `play` em sequência (o único `Wait` em segundos, o do
+`C11N10`, virou âncora — tabela acima). Nenhum código mudou. Os comentários estão aqui para conferir quando a fala em inglês for
 gravada.
 
 | arquivo:linha | tag | trecho do comentário |
@@ -115,14 +152,14 @@ gravada.
 | shor/capitulos/capitulo9b.py:562 | C10N30 | ""a contagem de Euler": o 24 que a conta acabou de entregar" (2º `play`) |
 | shor/capitulos/capitulo9b.py:572 | C10N31 | ""a chave privada" é o d; "o inverso da chave pública" é o e com o módulo da contagem" (dois `Indicate`, nessa ordem) |
 | shor/capitulos/capitulo9b.py:586 | C10N32 | "o sinal de igual é literalmente "são a mesma coisa"" (2º `play`) |
-| shor/capitulos/capitulo10.py:197 | C11N10 | (docstring) "o `FadeOut` de fim pertence ao `C11N10` e roda (…) logo no começo da fala, em "De física é só isso" — o `Write(eqc)` só entra depois, atrasado" |
-| shor/capitulos/capitulo10.py:305 | C11N10 | (docstring) "O `Write(eqc)` vem no mesmo `play`, mas atrasado por `Succession` até "outro exemplo" (~4,2 s)" |
-| shor/capitulos/capitulo10.py:316 | C11N10 | ""De física é só isso": a limpeza abre a fala" |
-| shor/capitulos/capitulo10.py:318 | C11N10 | ""outro exemplo" (~4,2 s): a congruência com o 21 entra quando a fala anuncia o exemplo novo" — **`Wait(4.2 * VEL)` fixo**, a única destas em segundos |
-| shor/capitulos/capitulo10.py:542 | C11N22 | "a medida HIPOTÉTICA do C11N22, em cinco batidas na ordem da frase" |
-| shor/capitulos/capitulo10.py:646 | C11N23 | ""nos fios de cima": eles estão em cena desde o C11N13 e a fala os nomeia ANTES de nomear a TQF" |
-| shor/capitulos/capitulo10.py:1009 | C11N30 | "(1) o cursor, com um ponto em cada onda: "em cada ponto"" |
-| shor/capitulos/capitulo10.py:1014 | C11N30 | "(2) o círculo: "cada onda vira uma seta"" |
-| shor/capitulos/capitulo10.py:1027 | C11N30 | "(3) "emendadas uma na outra": a corrente ponta com cauda e, do centro até o fim dela, a seta grossa — a soma" |
-| shor/capitulos/capitulo10.py:1306 | C11N38 | ""que se esconde ali" fecha a frase, e o "ali" é o 85/512 da PRIMEIRA linha" (2º `play`, o `Circumscribe`) |
+| shor/capitulos/capitulo10.py:199 | C11N10 | (docstring) "o `FadeOut` de fim pertence ao `C11N10` e roda (…) logo no começo da fala, em "De física é só isso" — o `Write(eqc)` só entra depois, atrasado" |
+| shor/capitulos/capitulo10.py:307 | C11N10 | (docstring) "O `Write(eqc)` vem no mesmo `play`, mas atrasado por `Succession` até "outro exemplo" (~4,2 s)" |
+| shor/capitulos/capitulo10.py:320 | C11N10 | ""De física é só isso": a limpeza abre a fala" |
+| shor/capitulos/capitulo10.py:322 | C11N10 | ""outro exemplo" (~4,2 s): a congruência com o 21 entra quando a fala anuncia o exemplo novo" — hoje âncora `("C11N10", "outro exemplo")`, na tabela acima |
+| shor/capitulos/capitulo10.py:548 | C11N22 | "a medida HIPOTÉTICA do C11N22, em cinco batidas na ordem da frase" |
+| shor/capitulos/capitulo10.py:652 | C11N23 | ""nos fios de cima": eles estão em cena desde o C11N13 e a fala os nomeia ANTES de nomear a TQF" |
+| shor/capitulos/capitulo10.py:1015 | C11N30 | "(1) o cursor, com um ponto em cada onda: "em cada ponto"" |
+| shor/capitulos/capitulo10.py:1020 | C11N30 | "(2) o círculo: "cada onda vira uma seta"" |
+| shor/capitulos/capitulo10.py:1033 | C11N30 | "(3) "emendadas uma na outra": a corrente ponta com cauda e, do centro até o fim dela, a seta grossa — a soma" |
+| shor/capitulos/capitulo10.py:1312 | C11N38 | ""que se esconde ali" fecha a frase, e o "ali" é o 85/512 da PRIMEIRA linha" (2º `play`, o `Circumscribe`) |
 

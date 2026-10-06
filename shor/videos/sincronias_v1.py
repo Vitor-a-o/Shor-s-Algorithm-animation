@@ -5,14 +5,13 @@ mudam de um idioma para o outro — o resto do video1.py não muda.
 
 Cada âncora é (tag, palavra-alvo em pt). A chave é a mesma nos dois
 idiomas; em "en" o valor é a fração em que a palavra CORRESPONDENTE cai na
-locução em inglês (roteiros/sincronias_v1.md). Âncora que falta em
+locução em inglês (roteiros/sincronias.md). Âncora que falta em
 "en" usa a do pt, com um aviso por âncora.
 
+Aqui só ficam os números: shor/sincronias.py junta esta tabela à dos
+outros trechos e é dele o _f() que o video1.py usa.
+
 Traduzir é trocar números aqui, nunca código no video1.py."""
-
-from manim import logger
-
-from ..idioma import IDIOMA
 
 SINC = {
     "pt": {
@@ -81,21 +80,3 @@ SINC = {
     },
     "en": {},
 }
-
-_avisadas = set()
-
-
-def _f(tag, ancora):
-    """A fração da fala `tag` em que cai `ancora` no idioma ativo. Sem ela
-    em SINC[IDIOMA], usa a do pt e avisa — uma vez por âncora."""
-    chave = (tag, ancora)
-    if chave not in SINC["pt"]:
-        raise KeyError(f"âncora sem fração em pt: {chave}")
-    tabela = SINC[IDIOMA]
-    if chave in tabela:
-        return tabela[chave]
-    if chave not in _avisadas:
-        _avisadas.add(chave)
-        logger.warning('sincronia %s "%s": sem fração em %s, usando a do '
-                       "pt (%.3f)", tag, ancora, IDIOMA, SINC["pt"][chave])
-    return SINC["pt"][chave]

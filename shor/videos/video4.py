@@ -5,10 +5,11 @@
 from manim import *
 
 from ..paleta import AMARELO, CINZA, LARANJA, PRETO, VERDE, VERMELHO, VEL
-from ..ferramentas import T, narra
+from ..ferramentas import T, _agora, narra
 from ..montagem import TITULOS, CARTOES
 from ..cadeado import avancar, estado_v3, quebrar, rede
 from ..capitulos.capitulo10 import _carta_qubit
+from ..sincronias import _ate
 from ..textos import tx
 from .comum import VIDEOS, trilha_videos
 
@@ -151,16 +152,20 @@ def encerramento(cena, caixa):
     piso = [0, -1.5, 0]
     cad = estado_v3()
     cad.next_to(caixa.copy().move_to(piso), UP, buff=0)
+    tag, est = "V4N01", 11.9
+    desce = 1.4 * VEL
     with narra(cena, "V4N01", 11.9):
+        t0 = _agora(cena)
         # a descida abre a fala; depois o quadro fica PARADO no pedestal até
         # "vencer a aposta" (~6,2 s), enquanto a fala lembra a promessa do
         # vídeo 1. O Wait é rabo deste play — não cena.wait() solto —, no
-        # mesmo padrão de atraso do C11N10
+        # mesmo padrão de atraso do C11N10; ele só começa depois da
+        # descida, por isso o t0 recuado dela
         cena.play(Succession(
             AnimationGroup(caixa.animate.move_to(piso),
                            FadeIn(cad, shift=0.7 * DOWN),
-                           run_time=1.4 * VEL),
-            Wait(4.8 * VEL)))
+                           run_time=desce),
+            _ate(cena, t0 - desce, tag, est, "vencer a aposta")))
         # "vencer a aposta" (~6,2 s): a fissura chega às duas pontas, o arco
         # estala e os pedaços caem — a quebra que o V3N02 prometeu. Acaba em
         # ~9,0 s, e "E agora a gente sabe como" cai sobre o cadeado já
@@ -229,21 +234,25 @@ def encerramento(cena, caixa):
                                     # entra em cena no meio da fala, e até lá
                                     # não há o que mandar para trás
 
+    tag, est = "V4N03", 16.2
     with narra(cena, "V4N03", 16.2):
+        t0 = _agora(cena)
         # "pode ficar tranquilo": a primeira frase não tem imagem nova — de
         # 0 a ~3,7 s o quadro é só o cadeado quebrado. O Wait dentro do
         # Succession segura a entrada (a rede nem entra em cena antes da
         # hora), como o Write atrasado do C11N10
         # "a aposta continua de pé" (~3,7 s): a rede do V1N03 volta ao
         # fundo, apagada e intacta — nenhum dos cadeados dela quebrou
-        cena.play(Succession(Wait(3.7 * VEL),
+        cena.play(Succession(_ate(cena, t0, tag, est,
+                                  "a aposta continua de pé"),
                              FadeIn(fundo, run_time=1.2 * VEL)))
         # "ela só ganhou um prazo de validade" (~5,9 s): os cacos reacendem
         # e sobem, desfazendo o tombo do V4N01 (set_stroke, não set_opacity:
         # eles são só traço, e um fill em cima do traço vira borrão)
         cena.bring_to_front(cacos)
         alto = novo[0].get_center()
-        cena.play(Succession(Wait(1.0 * VEL), AnimationGroup(
+        cena.play(Succession(
+            _ate(cena, t0, tag, est, "prazo de validade"), AnimationGroup(
             cacos[0].animate.set_stroke(opacity=1).rotate(70 * DEGREES)
                 .scale(0.75).move_to(alto + 0.18 * LEFT + 0.10 * UP),
             cacos[1].animate.set_stroke(opacity=1).rotate(-55 * DEGREES)
@@ -252,13 +261,15 @@ def encerramento(cena, caixa):
         # "E a resposta já está sendo preparada" (~9,0 s): os cacos se
         # remontam na armação e o corpo novo nasce enquanto o velho sai —
         # num bloco só
-        cena.play(Succession(Wait(0.5 * VEL), AnimationGroup(
+        cena.play(Succession(
+            _ate(cena, t0, tag, est, "a resposta já está"), AnimationGroup(
             ReplacementTransform(cacos, novo[0]),
             FadeIn(novo[1]), FadeIn(novo[2]), FadeOut(velho),
             run_time=2.4 * VEL)))
         # "uma criptografia que não depende de fatorar" (~12,3 s): fecha
         # inteiro no lugar do antigo, com o mesmo flash seco do fechar()
-        cena.play(Succession(Wait(0.9 * VEL), AnimationGroup(
+        cena.play(Succession(
+            _ate(cena, t0, tag, est, "não depende de fatorar"), AnimationGroup(
             novo[0].animate.shift(0.55 * DOWN),
             Flash(novo[1].get_top(), color=PRETO, flash_radius=0.55,
                   line_length=0.22),
@@ -267,7 +278,9 @@ def encerramento(cena, caixa):
     trilha = trilha_videos(acesos=(1, 2, 3, 4))
     trilha.to_edge(LEFT, buff=1.2).shift(0.4 * DOWN)
     titulo = T(tx("geral.titulo_serie"), 42).to_edge(UP, buff=0.7)
+    tag, est = "V4N04", 18.3
     with narra(cena, "V4N04", 18.3):
+        t0 = _agora(cena)
         # a rede, o cadeado novo e a moldura saem no começo; em "Quatro
         # vídeos atrás" a trilha do V1N06 volta, agora com os quatro acesos
         cena.play(FadeOut(fundo), FadeOut(novo), FadeOut(caixa),
@@ -276,13 +289,13 @@ def encerramento(cena, caixa):
                               lag_ratio=0.35), run_time=2.4 * VEL)
         # "O caminho foi seu" (~11,7 s): a trilha inteira pulsa uma vez —
         # um destaque só, porque o caminho que a fala nomeia já está na tela
-        cena.play(Succession(Wait(8.5 * VEL),
+        cena.play(Succession(_ate(cena, t0, tag, est, "o caminho foi seu"),
                              Indicate(trilha, color=AMARELO,
                                       scale_factor=1.06,
                                       run_time=1.2 * VEL)))
         # "Obrigado por ter vindo até o fim" (~15,5 s): o título pousa por
         # cima deles
-        cena.play(Succession(Wait(2.6 * VEL),
+        cena.play(Succession(_ate(cena, t0, tag, est, "obrigado"),
                              FadeIn(titulo, shift=0.5 * DOWN,
                                     run_time=1.6 * VEL)))
 

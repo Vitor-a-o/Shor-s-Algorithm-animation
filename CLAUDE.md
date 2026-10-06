@@ -16,7 +16,7 @@ media/                     saída do Manim — nunca editar, nunca versionar
 roteiros/pt/               os roteiros em português — a especificação do que animar
 roteiros/en/               os mesmos roteiros em inglês, mesmos nomes de arquivo
 roteiros/                  arquivos comuns aos dois idiomas: diretriz_fala_vs_animacao.md,
-                           plano_serie_4_videos.md, glossario.md, sincronias_v1.md, …
+                           plano_serie_4_videos.md, glossario.md, sincronias.md, …
 shor/
   idioma.py                IDIOMA ativo (env var IDIOMA, "pt" ou "en") — tudo importa daqui
   paleta.py                cores e parâmetros globais (VEL, COR_TEXTO, …)

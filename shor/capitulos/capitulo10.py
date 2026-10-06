@@ -4,6 +4,8 @@ import numpy as np
 
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import _ate
 
 
 # ---------------------------------------------------------------------------
@@ -311,14 +313,18 @@ def p10_esquema(cena):
     eqc = VGroup(T("c", 30, VERDE), T("≡", 30, PRETO),
                  pot("2", "b", VERMELHO, AZUL, 30), fmod("21", 28))
     eqc.arrange(RIGHT, buff=0.14).to_edge(UP, buff=0.4)
+    tag, est = "C11N10", 15.0
     with narra(cena, "C11N10", 15.0):
+        t0 = _agora(cena)
         cena.play(
             # "De física é só isso": a limpeza abre a fala
             FadeOut(cena.grupo_fundamentos, run_time=1.0 * VEL),
             # "outro exemplo" (~4,2 s): a congruência com o 21 entra quando
             # a fala anuncia o exemplo novo, e a fala não lê o número. O
-            # atraso é o mesmo `Succession` do `C11N35`
-            Succession(Wait(4.2 * VEL), Write(eqc, run_time=1.2 * VEL)))
+            # atraso é o mesmo `Succession` do `C11N35`, com o `Wait` até a
+            # âncora da fala (shor/sincronias.py)
+            Succession(_ate(cena, t0, tag, est, "outro exemplo"),
+                       Write(eqc, run_time=1.2 * VEL)))
 
     # linha de cima: os bits do expoente, um por coluna; embaixo, a caixa
     # que cada um liga ou desliga

@@ -267,7 +267,7 @@ Somando o `PAD` de 0,35 s por locução (35,7 s), os dois cartões silenciosos (
 
 ## Ordem das palavras que a animação exige
 
-Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o código amarram um gesto a um trecho. As marcadas com ⏱ estão presas a **segundos fixos** no código (`Wait`), não à ordem dos `play`: em inglês, esses números precisam ser medidos no áudio (ver a sessão do Claude Code abaixo).
+Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o código amarram um gesto a um trecho. As marcadas com ⏱ estão presas a **âncoras por fração** da fala (`shor/sincronias.py`, lista em `roteiros/sincronias.md`), não à ordem dos `play`: em inglês, essas frações precisam ser medidas no áudio e escritas em `SINC["en"]`.
 
 | Tag | Ordem mantida |
 |---|---|
@@ -284,15 +284,15 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 | C10N16 | "the two numbers we just computed" antes de "the number we want to factor" |
 | C10N22, C10N25 | "also with an even order" e "a multiple of thirty-five" no fim |
 | C10N30, C10N31, C10N32 | "Euler's count" no fim; "the private key" antes de "the inverse of the public key"; "the same thing" no fim |
-| C11N10 ⏱ | "That's all the physics" no começo; "another example" cai no `Wait(4.2)` |
+| C11N10 ⏱ | "That's all the physics" no começo; "another example" (âncora `outro exemplo`) |
 | C11N22 | as cinco batidas na ordem: probabilidades → uma medida → um valor só → "r" (a única vez que a letra é falada) |
 | C11N23 | "the top wires" antes de "quantum Fourier transform" |
 | C11N30 | "at each point" → "each wave becomes an arrow" → "chained tip to tail" |
 | C11N38 | "there" fecha a frase (o `Circumscribe` no 85/512) |
-| V4N01 ⏱ | "win the bet" (`Wait(4.8)`) |
+| V4N01 ⏱ | "win the bet" (âncora `vencer a aposta`) |
 | V4N02 | "has two digits" → "hundreds" → "thousands of stable qubits" → "No machine today" |
-| V4N03 ⏱ | "the bet still stands" → "expiration date" → "the answer is already being prepared" → "cryptography that doesn't depend on factoring" (`Wait` 3.7 / 1.0 / 0.5 / 0.9) |
-| V4N04 ⏱ | "Four videos ago" → "The path was yours" → "Thanks for coming all the way to the end" (`Wait` 8.5 / 2.6) |
+| V4N03 ⏱ | "the bet still stands" → "expiration date" → "the answer is already being prepared" → "cryptography that doesn't depend on factoring" (âncoras `a aposta continua de pé` / `prazo de validade` / `a resposta já está` / `não depende de fatorar`) |
+| V4N04 ⏱ | "Four videos ago" → "The path was yours" → "Thanks for coming all the way to the end" (âncoras `o caminho foi seu` / `obrigado`) |
 
 ---
 

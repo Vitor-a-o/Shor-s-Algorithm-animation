@@ -12,7 +12,7 @@ from ..cadeado import (_ABERTURA, abrir, cadeado, gravar, quebrar, rachar,
                        rede)
 from ..textos import tx
 from .comum import VIDEOS, trilha_videos
-from .sincronias_v1 import _f
+from ..sincronias import _f
 
 # só para testar com uma voz mais lenta (sessão de acerto de ritmo): 1.0 fora
 # de teste. Multiplica a duração que _dur() devolve, simulando uma locução
