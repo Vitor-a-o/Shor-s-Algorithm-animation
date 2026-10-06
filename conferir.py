@@ -6,7 +6,7 @@ virar exatamente uma chamada de narra()/so_fala() no capítulo correspondente,
 na mesma ordem e com a mesma estimativa.
 
 Uso:
-    python conferir.py                 # confere roteiros/ (pt) contra o código
+    python conferir.py                 # confere roteiros/pt/ contra o código
     python conferir.py 6 7 8           # só esses capítulos
     python conferir.py --quiet         # só os problemas
     python conferir.py --en            # confere roteiros/en/ contra o código
@@ -46,10 +46,10 @@ EST = re.compile(r"^\d+,\d$")
 def le_roteiros(en=False):
     """{tag: (est, arquivo, ordem_global)} a partir das tabelas dos .md.
 
-    pt: só roteiros/*.md. en: só roteiros/en/*.md (mesmos nomes de arquivo
+    pt: só roteiros/pt/*.md. en: só roteiros/en/*.md (mesmos nomes de arquivo
     dos pt) — as duas pastas nunca são lidas juntas, senão tag duplicada."""
     fala = {}
-    pasta = RAIZ / "roteiros" / "en" if en else RAIZ / "roteiros"
+    pasta = RAIZ / "roteiros" / ("en" if en else "pt")
     arquivos = sorted(pasta.glob("roteiro_video*.md"))
     if not arquivos:
         if en:

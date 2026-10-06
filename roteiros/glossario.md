@@ -10,7 +10,7 @@ tela (`shor/textos.py`) seguem este arquivo. Quando um termo mudar aqui, ele mud
 1. **Mesmas tags, mesma ordem, mesmo número de linhas.** Tradução não funde nem divide fala.
    Se uma frase não cabe na batida em inglês, reescreve-se a frase, não a estrutura.
 2. **A ordem dos itens nomeados dentro de uma fala é preservada** quando a animação depende
-   dela. A lista está em `roteiros/en/sincronias_v1.md` (vídeo 1, por fração) e na seção
+   dela. A lista está em `roteiros/sincronias_v1.md` (vídeo 1, por fração) e na seção
    "Outras sincronias por ordem de palavra" do mesmo arquivo (capítulos 8, 10 e 11, por ordem
    de `play`). Exemplo: no `C8N31`, a fala tem de terminar em "smaller than the modulus",
    porque o `<` e o 33 entram por último.

@@ -10,7 +10,7 @@ cai em 30, marcado "presumido". Havendo mais de um uso com tamanhos
 diferentes, usa o maior (pior caso para estourar o quadro).
 
     python checar_textos.py              # tabela no terminal
-    python checar_textos.py --salvar     # idem, e grava roteiros/en/larguras.md
+    python checar_textos.py --salvar     # idem, e grava roteiros/larguras.md
 
 Sai com código 1 se algum texto em inglês passar de 90% da largura do
 quadro (config.frame_width) — rodar antes de cada render em inglês.
@@ -24,7 +24,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent
 TEXTOS_PY = RAIZ / "shor" / "textos.py"
 SHOR_DIR = RAIZ / "shor"
-SAIDA = RAIZ / "roteiros" / "en" / "larguras.md"
+SAIDA = RAIZ / "roteiros" / "larguras.md"
 LIMIAR = 0.90
 
 

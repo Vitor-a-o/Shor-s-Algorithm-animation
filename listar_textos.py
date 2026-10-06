@@ -4,7 +4,7 @@
 Só leitura: não mexe em nada, imprime na saída padrão.
 
     python listar_textos.py                                         # na tela
-    python listar_textos.py > roteiros/en/textos_para_traduzir.md   # para traduzir
+    python listar_textos.py > roteiros/textos_para_traduzir.md   # para traduzir
 
 Colunas: chave | pt | en | observação. A observação junta os comentários
 que estão acima da chave em textos.py (token de formula, glifos, modelo) e

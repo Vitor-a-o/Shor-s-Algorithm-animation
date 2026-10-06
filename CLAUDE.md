@@ -13,8 +13,10 @@ medir.py                   lê audio/<idioma>/*.wav e REGENERA shor/duracoes_<id
 conferir.py                confere roteiro × código (rodar sempre ao terminar)
 audio/<idioma>/            TAG.wav, uma locução por arquivo (namespace global por idioma)
 media/                     saída do Manim — nunca editar, nunca versionar
-roteiros/                  os roteiros em pt e a diretriz — a especificação do que animar
+roteiros/pt/               os roteiros em português — a especificação do que animar
 roteiros/en/               os mesmos roteiros em inglês, mesmos nomes de arquivo
+roteiros/                  arquivos comuns aos dois idiomas: diretriz_fala_vs_animacao.md,
+                           plano_serie_4_videos.md, glossario.md, sincronias_v1.md, …
 shor/
   idioma.py                IDIOMA ativo (env var IDIOMA, "pt" ou "en") — tudo importa daqui
   paleta.py                cores e parâmetros globais (VEL, COR_TEXTO, …)
@@ -119,7 +121,7 @@ imagem. Ler antes de mexer em qualquer capítulo.
 
 As pendências dos capítulos 6, 7 e 8 estão listadas no fim do
 `roteiro_video3_do_teorema_ao_rsa.md`. As do trabalho corrente (capítulos 9, 9b e 10,
-vídeo 4) estão no fim de `roteiros/roteiro_video4_algoritmo_de_shor.md`.
+vídeo 4) estão no fim de `roteiros/pt/roteiro_video4_algoritmo_de_shor.md`.
 Elas são a lista de tarefas.
 
 ---
@@ -158,7 +160,7 @@ duração muda entre os dois. O idioma ativo vem da variável de ambiente
   dois; `audio/` inteiro é ignorado pelo git).
 - **Durações:** `shor/duracoes_pt.py` e `shor/duracoes_en.py`, cada um gerado
   por `python medir.py pt` / `python medir.py en`.
-- **Roteiros:** `roteiros/*.md` (pt) e `roteiros/en/*.md` (en), mesmos nomes
+- **Roteiros:** `roteiros/pt/*.md` (pt) e `roteiros/en/*.md` (en), mesmos nomes
   de arquivo. **O roteiro em inglês tem exatamente as mesmas tags, na mesma
   ordem, do português — tradução não funde nem divide fala.**
 - **Conferir:** `python conferir.py` confere só o pt (como sempre);

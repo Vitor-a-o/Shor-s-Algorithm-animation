@@ -5,7 +5,7 @@ mudam de um idioma para o outro — o resto do video1.py não muda.
 
 Cada âncora é (tag, palavra-alvo em pt). A chave é a mesma nos dois
 idiomas; em "en" o valor é a fração em que a palavra CORRESPONDENTE cai na
-locução em inglês (roteiros/en/sincronias_v1.md). Âncora que falta em
+locução em inglês (roteiros/sincronias_v1.md). Âncora que falta em
 "en" usa a do pt, com um aviso por âncora.
 
 Traduzir é trocar números aqui, nunca código no video1.py."""
