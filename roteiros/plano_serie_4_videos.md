@@ -48,7 +48,7 @@ anterior à narração escrita, mantida como referência.
 
 | Vídeo | Capítulos | `play` | Projeção |
 |---|---|---|---|
-| 1 Introdução | novo | — | ~2 min 45 s (roteiro fechado) |
+| 1 Introdução | novo | — | ~3 min 18 s (roteiro fechado) |
 | 2 Aritmética modular | 1–5 | 101 | ~11 min 45 s (roteiro fechado) |
 | 3 Do teorema ao RSA | 6–8 | 74 | ~9 min 09 s (roteiro fechado) |
 | 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 54 s (roteiro fechado) |
@@ -114,6 +114,11 @@ Em paralelo seguem abertas as duas frentes que já estavam listadas aqui:
   `roteiro_video3_do_teorema_ao_rsa.md`.
 
 ## Pendências de código herdadas do roteiro do vídeo 1
+
+- **Regravação, nos dois idiomas (pt e en):** `V1N10` e `V1N11` mudaram de texto e precisam
+  ser regravadas; rodar `python medir.py pt` e `python medir.py en` depois. A decupagem
+  também mudou (o circuito agora vem antes dos qubits; a tabela não volta depois das
+  árvores), então `video1.py` e as frações de `sincronias_v1.py` precisam acompanhar.
 
 - Um `cadeado.py` em `shor/`, com `cadeado(estado="fechado", rotulo=None)` devolvendo um
   `VGroup` com o arco separado do corpo — ele abre, fecha, chacoalha, se grava e quebra ao

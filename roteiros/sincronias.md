@@ -21,7 +21,7 @@ As frações do pt foram estimadas pela contagem de caracteres da fala, menos
 as do V1N07, que são o começo de cada trecho da decupagem do roteiro, em
 segundos dos 20,3 s estimados.
 
-## Âncoras do vídeo 1 (45)
+## Âncoras do vídeo 1 (46)
 
 | tag | âncora | palavra-alvo em pt | fração pt | fala pt completa |
 |---|---|---|---|---|
@@ -58,17 +58,18 @@ segundos dos 20,3 s estimados.
 | V1N07 | `sem dividir` | "sem dividir de verdade" — trecho 10 (tabela mod 9, ÷ riscado → a⁻¹) | 0,887 (18,0 s / 20,3) | No vídeo dois vou mostrar a aritmética modular, que é a base matemática de toda a série. É somar, multiplicar e elevar a potências num mundo onde os números dão a volta, e só o que sobra importa. No fim aparece até um jeito de dividir, sem dividir de verdade. |
 | V1N08 | `teoremas` | "teoremas" [a elipse e a linha 1; 2,2 s da decupagem] | 0,182 | O vídeo três começa pelos teoremas, e é onde entram Fermat e Euler, dois nomes que parecem abstratos até você ver que é neles que o RSA se apoia. |
 | V1N09 | `RSA` | "RSA" ["Euler" vira "RSA" no rótulo] | 0,236 | Enfim, ainda no vídeo três, explico o RSA, com duas chaves, uma pública e uma privada, nascendo de um par de números primos. E quebrar isso é, no fundo, fatorar. |
-| V1N10 | `ordem modular` | "entra a ordem modular" [o zigue-zague] | 0,319 | No quarto e último vídeo, o maior da série, entra a ordem modular. Com ela, fatorar deixa de ser caçar divisores e vira procurar um ciclo. |
-| V1N10 | `com ela` | "Com ela" [as árvores] | 0,473 | No quarto e último vídeo, o maior da série, entra a ordem modular. Com ela, fatorar deixa de ser caçar divisores e vira procurar um ciclo. |
-| V1N10 | `divisores` | "caçar divisores" [a tabela volta; 8,4 s da decupagem] | 0,764 | No quarto e último vídeo, o maior da série, entra a ordem modular. Com ela, fatorar deixa de ser caçar divisores e vira procurar um ciclo. |
-| V1N10 | `procurar` | "procurar um ciclo" [o ciclo fecha] | 0,870 | No quarto e último vídeo, o maior da série, entra a ordem modular. Com ela, fatorar deixa de ser caçar divisores e vira procurar um ciclo. |
-| V1N11 | `quântico` | "computador quântico" segundo o código [o ciclo sai] — pela contagem de caracteres, 0,332 cai em "Então" | 0,332 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `lógica diferente` | "uma lógica diferente" [o circuito; 9,4 s da decupagem] | 0,503 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `respostas erradas` | "as respostas erradas" [as ondas; 12,6 s da decupagem] | 0,674 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `se cancelam` | "se cancelam" [os vales achatam] | 0,737 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `se reforçam` | "se reforçam" [os picos crescem] | 0,817 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `algoritmo de Shor` | "E esse é o algoritmo de Shor" [a seta no pico] | 0,866 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
-| V1N11 | `Shor` | "Shor", fim da fala [a trilha acende] | 0,950 | Só que, num computador comum, achar esse ciclo é tão lento quanto fatorar. Então entra o computador quântico, que segue uma lógica diferente, em que as respostas erradas se cancelam e as certas se reforçam. E esse é o algoritmo de Shor. |
+| V1N10 | `ordem modular` | "a ordem modular" [o último arco fecha o ciclo] | 0,525 | No quarto e último vídeo, demonstro como os conceitos básicos e os teoremas nos levam até uma última propriedade, a ordem modular. Depois, mostro como descobri-la é essencialmente fatorar, e quebrar a criptografia do RSA. |
+| V1N10 | `Depois` | "Depois" [a tabela sai, entram as árvores] | 0,593 | No quarto e último vídeo, demonstro como os conceitos básicos e os teoremas nos levam até uma última propriedade, a ordem modular. Depois, mostro como descobri-la é essencialmente fatorar, e quebrar a criptografia do RSA. |
+| V1N10 | `quebrar` | "quebrar" [o cadeado RSA reaparece e racha] | 0,864 | No quarto e último vídeo, demonstro como os conceitos básicos e os teoremas nos levam até uma última propriedade, a ordem modular. Depois, mostro como descobri-la é essencialmente fatorar, e quebrar a criptografia do RSA. |
+| V1N11 | `computador quântico` | "computador quântico" [o que sobrou do V1N10 sai] | 0,089 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `lógica incomum` | "lógica incomum" [o circuito se monta] | 0,177 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `superposição` | "superposição" [os cartões-qubit] | 0,304 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `emaranhamento` | "emaranhamento" [o par colapsando] | 0,509 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `interferência` | "interferência" [as ondas se somam na curva] | 0,693 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `apaga` | "apaga as respostas erradas" [os vales achatam] | 0,741 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `até sobrar` | "até sobrar a ordem" [os picos crescem] | 0,833 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `algoritmo de Shor` | "E esse é o algoritmo de Shor" [a seta no pico] | 0,939 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
+| V1N11 | `Shor` | "Shor", fim da fala [a trilha acende] | 0,950 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
 | V1N12 | `resto` | "o resto de uma divisão" [tudo vira "resto"; piso de 85% da fala] | 0,414 | Começamos do jeito mais simples possível, com o resto de uma divisão. É tudo o que você precisa saber até aqui. |
 
 ### O que a tabela não cobre
@@ -89,7 +90,6 @@ segundos dos 20,3 s estimados.
   - V1N08: "Fermat" → "Euler" (5,4 s) e o resto da decupagem, em sequência
     depois de `teoremas`;
   - V1N09: o resto da decupagem, em sequência depois de `RSA`;
-  - V1N11: os qubits ("Então"), logo depois de `quântico`.
 
 ## Âncoras do C11N10 e do encerramento do vídeo 4 (8)
 

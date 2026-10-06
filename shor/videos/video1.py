@@ -1823,17 +1823,19 @@ def _v4_tabela():
 
 
 def _previa_v4a(cena, moldura, t0):
-    """V1N10 — cap. 9, cap. 10 e de novo cap. 9, na ordem da decupagem: a
-    tabela mod 9 se preenche e o zigue-zague começa a percorrê-la sem
-    fechar o ciclo; as árvores do cap. 10 entram no meio; a MESMA tabela
-    volta com o zigue-zague onde ele parou, o último arco fecha o ciclo e
-    o flash amarelo dá a volta. Como nas prévias anteriores, cada trecho
-    recria só o gesto mínimo, sem importar capitulo9/9b/10, e passa por
-    _encaixa e _confere antes de animar.
+    """V1N10 — cap. 9 e cap. 10, na ordem da decupagem: a tabela mod 9 se
+    preenche e o zigue-zague a percorre desde o começo; em "ordem modular"
+    o último arco fecha o ciclo e o flash amarelo dá a volta. Em "Depois"
+    a tabela sai e as árvores do cap. 10 entram, e não volta mais. Em
+    "quebrar" o cadeado RSA do V1N08 reaparece entre as duas árvores e
+    racha — a rima com a seta de despedaçar do fim do V1N09. Como nas
+    prévias anteriores, cada trecho recria só o gesto mínimo, sem importar
+    capitulo9/9b/10, e passa por _encaixa e _confere antes de animar.
 
-    `t0` é o começo do narra do V1N10. Devolve o ciclo fechado, em cena:
-    o V1N11 congela a janela nele."""
-    tag, est = "V1N10", 11.0
+    `t0` é o começo do narra do V1N10. Devolve o que fica em cena — o que
+    sobrou das árvores e o cadeado rachado —: o V1N11 os tira em
+    "computador quântico"."""
+    tag, est = "V1N10", 17.6
     k = _k(tag, est)
 
     def ancora(nome):
@@ -1844,7 +1846,10 @@ def _previa_v4a(cena, moldura, t0):
     def _arvores(kv):
         # cap. 10: um tronco, duas árvores; os ramos que se repetem nos dois
         # lados acendem juntos, o resto cai e sobram dois números pequenos
-        # (o 7 e o 9 do 2³ − 1 e do 2³ + 1 — ainda não o 3 × 7)
+        # (o 7 e o 9 do 2³ − 1 e do 2³ + 1 — ainda não o 3 × 7). O cadeado
+        # do "quebrar" é montado aqui, no vão entre os dois ramos acesos,
+        # para entrar na mesma medida; quem o anima é o corpo da prévia.
+        # Devolve (o que fica das árvores, o cadeado fora de cena)
         cx, cy = moldura.get_center()[:2]
         ponta = np.array([cx, cy + 1.45, 0])
         garfo = np.array([cx, cy + 0.9, 0])
@@ -1879,7 +1884,9 @@ def _previa_v4a(cena, moldura, t0):
         for num, h in zip(numeros, pontas_internas):
             num.move_to(h + 0.3 * DOWN)
         outras = [fo for fo in folhas if fo not in acesos and fo not in apagam]
-        quadro = VGroup(tronco, *filhos, *netos, *folhas, numeros)
+        mini_cad = cadeado("fechado", "RSA").scale(0.45)
+        mini_cad.move_to([cx, cy - 0.25, 0])
+        quadro = VGroup(tronco, *filhos, *netos, *folhas, numeros, mini_cad)
         _, leva = _encaixa(quadro, moldura)
         _confere(quadro, moldura, "V1N10 árvores")
         pontas_internas = [leva(h) for h in pontas_internas]
@@ -1894,8 +1901,7 @@ def _previa_v4a(cena, moldura, t0):
         cena.play(*[FadeOut(r) for r in apagam + outras],
                   *[GrowFromPoint(num, h) for num, h
                     in zip(numeros, pontas_internas)], run_time=0.35 * VEL * kv)
-        cena.play(FadeOut(VGroup(tronco, *filhos, *acesos, numeros)),
-                  run_time=0.2 * VEL * kv)
+        return VGroup(tronco, *filhos, *acesos, numeros), mini_cad
 
     (head_c, head_l, lin_h, lin_v, linhas_cel, c00, degraus, fecha,
      caminho) = pecas = _v4_tabela()
@@ -1904,56 +1910,61 @@ def _previa_v4a(cena, moldura, t0):
     _confere(quadro, moldura, "V1N10 tabela mod 9")
     no_ar = VGroup(head_c, head_l, lin_h, lin_v, linhas_cel, c00, degraus)
 
-    # 0,0–5,2 · cap. 9 (C9N03): depois da _abre_janela (0,8 s), cabeçalhos
-    # e linhas-guia, e as nove linhas em LaggedStart, uma a uma
+    # do começo até "a ordem modular" (≈ 0,525) · cap. 9: depois da
+    # _abre_janela (0,8 s), cabeçalhos e linhas-guia, as nove linhas em
+    # LaggedStart (C9N03), e o 1 de partida acende e o zigue-zague desce,
+    # sobe, desce, sobe, desce até o 1 da linha 4 (C9N05–C9N08). Os quatro
+    # gestos somam 8,0 s × k e terminam ~0,4 s antes da âncora
     cena.play(FadeIn(head_c), FadeIn(head_l), Create(lin_h), Create(lin_v),
-              run_time=0.4 * VEL * k)
+              run_time=0.6 * VEL * k)
     cena.play(LaggedStart(*[FadeIn(l) for l in linhas_cel], lag_ratio=0.25),
-              run_time=1.8 * VEL * k)
-    # ≈ 0,319 "entra a ordem modular" (C9N05–C9N08): o 1 de partida acende
-    # e o zigue-zague desce, sobe, desce, sobe, desce — para no 1 da
-    # linha 4, sem o arco que fecha o ciclo
-    ancora("ordem modular")
-    cena.play(Create(c00), run_time=0.25 * VEL * k)
+              run_time=2.9 * VEL * k)
+    cena.play(Create(c00), run_time=0.5 * VEL * k)
     cena.play(LaggedStart(*[AnimationGroup(
         GrowArrow(seg) if isinstance(seg, Arrow) else Create(seg),
         Create(circ)) for seg, circ in degraus], lag_ratio=1.0),
-        run_time=1.35 * VEL * k)
-
-    # 5,2–8,4 · cap. 10 (≈ 0,473, "Com ela"): a tabela sai e as árvores
-    # entram, com os gestos 1,3× mais longos que na prévia de uma fala só
-    ancora("com ela")
-    cena.play(FadeOut(no_ar), run_time=0.2 * VEL * k)
-    _arvores(1.3 * k)
-
-    # 8,4–11,0 · volta ao cap. 9 (≈ 0,764): a MESMA tabela, com o
-    # zigue-zague onde parou; em "procurar" (≈ 0,870) o último arco fecha o
-    # ciclo de volta no 1 de partida (C9N09) e o flash amarelo dá uma
-    # volta inteira no caminho
-    ancora("divisores")
-    cena.play(FadeIn(no_ar), run_time=0.4 * VEL * k)
-    ancora("procurar")
+        run_time=4.0 * VEL * k)
+    # "a ordem modular": o último arco fecha o ciclo de volta no 1 de
+    # partida (C9N09) e o flash amarelo dá uma volta inteira no caminho —
+    # 1,0 s × k, dentro dos 1,2 s × k até "Depois"
+    ancora("ordem modular")
     cena.play(Create(fecha), Indicate(c00, color=VERDE),
-              run_time=0.6 * VEL * k)
+              run_time=0.45 * VEL * k)
     cena.play(LaggedStart(*[ShowPassingFlash(
         p.copy().set_stroke(AMARELO, width=7), time_width=1.0)
-        for p in caminho], lag_ratio=1.0), run_time=0.7 * VEL * k)
+        for p in caminho], lag_ratio=1.0), run_time=0.55 * VEL * k)
 
-    return VGroup(no_ar, fecha)
+    # "Depois" (≈ 0,593) · cap. 10: a tabela sai e as árvores entram, com
+    # os gestos 2× mais longos que na prévia de uma fala só — 4,2 s × k,
+    # ~0,6 s antes de "quebrar". A tabela não volta
+    ancora("Depois")
+    cena.play(FadeOut(VGroup(no_ar, fecha)), run_time=0.4 * VEL * k)
+    arvores, mini_cad = _arvores(2.0 * k)
+
+    # "quebrar" (≈ 0,864): o cadeado RSA reaparece por meio segundo, intacto
+    # como no fim do V1N08, e racha — o rachar() do V3N02, o mesmo traço
+    ancora("quebrar")
+    cena.play(FadeIn(mini_cad, scale=0.8), run_time=0.5 * VEL * k)
+    rachar(cena, mini_cad, run_time=0.7 * k)
+
+    return VGroup(arvores, mini_cad)
 
 
-def _previa_v4b(cena, moldura, ciclo, t0):
-    """V1N11 — os três trechos do cap. 11 dentro da MESMA moldura: nada
-    aqui a reabre, porque o 4 não troca de número nesta fala, o mesmo
-    recurso do V1N09. Os trechos são os da prévia de uma fala só; mudam
-    só de lugar e de tempo, e as ondas ganham os vales e os picos que o
-    roteiro pede sob "se cancelam" e "se reforçam".
+def _previa_v4b(cena, moldura, sobra, t0):
+    """V1N11 — os trechos do cap. 11 dentro da MESMA moldura: nada aqui a
+    reabre, porque o 4 não troca de número nesta fala, o mesmo recurso do
+    V1N09. Cada trecho entra na palavra que o nomeia — o circuito em
+    "lógica incomum", os qubits em "superposição", o par colapsando em
+    "emaranhamento", as ondas em "interferência", com os vales achatando
+    em "apaga" e os picos crescendo em "até sobrar" — e a seta laranja em
+    "algoritmo de Shor". Os fatores de tempo de cada trecho são os que o
+    fazem preencher a sua janela entre âncoras.
 
-    `ciclo` é o que a _previa_v4a deixou em cena, e sai por FadeOut assim
-    que a fala chega em "quântico"; `t0` é o começo do narra do V1N11.
-    Termina com a seta laranja no pico: a _fecha_janela vem logo depois,
-    no corpo_previa4."""
-    tag, est = "V1N11", 18.7
+    `sobra` é o que a _previa_v4a deixou em cena (as árvores e o cadeado
+    rachado), e sai por FadeOut assim que a fala chega em "computador
+    quântico"; `t0` é o começo do narra do V1N11. Termina com a seta
+    laranja no pico: a _fecha_janela vem logo depois, no corpo_previa4."""
+    tag, est = "V1N11", 23.3
     k = _k(tag, est)
 
     def ancora(nome):
@@ -1961,11 +1972,11 @@ def _previa_v4b(cena, moldura, ciclo, t0):
         if espera.run_time > 1e-3:
             cena.play(espera)
 
-    def _qubits(kv):
+    def _cartoes(kv):
         # cap. 11: o mesmo círculo ciano dos qubits da linha do tempo do
         # V1N04, grande, com o gradiente dos bits 1 e 0 dentro (a
-        # superposição); o fio liga os dois e eles colapsam juntos, no
-        # mesmo quadro, no ciano chapado
+        # superposição). Monta também o fio do _par, para os dois entrarem
+        # na mesma medida; devolve (par, fio), o fio ainda fora de cena
         cx, cy = moldura.get_center()[:2]
         par = VGroup()
         for x in (cx - 2.0, cx + 2.0):
@@ -1979,6 +1990,11 @@ def _previa_v4b(cena, moldura, ciclo, t0):
         _confere(quadro, moldura, "V1N11 qubits")
         cena.play(LaggedStart(*[GrowFromCenter(q) for q in par],
                               lag_ratio=0.3), run_time=0.5 * VEL * kv)
+        return par, fio
+
+    def _par(par, fio, kv):
+        # cap. 11 (C11N07–C11N09): o fio liga os dois qubits e eles colapsam
+        # juntos, no mesmo quadro, no ciano chapado — medir um decide o outro
         cena.play(Create(fio), run_time=0.4 * VEL * kv)
         cena.play(*[q.animate.set_fill(CIANO, opacity=1) for q in par],
                   *[Flash(q, color=CIANO, line_length=0.25, flash_radius=0.5)
@@ -2028,12 +2044,12 @@ def _previa_v4b(cena, moldura, ciclo, t0):
                         flash_radius=0.45), run_time=0.4 * VEL * kv)
         cena.play(FadeOut(VGroup(fios, portas, medida)), run_time=0.2 * VEL * kv)
 
-    def _ondas():
+    def _ondas(kv_soma, kv_vales, kv_picos):
         # cap. 11: quatro ondas empilhadas descem e se somam numa curva de
         # interferência com os picos espaçados — o período delas é o mesmo
-        # 2,8 da tela, então os picos caem em cx e cx ± 2,8. Sob "se
-        # cancelam" os vales achatam e apagam, sob "se reforçam" os picos
-        # crescem, e a seta laranja pousa no pico da direita
+        # 2,8 da tela, então os picos caem em cx e cx ± 2,8. Em "apaga" os
+        # vales achatam e apagam, em "até sobrar" os picos crescem, e a seta
+        # laranja pousa no pico da direita em "algoritmo de Shor"
         cx, cy = moldura.get_center()[:2]
         w = 2 * PI / 2.8
         a, b = cx - 4.2, cx + 4.2
@@ -2080,65 +2096,81 @@ def _previa_v4b(cena, moldura, ciclo, t0):
         _confere(quadro, moldura, "V1N11 ondas")
 
         cena.play(LaggedStart(*[Create(o) for o in ondas], lag_ratio=0.2),
-                  run_time=0.55 * VEL * k)
+                  run_time=0.55 * VEL * kv_soma)
         copias = [curva.copy() for _ in ondas]
         cena.play(*[ReplacementTransform(o, c) for o, c in zip(ondas, copias)],
-                  run_time=0.65 * VEL * k)
+                  run_time=0.65 * VEL * kv_soma)
         # a curva inteira dá lugar aos seus pedaços, no mesmo quadro
         cena.remove(*copias)
         cena.add(picos, vales)
 
-        ancora("se cancelam")
+        ancora("apaga")                      # "apaga as respostas erradas"
         cena.play(*[Transform(v, r) for v, r in zip(vales, vales_rasos)],
-                  run_time=0.4 * VEL * k)
-        ancora("se reforçam")
+                  run_time=0.4 * VEL * kv_vales)
+        ancora("até sobrar")                 # "até sobrar a ordem"
         cena.play(*[Transform(p, h) for p, h in zip(picos, picos_altos)],
-                  run_time=0.5 * VEL * k)
+                  run_time=0.5 * VEL * kv_picos)
         ancora("algoritmo de Shor")          # "E esse é o algoritmo de Shor"
-        cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.5 * VEL * k)
+        # 0,3 s × k, não 0,5: depois dela a _fecha_janela, o acender da
+        # trilha e o pulso têm de caber no que resta da fala mais o PAD
+        cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.3 * VEL * k)
 
-    # 0,0–6,2: a janela fica parada no ciclo fechado que o V1N10 deixou,
-    # até "quântico" (≈ 0,332), quando o ciclo sai
-    ancora("quântico")
-    cena.play(FadeOut(ciclo), run_time=0.3 * VEL * k)
-
-    # 6,2–9,4 · cap. 11 ("Então"): os qubits, 1,6× mais lentos
-    _qubits(1.6 * k)
-    # 9,4–12,6 · cap. 11 (≈ 0,503, "circuito"): o circuito, 1,2×
-    ancora("lógica diferente")
-    _circuito(1.2 * k)
-    # 12,6–16,4 · cap. 11 (≈ 0,674): as ondas se somam na curva de
-    # interferência
-    ancora("respostas erradas")
-    _ondas()
+    # As janelas, em segundos do est= de 23,3 (todas escalam com k): o
+    # fator de cada trecho é o que o faz ocupar a maior parte da sua, sem
+    # chegar na âncora seguinte
+    # "computador quântico" (≈ 0,089) → "lógica incomum": 2,1 s; o que o
+    # V1N10 deixou sai em 1,0 s
+    ancora("computador quântico")
+    cena.play(FadeOut(sobra), run_time=1.0 * VEL * k)
+    # "lógica incomum" (≈ 0,177) → "superposição": 3,0 s; o circuito, 1,4×
+    # (2,7 s)
+    ancora("lógica incomum")
+    _circuito(1.4 * k)
+    # "superposição" (≈ 0,304) → "emaranhamento": 4,8 s; os qubits, 6×
+    # (3,0 s) — o gesto é um crescer só, mais lento que isso vira câmera
+    # lenta, e os dois ficam parados ~1,8 s antes do fio
+    ancora("superposição")
+    par, fio = _cartoes(6.0 * k)
+    # "emaranhamento" (≈ 0,509) → "interferência": 4,3 s; o par, 2,6×
+    # (3,4 s)
+    ancora("emaranhamento")
+    _par(par, fio, 2.6 * k)
+    # "interferência" (≈ 0,693) → "apaga": 1,1 s, curta para as ondas se
+    # somarem — 0,85× (1,0 s); "apaga" → "até sobrar": 2,1 s, os vales em
+    # 4× (1,6 s); "até sobrar" → "algoritmo de Shor": 2,5 s, os picos em
+    # 4× (2,0 s)
+    ancora("interferência")
+    _ondas(0.85 * k, 4.0 * k, 4.0 * k)
 
 
 def corpo_previa4(cena, titulo, trilha):
     """V1N10 e V1N11. A _abre_janela acende o 4 e abre a moldura; ela fica
     aberta nas duas falas — o 4 não troca de número entre elas, como o 3
     entre o V1N08 e o V1N09 — e só a _fecha_janela do fim do V1N11 a
-    fecha, devolvendo o 4 à trilha. No corte, o 21 = 3 × 7 entra grande —
-    a única fórmula fixa das prévias (roteiro, "Critério das prévias"):
-    nasce de um corte seco, sem Write e sem transformar outra fórmula —,
-    no centro do espaço livre à direita da trilha, que já voltou. Por fim
-    os quatro títulos acendem juntos e a trilha pulsa uma vez.
+    fecha, devolvendo o 4 à trilha. Na passagem de uma fala para a outra a
+    janela fica com as árvores e o cadeado rachado do V1N10, que saem em
+    "computador quântico". No corte, o 21 = 3 × 7 entra grande — a única
+    fórmula fixa das prévias (roteiro, "Critério das prévias"): nasce de um
+    corte seco, sem Write e sem transformar outra fórmula —, no centro do
+    espaço livre à direita da trilha, que já voltou. Por fim os quatro
+    títulos acendem juntos e a trilha pulsa uma vez.
 
     Devolve (titulo, trilha, fatoracao), em cena: o encerramento (V1N12)
     os tira de baixo para cima."""
     fatoracao = formula(("21", LARANJA), ("=", PRETO), ("3", ROSA),
                         ("×", PRETO), ("7", VERDE2), tamanho=96, buff=0.3)
 
-    with narra(cena, "V1N10", 11.0):
-        k = _k("V1N10", 11.0)
+    with narra(cena, "V1N10", 17.6):
+        k = _k("V1N10", 17.6)
         t0 = _agora(cena)
         moldura, _ = _abre_janela(cena, titulo, trilha, 3, k)
-        ciclo = _previa_v4a(cena, moldura, t0)
+        sobra = _previa_v4a(cena, moldura, t0)
 
-    with narra(cena, "V1N11", 18.7):
-        tag, est = "V1N11", 18.7
+    with narra(cena, "V1N11", 23.3):
+        tag, est = "V1N11", 23.3
         k = _k(tag, est)
         t0 = _agora(cena)
-        _previa_v4b(cena, moldura, ciclo, t0)
+        _previa_v4b(cena, moldura, sobra, t0)
         _fecha_janela(cena, titulo, trilha, 3, moldura, k)
 
         # o corte: o 21 = 3 × 7 entra seco, no meio do que sobra à direita

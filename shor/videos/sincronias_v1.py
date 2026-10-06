@@ -63,17 +63,18 @@ SINC = {
         # V1N09
         ("V1N09", "RSA"): 0.236,               # "Euler" vira "RSA"
         # V1N10
-        ("V1N10", "ordem modular"): 0.319,     # o zigue-zague
-        ("V1N10", "com ela"): 0.473,           # as árvores
-        ("V1N10", "divisores"): 0.764,         # a tabela volta
-        ("V1N10", "procurar"): 0.870,          # o ciclo fecha
+        ("V1N10", "ordem modular"): 0.525,     # o arco fecha o ciclo, o flash
+        ("V1N10", "Depois"): 0.593,            # a tabela sai, as árvores
+        ("V1N10", "quebrar"): 0.864,           # o cadeado RSA volta e racha
         # V1N11
-        ("V1N11", "quântico"): 0.332,          # o ciclo sai
-        ("V1N11", "lógica diferente"): 0.503,  # o circuito
-        ("V1N11", "respostas erradas"): 0.674,  # as ondas
-        ("V1N11", "se cancelam"): 0.737,
-        ("V1N11", "se reforçam"): 0.817,
-        ("V1N11", "algoritmo de Shor"): 0.866,  # a seta no pico
+        ("V1N11", "computador quântico"): 0.089,  # o que o V1N10 deixou sai
+        ("V1N11", "lógica incomum"): 0.177,    # o circuito
+        ("V1N11", "superposição"): 0.304,      # os qubits
+        ("V1N11", "emaranhamento"): 0.509,     # o par colapsa
+        ("V1N11", "interferência"): 0.693,     # as ondas se somam na curva
+        ("V1N11", "apaga"): 0.741,             # os vales achatam
+        ("V1N11", "até sobrar"): 0.833,        # os picos crescem
+        ("V1N11", "algoritmo de Shor"): 0.939,  # a seta no pico
         ("V1N11", "Shor"): 0.950,              # a trilha acende
         # V1N12: com piso de 85% da fala no código (é o único gesto)
         ("V1N12", "resto"): 0.414,
