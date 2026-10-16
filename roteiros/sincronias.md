@@ -161,3 +161,11 @@ gravada.
 | shor/capitulos/capitulo10.py:1033 | C11N30 | "(3) "emendadas uma na outra": a corrente ponta com cauda e, do centro até o fim dela, a seta grossa — a soma" |
 | shor/capitulos/capitulo10.py:1312 | C11N38 | ""que se esconde ali" fecha a frase, e o "ali" é o 85/512 da PRIMEIRA linha" (2º `play`, o `Circumscribe`) |
 
+
+## Âncora do V0N00 (1)
+
+| tag | âncora | palavra-alvo em pt | fração pt | fala pt completa |
+|---|---|---|---|---|
+| V0N00 | `descrição` | "descrição" [a seta ↓ nasce no rodapé] | 0,957 | Olá! Meu nome é Vitor, sou aluno de ciência da computação na Universidade Federal de Pelotas, e gosto de transformar matemática difícil em algo que dá para ver. Todas as minhas redes sociais e formas de contato estão aqui na descrição. |
+
+Em inglês, a palavra-alvo é "description". A fração en fica por medir até a gravação; até lá o render usa a do pt e avisa.

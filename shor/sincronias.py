@@ -35,6 +35,8 @@ SINC = {
         # V4N04
         ("V4N04", "o caminho foi seu"): 11.7 / 18.3,       # a trilha pulsa
         ("V4N04", "obrigado"): 15.5 / 18.3,                # o título pousa
+        # V0N00 — a seta ↓ nasce no rodapé
+        ("V0N00", "descrição"): 0.957,
     },
     "en": {
         **_V1["en"],

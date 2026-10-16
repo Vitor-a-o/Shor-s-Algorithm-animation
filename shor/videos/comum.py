@@ -7,8 +7,9 @@ nenhum. O que serve a um vídeo só continua morando no videoN.py dele.
 
 from manim import *
 
-from ..paleta import COR_TEXTO, LARANJA
-from ..ferramentas import T
+from ..paleta import CINZA, COR_TEXTO, LARANJA, VEL
+from ..ferramentas import T, _agora, narra
+from ..sincronias import _ate
 from ..textos import tx
 
 # os quatro vídeos, nos mesmos nomes dos cartões de marca de cada um
@@ -37,3 +38,24 @@ def trilha_videos(acesos=(), tamanho=26, apagado=0.25):
             linha.set_opacity(apagado)
         linhas.add(linha)
     return linhas.arrange(DOWN, buff=0.45, aligned_edge=LEFT)
+
+
+def apresentacao(cena, ancora):
+    """A apresentação do autor (V0N00), tocada por cima do cartão de marca.
+
+    Quem usa: os quatro videoN.py, durante o cartão. `ancora` é o subtítulo
+    ("Vídeo n de 4 — …") já em cena; o nome e o curso entram embaixo dele e a
+    seta ↓ nasce no rodapé em "descrição". No fim, nome, curso e seta saem
+    juntos; `ancora` e o título ficam para o vídeo que chamou tirar, e o
+    cartão continua com a emenda de sempre."""
+    nome = VGroup(T(tx("v0.nome"), 34, COR_TEXTO),
+                  T(tx("v0.curso"), 26, CINZA))
+    nome.arrange(DOWN, buff=0.2).next_to(ancora, DOWN, buff=0.7)
+    seta = T(tx("v0.seta"), 40, CINZA).to_edge(DOWN, buff=0.5)
+    with narra(cena, "V0N00", 17.1):
+        t0 = _agora(cena)
+        cena.play(FadeIn(nome, shift=0.2 * UP, run_time=0.8 * VEL))
+        cena.play(Succession(
+            _ate(cena, t0, "V0N00", 17.1, "descrição"),
+            FadeIn(seta, shift=0.25 * DOWN, run_time=0.6 * VEL)))
+    cena.play(FadeOut(VGroup(nome, seta), run_time=0.5 * VEL))

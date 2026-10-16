@@ -34,6 +34,7 @@ tela (`shor/textos.py`) seguem este arquivo. Quando um termo mudar aqui, ele mud
 | `mdc(` | **gcd(** | Notação usual em inglês. |
 | `TQF` | **QFT** | Quantum Fourier transform. |
 | `fim` | **the end** | |
+| Curso do autor (V0N00) | **Computer Science — UFPel** | A sigla UFPel fica igual nas duas línguas; o nome por extenso é falado. |
 
 Os 83 textos de tela já estão preenchidos em `shor/textos.py`. Antes do primeiro render em
 inglês, rode `python checar_textos.py`.

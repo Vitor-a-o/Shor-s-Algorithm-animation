@@ -178,6 +178,11 @@ TEXTOS = {
     "v1.mensagens_privadas": {"pt": "mensagens privadas", "en": "private messages"},
     "v1.fatoracao": {"pt": "fatoração", "en": "factoring"},
     "v1.hoje": {"pt": "hoje", "en": "today"},
+    # ------------------------------------------------------------- v0
+    # apresentação do autor (V0N00) — apresentacao() em videos/comum.py
+    "v0.nome": {"pt": "Vitor", "en": "Vitor"},
+    "v0.curso": {"pt": "Ciência da Computação — UFPel", "en": "Computer Science — UFPel"},
+    "v0.seta": {"pt": "↓", "en": "↓"},
 }
 
 
