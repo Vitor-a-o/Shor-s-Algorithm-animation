@@ -178,7 +178,6 @@ TEXTOS = {
     "v1.mensagens_privadas": {"pt": "mensagens privadas", "en": "private messages"},
     "v1.fatoracao": {"pt": "fatoração", "en": "factoring"},
     "v1.hoje": {"pt": "hoje", "en": "today"},
-    "v1.resto": {"pt": "resto", "en": "remainder"},
 }
 
 

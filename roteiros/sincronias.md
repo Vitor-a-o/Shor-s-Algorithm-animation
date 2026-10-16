@@ -69,16 +69,14 @@ segundos dos 20,3 s estimados.
 | V1N11 | `apaga` | "apaga as respostas erradas" [os vales achatam] | 0,741 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
 | V1N11 | `até sobrar` | "até sobrar a ordem" [os picos crescem] | 0,833 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
 | V1N11 | `algoritmo de Shor` | "E esse é o algoritmo de Shor" [a seta no pico] | 0,939 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
-| V1N11 | `Shor` | "Shor", fim da fala [a trilha acende] | 0,950 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
-| V1N12 | `resto` | "o resto de uma divisão" [tudo vira "resto"; piso de 85% da fala] | 0,414 | Começamos do jeito mais simples possível, com o resto de uma divisão. É tudo o que você precisa saber até aqui. |
 
 ### O que a tabela não cobre
 
 - **Tetos e pisos, que não dependem do idioma.** No V1N02 ("bilhões") e no
   V1N04 ("prazo de validade") a palavra só vale se cair antes do teto, que
   é o último instante em que o resto do bloco ainda cabe na fala (5,6 s e
-  3,31 s antes do fim). Hoje, em pt, o teto vale nos dois. No V1N06 e no
-  V1N12 o gesto nunca começa antes de 85% da fala menos a duração dele. Esses
+  3,31 s antes do fim). Hoje, em pt, o teto vale nos dois. No V1N06
+  o gesto nunca começa antes de 85% da fala menos a duração dele. Esses
   números ficam no código.
 - **Gestos que caem numa palavra só pela soma dos `run_time` anteriores**,
   sem âncora própria. Em inglês eles acompanham a âncora anterior, ou o

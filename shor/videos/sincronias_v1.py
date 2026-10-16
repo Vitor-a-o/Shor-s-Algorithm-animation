@@ -75,9 +75,6 @@ SINC = {
         ("V1N11", "apaga"): 0.741,             # os vales achatam
         ("V1N11", "até sobrar"): 0.833,        # os picos crescem
         ("V1N11", "algoritmo de Shor"): 0.939,  # a seta no pico
-        ("V1N11", "Shor"): 0.950,              # a trilha acende
-        # V1N12: com piso de 85% da fala no código (é o único gesto)
-        ("V1N12", "resto"): 0.414,
     },
     "en": {},
 }

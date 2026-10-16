@@ -1963,7 +1963,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
     `sobra` é o que a _previa_v4a deixou em cena (as árvores e o cadeado
     rachado), e sai por FadeOut assim que a fala chega em "computador
     quântico"; `t0` é o começo do narra do V1N11. Termina com a seta
-    laranja no pico: a _fecha_janela vem logo depois, no corpo_previa4."""
+    laranja no pico: a _fecha_janela vem depois da fala, no encerramento."""
     tag, est = "V1N11", 23.3
     k = _k(tag, est)
 
@@ -2111,9 +2111,9 @@ def _previa_v4b(cena, moldura, sobra, t0):
         cena.play(*[Transform(p, h) for p, h in zip(picos, picos_altos)],
                   run_time=0.5 * VEL * kv_picos)
         ancora("algoritmo de Shor")          # "E esse é o algoritmo de Shor"
-        # 0,3 s × k, não 0,5: depois dela a _fecha_janela, o acender da
-        # trilha e o pulso têm de caber no que resta da fala mais o PAD
-        cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.3 * VEL * k)
+        # é o último gesto da fala: a seta fica no pico até o fim dela, e
+        # o fechamento da janela só vem no encerramento, já em silêncio
+        cena.play(FadeIn(seta, shift=0.5 * s * DOWN), run_time=0.5 * VEL * k)
 
     # As janelas, em segundos do est= de 23,3 (todas escalam com k): o
     # fator de cada trecho é o que o faz ocupar a maior parte da sua, sem
@@ -2146,20 +2146,13 @@ def _previa_v4b(cena, moldura, sobra, t0):
 def corpo_previa4(cena, titulo, trilha):
     """V1N10 e V1N11. A _abre_janela acende o 4 e abre a moldura; ela fica
     aberta nas duas falas — o 4 não troca de número entre elas, como o 3
-    entre o V1N08 e o V1N09 — e só a _fecha_janela do fim do V1N11 a
-    fecha, devolvendo o 4 à trilha. Na passagem de uma fala para a outra a
-    janela fica com as árvores e o cadeado rachado do V1N10, que saem em
-    "computador quântico". No corte, o 21 = 3 × 7 entra grande — a única
-    fórmula fixa das prévias (roteiro, "Critério das prévias"): nasce de um
-    corte seco, sem Write e sem transformar outra fórmula —, no centro do
-    espaço livre à direita da trilha, que já voltou. Por fim os quatro
-    títulos acendem juntos e a trilha pulsa uma vez.
+    entre o V1N08 e o V1N09 — e o V1N11 termina com ela ainda aberta, a
+    seta no pico. Na passagem de uma fala para a outra a janela fica com
+    as árvores e o cadeado rachado do V1N10, que saem em "computador
+    quântico".
 
-    Devolve (titulo, trilha, fatoracao), em cena: o encerramento (V1N12)
-    os tira de baixo para cima."""
-    fatoracao = formula(("21", LARANJA), ("=", PRETO), ("3", ROSA),
-                        ("×", PRETO), ("7", VERDE2), tamanho=96, buff=0.3)
-
+    Devolve (titulo, trilha, moldura), em cena: o encerramento fecha a
+    janela."""
     with narra(cena, "V1N10", 17.6):
         k = _k("V1N10", 17.6)
         t0 = _agora(cena)
@@ -2167,49 +2160,21 @@ def corpo_previa4(cena, titulo, trilha):
         sobra = _previa_v4a(cena, moldura, t0)
 
     with narra(cena, "V1N11", 23.3):
-        tag, est = "V1N11", 23.3
-        k = _k(tag, est)
         t0 = _agora(cena)
         _previa_v4b(cena, moldura, sobra, t0)
-        _fecha_janela(cena, titulo, trilha, 3, moldura, k)
 
-        # o corte: o 21 = 3 × 7 entra seco, no meio do que sobra à direita
-        # da trilha (no centro do quadro ele cobriria a ponta dela)
-        fatoracao.move_to([(trilha.get_right()[0] + config.frame_width / 2)
-                           / 2, 0, 0])
-        _confere(fatoracao, None, "21 = 3 × 7")
-        cena.add(fatoracao)
-
-        # ≈ 0,950: os quatro títulos acendem juntos, e a trilha pulsa uma vez
-        cena.play(Succession(
-            _ate(cena, t0, tag, est, _f(tag, "Shor")),
-            trilha.animate(run_time=0.3 * VEL * k).set_opacity(1)))
-        cena.play(trilha.animate(rate_func=there_and_back).scale(1.1),
-                  run_time=0.4 * VEL * k)
-
-    return titulo, trilha, fatoracao
+    return titulo, trilha, moldura
 
 
-def encerramento(cena, titulo, trilha, fatoracao):
-    """V1N12. Tudo sai de baixo para cima, por altura na tela — o 4, o 3,
-    o 21 = 3 × 7, o 2, o 1 e o título da série —, menos o "2 ·
-    Aritmética modular": esse vira a palavra "resto", no verde de c, no
-    centro. É a costura para o corte: termina com "resto" sozinho em cena,
-    e a abertura do vídeo 2 entra no corte seguinte."""
-    resto = T(tx("v1.resto"), 72, VERDE)
-    pecas = sorted([*trilha, fatoracao, titulo], key=lambda m: m.get_y())
-
-    with narra(cena, "V1N12", 8.8):
-        tag, est = "V1N12", 8.8
-        k = _k(tag, est)
-        # "o resto de uma divisão" ≈ 0,41 é onde a palavra cai, mas é a
-        # ÚNICA animação do bloco: presa à fração exata, o quadro final
-        # ficaria parado por quase 30% da fala. Empurrada para o piso de
-        # 85% em vez de concentrada no início
-        alvo = max(_em(tag, est, _f(tag, "resto")),
-                   0.85 * _dur(tag, est) - 2.6 * VEL * k)
-        cena.play(Succession(Wait(max(0.0, alvo)), LaggedStart(
-            *[ReplacementTransform(m, resto) if m is trilha[1] else FadeOut(m)
-              for m in pecas], lag_ratio=0.25, run_time=2.6 * VEL * k)))
-
-    return resto
+def encerramento(cena, titulo, trilha, moldura):
+    """Depois do V1N11, sem fala. A janela do 4 fecha no passo das outras
+    prévias, sem a pressa de caber na fala (o dobro dos 0,75 s da
+    _fecha_janela), os quatro títulos acendem juntos e a trilha pulsa uma
+    vez. A cena fica parada ~1,5 s e tudo sai num FadeOut só, o fim do
+    vídeo 1."""
+    _fecha_janela(cena, titulo, trilha, 3, moldura, 2.0)
+    cena.play(trilha.animate.set_opacity(1), run_time=0.6 * VEL)
+    cena.play(trilha.animate(rate_func=there_and_back).scale(1.1),
+              run_time=0.6 * VEL)
+    cena.wait(1.5 * VEL)
+    cena.play(FadeOut(titulo), FadeOut(trilha), run_time=1.0 * VEL)

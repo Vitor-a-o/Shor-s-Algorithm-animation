@@ -174,5 +174,5 @@ class VideoIntro(Scene):
         titulo, trilha, marca = video1.corpo_serie(self, cacos)
         titulo, trilha = video1.corpo_previa2(self, titulo, trilha, marca)
         titulo, trilha = video1.corpo_previa3(self, titulo, trilha)
-        titulo, trilha, fatoracao = video1.corpo_previa4(self, titulo, trilha)
-        video1.encerramento(self, titulo, trilha, fatoracao)
+        titulo, trilha, moldura = video1.corpo_previa4(self, titulo, trilha)
+        video1.encerramento(self, titulo, trilha, moldura)
