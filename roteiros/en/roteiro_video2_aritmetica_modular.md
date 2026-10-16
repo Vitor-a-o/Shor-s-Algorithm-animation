@@ -183,4 +183,4 @@ Somando o `PAD` de 0,35 s por locução (27,6 s), os dois cartões silenciosos (
 - [ ] Capítulo 5 — C5N01 a C5N20
 - [ ] Encerramento — V2N00 e V2N01
 - [ ] `python medir.py en`
-- [ ] Render de conferência: `IDIOMA=en manim -pqh --media_dir media/en filme_shor.py VideoOperacoes`
+- [ ] Render de conferência: `IDIOMA=en manim -pqh filme_shor.py VideoOperacoes`

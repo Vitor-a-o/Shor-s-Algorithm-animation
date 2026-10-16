@@ -190,4 +190,4 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 - [ ] Capítulo 8 — C8N01 a C8N44
 - [ ] Encerramento — V3N01 e V3N02
 - [ ] `python medir.py en`
-- [ ] Render de conferência: `IDIOMA=en manim -pqh --media_dir media/en filme_shor.py VideoTeoremaRSA`
+- [ ] Render de conferência: `IDIOMA=en manim -pqh filme_shor.py VideoTeoremaRSA`

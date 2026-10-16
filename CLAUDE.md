@@ -170,11 +170,15 @@ duração muda entre os dois. O idioma ativo vem da variável de ambiente
 - **Largura dos textos em inglês:** `python checar_textos.py` (sem renderizar)
   mede pt × en no tamanho de fonte real de cada chave e sai com código 1 se
   algum "en" passar de 90% do quadro — rodar antes de cada render em inglês.
-- **Render separado por idioma** (para não sobrescrever o pt):
+- **Render por idioma, na mesma pasta:** com `IDIOMA=en`, o `filme_shor.py`
+  acrescenta `_en` ao nome de saída sozinho — não precisa de `-o` nem de
+  `--media_dir`, e o pt nunca é sobrescrito:
   ```bash
-  manim -pql filme_shor.py Parte1                              # pt → media/
-  IDIOMA=en manim -pql --media_dir media/en filme_shor.py Parte1  # en → media/en/
+  manim -pql filme_shor.py Parte1            # → media/videos/filme_shor/480p15/Parte1.mp4
+  IDIOMA=en manim -pql filme_shor.py Parte1  # → media/videos/filme_shor/480p15/Parte1_en.mp4
   ```
+  O cache fica em `partial_movie_files/Parte1_en/`; o `quadros.py` segue o
+  mesmo `IDIOMA` (lê `Parte1_en.mp4`, grava em `media/quadros/Parte1_en/`).
 
 ---
 

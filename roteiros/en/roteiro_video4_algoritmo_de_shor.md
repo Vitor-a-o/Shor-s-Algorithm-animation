@@ -305,4 +305,4 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 - [ ] Capítulo 11 — C11N01 a C11N46
 - [ ] Encerramento — V4N01 a V4N04
 - [ ] `python medir.py en`
-- [ ] Render de conferência: `IDIOMA=en manim -pqh --media_dir media/en filme_shor.py VideoShor`
+- [ ] Render de conferência: `IDIOMA=en manim -pqh filme_shor.py VideoShor`

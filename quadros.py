@@ -4,7 +4,8 @@ na tela em vez de confiar só no código.
 
 Renderiza em -ql — ou reaproveita o mp4 se ele já existe e é mais novo que
 todos os .py do filme — e tira um PNG por instante com o ffmpeg, em
-media/quadros/<Scene>/.
+media/quadros/<Scene>/ (em inglês, IDIOMA=en: <Scene>_en.mp4 e
+media/quadros/<Scene>_en/).
 
 Um instante pode ser:
     12.5            segundos desde o começo do vídeo
@@ -34,6 +35,10 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
 QUALIDADE = "480p15"                 # a pasta que o -ql gera
+
+sys.path.insert(0, str(RAIZ))
+from shor.idioma import IDIOMA      # noqa: E402
+SUFIXO = "" if IDIOMA == "pt" else f"_{IDIOMA}"   # VideoIntro_en.mp4
 
 INSTANTE = re.compile(r"^(?:(?P<nome>[\w-]+)=)?"
                       r"(?:(?P<tag>[A-Z]+\d*N?\d+)(?P<desl>[+-]\d+(?:\.\d+)?)?"
@@ -68,7 +73,8 @@ def _roda_manim(destino, arquivo, cena):
 
 
 def _mp4(arquivo, cena):
-    return RAIZ / "media" / "videos" / Path(arquivo).stem / QUALIDADE / f"{cena}.mp4"
+    return (RAIZ / "media" / "videos" / Path(arquivo).stem / QUALIDADE
+            / f"{cena}{SUFIXO}.mp4")
 
 
 def _fresco(mp4, arquivo):
@@ -151,7 +157,7 @@ def main():
 
     arquivo = str(Path(a.arquivo).resolve())
     mp4 = _mp4(arquivo, a.cena)
-    pasta = RAIZ / "media" / "quadros" / a.cena
+    pasta = RAIZ / "media" / "quadros" / f"{a.cena}{SUFIXO}"
 
     precisa_tag = a.marcas or any(INSTANTE.match(s) and INSTANTE.match(s)["tag"]
                                   for s in a.instantes)

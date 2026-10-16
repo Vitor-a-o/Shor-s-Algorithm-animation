@@ -39,6 +39,7 @@
    manim -pqh filme_shor.py VideoTeoremaRSA    # vídeo 3 (final 1080p60)
    manim -pql filme_shor.py VideoShor          # vídeo 4 (preview)
    manim -pqh filme_shor.py VideoShor          # vídeo 4 (final 1080p60)
+   IDIOMA=en manim -pql filme_shor.py VideoIntro   # em inglês → VideoIntro_en.mp4
 ============================================================================
 """
 
@@ -49,6 +50,34 @@ from shor.ferramentas import limpar
 from shor.montagem import (TITULOS, PARTES, EMENDA, abertura, encerramento,
                            abre_capitulo)
 from shor.videos import video1, video2, video3, video4
+from shor.idioma import IDIOMA
+
+
+# Em inglês, o Manim grava na mesma pasta do português, com "_en" no nome:
+# VideoIntro_en.mp4 (e .wav, .png) ao lado de VideoIntro.mp4. Os pedaços
+# em cache vão para partial_movie_files/<Scene>_en/, para um idioma não
+# expulsar o cache do outro. Um -o explícito na linha de comando prevalece.
+if IDIOMA != "pt":
+    from pathlib import Path
+    from manim.scene.scene_file_writer import SceneFileWriter
+    from manim.utils.file_ops import guarantee_existence
+
+    _init_dirs = SceneFileWriter.init_output_directories
+
+    def _init_dirs_idioma(self, scene_name):
+        _init_dirs(self, scene_name)
+        if config["dry_run"] or self.output_name != Path(scene_name):
+            return
+        self.output_name = Path(f"{scene_name}_{IDIOMA}")
+        for attr in ("image_file_path", "movie_file_path"):
+            if hasattr(self, attr):
+                p = getattr(self, attr)
+                setattr(self, attr, p.with_name(self.output_name.name + p.suffix))
+        if hasattr(self, "partial_movie_directory"):
+            self.partial_movie_directory = guarantee_existence(
+                self.partial_movie_directory.with_name(self.output_name.name))
+
+    SceneFileWriter.init_output_directories = _init_dirs_idioma
 
 
 class FilmeCompleto(Scene):
