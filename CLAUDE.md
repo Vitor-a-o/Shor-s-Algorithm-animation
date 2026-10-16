@@ -115,7 +115,7 @@ imagem. Ler antes de mexer em qualquer capítulo.
 
 | Capítulos | Situação |
 |---|---|
-| 1–5 | **Prontos e gravados. Não tocar.** |
+| 1–5 | Prontos em código, **ainda não gravados** (gravação em andamento). Ajustes de fala ou animação só quando o autor pedir. |
 | 6, 7, 8 | Código com `narra()`/`so_fala()` em toda linha; pendências pontuais de agrupamento de `play` no fim do `roteiro_video3_do_teorema_ao_rsa.md`. É o trabalho do vídeo 3. |
 | 9, 9b, 10 | Código com `narra()` em toda linha, costura do vídeo 4 (`video4.py`) pronta. Prontos em código, aguardando gravação. `capitulo10.py` é o capítulo 11 em tela. |
 

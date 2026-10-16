@@ -48,13 +48,14 @@ Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
 | C2N04 | Aí vem a comparação: x é maior que b? Podemos ver que não — o módulo coube inteiro dentro da soma. | 9,6 | `Write(tst0)` → `tst` → ✗ |
 | C2N05 | Então o resto é igual a b menos x. Seis menos dois é igual a quatro. | 5,0 | `Write(t2s)` → `t2f` → `rc → rc4` |
 | C2N06 | Portanto seis mais cinco é congruente a quatro, módulo sete. Fizemos duas subtrações e uma comparação. Nenhuma divisão. | 7,1 | `eq → eq2` |
-| C2N07 | Agora, o que acontece se o módulo cresce. Com o módulo igual a oito, o laranja avança, o amarelo avança junto, o verde encolhe e assim por diante. | 10,0 | n = 8, 9, 10 e 11 — os quatro `ReplacementTransform` do laço correm num bloco só |
+| C2N07 | Agora, o que acontece se o módulo cresce. | 2,9 | — (`so_fala`: a pergunta sozinha, com a reta parada em n = 7) |
+| — | *(sem fala — o laço roda mudo)* | — | n = 8, 9, 10 e 11 — os quatro `ReplacementTransform` do laço, em silêncio, fora de qualquer `with narra`, logo depois do `C2N07`. A tela mostra sozinha o laranja avançando, o amarelo junto e o verde encolhendo (~4 s) |
 | C2N08 | Com doze algo muda de qualidade: o amarelo ultrapassa o vermelho, e o teste dá verdadeiro. | 6,7 | n = 12 + `Indicate(tst12)` |
 | C2N09 | Agora o módulo não ultrapassou a soma: então o resto é a própria soma. Seis mais cinco, onze. | 9,6 | `Write(f2ab)` → `bc12` → `f2n` |
 | C2N10 | Onze é congruente a onze, módulo doze. E é o teste "x maior que b" que decide entre os dois casos, ainda sem fazer divisão. | 10,4 | `eqc → eq12` |
 | C2N11 | Guarde o padrão: comparar e subtrair no lugar de dividir. | 4,2 | — |
 
-**Subtotal: 89,7 s** (cartão + 11 locuções)
+**Subtotal: 82,6 s** (cartão + 11 locuções) + ~4 s do laço mudo
 
 ---
 
@@ -112,7 +113,7 @@ Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
 
 *Reescrito no padrão dos capítulos 1–4: a fala diz o movimento geral, os números e as
 substituições foram para a coluna **Entra em**, e as filas de teste passaram a correr em
-bloco sob uma locução só (mesma lógica do `C2N07`). O capítulo ganhou o quarto elo da
+bloco sob uma locução só (o `with narra` envolve o laço inteiro). O capítulo ganhou o quarto elo da
 corrente de custo — no 2 cresce o módulo, no 3 o multiplicador, no 4 o expoente, aqui
 cresce a busca.*
 
@@ -129,7 +130,7 @@ cresce a busca.*
 | C5N08 | Só que procurar assim custa o tamanho do módulo. E o módulo, na criptografia, é justamente o número grande da história inteira. | 8,8 | Animação nova, não existe hoje no `capitulo5.py`. É o **quarto elo** da corrente: em "o tamanho do módulo", `Indicate` no nove laranja do `eq`; a reta laranja se estica e as filas vermelhas se multiplicam para baixo, encolhendo de escala até escaparem pela borda inferior do quadro. Mesmo gesto do laço do capítulo 2 e da fila crescente do 3 — aqui quem cresce é a busca |
 | C5N09 | Existe um jeito melhor do que testar um a um que é o algoritmo de Euclides estendido, porém não vamos nos aprofundar nele nessa série. | 6,3 | Animação nova. Um exemplo do algoritmo correndo por baixo, **sem que a fala comente nada dele** — a escada de segmentos do capítulo 1: o módulo laranja medido pelo vermelho, a sobra virando a régua do passo seguinte, e assim até o pedaço de tamanho um. Roda rápido e sai. A fala acaba antes da animação; o que resta corre em silêncio |
 | C5N10 | Uma pergunta que devemos fazer para essa operação é, o inverso sempre existe? | 7,1 | `eq3 → eq4` |
-| C5N11 | Vamos tentar inverter o três módulo nove dessa vez. | 3,8 | as **seis filas** do `for` (`3·1` a `3·6`) correm emendadas, num bloco só — dezoito `cena.play` sob uma locução. Mesma correção do `C2N07`: o `with narra` envolve o laço inteiro |
+| C5N11 | Vamos tentar inverter o três módulo nove dessa vez. | 3,8 | as **seis filas** do `for` (`3·1` a `3·6`) correm emendadas, num bloco só — dezoito `cena.play` sob uma locução. O `with narra` envolve o laço inteiro |
 | C5N12 | Os restos fecham um ciclo e voltam ao começo, para sempre. O um não está nele. | 5,8 | `ciclo` |
 | C5N13 | Dividir por três módulo nove, é uma operação que simplesmente não existe. | 5,4 | `FadeIn(xis)` — separado do `Write(mdc3)`, que hoje roda no mesmo `play` |
 | C5N14 | E o motivo cabe numa linha: ele e o módulo compartilham um fator. | 5,0 | `Write(mdc3)` |

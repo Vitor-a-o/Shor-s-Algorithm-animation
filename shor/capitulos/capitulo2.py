@@ -142,14 +142,14 @@ def parte2(cena):
 
     #        0    1   2     3   4    5    6   7   8    9
     atual = VGroup(n7, x2, cver, rn, rx2, rc4, ex, t2, eq2, tst)
-    # a narração nova cobre o laço inteiro com uma fala só: os quatro
-    # ReplacementTransform correm num bloco só, sem pausa entre eles
-    with narra(cena, "C2N07", 10.0):
-        for n in (8, 9, 10, 11):
-            novo = estado(n)
-            cena.play(*[ReplacementTransform(a, b)
-                        for a, b in zip(atual, novo)], run_time=1.0 * VEL)
-            atual = novo
+    # a fala só anuncia a pergunta; o laço n = 8…11 roda mudo depois dela,
+    # fora de qualquer narra — a tela mostra sozinha o que acontece
+    so_fala(cena, "C2N07", 2.9)
+    for n in (8, 9, 10, 11):
+        novo = estado(n)
+        cena.play(*[ReplacementTransform(a, b)
+                    for a, b in zip(atual, novo)], run_time=1.0 * VEL)
+        atual = novo
 
     # n = 12: o x PASSA do b — o teste finalmente dá ✓ e não sobra mais nada
     # do b para tirar, então a volta não acontece

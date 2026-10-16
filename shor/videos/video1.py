@@ -1373,7 +1373,7 @@ def _previa_v2(cena, moldura, t0):
         # laranja cresce da direita para a esquerda e o x amarelo nasce
         # quando a ponta cruza o 6 (a razão 1,5/2,1 do Wait do original);
         # os rótulos e o c verde vêm em seguida.
-        # 11,6–12,8 · cap. 2 (C2N07): os quatro estados n = 8…11 em
+        # 11,6–12,8 · cap. 2 (C2N07, laço mudo): os quatro estados n = 8…11 em
         # ReplacementTransform — o x engorda e o c vira um ponto
         reta, soma, atual, estados = cap2()
         n7, x2, cver, rn, rx, rc = atual

@@ -52,13 +52,14 @@ Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
 | C2N04 | Then comes the comparison: is x greater than b? We can see it isn't — the modulus fit entirely inside the sum. | 8,5 | `Write(tst0)` → `tst` → ✗ |
 | C2N05 | So the remainder is b minus x. Six minus two is four. | 4,6 | `Write(t2s)` → `t2f` → `rc → rc4` |
 | C2N06 | Therefore six plus five is congruent to four, modulo seven. We did two subtractions and one comparison. No division. | 7,3 | `eq → eq2` |
-| C2N07 | Now let's see what happens as the modulus grows. At eight, the orange segment moves forward, the yellow one moves with it, the green one shrinks, and so on. | 11,2 | n = 8, 9, 10 e 11 — os quatro `ReplacementTransform` do laço correm num bloco só |
+| C2N07 | Now let's see what happens as the modulus grows. | 3,3 | — (`so_fala`: a pergunta sozinha, com a reta parada em n = 7) |
+| — | *(no speech — the loop runs silently)* | — | n = 8, 9, 10 e 11 — os quatro `ReplacementTransform` do laço, em silêncio, fora de qualquer `with narra`, logo depois do `C2N07`. A tela mostra sozinha o laranja avançando, o amarelo junto e o verde encolhendo (~4 s) |
 | C2N08 | At twelve, something different happens: the yellow overtakes the red, and the test comes out true. | 6,2 | n = 12 + `Indicate(tst12)` |
 | C2N09 | This time the modulus doesn't fit inside the sum, so the remainder is the sum itself. Six plus five, eleven. | 7,7 | `Write(f2ab)` → `bc12` → `f2n` |
 | C2N10 | Eleven is congruent to eleven, modulo twelve. And it's the test "is x greater than b" that decides between the two cases, still without any division. | 10,0 | `eqc → eq12` |
 | C2N11 | Keep the pattern in mind: compare and subtract instead of dividing. | 4,2 | — |
 
-**Subtotal: 84,7 s** (cartão + 11 locuções)
+**Subtotal: 76,8 s** (cartão + 11 locuções) + ~4 s do laço mudo
 
 ---
 
@@ -128,7 +129,7 @@ Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
 | C5N08 | But the cost of searching like this grows with the modulus. And in cryptography, the modulus is exactly the huge number at the heart of the whole story. | 10,8 | Animação nova, não existe hoje no `capitulo5.py`. É o **quarto elo** da corrente: em "o tamanho do módulo", `Indicate` no nove laranja do `eq`; a reta laranja se estica e as filas vermelhas se multiplicam para baixo, encolhendo de escala até escaparem pela borda inferior do quadro. Mesmo gesto do laço do capítulo 2 e da fila crescente do 3 — aqui quem cresce é a busca |
 | C5N09 | There's a better way than testing one by one, the extended Euclidean algorithm, but we won't go into it in this series. | 8,5 | Animação nova. Um exemplo do algoritmo correndo por baixo, **sem que a fala comente nada dele** — a escada de segmentos do capítulo 1: o módulo laranja medido pelo vermelho, a sobra virando a régua do passo seguinte, e assim até o pedaço de tamanho um. Roda rápido e sai. A fala acaba antes da animação; o que resta corre em silêncio |
 | C5N10 | One question we should ask about this operation: does the inverse always exist? | 5,0 | `eq3 → eq4` |
-| C5N11 | Let's try to invert three modulo nine this time. | 3,5 | as **seis filas** do `for` (`3·1` a `3·6`) correm emendadas, num bloco só — dezoito `cena.play` sob uma locução. Mesma correção do `C2N07`: o `with narra` envolve o laço inteiro |
+| C5N11 | Let's try to invert three modulo nine this time. | 3,5 | as **seis filas** do `for` (`3·1` a `3·6`) correm emendadas, num bloco só — dezoito `cena.play` sob uma locução. O `with narra` envolve o laço inteiro |
 | C5N12 | The remainders form a closed cycle and keep coming back to the start, forever. One is never in it. | 7,3 | `ciclo` |
 | C5N13 | Dividing by three modulo nine is an operation that simply doesn't exist. | 4,6 | `FadeIn(xis)` — separado do `Write(mdc3)`, que hoje roda no mesmo `play` |
 | C5N14 | And the reason fits in one line: it shares a factor with the modulus. | 5,4 | `Write(mdc3)` |

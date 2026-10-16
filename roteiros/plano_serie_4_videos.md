@@ -14,7 +14,7 @@ Transformar o filme único "Do Zero ao Algoritmo de Shor Quântico" (11 capítul
 | # | Vídeo | Capítulos | Arquivos | Situação da narração | Situação do roteiro novo |
 |---|---|---|---|---|---|
 | 1 | Introdução | — (100% novo) | — | não se aplica | ✅ `roteiro_video1_introducao.md` |
-| 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas (`C1N11` mudou de texto e precisa ser regravada) | ✅ `roteiro_video2_aritmetica_modular.md` |
+| 2 | Aritmética modular — as quatro operações | 1–5 | `capitulo1`–`capitulo5` | ✅ completa — `C1N`–`C5N` fechadas, ainda não gravadas | ✅ `roteiro_video2_aritmetica_modular.md` |
 | 3 | Do teorema ao RSA | 6–8 | `capitulo6`–`capitulo8` | ✅ em código (`narra()`/`so_fala()` em toda linha) — pendências pontuais de agrupamento de `play` seguem no roteiro | ✅ `roteiro_video3_do_teorema_ao_rsa.md` |
 | 4 | O algoritmo de Shor | 9–11 | `capitulo9`, `capitulo9b`, `capitulo10` | ✅ em código (`narra()` em toda linha), sem pendências abertas | ✅ `roteiro_video4_algoritmo_de_shor.md` — vídeo 4 inteiro em código (capítulos + `video4.py`), aguardando gravação |
 
@@ -130,13 +130,6 @@ Em paralelo seguem abertas as duas frentes que já estavam listadas aqui:
 
 ## Pendências de código herdadas do roteiro do vídeo 2
 
-- `capitulo1.py`: regravar o áudio de `C1N11` — o texto mudou ("os próximos capítulos"
-  em vez de "os próximos três capítulos") porque o capítulo 5 passou a fechar o mesmo
-  vídeo.
-- `capitulo2.py`: o laço de módulos crescentes (`for n in (8, 9, 10, 11)`) hoje abre um
-  `narra` por iteração; a narração nova (`C2N07`) cobre o laço inteiro com uma fala só
-  ("e assim por diante"), então o `with narra(...)` precisa envolver o `for` de uma vez,
-  não cada passo dele.
 - `capitulo5.py` (`parte5`): duas divisões de `cena.play` que a narração exige e que hoje
   rodam junto —
   - separar `FadeIn(xis)` de `Write(mdc3)` em dois blocos (`C5N17` e `C5N18`);
