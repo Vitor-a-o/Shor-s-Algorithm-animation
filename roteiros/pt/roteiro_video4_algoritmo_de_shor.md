@@ -14,9 +14,9 @@ Atenção à numeração dos arquivos: o **capítulo 10** em tela é o `capitulo
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
 | V4N00 | A série inteira levou a uma frase: quebrar o RSA é fatorar um número grande. Este vídeo mostra o algoritmo que faz isso — e ele percorre um caminho longo até lá. | 13,1 | O cadeado do fim do vídeo 3 volta ao centro **no estado em que ficou**: `estado_v3()` monta o `cadeado("fechado")` com "fatorar n" gravado no corpo e a rachadura já parada no meio do arco, e ele entra com `cena.add`, **sem animação nenhuma** — o primeiro quadro do vídeo 4 é o último quadro do vídeo 3. Enquanto a série é recapitulada, uma aproximação lenta no cadeado, como o Ken Burns do `ABN01`. Em "quebrar o RSA é fatorar", `Indicate` no rótulo gravado. Em "o algoritmo que faz isso", `avancar()` de dois segmentos: a fissura corre e **para de novo** — ela só termina no encerramento. Em "percorre um caminho longo até lá", o cadeado encolhe e sai por cima do ombro do quadro, já com o cartão de marca entrando por baixo |
-| — | *(cartão silencioso, ~4 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 4 de 4 — O algoritmo de Shor" embaixo dele. Mesma emenda dos vídeos 2 e 3: o subtítulo sai primeiro e o título encolhe por último, já com o `CAP09` entrando por baixo |
+| — | *(cartão, ~17 s, com a apresentação)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 4 de 4 — O algoritmo de Shor" embaixo dele. Mesma emenda dos vídeos 2 e 3: o subtítulo sai primeiro e o título encolhe por último, já com o `CAP09` entrando por baixo. Durante o cartão roda a apresentação do autor (`V0N00`, em `roteiro_video0_apresentacao.md`). |
 
-**Subtotal: 13,1 s** (1 locução) + cartão ~4 s
+**Subtotal: 13,1 s** (1 locução) + cartão com a apresentação ~17,1 s
 
 ---
 

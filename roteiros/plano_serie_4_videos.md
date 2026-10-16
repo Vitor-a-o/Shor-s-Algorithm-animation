@@ -48,10 +48,14 @@ anterior à narração escrita, mantida como referência.
 
 | Vídeo | Capítulos | `play` | Projeção |
 |---|---|---|---|
-| 1 Introdução | novo | — | ~3 min 18 s (roteiro fechado) |
-| 2 Aritmética modular | 1–5 | 101 | ~11 min 45 s (roteiro fechado) |
-| 3 Do teorema ao RSA | 6–8 | 74 | ~9 min 09 s (roteiro fechado) |
-| 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 54 s (roteiro fechado) |
+| 1 Introdução | novo | — | ~3 min 18 s (roteiro fechado) +17 s (apresentação) |
+| 2 Aritmética modular | 1–5 | 101 | ~11 min 45 s (roteiro fechado) +17 s (apresentação) |
+| 3 Do teorema ao RSA | 6–8 | 74 | ~9 min 09 s (roteiro fechado) +17 s (apresentação) |
+| 4 O algoritmo de Shor | 9–11 | 118 | ~12 min 54 s (roteiro fechado) +17 s (apresentação) |
+
+Os +17 s são a mesma locução nos quatro vídeos: a apresentação do autor (`V0N00`, em
+`roteiro_video0_apresentacao.md`), gravada uma vez e tocada por cima do cartão de marca
+de cada vídeo — 17,1 s em pt, 14,6 s em en.
 
 O vídeo 2 veio ~45 s acima do teto da faixa estimada — o capítulo 5 (inverso modular)
 saiu denso, com a leitura da tabela de multiplicação (`C5N19`–`C5N29`) sendo o trecho mais

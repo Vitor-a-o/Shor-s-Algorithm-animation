@@ -118,6 +118,7 @@ imagem. Ler antes de mexer em qualquer capítulo.
 | 1–5 | Prontos em código, **ainda não gravados** (gravação em andamento). Ajustes de fala ou animação só quando o autor pedir. |
 | 6, 7, 8 | Código com `narra()`/`so_fala()` em toda linha; pendências pontuais de agrupamento de `play` no fim do `roteiro_video3_do_teorema_ao_rsa.md`. É o trabalho do vídeo 3. |
 | 9, 9b, 10 | Código com `narra()` em toda linha, costura do vídeo 4 (`video4.py`) pronta. Prontos em código, aguardando gravação. `capitulo10.py` é o capítulo 11 em tela. |
+| V0N00 | Apresentação do autor: `apresentacao()` em `shor/videos/comum.py`, encaixada no cartão de marca dos quatro vídeos (`video1.py`–`video4.py`). Áudio ainda por gravar (pt e en). |
 
 As pendências dos capítulos 6, 7 e 8 estão listadas no fim do
 `roteiro_video3_do_teorema_ao_rsa.md`. As do trabalho corrente (capítulos 9, 9b e 10,

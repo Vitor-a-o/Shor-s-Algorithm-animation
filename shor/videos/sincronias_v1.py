@@ -23,10 +23,10 @@ SINC = {
         ("V1N00", "que você possa"): 0.798,    # o risco vermelho
         ("V1N00", "escolher"): 0.924,          # o campo some
         # V1N01
-        ("V1N01", "compras online"): 0.202,
-        ("V1N01", "mensagens privadas"): 0.290,
-        ("V1N01", "fáceis de fazer"): 0.611,   # a seta de ida
-        ("V1N01", "impraticáveis"): 0.772,     # a seta de volta
+        ("V1N01", "compras online"): 0.234,
+        ("V1N01", "mensagens privadas"): 0.318,
+        ("V1N01", "fáceis de fazer"): 0.627,   # a seta de ida
+        ("V1N01", "impraticáveis"): 0.781,     # a seta de volta
         # V1N02
         ("V1N02", "multiplicar"): 0.195,       # o bloco se reabre
         ("V1N02", "voltar do produto"): 0.365,  # a volta se despedaça

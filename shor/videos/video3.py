@@ -8,14 +8,15 @@ from ..paleta import CINZA, LARANJA, PRETO, VEL
 from ..ferramentas import T, narra, pot
 from ..montagem import TITULOS
 from ..textos import tx
-from .comum import VIDEOS
+from .comum import VIDEOS, apresentacao
 from ..cadeado import cadeado, gravar, rachar
 
 
 def abertura(cena):
     """V3N00 é o gancho falado, antes de qualquer cartão — mesma lógica do
     V1N00/V1N01 do vídeo 1 ("o gancho vem primeiro, a marca vem depois").
-    Só depois entra o cartão de marca, que se EMENDA ao CAP06 num
+    Só depois entra o cartão de marca, que carrega a apresentação do autor
+    (V0N00, de comum.py) e se EMENDA ao CAP06 num
     movimento só, como o vídeo 2 fazia com o CAP01: por isso esta função
     também toca o CAP06 — quem a chama NÃO deve chamar
     abre_capitulo(cena, 6)."""
@@ -55,7 +56,7 @@ def abertura(cena):
     VGroup(t1, t2).arrange(DOWN, buff=0.5)
     cena.play(Write(t1), run_time=1.1 * VEL)
     cena.play(FadeIn(t2, shift=0.25 * UP), run_time=0.8 * VEL)
-    cena.wait(1.3 * VEL)
+    apresentacao(cena, t2)
     cena.play(FadeOut(t2), run_time=0.6 * VEL)
 
     r = T(tx("geral.capitulo").format(i=6), 26, LARANJA)

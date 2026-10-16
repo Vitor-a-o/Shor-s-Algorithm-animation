@@ -11,7 +11,7 @@ from ..ferramentas import DUR, T, _agora, formula, narra, pot, traco
 from ..cadeado import (_ABERTURA, abrir, cadeado, gravar, quebrar, rachar,
                        rede)
 from ..textos import tx
-from .comum import VIDEOS, trilha_videos
+from .comum import VIDEOS, apresentacao, trilha_videos
 from ..sincronias import _f
 
 # só para testar com uma voz mais lenta (sessão de acerto de ritmo): 1.0 fora
@@ -260,9 +260,9 @@ def _ate(cena, t0, tag, est, frac):
 
 
 def abertura(cena):
-    """V1N00, o cartão silencioso e V1N01. O vídeo abre FALANDO, e já em
-    movimento: a internet funcionando, pacotes com cadeado correndo pela
-    rede. O empurrão isola um deles, e o cadeado desse pacote — `cad`, o
+    """V1N00, o cartão (com a apresentação do autor, V0N00) e V1N01. O
+    vídeo abre FALANDO, e já em movimento: a internet funcionando, pacotes
+    com cadeado correndo pela rede. O empurrão isola um deles, e o cadeado desse pacote — `cad`, o
     MESMO objeto do vídeo inteiro — atravessa o cartão e abre no V1N01.
 
     Devolve (cad, bloco, interrogacoes), todos ainda em cena — o V1N02
@@ -452,7 +452,7 @@ def abertura(cena):
                            run_time=0.6 * VEL * k)))
     cad.set_z_index(0)
 
-    # --- cartão silencioso: o título entra e o cadeado sai do caminho dele,
+    # --- cartão: o título entra e o cadeado sai do caminho dele,
     # encolhendo para cima — sem sair de cena. Ele sai mais depressa e o
     # título começa um pouco depois: quando a escrita chega ao meio da
     # linha, o cadeado já não está lá
@@ -463,7 +463,7 @@ def abertura(cena):
                  .next_to(t1, UP, buff=0.45),
               Succession(Wait(0.3 * VEL), Write(t1, run_time=0.8 * VEL)))
     cena.play(FadeIn(t2, shift=0.25 * UP), run_time=0.8 * VEL)
-    cena.wait(1.0 * VEL)
+    apresentacao(cena, t2)
     cena.play(FadeOut(t1), FadeOut(t2), run_time=0.6 * VEL)
 
     # --- V1N01 -----------------------------------------------------------
@@ -499,8 +499,8 @@ def abertura(cena):
     for q, x in zip(interrogacoes, np.linspace(2.2, -2.35, len(_ESPALHA))):
         q.move_to([x, _FAIXA, 0])
 
-    with narra(cena, "V1N01", 14.2):
-        tag, est = "V1N01", 14.2
+    with narra(cena, "V1N01", 14.6):
+        tag, est = "V1N01", 14.6
         k = _k(tag, est)
         # "Ela está por trás de...": o cadeado desce ao centro e abre em
         # silêncio (os mesmos 2,0 s dos dois plays do rótulo de antes: as

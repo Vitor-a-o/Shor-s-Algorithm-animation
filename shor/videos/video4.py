@@ -11,7 +11,7 @@ from ..cadeado import avancar, estado_v3, quebrar, rede
 from ..capitulos.capitulo10 import _carta_qubit
 from ..sincronias import _ate
 from ..textos import tx
-from .comum import VIDEOS, trilha_videos
+from .comum import VIDEOS, apresentacao, trilha_videos
 
 
 def abertura(cena):
@@ -19,7 +19,9 @@ def abertura(cena):
     gravado e a rachadura parada no meio do arco entra com cena.add, sem
     animação nenhuma — quem monta esse estado é o estado_v3() do cadeado.py.
     Só depois começa a locução (V4N00), e o cadeado sai de cena por cima do
-    ombro do quadro já com o cartão de marca entrando por baixo.
+    ombro do quadro já com o cartão de marca entrando por baixo. O cartão
+    carrega a apresentação do autor (V0N00, de comum.py), que só começa
+    depois que o V4N00 acabou e o subtítulo está inteiro em cena.
 
     O cartão se EMENDA ao CAP09 num movimento só, como nos vídeos 2 e 3: por
     isso esta função também toca o CAP09 — quem a chama NÃO deve chamar
@@ -55,7 +57,7 @@ def abertura(cena):
 
     # cartão de marca: mesma emenda dos vídeos 2 e 3, agora para o CAP09
     cena.play(FadeIn(t2, shift=0.25 * UP), run_time=0.8 * VEL)
-    cena.wait(1.3 * VEL)
+    apresentacao(cena, t2)
     cena.play(FadeOut(t2), run_time=0.6 * VEL)
 
     r = T(tx("geral.capitulo").format(i=9), 26, LARANJA)

@@ -12,10 +12,10 @@ Capítulos 6 a 8, na ordem de montagem.
 
 | Tag | Speech | Est. | Entra em |
 |---|---|---|---|
-| — | *(cartão silencioso, ~4 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 3 de 4 — Do teorema ao RSA" embaixo dele. Mesma emenda do vídeo 2: o subtítulo sai primeiro e o título encolhe por último, já com o `CAP06` entrando por baixo |
 | V3N00 | The previous video built four operations on top of a modulus. This one uses them to build RSA — by way of two theorems. | 9,2 | Os quatro símbolos do `V2N00` voltam em fila, acesos. Em "constrói com elas o RSA", eles se fecham em volta do cadeado do vídeo 1, que entra no centro **intacto**. Em "dois teoremas", duas lacunas vazias se abrem entre a fila e o cadeado — os lugares que os capítulos 6 e 7 vão ocupar |
+| — | *(cartão, ~17 s, com a apresentação)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 3 de 4 — Do teorema ao RSA" embaixo dele. O cartão vem depois do gancho falado (`V3N00`), carrega a apresentação do autor e emenda no `CAP06`; mesma emenda do vídeo 2: o subtítulo sai primeiro e o título encolhe por último, já com o `CAP06` entrando por baixo. Durante o cartão roda a apresentação do autor (`V0N00`, em `roteiro_video0_apresentacao.md`). |
 
-**Subtotal: 9,2 s** (1 locução) + cartão ~4 s
+**Subtotal: 9,2 s** (1 locução) + cartão com a apresentação ~14,6 s
 
 ---
 

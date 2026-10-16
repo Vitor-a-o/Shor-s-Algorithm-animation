@@ -10,13 +10,13 @@ Capítulos 1 a 5, na ordem de montagem.
 
 ## Abertura
 
-Sem narração. O vídeo entra direto pelo cartão e cai no capítulo 1.
+Só a apresentação do autor, por cima do cartão. O vídeo entra direto pelo cartão e cai no capítulo 1.
 
 | Tag | Speech | Est. | Entra em |
 |---|---|---|---|
-| — | *(cartão silencioso, ~4 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 2 de 4 — Aritmética modular" embaixo dele. O subtítulo sai primeiro e o título encolhe e some por último, já com o `CAP01` entrando por baixo — os dois cartões precisam se emendar num movimento só, senão a sequência lê como dois começos |
+| — | *(cartão, ~17 s, com a apresentação)* | — | "Do Zero ao Algoritmo de Shor Quântico" nasce no centro e "Vídeo 2 de 4 — Aritmética modular" embaixo dele. O subtítulo sai primeiro e o título encolhe e some por último, já com o `CAP01` entrando por baixo — os dois cartões precisam se emendar num movimento só, senão a sequência lê como dois começos. Durante o cartão roda a apresentação do autor (`V0N00`, em `roteiro_video0_apresentacao.md`). |
 
-**Subtotal: ~4 s** (nenhuma locução)
+**Subtotal: ~14,6 s** (só a apresentação do autor, que segura o cartão)
 
 ---
 

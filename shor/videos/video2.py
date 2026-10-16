@@ -8,12 +8,13 @@ from ..paleta import CINZA, LARANJA, PRETO, VERDE, VERMELHO, VEL
 from ..ferramentas import T, narra, pot
 from ..montagem import TITULOS
 from ..textos import tx
-from .comum import VIDEOS
+from .comum import VIDEOS, apresentacao
 from ..cadeado import cadeado
 
 
 def abertura(cena):
-    """Cartão silencioso de ~4 s que se EMENDA ao CAP01 num movimento só:
+    """Cartão de marca que carrega a apresentação do autor (V0N00, de
+    comum.py) e se EMENDA ao CAP01 num movimento só:
     o subtítulo sai primeiro e o título encolhe e some por último, já com
     o cartão do capítulo 1 entrando por baixo. Por isso esta função também
     toca o CAP01 — quem a chama NÃO deve chamar abre_capitulo(cena, 1)."""
@@ -22,7 +23,7 @@ def abertura(cena):
     VGroup(t1, t2).arrange(DOWN, buff=0.5)
     cena.play(Write(t1), run_time=1.1 * VEL)
     cena.play(FadeIn(t2, shift=0.25 * UP), run_time=0.8 * VEL)
-    cena.wait(1.3 * VEL)
+    apresentacao(cena, t2)
     cena.play(FadeOut(t2), run_time=0.6 * VEL)
 
     # o cartão do capítulo 1 (mesma diagramação do cartao_capitulo)
