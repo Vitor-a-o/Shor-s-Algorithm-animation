@@ -22,10 +22,41 @@ RAIZ = Path(__file__).resolve().parent.parent
 AUDIO = RAIZ / "audio" / IDIOMA
 NARRA = True      # False = preview mudo, sem as pausas de fala
 PAD = 0.35        # respiro no fim de cada linha
+TRATAR_AUDIO = True   # False = usa o .wav original, sem redução de ruído/fades
 
 
 def _agora(cena):
     return float(getattr(cena.renderer, "time", 0.0))
+
+def _tratar(wav):
+    """Cópia do .wav com ruído reduzido e fades, em media/audio_tratado/<idioma>/.
+    Mesma duração do original, amostra por amostra. O original nunca é tocado."""
+    import soundfile as sf
+    import noisereduce as nr
+    wav = Path(wav)
+    saida = RAIZ / "media" / "audio_tratado" / IDIOMA / wav.name
+    if saida.exists() and saida.stat().st_mtime >= wav.stat().st_mtime:
+        return saida
+    d, sr = sf.read(str(wav), always_2d=True)          # (amostras, canais)
+    info = sf.info(str(wav))
+    y = d.T                                            # (canais, amostras)
+    # perfil de ruído: janela de 0,3 s mais silenciosa (RMS) do próprio arquivo
+    jan = min(int(0.3 * sr), y.shape[1])
+    passo = max(jan // 3, 1)
+    ini = min(range(0, y.shape[1] - jan + 1, passo),
+              key=lambda i: float(np.mean(y[:, i:i + jan] ** 2)))
+    out = nr.reduce_noise(y=y, sr=sr, stationary=True, prop_decrease=0.8,
+                          y_noise=y[:, ini:ini + jan])
+    n = out.shape[1]
+    fi, fo = min(int(0.030 * sr), n), min(int(0.200 * sr), n)
+    out[:, :fi] *= np.linspace(0.0, 1.0, fi)
+    out[:, n - fo:] *= np.linspace(1.0, 0.0, fo)
+    out = np.clip(out.T, -1.0, 1.0)
+    assert out.shape == d.shape, (wav.name, out.shape, d.shape)
+    saida.parent.mkdir(parents=True, exist_ok=True)
+    sf.write(str(saida), out, sr, subtype=info.subtype)
+    assert sf.info(str(saida)).frames == info.frames, wav.name
+    return saida
 
 def _add_som(cena, wav):
     """add_sound() é ignorado quando renderer.skip_animations está ligado —
@@ -35,7 +66,7 @@ def _add_som(cena, wav):
     antes = r.skip_animations
     r.skip_animations = getattr(r, "_original_skipping_status", False)
     try:
-        cena.add_sound(str(wav))
+        cena.add_sound(str(_tratar(wav) if TRATAR_AUDIO else wav))
     finally:
         r.skip_animations = antes
 
