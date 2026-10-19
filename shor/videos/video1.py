@@ -8,8 +8,8 @@ import numpy as np
 from ..paleta import (AMARELO, AZUL, BRANCO, CAIXA, CARTAO_ESCURO, CIANO,
                       CINZA, LARANJA, PRETO, ROSA, VERDE, VERDE2, VERMELHO, VEL)
 from ..ferramentas import DUR, T, _agora, formula, narra, pot, traco
-from ..cadeado import (_ABERTURA, abrir, cadeado, gravar, quebrar, rachar,
-                       rede)
+from ..cadeado import (_ABERTURA, _PARCIAL, _traco_fissura, abrir, cadeado,
+                       gravar, quebrar, rachar, rede)
 from ..textos import tx
 from .comum import VIDEOS, apresentacao, trilha_videos
 from ..sincronias import _f
@@ -54,28 +54,28 @@ _FAIXA = -2.3
 
 # para onde cada "?" do despedaçar se espalha, a partir do seu lugar na
 # seta de volta — fixo, para dois renders darem o mesmo quadro (o V1N02
-# e o V1N04 contam com as interrogações onde elas pararam)
+# e o V1N05 contam com as interrogações onde elas pararam)
 _ESPALHA = ((-0.7, 0.95, 18), (-0.35, -0.85, -12), (0.15, 1.15, 8),
             (0.3, -0.7, 22), (-0.1, 0.8, -20), (0.55, -1.0, -6),
             (0.8, 0.9, 14))
 
 # os dois primos do V1N02 e o produto — os MESMOS do exemplo do capítulo 8
-# (33 = 3 × 11), porque o V1N09 promete que o n de lá se parte "exatamente
+# (33 = 3 × 11), porque o V1N12 promete que o n de lá se parte "exatamente
 # nos primos do V1N02"
 _P, _Q, _N = "3", "11", "33"
 
-# a linha do tempo do V1N04, na faixa livre abaixo da rede, e as colunas de
+# a linha do tempo do V1N06, na faixa livre abaixo da rede, e as colunas de
 # qubits que se empilham nela: (fração do caminho de 1994 até hoje, altura).
 # Cada vez mais juntas e mais altas — "nos últimos anos"
 _LINHA = -3.25
 _QUBITS = ((0.12, 1), (0.22, 1), (0.47, 2), (0.66, 2), (0.77, 3),
            (0.86, 4), (0.95, 6))
 
-# o título da série, que o V1N05 remonta com os cacos dos cadeados
+# o título da série, que o V1N08 remonta com os cacos dos cadeados
 _TITULO = tx("geral.titulo_serie")
 
-# a janela de prévia (V1N07 em diante): uma região fixa da tela, abaixo de
-# onde o título da série fica ancorado no topo depois do V1N06. Cada
+# a janela de prévia (V1N10 em diante): uma região fixa da tela, abaixo de
+# onde o título da série fica ancorado no topo depois do V1N09. Cada
 # trecho da decupagem é montado e passa por _encaixa, que o escala e o
 # centra dentro dela — a faixa de fórmula dos capítulos 2–5 nunca entra
 # no enquadramento porque as miniaturas não desenham fórmula nenhuma
@@ -128,18 +128,26 @@ def _trilho(pontos):
     return em
 
 
-def _pacote(cad):
-    """Um pacote da rede do V1N00, na escala 1 do cadeado (o updater o
-    encolhe): um envelope com `cad` fechado em pé em cima. O envelope fica
-    centrado na origem — é o ponto que corre sobre a aresta.
-    Devolve VGroup(envelope, cad), com envelope = VGroup(corpo, aba)."""
+def _envelope():
+    """O envelope fechado, na escala 1 e centrado na origem: o do pacote do
+    V1N00 e o do "gravado hoje" do V1N07. Devolve VGroup(corpo, aba); a aba
+    é o V de cima, com as duas pontas na altura 0,66 — a dobra."""
     corpo = RoundedRectangle(width=2.4, height=1.5, corner_radius=0.12)
     corpo.set_fill(CAIXA, opacity=1).set_stroke(CINZA, width=3)
     aba = VMobject().set_points_as_corners(
         [[-1.1, 0.66, 0], [0, -0.1, 0], [1.1, 0.66, 0]])
     aba.set_stroke(CINZA, width=3)
+    return VGroup(corpo, aba)
+
+
+def _pacote(cad):
+    """Um pacote da rede do V1N00, na escala 1 do cadeado (o updater o
+    encolhe): um envelope com `cad` fechado em pé em cima. O envelope fica
+    centrado na origem — é o ponto que corre sobre a aresta.
+    Devolve VGroup(envelope, cad), com envelope = VGroup(corpo, aba)."""
+    envelope = _envelope()
     cad.shift([0, 0.75, 0] - cad[1].get_bottom())
-    return VGroup(VGroup(corpo, aba), cad)
+    return VGroup(envelope, cad)
 
 
 def _anda(pac, onde, relogio, camera):
@@ -199,6 +207,69 @@ def _fechar(cena, cad, run_time=0.6):
               run_time=run_time * VEL)
 
 
+def _aviso_fissura(cena, cad, espera=0.0, run_time=0.5):
+    """O aviso do V1N00, em "perdida": uma fissura fina corre pelo arco e
+    some na mesma hora. Não é a quebra — essa é a do V1N06.
+
+    O rachar() não serve aqui. Ele PENDURA a fissura no cad (vira o
+    cad[3]), e o quebrar() do V1N06 lê justamente o cad[3] como a rachadura
+    que ele continua; e ele a cria no z 0, por baixo do arco do cad, que no
+    V1N00 está no z 1. Então o traço é montado aqui com a mesma geometria
+    (_traco_fissura e _PARCIAL são os pontos do rachar()) e fica SOLTO na
+    cena, um z acima do cadeado: o cad não ganha nem perde nada, e o cartão
+    e o V1N01 o recebem como estava.
+
+    `espera` vai no mesmo Succession, antes do traço — é o Wait da âncora.
+    O Succession é `introducer`: sem isso o play põe em cena, no primeiro
+    quadro, o Group com a fissura inteira, e ela ficava à vista durante o
+    Wait. Pelo mesmo motivo o FadeOut não entra nele (um filho que não é
+    introducer seria posto em cena no começo); vem no play seguinte."""
+    arco = cad[0][0]
+    centro = arco.get_arc_center()
+    raio = float(np.linalg.norm(arco.point_from_proportion(0.5) - centro))
+    fissura = _traco_fissura(arco, centro, 0.07 * raio, _PARCIAL)
+    fissura.set_z_index(cad.z_index + 1)
+    antes = [id(m) for m in cad.get_family()]
+    cena.play(Succession(Wait(espera),
+                         Create(fissura, run_time=0.6 * run_time * VEL),
+                         introducer=True))
+    cena.play(FadeOut(fissura), run_time=0.4 * run_time * VEL)
+    cena.remove(fissura)
+    assert [id(m) for m in cad.get_family()] == antes, \
+        "o aviso do V1N00 mexeu na estrutura do cadeado"
+
+
+def _ameaca_abrir(cena, cad, espera=0.0, run_time=0.8, fracao=0.25):
+    """O arco sobe uma fração do caminho do abrir(), como se fosse abrir, e
+    volta a travar com o flash seco do fechar() (V1N03, "teria acesso").
+
+    O pivô é o pé da perna direita, o mesmo do abrir() e do _fechar(): com
+    o cadeado fechado a perna está de pé e cad[0][2].get_bottom() É o pé
+    (o get_end()). Ele é lido UMA vez, com o arco fechado, e serve à ida e
+    à volta — com a perna inclinada o get_bottom() já não seria o pé.
+    No fim os pontos do arco voltam aos guardados: a ida e a volta já se
+    desfazem uma à outra, mas assim o cadeado termina fechado sem nem o
+    erro de arredondamento das duas rotações.
+
+    `espera` vai no mesmo Succession, antes da subida — é o Wait da âncora.
+    A volta com o flash é o play seguinte, emendado, e não o terceiro filho
+    do Succession: os raios do Flash nascem prontos, e o play os poria em
+    cena no primeiro quadro, parados em volta do cadeado durante o Wait."""
+    pivot = cad[0][2].get_end()
+    angulo = fracao * _ABERTURA
+    antes = [m.points.copy() for m in cad[0].get_family()]
+    cena.play(Succession(
+        Wait(espera),
+        Rotate(cad[0], angulo, about_point=pivot,
+               run_time=0.45 * run_time * VEL)))
+    cena.play(Rotate(cad[0], -angulo, about_point=pivot),
+              Flash(cad[1].get_top(), color=PRETO, flash_radius=0.55,
+                    line_length=0.22),
+              run_time=0.55 * run_time * VEL)
+    for m, pts in zip(cad[0].get_family(), antes):
+        m.points = pts
+
+
 def _confere(mobj, area, nome, margem=0.15):
     """Checagem de enquadramento: a caixa de `mobj` tem de caber dentro da
     de `area` (um Rectangle — a moldura da prévia, por exemplo — ou o quadro
@@ -254,7 +325,7 @@ def _ate(cena, t0, tag, est, frac):
     """Wait até `frac` da fala `tag`, pelo relógio da cena contado de `t0`
     (o começo do narra) — a âncora dos trechos das prévias. É montado logo
     antes do play, então não depende de somar à mão o tempo que já passou
-    (a conta à mão não via a abertura da janela e empurrava o V1N07 2 s
+    (a conta à mão não via a abertura da janela e empurrava o V1N10 2 s
     além da fala)."""
     return Wait(max(0.0, t0 + _em(tag, est, frac) - _agora(cena)))
 
@@ -269,13 +340,13 @@ def abertura(cena):
     nasce em cima das interrogações e reabre o bloco, então nada disto
     sai aqui."""
     # --- montagem do V1N00 -----------------------------------------------
-    tag, est = "V1N00", 9.6
+    tag, est = "V1N00", 12.9
     k = _k(tag, est)
     t_zoom = _em(tag, est, _f(tag, "protege"))
     t_para = _em(tag, est, _f(tag, "internet"))      # fim da palavra
     freio = 1.8 * VEL * k                  # o escolhido freia até parar
 
-    # a rede do V1N03 (mesma semente: é a mesma rede que volta lá), sem os
+    # a rede do V1N04 (mesma semente: é a mesma rede que volta lá), sem os
     # cadeados anônimos e mais acesa que os 0,3 de lá
     arestas, pontos, _ = rede()
     arestas.set_stroke(opacity=0.75)
@@ -372,7 +443,7 @@ def abertura(cena):
         return _agora(cena) - inicio
 
     # --- V1N00 -------------------------------------------------------------
-    with narra(cena, "V1N00", 9.6):
+    with narra(cena, "V1N00", 12.9):
         _anda(escolhido, onde_escolhido, relogio, camera)
         for pac, (trilho, vel) in zip(outros, trajetos):
             _anda(pac, lambda t, tr=trilho, vl=vel: tr(vl * t),
@@ -431,25 +502,36 @@ def abertura(cena):
                                    target_position=campo.get_center()),
                            run_time=0.6 * VEL * k)))
         t = _em(tag, est, _f(tag, "e ela não é")) + 0.6 * VEL * k
-        # "uma senha forte" ≈ 0,66: os pontos entram um a um, cada um num
+        # "uma senha forte" ≈ 0,52: os pontos entram um a um, cada um num
         # estalo, com a pausa da digitação entre eles
         cena.play(Succession(
             Wait(max(0.0, _em(tag, est, _f(tag, "senha forte")) - t)),
             LaggedStart(*[GrowFromCenter(d) for d in senha], lag_ratio=3.0,
                         run_time=1.2 * VEL * k)))
         t = _em(tag, est, _f(tag, "senha forte")) + 1.2 * VEL * k
-        # "que você possa" ≈ 0,80: riscado de vermelho...
+        # "que você possa" ≈ 0,59: riscado de vermelho...
         cena.play(Succession(
             Wait(max(0.0, _em(tag, est, _f(tag, "que você possa")) - t)),
             Create(risco, run_time=0.35 * VEL * k)))
         t = _em(tag, est, _f(tag, "que você possa")) + 0.35 * VEL * k
-        # ...e em "escolher" ≈ 0,92 some. O cadeado não se mexeu: no fim da
+        # ...e em "escolher" ≈ 0,68 some. O cadeado não se mexeu: no fim da
         # fala ele está sozinho, grande, no centro
         cena.play(Succession(
             Wait(max(0.0, _em(tag, est, _f(tag, "escolher")) - t)),
             AnimationGroup(*[FadeOut(m, shift=0.4 * DOWN)
                              for m in (campo, *senha, risco)],
                            run_time=0.6 * VEL * k)))
+        # "perto de ser perdida" ≈ 0,95: a fissura corre pelo arco e some —
+        # o aviso, solto por cima do cad (ver _aviso_fissura). Capada como o
+        # alvo7 do V1N06: os 0,5 s do traço têm de acabar dentro da fala
+        # (teto 12,4 s de 12,9, fração ≈0,96 — hoje a palavra manda). A
+        # espera conta do instante em que o campo terminou de sair, mas lido
+        # no relógio (o mesmo do narra), não somado como o t acima: cada play
+        # arredonda para quadros inteiros, e a soma à mão chegava aqui ~0,4 s
+        # atrasada em -ql — o traço passava do fim da fala
+        alvo = min(_em(tag, est, _f(tag, "perdida")), k * (est - 0.5))
+        _aviso_fissura(cena, cad, espera=max(0.0, alvo - relogio()),
+                       run_time=0.5 * k)
     cad.set_z_index(0)
 
     # --- cartão: o título entra e o cadeado sai do caminho dele,
@@ -561,12 +643,12 @@ def abertura(cena):
 
 
 def _anos(e):
-    """O contador do V1N02: 10^e − 1 anos, com ponto de milhar."""
+    """O contador do V1N03: 10^e − 1 anos, com ponto de milhar."""
     return f"{int(10 ** e) - 1:,}".replace(",", ".")
 
 
 def _contador(e, ponto):
-    """O contador do V1N02, que dispara de novo no V1N11: segue o
+    """O contador do V1N03, que dispara de novo no V1N14: segue o
     ValueTracker `e` e engorda com ele, centrado em `ponto`."""
     return always_redraw(
         lambda: T(_anos(e.get_value()), 44)
@@ -574,15 +656,16 @@ def _contador(e, ponto):
 
 
 def corpo_fatoracao(cena, cad, bloco, interrogacoes):
-    """V1N02. Recebe o que a abertura deixou em cena e termina com o
-    cadeado sozinho no centro.
+    """V1N02 e V1N03. Recebe o que a abertura deixou em cena e termina com
+    o cadeado sozinho no centro.
 
-    O bloco é o MESMO do V1N01 do começo ao fim: as duas metades se
-    reabrem nos fatores cinzas, ganham a cor de p e q e se fundem de novo,
-    sempre por Transform — nenhuma peça nasce do zero.
+    O bloco é o MESMO do V1N01 do começo ao fim: no V1N02 as duas metades
+    se reabrem nos fatores cinzas, ganham a cor de p e q e se fundem de
+    novo, sempre por Transform — nenhuma peça nasce do zero. O V1N03 é o
+    contador, o cadeado indo ao centro e a ameaça de abrir.
 
     Devolve as interrogações novas (fora de cena, mas nas posições onde
-    pararam): o V1N04 as traz de volta e as remonta nos dois primos."""
+    pararam): o V1N05 as traz de volta e as remonta nos dois primos."""
     fat = T(tx("v1.fatoracao"), 72).move_to([0, _FAIXA, 0])
 
     # a forma do bloco fechado, guardada para a volta; e os dois fatores
@@ -606,10 +689,10 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
     ponto = [0, _FAIXA, 0]
     contador = _contador(e, ponto)
 
-    with narra(cena, "V1N02", 18.3):
-        tag, est = "V1N02", 18.3
+    with narra(cena, "V1N02", 12.9):
+        tag, est = "V1N02", 12.9
         k = _k(tag, est)
-        # "fatoração" ≈ 0,15 da fala, mas o roteiro pede que ela nasça "logo
+        # "fatoração" ≈ 0,23 da fala, mas o roteiro pede que ela nasça "logo
         # nos primeiros segundos" — ou seja, ANTES da fração mecânica da
         # palavra, não nela: fica imediato, só com o run_time esticado
         cena.play(Write(fat), FadeOut(interrogacoes), run_time=1.4 * VEL * k)
@@ -618,7 +701,7 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
                .to_edge(UP, buff=0.4),
             Wait(0.5 * VEL * k)))
 
-        # "Multiplicar dois primos grandes" ≈ 0,20: o bloco se reabre pela
+        # "Multiplicar dois primos grandes" ≈ 0,30: o bloco se reabre pela
         # emenda e cada metade volta a ser o fator cinza de que era feita...
         t_mult = _em(tag, est, _f(tag, "multiplicar"))
         cena.play(Succession(
@@ -639,7 +722,7 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
                   Transform(bloco[1], fechado[1]),
                   ReplacementTransform(VGroup(p, q), n), run_time=1.2 * VEL * k)
 
-        # "voltar do produto para os primos" ≈ 0,37: a volta tenta de novo
+        # "voltar do produto para os primos" ≈ 0,55: a volta tenta de novo
         # e se despedaça, no mesmo espalhar do V1N01 (os Wait contam da
         # âncora anterior, como no V1N01; desde "multiplicar": reabre 1,0 +
         # cores 0,9 + funde 1,2)
@@ -654,16 +737,25 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
                            run_time=1.2 * VEL * k),
             Wait(0.6 * VEL * k)))
 
-        # "bilhões de anos" ≈ 0,77 (target 14,0 s de 18,3), mas o rabo deste
-        # bloco (contador + saída) já soma 5,6 s fixos: puxar para a fração
-        # exata estouraria a locução em ~1,3 s. Capado no último instante
-        # que ainda cabe (12,7 s de 18,3 — fração efetiva ≈0,69), para o
-        # bloco fechar exatamente no fim da fala, sem sobra nem estouro.
-        # A palavra entra no min() como no V1N04: só manda se cair antes do
-        # teto. (desde "voltar": seta 1,0 + cacos 0,6 + espalha 1,2 + 0,6)
-        alvo = min(_em(tag, est, _f(tag, "bilhões de anos")), k * (est - 5.6))
+    with narra(cena, "V1N03", 10.4):
+        tag, est = "V1N03", 10.4
+        k = _k(tag, est)
+        # "teria acesso" ≈ 0,74 (target 7,7 s de 10,4) leva o seu próprio
+        # teto, no estilo do alvo7 do V1N06: os 0,8 s da ameaça de abrir têm
+        # de acabar dentro da fala (9,6 s de 10,4, fração ≈0,92)
+        t_acesso = min(_em(tag, est, _f(tag, "teria acesso")),
+                       k * (est - 0.8))
+        # "bilhões de anos" ≈ 0,17 (target 1,7 s de 10,4). Depois dele vêm
+        # o contador e a saída dele (0,8 + 3,0 + 0,6) e o cadeado indo ao
+        # centro (1,2): 5,6 s fixos, que têm de caber ANTES de "teria
+        # acesso". O teto é o instante daquele gesto menos eles (2,1 s de
+        # 10,4, fração ≈0,20); hoje a palavra cai antes dele e manda, mas só
+        # por 0,3 s — numa gravação em que as duas palavras fiquem mais
+        # perto, é ele que segura a ameaça em "teria acesso"
+        alvo = min(_em(tag, est, _f(tag, "bilhões de anos")),
+                   t_acesso - k * 5.6)
         cena.play(Succession(
-            Wait(max(0.0, alvo - (t_volta + 3.4 * VEL * k))),
+            Wait(max(0.0, alvo)),
             AnimationGroup(FadeOut(cacos), *[FadeOut(m) for m in bloco],
                           FadeOut(n), FadeIn(contador),
                           run_time=0.8 * VEL * k)))
@@ -676,20 +768,27 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
         cena.play(FadeOut(fat), cad.animate.move_to(ORIGIN),
                   run_time=1.2 * VEL * k)
 
+        # "teria acesso a tudo": o arco ameaça abrir e trava de novo
+        # (desde "bilhões": aparece 0,8 + conta 3,0 + estoura 0,6 + centro
+        # 1,2 = 5,6)
+        _ameaca_abrir(cena, cad,
+                      espera=max(0.0, t_acesso - (alvo + 5.6 * VEL * k)),
+                      run_time=0.8 * k)
+
     return cacos
 
 
 def corpo_rsa(cena, cad):
-    """V1N03. O cadeado ganha as letras RSA e encolhe no miolo de uma rede
+    """V1N04. O cadeado ganha as letras RSA e encolhe no miolo de uma rede
     de cadeados anônimos, que brotam de trás dele.
 
     Devolve a rede — VGroup(arestas, pontos, cadeados), tudo em cena — para
-    o V1N04 piscá-la e estalá-la."""
+    o V1N06 piscá-la e estalá-la."""
     malha = rede()
     arestas, pontos, anonimos = malha
 
-    with narra(cena, "V1N03", 20.0):
-        tag, est = "V1N03", 20.0
+    with narra(cena, "V1N04", 20.0):
+        tag, est = "V1N04", 20.0
         k = _k(tag, est)
         # "é o RSA" ≈ 0,22: o cadeado cresce e as letras se gravam com o
         # flash seco do travamento
@@ -734,14 +833,14 @@ def corpo_rsa(cena, cad):
 
 
 def _qubit():
-    """O marcador de qubit da linha do tempo do V1N04: uma bolinha na cor
+    """O marcador de qubit da linha do tempo do V1N06: uma bolinha na cor
     do bit 1, de miolo claro."""
     return (Circle(radius=0.065).set_stroke(CIANO, width=2.5)
             .set_fill(CIANO, opacity=0.35))
 
 
 def _estalar_rede(cena, cad_pequeno, run_time=0.5):
-    """O estalo discreto de um cadeado anônimo da rede (V1N04): o arco pula
+    """O estalo discreto de um cadeado anônimo da rede (V1N06): o arco pula
     um dedo, gira e cai para fora da rede, apagando. Sem fissura correndo —
     o `quebrar()` fica para o cadeado grande.
 
@@ -751,7 +850,7 @@ def _estalar_rede(cena, cad_pequeno, run_time=0.5):
     parado onde está e só o arco cai.
 
     Como no `quebrar()`, o arco caído continua em cena, invisível, onde
-    caiu: o V1N05 o reacende dali (por `set_stroke`, não `set_opacity`)."""
+    caiu: o V1N08 o reacende dali (por `set_stroke`, não `set_opacity`)."""
     arco = cad_pequeno[0]
     cad_pequeno.remove(arco)
     cena.add(arco)
@@ -769,13 +868,16 @@ def _estalar_rede(cena, cad_pequeno, run_time=0.5):
 
 
 def corpo_shor(cena, cad, malha, interrogacoes):
-    """V1N04. As interrogações do V1N02 se desfazem nos primos, a rede
-    pisca, uma linha do tempo junta qubits até hoje e, no fim, o cadeado
-    grande quebra e os da rede estalam em cascata.
+    """V1N05 e V1N06. No V1N05 as interrogações do V1N02 voltam e se
+    desfazem nos primos; no V1N06 a rede pisca, uma linha do tempo junta
+    qubits até hoje e, no fim, o cadeado grande quebra e os da rede estalam
+    em cascata.
 
     Devolve os cacos — (as duas metades do arco grande, VGroup dos dez
-    arcos pequenos) —, todos em cena, invisíveis onde caíram: o V1N05 os
-    remonta no título. O corpo "RSA" e o que sobrou da rede também ficam."""
+    arcos pequenos) —, todos em cena, invisíveis onde caíram: o V1N08 os
+    remonta no título. Junto vai o `cad`, que ficou só com o corpo "RSA" e
+    os cotos: as palavras do V1N07 saem de dentro dele. Ele e o que sobrou
+    da rede também ficam em cena."""
     anonimos = malha[2]
 
     # os dois primos do V1N02, de volta na faixa livre abaixo da rede
@@ -790,50 +892,64 @@ def corpo_shor(cena, cad, malha, interrogacoes):
     hoje = Dot([x1, _LINHA, 0], radius=0.08, color=PRETO)
     r94 = T("1994", 22, CINZA).next_to(d94, DOWN, buff=0.15)
     rhoje = T(tx("v1.hoje"), 22, CINZA).next_to(hoje, DOWN, buff=0.15)
-    tag, est = "V1N04", 17.9
-    kv = _k(tag, est)
     qubits, quando = VGroup(), []
     for f, altura in _QUBITS:
         for k in range(altura):
             qubits.add(_qubit().move_to(
                 [x0 + f * (x1 - x0), _LINHA + 0.2 + 0.17 * k, 0]))
             quando.append((f, k))               # onde na linha, que andar
-    varre = 2.1 * VEL * kv                      # a linha vai de 1994 a hoje
 
-    with narra(cena, "V1N04", 17.9):
-        # "vence essa aposta" ≈ 0,37: as interrogações voltam onde pararam e
-        # o espalhar se desfaz, de trás para frente, até a linha da seta...
-        t_vence = _em(tag, est, _f(tag, "vence essa aposta"))
-        cena.play(Succession(Wait(max(0.0, t_vence)),
-                             FadeIn(interrogacoes, run_time=0.2 * VEL * kv)))
-        cena.play(*[c.animate.rotate(-ang * DEGREES).shift([-dx, -dy, 0])
-                    for c, (dx, dy, ang) in zip(interrogacoes, _ESPALHA)],
-                  run_time=0.4 * VEL * kv)
+    with narra(cena, "V1N05", 12.1):
+        tag, est = "V1N05", 12.1
+        kv = _k(tag, est)
+        # "Em mil novecentos e noventa e quatro": as interrogações voltam
+        # logo no começo da fala, paradas onde caíram. A palavra delas vem
+        # só a ~7,6 s de 12,1, e o quadro não pode ficar parado até lá
+        cena.play(FadeIn(interrogacoes, run_time=0.2 * VEL * kv))
+        # "fatorar esses números" ≈ 0,63: o espalhar se desfaz, de trás
+        # para frente, até a linha da seta...
+        # (desde o começo: FadeIn 0,2)
+        t_vence = _em(tag, est, _f(tag, "fatorar esses números"))
+        cena.play(Succession(
+            Wait(max(0.0, t_vence - 0.2 * VEL * kv)),
+            AnimationGroup(
+                *[c.animate.rotate(-ang * DEGREES).shift([-dx, -dy, 0])
+                  for c, (dx, dy, ang) in zip(interrogacoes, _ESPALHA)],
+                run_time=0.4 * VEL * kv)))
         # ...e a volta que era impossível acontece: as da esquerda viram o
-        # 3, as da direita o 11 (elas nasceram da direita para a esquerda)
+        # 3, as da direita o 11 (elas nasceram da direita para a esquerda).
+        # É o momento-chave do vídeo: a volta que o V1N02 chamou de
+        # impossível se faz no instante em que a fala diz que ela é
+        # possível. O Transform roda de +0,4 a +1,0 s × kv da âncora (8,0 a
+        # 8,6 s de 12,1) — dentro de "fatorar esses números", que vai até
+        # "em horas" ≈ 0,76 (9,1 s), e longe de "não em bilhões de anos"
+        # ≈ 0,86 (10,4 s)
         cena.play(ReplacementTransform(interrogacoes[4:], p),
                   ReplacementTransform(interrogacoes[:4], q),
                   run_time=0.6 * VEL * kv)
 
-        # "não só a do RSA" ≈ 0,46: os anônimos piscam uma vez, acesos por
-        # inteiro (o arco pelo traço: um fill no arco tamparia a aresta atrás
-        # dele). O there_and_back vai em cada um, não no grupo: o finish() do
-        # grupo leva cada animação ao fim dela, e eles ficariam acesos.
-        # Os Wait contam da âncora anterior, como no V1N01 (desde "vence":
-        # FadeIn 0,2 + desfaz 0,4 + primos 0,6)
+    with narra(cena, "V1N06", 12.1):
+        tag, est = "V1N06", 12.1
+        kv = _k(tag, est)
+        varre = 2.1 * VEL * kv                  # a linha vai de 1994 a hoje
+        # "não serve só para o RSA" ≈ 0,08: os anônimos piscam uma vez,
+        # acesos por inteiro (o arco pelo traço: um fill no arco tamparia a
+        # aresta atrás dele). O there_and_back vai em cada um, não no grupo:
+        # o finish() do grupo leva cada animação ao fim dela, e eles
+        # ficariam acesos. Os Wait contam da âncora anterior, como no V1N01
         pisca = dict(rate_func=there_and_back)
-        t_pisca = _em(tag, est, _f(tag, "não só a do RSA"))
+        t_pisca = _em(tag, est, _f(tag, "não serve só para o RSA"))
         cena.play(Succession(
-            Wait(max(0.0, t_pisca - (t_vence + 1.2 * VEL * kv))),
+            Wait(max(0.0, t_pisca)),
             AnimationGroup(
                 *[c[1].animate(**pisca).set_opacity(1) for c in anonimos],
                 *[c[0].animate(**pisca).set_stroke(opacity=1) for c in anonimos],
                 run_time=0.8 * VEL * kv)))
 
-        # "nos últimos anos" ≈ 0,61: os primos se recolhem no ponto de
+        # "nos últimos anos" ≈ 0,39: os primos se recolhem no ponto de
         # 1994... (glifo a glifo, cada um num ponto: do Text inteiro para o
         # Dot, os glifos sumiam no lugar em vez de viajar)
-        # (desde "não só": pisca 0,8)
+        # (desde "não serve": pisca 0,8)
         copias = [d94.copy() for _ in range(len(p) + len(q) - 1)]
         t_anos = _em(tag, est, _f(tag, "últimos anos"))
         cena.play(Succession(
@@ -853,22 +969,27 @@ def corpo_shor(cena, cad, malha, interrogacoes):
                       GrowFromCenter(hoje), FadeIn(rhoje, shift=0.15 * UP),
                       run_time=0.4 * VEL * kv)))
 
-        # "prazo de validade" ≈ 0,92 (target 16,5 s de 17,9), mas o rabo
-        # deste bloco (fade da linha + crescer + rachar + quebrar + estalar
-        # a rede, 3,31 s fixos) não cabe atrás dela: capado no último
-        # instante que ainda fecha o bloco sem estourar (fração efetiva
-        # ≈0,82, bem perto do que o Wait(0,4) antigo já fazia por tentativa)
+        # "prazo de validade" ≈ 0,87 (target 10,6 s de 12,1), mas o rabo
+        # deste bloco não cabe atrás dela: fade da linha + crescer 0,6 +
+        # rachar 0,25 + quebrar 1,4 + estalar a rede 0,5 × (1 + 9 × 0,12)
+        # = 1,04 (dez estalos em LaggedStart) — 3,29 s fixos. Capado no
+        # último instante que ainda fecha o bloco sem estourar (8,7 s,
+        # fração efetiva ≈0,72, em "e talvez"): a quebra corre por cima de
+        # "a aposta tenha prazo de validade". A linha do tempo termina em
+        # 8,1 s, antes do teto. O teto tira ainda 0,1 s (sem kv: é o
+        # arredondamento de cada play a quadros inteiros, que em -qh
+        # empurrava o fim 0,07 s além da fala)
         # (desde "últimos anos": recolhe 0,8 + a linha até o último qubit
         # da coluna de 6, 0,95 × 2,1 + 0,05 × 5 + 0,25 = 2,495)
         alvo7 = min(_em(tag, est, _f(tag, "prazo de validade")),
-                    kv * (est - 3.31))
+                    kv * (est - 3.29) - 0.1)
         cena.play(Succession(Wait(max(0.0, alvo7
                                       - (t_anos + 3.295 * VEL * kv))),
                              AnimationGroup(
             *[FadeOut(m) for m in (linha, d94, hoje, r94, rhoje, *qubits)],
-            cad.animate.scale(1.2 / 0.8), run_time=0.8 * VEL * kv)))
+            cad.animate.scale(1.2 / 0.8), run_time=0.6 * VEL * kv)))
 
-        # o z_index do V1N03 punha o cadeado na frente da rede; mas a fissura
+        # o z_index do V1N04 punha o cadeado na frente da rede; mas a fissura
         # do rachar() e as corridas do quebrar() nascem no z 0, e ficariam
         # POR BAIXO do traço do arco. Volta ao 0 e vai para a frente pela
         # ordem da cena
@@ -887,16 +1008,39 @@ def corpo_shor(cena, cad, malha, interrogacoes):
         estalos = [_estalar_rede(cena, c, run_time=0.5 * kv) for c in ordem]
         cena.play(LaggedStart(*[a for a, _ in estalos], lag_ratio=0.12))
 
-    return pecas, VGroup(*[arco for _, arco in estalos])
+    return pecas, VGroup(*[arco for _, arco in estalos]), cad
 
 
 def corpo_serie(cena, cacos):
-    """V1N05 e V1N06. Os cacos do V1N04 sobem e se remontam no título da
-    série; os quatro vídeos saem dele, apagados, e se organizam na trilha,
-    onde o 1 acende.
+    """V1N07, V1N08 e V1N09. No V1N07, o que a quebra expõe: as três
+    palavras do V1N01 saem de dentro do corpo "RSA" (`cad`, que vem junto
+    com os cacos) e um envelope fechado entra e abre. No V1N08 os cacos do
+    V1N06 sobem e se remontam no título da série, e os quatro vídeos saem
+    dele, apagados; no V1N09 eles se organizam na trilha, onde o 1 acende.
 
-    Devolve (título, trilha, marca), tudo em cena: o V1N07 acende o 2."""
-    pecas, arcos = cacos
+    Devolve (título, trilha, marca), tudo em cena: o V1N10 acende o 2."""
+    pecas, arcos, cad = cacos
+
+    # as três palavras do V1N01, os mesmos textos no mesmo tamanho, cada
+    # uma num canto do quadro, fora da rede — sem cadeado nem moldura em
+    # volta: estão expostas. Partem pequenas e transparentes do miolo do
+    # corpo, o caminho inverso do condensar do V1N01
+    palavras = VGroup(T(tx("v1.contas_bancarias"), 30),
+                      T(tx("v1.compras_online"), 30),
+                      T(tx("v1.mensagens_privadas"), 30))
+    for palavra, canto in zip(palavras, (UL, UR, DL)):
+        palavra.to_corner(canto, buff=0.6)
+        _confere(palavra, None, "palavra do V1N07")
+        palavra.save_state()
+        palavra.scale(0.05).move_to(cad[1]).set_opacity(0)
+
+    # o envelope do pacote do V1N00, sem o cadeado, no quarto canto; entra
+    # deslizando de fora do quadro, pela direita
+    envelope = _envelope().scale(0.9).to_corner(DR, buff=0.6)
+    _confere(envelope, None, "envelope do V1N07")
+    pouso = envelope.get_center()
+    envelope.shift((config.frame_width / 2 - envelope.get_left()[0] + 0.1)
+                   * RIGHT)
 
     # o título, letra a letra. O "S" de Shor nasce das duas metades do arco
     # grande; as outras 30 letras, de três em três, dos dez arcos pequenos —
@@ -912,7 +1056,7 @@ def corpo_serie(cena, cacos):
     pares.sort(key=lambda par: par[1].get_x())
 
     # os quatro vídeos, apagados, dois acima e dois abaixo do título — no
-    # tamanho da trilha, para o V1N06 só os deslocar
+    # tamanho da trilha, para o V1N09 só os deslocar
     nomes = VGroup(*[T(v, 26) for v in VIDEOS]).set_opacity(0.25)
     for nome, (x, y) in zip(nomes, ((-3.3, 1.5), (3.3, 1.5),
                                     (-3.3, -1.5), (3.3, -1.5))):
@@ -928,17 +1072,53 @@ def corpo_serie(cena, cacos):
              .rotate(-90 * DEGREES).scale_to_fit_height(0.2)
              .next_to(trilha[0], LEFT, buff=0.3))
 
-    with narra(cena, "V1N05", 8.3):
-        tag, est = "V1N05", 8.3
+    with narra(cena, "V1N07", 11.2):
+        tag, est = "V1N07", 11.2
         k = _k(tag, est)
-        # os cacos reacendem onde caíram (pelo traço, como no V4N03) e tudo
-        # o mais sai: o corpo "RSA", as arestas, os pontos, os corpos
-        # pequenos — tudo o que está em cena menos os cacos
+        # "contas bancárias" ≈ 0,07: as palavras saem de dentro do corpo
+        # "RSA" e se espalham, uma atrás da outra, cada uma para o seu
+        # canto. Entram na cena já (invisíveis no miolo do corpo), para o
+        # Succession não as embrulhar num Group
+        t_contas = _em(tag, est, _f(tag, "contas bancárias"))
+        brota = 1.9 * VEL * k
+        cena.add(*palavras)
+        cena.play(Succession(
+            Wait(max(0.0, t_contas)),
+            LaggedStart(*[Restore(p) for p in palavras], lag_ratio=0.3,
+                        run_time=brota)))
+
+        # "gravado hoje" ≈ 0,75: o envelope fechado desliza para o canto
+        # (desde "contas": palavras 1,9)
+        t_gravado = _em(tag, est, _f(tag, "gravado hoje"))
+        cena.add(envelope)
+        cena.play(Succession(
+            Wait(max(0.0, t_gravado - (t_contas + brota))),
+            envelope.animate(run_time=1.0 * VEL * k).move_to(pouso)))
+
+        # "aberto depois" ≈ 0,91: a aba gira para cima em volta da dobra —
+        # a reta entre as duas pontas dela — e fica aberta
+        # (desde "gravado": desliza 1,0)
+        t_aberto = _em(tag, est, _f(tag, "aberto depois"))
+        aba = envelope[1]
+        dobra = (aba.get_start() + aba.get_end()) / 2
+        cena.play(Succession(
+            Wait(max(0.0, t_aberto - (t_gravado + 1.0 * VEL * k))),
+            Rotate(aba, PI, axis=RIGHT, about_point=dobra,
+                   run_time=0.6 * VEL * k)))
+
+    with narra(cena, "V1N08", 8.3):
+        tag, est = "V1N08", 8.3
+        k = _k(tag, est)
+        # "Essa é a promessa", o começo da fala: os cacos reacendem onde
+        # caíram (pelo traço, como no V4N03) e tudo o mais sai: as palavras,
+        # o envelope, o corpo "RSA", as arestas, os pontos, os corpos
+        # pequenos — tudo o que está em cena menos os cacos. Até aqui eles
+        # não foram tocados. Reacendem já de traço fino: o traço vira
+        # preenchimento no caminho até a letra, e um traço grosso passava
+        # por um borrão
         cena.bring_to_front(pecas)
         restos = [m for m in cena.mobjects
                   if m is not pecas and all(m is not a for a in arcos)]
-        # Reacendem já de traço fino: o traço vira preenchimento no caminho
-        # até a letra, e um traço grosso passava por um borrão
         cena.play(*[FadeOut(m) for m in restos],
                   pecas.animate.set_stroke(opacity=1, width=2.5),
                   arcos.animate.set_stroke(opacity=1, width=2.5),
@@ -951,15 +1131,16 @@ def corpo_serie(cena, cacos):
         cena.remove(*[a for _, a in pares])
         cena.add(titulo)
         # "esta série" ≈ 0,75: os quatro vídeos saem de trás do título,
-        # apagados
+        # apagados (desde o começo: reacende 0,6 + sobem 2,4)
         cena.play(Succession(
-            Wait(max(0.0, _em(tag, est, _f(tag, "esta série")) - k * 3.0)),
+            Wait(max(0.0, _em(tag, est, _f(tag, "esta série"))
+                     - 3.0 * VEL * k)),
             AnimationGroup(
                 *[FadeIn(n, target_position=[n.get_x(), 0, 0]) for n in nomes],
                 run_time=1.0 * VEL * k)))
 
-    with narra(cena, "V1N06", 8.3):
-        tag, est = "V1N06", 8.3
+    with narra(cena, "V1N09", 8.3):
+        tag, est = "V1N09", 8.3
         k = _k(tag, est)
         # "são quatro vídeos": o título sobe e os quatro se enfileiram na
         # trilha, num bloco só; os números entram na frente de cada um
@@ -989,14 +1170,14 @@ def corpo_serie(cena, cacos):
 
 
 def _abre_janela(cena, titulo, trilha, i, k, some=(), rotulo=None):
-    """Abre a prévia do vídeo i + 1 — a MESMA nas três aberturas (V1N07,
-    V1N08, V1N10): o item i da trilha acende e os outros saem (junto com
-    `some`, a marca do V1N06), ele sobe para o topo e a moldura nasce de
+    """Abre a prévia do vídeo i + 1 — a MESMA nas três aberturas (V1N10,
+    V1N11, V1N13): o item i da trilha acende e os outros saem (junto com
+    `some`, a marca do V1N09), ele sobe para o topo e a moldura nasce de
     uma linha que sai do pé dele e se expande. Só então o conteúdo começa.
 
     0,80 s × k: acende 0,15 · sobe 0,30 · linha 0,15 · expande 0,20.
 
-    `rotulo`, quando dado (o "Fermat" do V1N08), entra no canto superior-
+    `rotulo`, quando dado (o "Fermat" do V1N11), entra no canto superior-
     esquerdo da moldura junto com a expansão. A moldura passa por _confere
     contra o quadro, e ela e o rótulo não podem encostar no título que
     subiu. Devolve (moldura, rotulo_ou_None)."""
@@ -1045,7 +1226,7 @@ def _fecha_janela(cena, titulo, trilha, i, moldura, k):
     que reaparece inteira apagada.
 
     0,75 s × k: conteúdo sai 0,15 · colapsa 0,20 · recolhe 0,15 ·
-    volta 0,25. Deixa a `trilha` em cena como um VGroup só, como o V1N06 a
+    volta 0,25. Deixa a `trilha` em cena como um VGroup só, como o V1N09 a
     deixou, e `trilha[i]` continua sendo o mesmo objeto."""
     item = trilha[i]
     outros = [linha for j, linha in enumerate(trilha) if j != i]
@@ -1068,7 +1249,7 @@ def _fecha_janela(cena, titulo, trilha, i, moldura, k):
     cena.remove(moldura)
 
     # o lugar do item na trilha, recalculado numa trilha nova (a mesma
-    # to_edge do V1N06; trilha_videos já a devolve apagada)
+    # to_edge do V1N09; trilha_videos já a devolve apagada)
     casa = trilha_videos().to_edge(LEFT, buff=1.3)[i]
     for linha in outros:
         linha.set_opacity(0.25)
@@ -1264,8 +1445,8 @@ def _v2_tabela():
 
 
 def _previa_v2(cena, moldura, t0):
-    """V1N07 — os dez trechos da decupagem (roteiro_video1_introducao.md,
-    V1N07), na ordem exata da tabela: capítulos 1, 2, 3, 4, 2, 2, 1, 5, 5,
+    """V1N10 — os dez trechos da decupagem (roteiro_video1_introducao.md,
+    V1N10), na ordem exata da tabela: capítulos 1, 2, 3, 4, 2, 2, 1, 5, 5,
     5. Cada trecho monta as peças COPIADAS do capítulo (_v2_*), com as
     coordenadas do original, e as leva à janela por _encaixa — sempre pelo
     conjunto inteiro do capítulo, para que dois trechos do mesmo capítulo
@@ -1283,7 +1464,7 @@ def _previa_v2(cena, moldura, t0):
 
     O último trecho termina em ~19,6 s: a _fecha_janela (0,75 s) vem logo
     depois, dentro da mesma fala, e tira o que sobrou, a⁻¹ inclusive."""
-    tag, est = "V1N07", 20.3
+    tag, est = "V1N10", 20.3
     k = _k(tag, est)
 
     def rt(s):
@@ -1305,14 +1486,14 @@ def _previa_v2(cena, moldura, t0):
          bate) = pecas = _v2_cap1()
         quadro = VGroup(*pecas[:-1])
         s, leva = _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N07 cap. 1")
+        _confere(quadro, moldura, "V1N10 cap. 1")
         return pecas[:-1] + (leva(bate), s)
 
     def cap2():
         reta, soma, atual, estados = pecas = _v2_cap2()
         quadro = VGroup(reta, soma, atual, *estados)
         _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N07 cap. 2")
+        _confere(quadro, moldura, "V1N10 cap. 2")
         return pecas
 
     def _trecho1():
@@ -1342,7 +1523,7 @@ def _previa_v2(cena, moldura, t0):
         # corta: aqui eles entram por FadeIn, no mesmo LaggedStart
         base = _v2_fila_cima(5, 11.0)
         _encaixa(base, moldura)
-        _confere(base, moldura, "V1N07 cap. 3")
+        _confere(base, moldura, "V1N10 cap. 3")
         segs, rots = base
         ancora("multiplicar", sai)
         cena.play(LaggedStart(*[AnimationGroup(Create(s), FadeIn(r))
@@ -1357,7 +1538,7 @@ def _previa_v2(cena, moldura, t0):
         segs = _v2_linha_resultado(5.5)
         quadro = VGroup(prod, segs)
         _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N07 cap. 4")
+        _confere(quadro, moldura, "V1N10 cap. 4")
         ancora("potências", sai)
         cena.play(LaggedStart(*[FadeIn(prod[i]) for i in range(0, 11, 2)],
                               lag_ratio=0.12),
@@ -1423,7 +1604,7 @@ def _previa_v2(cena, moldura, t0):
         filas3 = _v2_filas(3, (1, 2, 3, 4, 5, 6), 1.6, 0.72)
         quadro = VGroup(filas2, filas3)
         _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N07 cap. 5 (filas)")
+        _confere(quadro, moldura, "V1N10 cap. 5 (filas)")
         ancora("no fim", sai)
         for f in filas2:
             cena.play(Succession(
@@ -1449,7 +1630,7 @@ def _previa_v2(cena, moldura, t0):
          div, risco, ainv) = pecas = _v2_tabela()
         quadro = VGroup(*pecas)
         _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N07 cap. 5 (tabela)")
+        _confere(quadro, moldura, "V1N10 cap. 5 (tabela)")
         ancora("sem dividir", sai)
         cena.play(FadeIn(head_c), FadeIn(head_l),
                   Create(lin_h), Create(lin_v), run_time=rt(0.25))
@@ -1475,14 +1656,14 @@ def _previa_v2(cena, moldura, t0):
 
 
 def corpo_previa2(cena, titulo, trilha, marca):
-    """V1N07. A _abre_janela acende o 2, os outros três (e a marca) somem,
+    """V1N10. A _abre_janela acende o 2, os outros três (e a marca) somem,
     o 2 sobe para o topo — ele é o rótulo da janela — e a moldura nasce;
     a prévia do vídeo 2 roda dentro dela e a _fecha_janela devolve o 2 à
     trilha, apagada, no fim da fala.
 
-    Devolve (titulo, trilha), em cena: o V1N08 abre o 3 do mesmo jeito."""
-    with narra(cena, "V1N07", 20.3):
-        k = _k("V1N07", 20.3)
+    Devolve (titulo, trilha), em cena: o V1N11 abre o 3 do mesmo jeito."""
+    with narra(cena, "V1N10", 20.3):
+        k = _k("V1N10", 20.3)
         t0 = _agora(cena)
         moldura, _ = _abre_janela(cena, titulo, trilha, 1, k, some=(marca,))
         _previa_v2(cena, moldura, t0)
@@ -1492,17 +1673,17 @@ def corpo_previa2(cena, titulo, trilha, marca):
 
 
 def _previa_v3a(cena, moldura, fermat, t0):
-    """V1N08 — cap. 6 (Fermat: a permutação da tabela mod 7) e cap. 7
+    """V1N11 — cap. 6 (Fermat: a permutação da tabela mod 7) e cap. 7
     (Euler: o contra-exemplo mod 9), na ordem exata da tabela.
 
     `fermat` é o rótulo que a _abre_janela pôs na moldura; em 5,4 ele vira
-    "Euler" no mesmo lugar. Devolve o "Euler" (em cena): o V1N09 o recebe
-    e o vira "RSA" no mesmo canto, e só a _fecha_janela do fim do V1N09
+    "Euler" no mesmo lugar. Devolve o "Euler" (em cena): o V1N12 o recebe
+    e o vira "RSA" no mesmo canto, e só a _fecha_janela do fim do V1N12
     leva esse rótulo junto com o conteúdo.
 
     Três encaixes: a tabela mod 7 com os arcos (0,0–5,4, a mesma cena), a
     mod 9 com as cruzes, as chaves e a caixa (5,4–11,0), o cadeado."""
-    tag, est = "V1N08", 12.1
+    tag, est = "V1N11", 12.1
     k = _k(tag, est)
     cx, cy = moldura.get_center()[:2]
 
@@ -1542,7 +1723,7 @@ def _previa_v3a(cena, moldura, fermat, t0):
                                    color=VERDE, stroke_width=2))
     quadro = VGroup(*linhas, el, A, B, arcos)
     _encaixa(quadro, moldura)
-    _confere(quadro, moldura, "V1N08 tabela mod 7")
+    _confere(quadro, moldura, "V1N11 tabela mod 7")
 
     cena.play(LaggedStart(*[FadeIn(l) for l in linhas], lag_ratio=0.25),
               run_time=1.3 * VEL * k)
@@ -1592,7 +1773,7 @@ def _previa_v3a(cena, moldura, fermat, t0):
     quadro = VGroup(header, row3, row6, el9, cruzes, fim, chave_e, chave_d,
                     caixa)
     _encaixa(quadro, moldura)
-    _confere(quadro, moldura, "V1N08 tabela mod 9")
+    _confere(quadro, moldura, "V1N11 tabela mod 9")
 
     cena.play(FadeOut(arcos), ReplacementTransform(fermat, euler),
               FadeIn(header), run_time=0.6 * VEL * k)
@@ -1614,7 +1795,7 @@ def _previa_v3a(cena, moldura, fermat, t0):
     # intacto — rima com o V1N01
     mini_cad = cadeado("fechado", "RSA").scale(0.45)
     _encaixa(mini_cad, moldura)
-    _confere(mini_cad, moldura, "V1N08 cadeado")
+    _confere(mini_cad, moldura, "V1N11 cadeado")
     cena.play(FadeOut(VGroup(chave_e, restantes, chave_d, caixa)),
               FadeIn(mini_cad), run_time=0.5 * VEL * k)
     cena.play(FadeOut(mini_cad), run_time=0.6 * VEL * k)
@@ -1623,7 +1804,7 @@ def _previa_v3a(cena, moldura, fermat, t0):
 
 
 def _previa_v3b(cena, moldura, euler, t0):
-    """V1N09 — cap. 8: o esquema do RSA (mensagem → cifra → mensagem),
+    """V1N12 — cap. 8: o esquema do RSA (mensagem → cifra → mensagem),
     as duas chaves, o exemplo rodando e o n se partindo nos primos do
     V1N02. A janela continua exatamente como a _previa_v3a deixou — nada
     aqui a reabre, porque o título 3 é o único da trilha que não troca de
@@ -1639,7 +1820,7 @@ def _previa_v3b(cena, moldura, euler, t0):
     cartões nas duas posições, os "?" já espalhados e a caixa final.
     O último trecho foi comprimido de 2,3 para 1,5 s: a _fecha_janela vem
     logo depois e é ela que apaga os "?"."""
-    tag, est = "V1N09", 12.5
+    tag, est = "V1N12", 12.5
     k = _k(tag, est)
     cx, cy = moldura.get_center()[:2]
 
@@ -1699,7 +1880,7 @@ def _previa_v3b(cena, moldura, euler, t0):
                     priv_fim, entram, n_txt, p_txt, q_txt, caixa_final,
                     mini_volta, mini_q, q_fim)
     s, _ = _encaixa(quadro, moldura)
-    _confere(quadro, moldura, "V1N09 esquema do RSA")
+    _confere(quadro, moldura, "V1N12 esquema do RSA")
 
     cena.play(LaggedStart(FadeIn(msg1, shift=0.2 * s * RIGHT), GrowArrow(seta1),
                           FadeIn(cif, shift=0.2 * s * RIGHT), GrowArrow(seta2),
@@ -1707,7 +1888,7 @@ def _previa_v3b(cena, moldura, euler, t0):
               run_time=2.6 * VEL * k)
 
     # "RSA" ≈ 0,236 da fala (38 / 161 caracteres, o começo da palavra
-    # "RSA" no texto do V1N09): "Euler" vira "RSA" no rótulo da janela
+    # "RSA" no texto do V1N12): "Euler" vira "RSA" no rótulo da janela
     cena.play(Succession(
         _ate(cena, t0, tag, est, _f(tag, "RSA")),
         ReplacementTransform(euler, rsa, run_time=0.4 * VEL * k)))
@@ -1742,21 +1923,21 @@ def _previa_v3b(cena, moldura, euler, t0):
 
 
 def corpo_previa3(cena, titulo, trilha):
-    """V1N08 e V1N09. A _abre_janela acende o 3 e abre a moldura com
+    """V1N11 e V1N12. A _abre_janela acende o 3 e abre a moldura com
     "Fermat" como rótulo; ela fica aberta nas duas falas — o 3 é o único
     título da trilha que não troca de número — e só a _fecha_janela do fim
-    do V1N09 a fecha, devolvendo o 3 à trilha.
+    do V1N12 a fecha, devolvendo o 3 à trilha.
 
-    Devolve (titulo, trilha), em cena: o V1N10 abre o 4 do mesmo jeito."""
-    with narra(cena, "V1N08", 12.1):
-        k = _k("V1N08", 12.1)
+    Devolve (titulo, trilha), em cena: o V1N13 abre o 4 do mesmo jeito."""
+    with narra(cena, "V1N11", 12.1):
+        k = _k("V1N11", 12.1)
         t0 = _agora(cena)
         moldura, fermat = _abre_janela(cena, titulo, trilha, 2, k,
                                        rotulo="Fermat")
         euler = _previa_v3a(cena, moldura, fermat, t0)
 
-    with narra(cena, "V1N09", 12.5):
-        k = _k("V1N09", 12.5)
+    with narra(cena, "V1N12", 12.5):
+        k = _k("V1N12", 12.5)
         t0 = _agora(cena)
         _previa_v3b(cena, moldura, euler, t0)
         _fecha_janela(cena, titulo, trilha, 2, moldura, k)
@@ -1823,19 +2004,19 @@ def _v4_tabela():
 
 
 def _previa_v4a(cena, moldura, t0):
-    """V1N10 — cap. 9 e cap. 10, na ordem da decupagem: a tabela mod 9 se
+    """V1N13 — cap. 9 e cap. 10, na ordem da decupagem: a tabela mod 9 se
     preenche e o zigue-zague a percorre desde o começo; em "ordem modular"
     o último arco fecha o ciclo e o flash amarelo dá a volta. Em "Depois"
     a tabela sai e as árvores do cap. 10 entram, e não volta mais. Em
-    "quebrar" o cadeado RSA do V1N08 reaparece entre as duas árvores e
-    racha — a rima com a seta de despedaçar do fim do V1N09. Como nas
+    "quebrar" o cadeado RSA do V1N11 reaparece entre as duas árvores e
+    racha — a rima com a seta de despedaçar do fim do V1N12. Como nas
     prévias anteriores, cada trecho recria só o gesto mínimo, sem importar
     capitulo9/9b/10, e passa por _encaixa e _confere antes de animar.
 
-    `t0` é o começo do narra do V1N10. Devolve o que fica em cena — o que
-    sobrou das árvores e o cadeado rachado —: o V1N11 os tira em
+    `t0` é o começo do narra do V1N13. Devolve o que fica em cena — o que
+    sobrou das árvores e o cadeado rachado —: o V1N14 os tira em
     "computador quântico"."""
-    tag, est = "V1N10", 17.6
+    tag, est = "V1N13", 17.6
     k = _k(tag, est)
 
     def ancora(nome):
@@ -1888,7 +2069,7 @@ def _previa_v4a(cena, moldura, t0):
         mini_cad.move_to([cx, cy - 0.25, 0])
         quadro = VGroup(tronco, *filhos, *netos, *folhas, numeros, mini_cad)
         _, leva = _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N10 árvores")
+        _confere(quadro, moldura, "V1N13 árvores")
         pontas_internas = [leva(h) for h in pontas_internas]
 
         cena.play(Create(tronco), run_time=0.35 * VEL * kv)
@@ -1907,7 +2088,7 @@ def _previa_v4a(cena, moldura, t0):
      caminho) = pecas = _v4_tabela()
     quadro = VGroup(*pecas)
     _encaixa(quadro, moldura)
-    _confere(quadro, moldura, "V1N10 tabela mod 9")
+    _confere(quadro, moldura, "V1N13 tabela mod 9")
     no_ar = VGroup(head_c, head_l, lin_h, lin_v, linhas_cel, c00, degraus)
 
     # do começo até "a ordem modular" (≈ 0,525) · cap. 9: depois da
@@ -1942,7 +2123,7 @@ def _previa_v4a(cena, moldura, t0):
     arvores, mini_cad = _arvores(2.0 * k)
 
     # "quebrar" (≈ 0,864): o cadeado RSA reaparece por meio segundo, intacto
-    # como no fim do V1N08, e racha — o rachar() do V3N02, o mesmo traço
+    # como no fim do V1N11, e racha — o rachar() do V3N02, o mesmo traço
     ancora("quebrar")
     cena.play(FadeIn(mini_cad, scale=0.8), run_time=0.5 * VEL * k)
     rachar(cena, mini_cad, run_time=0.7 * k)
@@ -1951,9 +2132,9 @@ def _previa_v4a(cena, moldura, t0):
 
 
 def _previa_v4b(cena, moldura, sobra, t0):
-    """V1N11 — os trechos do cap. 11 dentro da MESMA moldura: nada aqui a
+    """V1N14 — os trechos do cap. 11 dentro da MESMA moldura: nada aqui a
     reabre, porque o 4 não troca de número nesta fala, o mesmo recurso do
-    V1N09. Cada trecho entra na palavra que o nomeia — o circuito em
+    V1N12. Cada trecho entra na palavra que o nomeia — o circuito em
     "lógica incomum", os qubits em "superposição", o par colapsando em
     "emaranhamento", as ondas em "interferência", com os vales achatando
     em "apaga" e os picos crescendo em "até sobrar" — e a seta laranja em
@@ -1962,9 +2143,9 @@ def _previa_v4b(cena, moldura, sobra, t0):
 
     `sobra` é o que a _previa_v4a deixou em cena (as árvores e o cadeado
     rachado), e sai por FadeOut assim que a fala chega em "computador
-    quântico"; `t0` é o começo do narra do V1N11. Termina com a seta
+    quântico"; `t0` é o começo do narra do V1N14. Termina com a seta
     laranja no pico: a _fecha_janela vem depois da fala, no encerramento."""
-    tag, est = "V1N11", 23.3
+    tag, est = "V1N14", 23.3
     k = _k(tag, est)
 
     def ancora(nome):
@@ -1974,7 +2155,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
 
     def _cartoes(kv):
         # cap. 11: o mesmo círculo ciano dos qubits da linha do tempo do
-        # V1N04, grande, com o gradiente dos bits 1 e 0 dentro (a
+        # V1N06, grande, com o gradiente dos bits 1 e 0 dentro (a
         # superposição). Monta também o fio do _par, para os dois entrarem
         # na mesma medida; devolve (par, fio), o fio ainda fora de cena
         cx, cy = moldura.get_center()[:2]
@@ -1987,7 +2168,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
                    stroke_width=3)
         quadro = VGroup(par, fio)
         _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N11 qubits")
+        _confere(quadro, moldura, "V1N14 qubits")
         cena.play(LaggedStart(*[GrowFromCenter(q) for q in par],
                               lag_ratio=0.3), run_time=0.5 * VEL * kv)
         return par, fio
@@ -2032,7 +2213,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
         medida = VGroup(medidor, mostrador, agulha)
         quadro = VGroup(fios, portas, medida)
         s, _ = _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N11 circuito")
+        _confere(quadro, moldura, "V1N14 circuito")
 
         cena.play(LaggedStart(*[Create(f) for f in fios], lag_ratio=0.2),
                   run_time=0.5 * VEL * kv)
@@ -2093,7 +2274,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
         quadro = VGroup(ondas, curva, picos, vales, picos_altos, vales_rasos,
                         seta)
         s, _ = _encaixa(quadro, moldura)
-        _confere(quadro, moldura, "V1N11 ondas")
+        _confere(quadro, moldura, "V1N14 ondas")
 
         cena.play(LaggedStart(*[Create(o) for o in ondas], lag_ratio=0.2),
                   run_time=0.55 * VEL * kv_soma)
@@ -2119,7 +2300,7 @@ def _previa_v4b(cena, moldura, sobra, t0):
     # fator de cada trecho é o que o faz ocupar a maior parte da sua, sem
     # chegar na âncora seguinte
     # "computador quântico" (≈ 0,089) → "lógica incomum": 2,1 s; o que o
-    # V1N10 deixou sai em 1,0 s
+    # V1N13 deixou sai em 1,0 s
     ancora("computador quântico")
     cena.play(FadeOut(sobra), run_time=1.0 * VEL * k)
     # "lógica incomum" (≈ 0,177) → "superposição": 3,0 s; o circuito, 1,4×
@@ -2144,22 +2325,22 @@ def _previa_v4b(cena, moldura, sobra, t0):
 
 
 def corpo_previa4(cena, titulo, trilha):
-    """V1N10 e V1N11. A _abre_janela acende o 4 e abre a moldura; ela fica
+    """V1N13 e V1N14. A _abre_janela acende o 4 e abre a moldura; ela fica
     aberta nas duas falas — o 4 não troca de número entre elas, como o 3
-    entre o V1N08 e o V1N09 — e o V1N11 termina com ela ainda aberta, a
+    entre o V1N11 e o V1N12 — e o V1N14 termina com ela ainda aberta, a
     seta no pico. Na passagem de uma fala para a outra a janela fica com
-    as árvores e o cadeado rachado do V1N10, que saem em "computador
+    as árvores e o cadeado rachado do V1N13, que saem em "computador
     quântico".
 
     Devolve (titulo, trilha, moldura), em cena: o encerramento fecha a
     janela."""
-    with narra(cena, "V1N10", 17.6):
-        k = _k("V1N10", 17.6)
+    with narra(cena, "V1N13", 17.6):
+        k = _k("V1N13", 17.6)
         t0 = _agora(cena)
         moldura, _ = _abre_janela(cena, titulo, trilha, 3, k)
         sobra = _previa_v4a(cena, moldura, t0)
 
-    with narra(cena, "V1N11", 23.3):
+    with narra(cena, "V1N14", 23.3):
         t0 = _agora(cena)
         _previa_v4b(cena, moldura, sobra, t0)
 
@@ -2167,7 +2348,7 @@ def corpo_previa4(cena, titulo, trilha):
 
 
 def encerramento(cena, titulo, trilha, moldura):
-    """Depois do V1N11, sem fala. A janela do 4 fecha no passo das outras
+    """Depois do V1N14, sem fala. A janela do 4 fecha no passo das outras
     prévias, sem a pressa de caber na fala (o dobro dos 0,75 s da
     _fecha_janela), os quatro títulos acendem juntos e a trilha pulsa uma
     vez. A cena fica parada ~1,5 s e tudo sai num FadeOut só, o fim do

@@ -40,6 +40,8 @@ SINC = {
     },
     "en": {
         **_V1["en"],
+        # V0N00 — a seta ↓ nasce no rodapé
+        ("V0N00", "descrição"): 0.942,   # "description" — estimativa por caracteres
     },
 }
 

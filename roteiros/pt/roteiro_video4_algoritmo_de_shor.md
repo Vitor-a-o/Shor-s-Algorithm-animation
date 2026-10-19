@@ -238,8 +238,8 @@ de verdade.
 |---|---|---|---|
 | V4N01 | Era essa a promessa do primeiro vídeo: um computador quântico consegue vencer a aposta que protege a internet. E agora a gente sabe como. | 11,9 | Mesma composição do `V3N01`, invertida no resultado. A `caixa` verde do `C11N46` desce e vira o pedestal; o cadeado do `V4N00` volta por cima dela, com "fatorar n" gravado e a rachadura parada onde o vídeo 3 deixou. Até "vencer a aposta" ele espera parado no pedestal, enquanto a fala lembra a promessa do vídeo 1. Em "vencer a aposta", a rachadura **termina de correr** pelo arco inteiro, o arco estala em dois e os pedaços caem — a quebra que o `V3N02` prometeu. "E agora a gente sabe como" cai sobre o cadeado já quebrado, sem animação nova |
 | V4N02 | Só que o exemplo que acabou de rodar tem dois dígitos. Os números do RSA têm centenas, e para eles seriam necessários milhares de qubits estáveis. Nenhuma máquina de hoje chega perto disso. | 14,6 | Em "tem dois dígitos", o número da moldura verde cresce em quantidade de dígitos até estourar as bordas do quadro. Em "milhares de qubits", um punhado de cartões-qubit do `C11N05` entra ao lado e **continua do mesmo tamanho** enquanto os dígitos correm — a desproporção é o argumento, e nenhuma legenda precisa dizê-la. O cadeado quebrado e a moldura **ficam onde estão, intactos**: nada apaga, nada é empurrado — a faixa dos dígitos corre acima dos cotos e as cartas entram pelo flanco direito, e no fim sai só o que este bloco pôs em cena, para o `V4N03` receber o quadro do `V4N01` sem uma vírgula de diferença |
-| V4N03 | Então, por enquanto, pode ficar tranquilo: a aposta continua de pé, ela só ganhou um prazo de validade. E a resposta já está sendo preparada: uma criptografia que não depende de fatorar. | 16,2 | A primeira frase ("pode ficar tranquilo") não tem imagem nova: é a fala se dirigindo a quem ouve, com o cadeado quebrado ainda diante dele. Em "a aposta continua de pé", a rede de cadeados anônimos do `V1N03` volta ao fundo, apagada e **intacta** — nenhum dos cadeados dela quebrou. Em "ela só ganhou um prazo de validade", os cacos reacendem e sobem. Em "E a resposta já está sendo preparada", eles se remontam na armação de um cadeado de outra forma, enquanto o velho sai. Em "uma criptografia que não depende de fatorar", ele fecha inteiro no lugar do antigo, com o flash seco do `fechar()` — sem letras gravadas, porque ainda não é assunto desta série |
-| V4N04 | Quatro vídeos atrás, a gente começou com o resto de uma divisão. Hoje você entende o algoritmo que pode mudar a segurança da internet. O caminho foi seu, eu só mostrei as peças. Obrigado por ter vindo até o fim. | 18,3 | A rede, o cadeado novo e a moldura saem no começo. Em "Quatro vídeos atrás", os quatro títulos voltam na trilha vertical do `V1N06`, agora todos acesos. Em "O caminho foi seu", a trilha inteira pulsa uma vez (`Indicate`) — é o caminho que a fala nomeia, e ele já está na tela. Em "Obrigado por ter vindo até o fim", o título da série pousa por cima deles |
+| V4N03 | Então, por enquanto, pode ficar tranquilo: a aposta continua de pé, ela só ganhou um prazo de validade. E a resposta já está sendo preparada: uma criptografia que não depende de fatorar. | 16,2 | A primeira frase ("pode ficar tranquilo") não tem imagem nova: é a fala se dirigindo a quem ouve, com o cadeado quebrado ainda diante dele. Em "a aposta continua de pé", a rede de cadeados anônimos do `V1N04` volta ao fundo, apagada e **intacta** — nenhum dos cadeados dela quebrou. Em "ela só ganhou um prazo de validade", os cacos reacendem e sobem. Em "E a resposta já está sendo preparada", eles se remontam na armação de um cadeado de outra forma, enquanto o velho sai. Em "uma criptografia que não depende de fatorar", ele fecha inteiro no lugar do antigo, com o flash seco do `fechar()` — sem letras gravadas, porque ainda não é assunto desta série |
+| V4N04 | Quatro vídeos atrás, a gente começou com o resto de uma divisão. Hoje você entende o algoritmo que pode mudar a segurança da internet. O caminho foi seu, eu só mostrei as peças. Obrigado por ter vindo até o fim. | 18,3 | A rede, o cadeado novo e a moldura saem no começo. Em "Quatro vídeos atrás", os quatro títulos voltam na trilha vertical do `V1N09`, agora todos acesos. Em "O caminho foi seu", a trilha inteira pulsa uma vez (`Indicate`) — é o caminho que a fala nomeia, e ele já está na tela. Em "Obrigado por ter vindo até o fim", o título da série pousa por cima deles |
 | — | *(cartão final, ~3 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" e, embaixo, "fim" |
 
 **Subtotal: 61,0 s** (4 locuções) + cartão ~3 s
@@ -515,26 +515,26 @@ da medida que não serve. Não sobra nenhuma.
 1. ~~**`quebrar(cena, cad, run_time)` em `cadeado.py`** — a função que o docstring do
    `rachar()` já promete. Ela recebe um `cad` que **já carrega** a `rachadura` do
    `rachar()`, estende a fissura até as duas pontas do arco, parte o arco em dois pedaços
-   e deixa os dois caírem com rotação. É a mesma peça que o `V1N04` pede no vídeo 1, então
+   e deixa os dois caírem com rotação. É a mesma peça que o `V1N06` pede no vídeo 1, então
    ela nasce uma vez e serve aos dois.~~ **FEITO** — `quebrar()` está em `cadeado.py:211`,
    com exatamente esse comportamento, e o `V4N01` a chama sobre o `cad` que já saiu do
-   `rachar()` (via `estado_v3()`). Continua servindo aos dois vídeos: quando o `V1N04` for
+   `rachar()` (via `estado_v3()`). Continua servindo aos dois vídeos: quando o `V1N06` for
    escrito, chama a mesma função.
 2. ~~**A abertura do vídeo 4 reconstrói o estado final do vídeo 3.**~~ **FEITO** —
    `estado_v3()` no `cadeado.py` monta o cadeado já gravado e já rachado de uma vez, sem
    animação, e o `V4N00` o põe em cena com `cena.add`. O primeiro quadro do vídeo 4 foi
    comparado com o último do vídeo 3: mesma escala, mesmo rótulo, mesma fissura (só a
    posição muda, porque aqui não há tese embaixo).
-3. ~~A rede de cadeados anônimos do `V1N03` volta no `V4N03`. Ela é a mesma construção
+3. ~~A rede de cadeados anônimos do `V1N04` volta no `V4N03`. Ela é a mesma construção
    (pontos + arestas + `cadeado()` de corpo vazio em opacidade ~0,3) e vale extrair para
    `cadeado.py` quando o código do vídeo 1 for escrito, em vez de duplicar aqui.~~ **FEITO**
    — `rede()` já mora em `cadeado.py:281`, com exatamente essa construção, e o `V4N03`
    chama essa função diretamente (`from ..cadeado import … rede`). Não há duplicação para
    desfazer quando o vídeo 1 for escrito: ele vai reaproveitar a mesma `rede()`.
-4. ~~A trilha vertical dos quatro títulos do `V1N06` volta acesa no `V4N04` — mesma nota:
+4. ~~A trilha vertical dos quatro títulos do `V1N09` volta acesa no `V4N04` — mesma nota:
    ela nasce no vídeo 1 e é reaproveitada aqui.~~ **FEITO** — `trilha_videos(acesos=…)` em
    `shor/videos/comum.py`, o arquivo das peças que servem a mais de um vídeo. A versão
-   apagada existe porque o `V1N06` precisa dela (`acesos=(1,)`); o `V4N04` chama
+   apagada existe porque o `V1N09` precisa dela (`acesos=(1,)`); o `V4N04` chama
    `acesos=(1, 2, 3, 4)`. Os quatro nomes batem com os cartões de marca do `video2.py`,
    do `video3.py` e do `video4.py`, e com o cartão do vídeo 1 no roteiro dele.
 5. ~~`CARTOES` em `montagem.py` ganha as entradas que faltam: `9: 7.2`, `10: 5.4`,

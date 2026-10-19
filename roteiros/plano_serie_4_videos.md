@@ -38,7 +38,7 @@ encontra o período). A lista `PARTES` em `montagem.py` já está na ordem certa
   1–5, 6–8, 9–11.
 - **Convenção de tags de áudio**: tags de capítulo continuam como estão (`C1N01`...); tags
   novas de costura de cada vídeo (abertura/recap/gancho) usam prefixo `V{n}N`. O vídeo 1
-  vai de `V1N00` a `V1N11`, doze locuções.
+  vai de `V1N00` a `V1N14`, quinze locuções.
 
 ## Projeção de duração
 
@@ -119,7 +119,7 @@ Em paralelo seguem abertas as duas frentes que já estavam listadas aqui:
 
 ## Pendências de código herdadas do roteiro do vídeo 1
 
-- **Regravação, nos dois idiomas (pt e en):** `V1N10` e `V1N11` mudaram de texto e precisam
+- **Regravação, nos dois idiomas (pt e en):** `V1N13` e `V1N14` mudaram de texto e precisam
   ser regravadas; rodar `python medir.py pt` e `python medir.py en` depois. A decupagem
   também mudou (o circuito agora vem antes dos qubits; a tabela não volta depois das
   árvores), então `video1.py` e as frações de `sincronias_v1.py` precisam acompanhar.

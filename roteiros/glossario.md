@@ -29,7 +29,7 @@ tela (`shor/textos.py`) seguem este arquivo. Quando um termo mudar aqui, ele mud
 
 | Texto | Inglês | Por quê |
 |---|---|---|
-| Título da série | **From 0 to Shor's Quantum Algorithm** | O V1N05 remonta o título com os cacos do cadeado e exige 29 a 31 glifos sem espaço, com o "S" de Shor como primeiro "S" maiúsculo. Este tem 29 (o apóstrofo conta), e o "0" repete o nome do projeto. "From Zero to Shor's Quantum Algorithm" tem 32 e quebra o `assert`. |
+| Título da série | **From 0 to Shor's Quantum Algorithm** | O V1N08 remonta o título com os cacos do cadeado e exige 29 a 31 glifos sem espaço, com o "S" de Shor como primeiro "S" maiúsculo. Este tem 29 (o apóstrofo conta), e o "0" repete o nome do projeto. "From Zero to Shor's Quantum Algorithm" tem 32 e quebra o `assert`. |
 | `SEGREDO` (capítulo 8) | **SECRETS** | O `_glifos()` troca letra a letra com `Xk9#R2q`: são exatamente 7 caracteres. "SECRET" tem 6. |
 | `mdc(` | **gcd(** | Notação usual em inglês. |
 | `TQF` | **QFT** | Quantum Fourier transform. |

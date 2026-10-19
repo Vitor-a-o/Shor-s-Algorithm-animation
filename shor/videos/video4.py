@@ -243,7 +243,7 @@ def encerramento(cena, caixa):
         # 0 a ~3,7 s o quadro é só o cadeado quebrado. O Wait dentro do
         # Succession segura a entrada (a rede nem entra em cena antes da
         # hora), como o Write atrasado do C11N10
-        # "a aposta continua de pé" (~3,7 s): a rede do V1N03 volta ao
+        # "a aposta continua de pé" (~3,7 s): a rede do V1N04 volta ao
         # fundo, apagada e intacta — nenhum dos cadeados dela quebrou
         cena.play(Succession(_ate(cena, t0, tag, est,
                                   "a aposta continua de pé"),
@@ -284,7 +284,7 @@ def encerramento(cena, caixa):
     with narra(cena, "V4N04", 18.3):
         t0 = _agora(cena)
         # a rede, o cadeado novo e a moldura saem no começo; em "Quatro
-        # vídeos atrás" a trilha do V1N06 volta, agora com os quatro acesos
+        # vídeos atrás" a trilha do V1N09 volta, agora com os quatro acesos
         cena.play(FadeOut(fundo), FadeOut(novo), FadeOut(caixa),
                   run_time=0.8 * VEL)
         cena.play(LaggedStart(*[FadeIn(l, shift=0.3 * RIGHT) for l in trilha],

@@ -22,7 +22,7 @@ def trilha_videos(acesos=(), tamanho=26, apagado=0.25):
     """A trilha vertical dos quatro títulos da série, numerados 1 a 4 e
     alinhados à esquerda.
 
-    Quem usa: o V1N06 do vídeo 1, onde ela nasce apagada e só o 1 acende
+    Quem usa: o V1N09 do vídeo 1, onde ela nasce apagada e só o 1 acende
     (`trilha_videos(acesos=(1,))`), e o V4N04 do vídeo 4, onde ela volta
     com os quatro acesos (`trilha_videos(acesos=(1, 2, 3, 4))`).
 
