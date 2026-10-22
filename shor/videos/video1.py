@@ -669,16 +669,19 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
     fat = T(tx("v1.fatoracao"), 72).move_to([0, _FAIXA, 0])
 
     # a forma do bloco fechado, guardada para a volta; e os dois fatores
-    # cinzas em que ele se reabre, nas medidas do f1 e do f2 do V1N01
+    # cinzas em que ele se reabre, nas medidas e no lugar do f1 e do f2 do
+    # V1N01: os primos vêm de lá, da esquerda para a direita, como antes
     fechado = bloco.copy()
     cinzas = VGroup(Square(0.55), Square(0.8))
     cinzas.set_fill(CINZA, opacity=1).set_stroke(width=0)
-    cinzas[0].move_to([2.45, _FAIXA, 0])
-    cinzas[1].move_to([4.2, _FAIXA, 0])
+    cinzas[0].move_to([-4.3, _FAIXA, 0])
+    cinzas[1].move_to([-3.35, _FAIXA, 0])
     p = T(_P, 36, ROSA).next_to(cinzas[0], UP, buff=0.2)
     q = T(_Q, 36, VERDE2).next_to(cinzas[1], UP, buff=0.2)
     n = T(_N, 36, LARANJA).next_to(fechado, UP, buff=0.2)
 
+    ida = Arrow([-2.55, _FAIXA, 0], [2.4, _FAIXA, 0], buff=0, color=PRETO,
+                stroke_width=5)
     volta = Arrow([2.4, _FAIXA, 0], [-2.55, _FAIXA, 0], buff=0, color=PRETO,
                   stroke_width=5)
     cacos = VGroup(*[T("?", 36, CINZA) for _ in _ESPALHA])
@@ -702,7 +705,8 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
             Wait(0.5 * VEL * k)))
 
         # "Multiplicar dois primos grandes" ≈ 0,30: o bloco se reabre pela
-        # emenda e cada metade volta a ser o fator cinza de que era feita...
+        # emenda e cada metade volta a ser o fator cinza de que era feita,
+        # lá na esquerda, onde o V1N01 o montou...
         t_mult = _em(tag, est, _f(tag, "multiplicar"))
         cena.play(Succession(
             Wait(max(0.0, t_mult - k * 3.1)),
@@ -716,19 +720,22 @@ def corpo_fatoracao(cena, cad, bloco, interrogacoes):
                   GrowFromPoint(p, cinzas[0].get_center()),
                   GrowFromPoint(q, cinzas[1].get_center()),
                   run_time=0.9 * VEL * k)
-        # os dois deslizam um contra o outro e se fundem de novo no mesmo
-        # bloco laranja; os números se juntam no produto, por cima dele
+        # a seta de ida varre da esquerda para a direita, como no V1N01, e
+        # os dois se fundem de novo no mesmo bloco laranja; os números se
+        # juntam no produto, por cima dele
+        cena.play(GrowArrow(ida), run_time=0.8 * VEL * k)
         cena.play(Transform(bloco[0], fechado[0]),
                   Transform(bloco[1], fechado[1]),
-                  ReplacementTransform(VGroup(p, q), n), run_time=1.2 * VEL * k)
+                  ReplacementTransform(VGroup(p, q), n), FadeOut(ida),
+                  run_time=0.6 * VEL * k)
 
         # "voltar do produto para os primos" ≈ 0,55: a volta tenta de novo
         # e se despedaça, no mesmo espalhar do V1N01 (os Wait contam da
         # âncora anterior, como no V1N01; desde "multiplicar": reabre 1,0 +
-        # cores 0,9 + funde 1,2)
+        # cores 0,9 + seta 0,8 + funde 0,6)
         t_volta = _em(tag, est, _f(tag, "voltar do produto"))
         cena.play(Succession(
-            Wait(max(0.0, t_volta - (t_mult + 3.1 * VEL * k))),
+            Wait(max(0.0, t_volta - (t_mult + 3.3 * VEL * k))),
             GrowArrow(volta, run_time=1.0 * VEL * k)))
         cena.play(ReplacementTransform(volta, cacos), run_time=0.6 * VEL * k)
         cena.play(Succession(
