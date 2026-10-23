@@ -21,7 +21,13 @@ As frações do pt foram estimadas pela contagem de caracteres da fala, menos
 as do V1N10, que são o começo de cada trecho da decupagem do roteiro, em
 segundos dos 20,3 s estimados.
 
-## Âncoras do vídeo 1 (49)
+## Âncoras do vídeo 1 (68)
+
+As 19 linhas com "estimativa por caracteres, a medir na gravação" são as âncoras do
+redesenho do V1N00 ao V1N08 (seção "Fios do redesenho" do roteiro do vídeo 1). O
+`video1.py` já usa todas (sessões 2 a 7 do redesenho, conferidas na sessão 8); a lista do
+que falta medir no áudio está logo abaixo da tabela. As outras linhas descrevem o gesto que
+o código faz hoje.
 
 | tag | âncora | palavra-alvo em pt | fração pt | fala pt completa |
 |---|---|---|---|---|
@@ -31,25 +37,44 @@ segundos dos 20,3 s estimados.
 | V1N00 | `senha forte` | "uma senha forte" [os pontos digitados] | 0,516 | Existe uma aposta que protege quase tudo que você faz na internet, e ela não é uma senha forte que você possa escolher. E talvez ela esteja perto de ser perdida. |
 | V1N00 | `que você possa` | "que você possa" [o risco vermelho] | 0,590 | Existe uma aposta que protege quase tudo que você faz na internet, e ela não é uma senha forte que você possa escolher. E talvez ela esteja perto de ser perdida. |
 | V1N00 | `escolher` | "escolher" [o campo some] | 0,683 | Existe uma aposta que protege quase tudo que você faz na internet, e ela não é uma senha forte que você possa escolher. E talvez ela esteja perto de ser perdida. |
+| V1N00 | `talvez` | "E talvez ela esteja" [os qubits apagados piscam nas bordas e derivam] | 0,758 (estimativa por caracteres, a medir na gravação) | Existe uma aposta que protege quase tudo que você faz na internet, e ela não é uma senha forte que você possa escolher. E talvez ela esteja perto de ser perdida. |
 | V1N00 | `perdida` | "perto de ser perdida" [a fissura corre pelo arco e some] | 0,950 | Existe uma aposta que protege quase tudo que você faz na internet, e ela não é uma senha forte que você possa escolher. E talvez ela esteja perto de ser perdida. |
 | V1N01 | `compras online` | "compras online" [2º item] | 0,234 | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
 | V1N01 | `mensagens privadas` | "mensagens privadas" [3º item] | 0,318 | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
+| V1N01 | `o que se aposta` | "o que se aposta" [a ficha salta em arco até a faixa das setas] | 0,428 (estimativa por caracteres, a medir na gravação) | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
 | V1N01 | `fáceis de fazer` | "fáceis de fazer numa direção" [seta de ida] | 0,627 | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
 | V1N01 | `impraticáveis` | "impraticáveis de desfazer" [seta de volta] | 0,781 | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
+| V1N01 | `até onde se sabe` | "até onde se sabe" [uma interrogação vai para a fechadura e pisca] | 0,915 (estimativa por caracteres, a medir na gravação) | Essa aposta está por trás de contas bancárias, compras online e mensagens privadas. E o que se aposta é que existem operações fáceis de fazer numa direção e impraticáveis de desfazer, até onde se sabe. |
 | V1N02 | `multiplicar` | "Multiplicar dois primos grandes" [o bloco reabre] | 0,297 | A operação mais conhecida desse tipo é a fatoração. Multiplicar dois primos grandes é fácil, mas voltar do produto para os primos é o que ninguém sabe fazer em tempo razoável. |
+| V1N02 | `grandes` | "primos grandes" [os dois primos crescem em dígitos] | 0,434 (estimativa por caracteres, a medir na gravação) | A operação mais conhecida desse tipo é a fatoração. Multiplicar dois primos grandes é fácil, mas voltar do produto para os primos é o que ninguém sabe fazer em tempo razoável. |
+| V1N02 | `é fácil` | "é fácil" [a ida rápida; a parede de dígitos] | 0,480 (estimativa por caracteres, a medir na gravação) | A operação mais conhecida desse tipo é a fatoração. Multiplicar dois primos grandes é fácil, mas voltar do produto para os primos é o que ninguém sabe fazer em tempo razoável. |
 | V1N02 | `voltar do produto` | "voltar do produto para os primos" [a volta se despedaça] | 0,554 | A operação mais conhecida desse tipo é a fatoração. Multiplicar dois primos grandes é fácil, mas voltar do produto para os primos é o que ninguém sabe fazer em tempo razoável. |
+| V1N02 | `tempo razoável` | "em tempo razoável" [a barra de progresso quase não enche] | 0,914 (estimativa por caracteres, a medir na gravação) | A operação mais conhecida desse tipo é a fatoração. Multiplicar dois primos grandes é fácil, mas voltar do produto para os primos é o que ninguém sabe fazer em tempo razoável. |
+| V1N03 | `computador comum` | "Um computador comum" [o chip cinza e a fila de divisões riscadas] | 0,018 (estimativa por caracteres, a medir na gravação) | Um computador comum levaria bilhões de anos para fatorar os números utilizados atualmente. Quem conseguisse fatorar rápido teria acesso a tudo que essa aposta protege. |
 | V1N03 | `bilhões de anos` | "bilhões de anos" [o contador; teto em 5,6 s antes de "teria acesso", que hoje não morde] | 0,168 | Um computador comum levaria bilhões de anos para fatorar os números utilizados atualmente. Quem conseguisse fatorar rápido teria acesso a tudo que essa aposta protege. |
 | V1N03 | `teria acesso` | "teria acesso a tudo" [o arco sobe e volta a travar] | 0,737 | Um computador comum levaria bilhões de anos para fatorar os números utilizados atualmente. Quem conseguisse fatorar rápido teria acesso a tudo que essa aposta protege. |
+| V1N03 | `tudo que essa aposta protege` | "tudo que essa aposta protege" [fantasmas das três palavras pela fresta] | 0,826 (estimativa por caracteres, a medir na gravação) | Um computador comum levaria bilhões de anos para fatorar os números utilizados atualmente. Quem conseguisse fatorar rápido teria acesso a tudo que essa aposta protege. |
 | V1N04 | `RSA` | "é o RSA" [cresce e grava as letras] | 0,219 | O algoritmo que se apoia justamente na fatoração é o RSA, e é ele que esta série vai desmontar, peça por peça. É o mais direto de construir do zero, mas não é o único que vive de uma aposta assim, nem vai ser o único a cair. |
+| V1N04 | `peça por peça` | "peça por peça" [a vista explodida e os quatro rótulos] | 0,429 (estimativa por caracteres, a medir na gravação) | O algoritmo que se apoia justamente na fatoração é o RSA, e é ele que esta série vai desmontar, peça por peça. É o mais direto de construir do zero, mas não é o único que vive de uma aposta assim, nem vai ser o único a cair. |
+| V1N04 | `do zero` | "do zero" [as peças voltam, o arco trava, os rótulos somem] | 0,625 (estimativa por caracteres, a medir na gravação) | O algoritmo que se apoia justamente na fatoração é o RSA, e é ele que esta série vai desmontar, peça por peça. É o mais direto de construir do zero, mas não é o único que vive de uma aposta assim, nem vai ser o único a cair. |
 | V1N04 | `não é o único` | "não é o único" [a rede se desenha] | 0,683 | O algoritmo que se apoia justamente na fatoração é o RSA, e é ele que esta série vai desmontar, peça por peça. É o mais direto de construir do zero, mas não é o único que vive de uma aposta assim, nem vai ser o único a cair. |
 | V1N04 | `único a cair` | "nem vai ser o único a cair" [todos pulsam] | 0,879 | O algoritmo que se apoia justamente na fatoração é o RSA, e é ele que esta série vai desmontar, peça por peça. É o mais direto de construir do zero, mas não é o único que vive de uma aposta assim, nem vai ser o único a cair. |
+| V1N05 | `Peter Shor` | "Peter Shor" [as interrogações voltam onde pararam] | 0,226 (estimativa por caracteres, a medir na gravação) | Em mil novecentos e noventa e quatro, Peter Shor mostrou que um computador quântico consegue fazer isso: fatorar esses números em horas ou dias, não em bilhões de anos. |
+| V1N05 | `computador quântico` | "um computador quântico" [o chip volta e passa de cinza a ciano] | 0,381 (estimativa por caracteres, a medir na gravação) | Em mil novecentos e noventa e quatro, Peter Shor mostrou que um computador quântico consegue fazer isso: fatorar esses números em horas ou dias, não em bilhões de anos. |
 | V1N05 | `fatorar esses números` | "fatorar esses números" [os "?", de volta desde o começo da fala, se desfazem nos primos] | 0,625 | Em mil novecentos e noventa e quatro, Peter Shor mostrou que um computador quântico consegue fazer isso: fatorar esses números em horas ou dias, não em bilhões de anos. |
+| V1N05 | `horas ou dias` | "em horas ou dias" [o contador volta cheio e despenca até "horas"] | 0,774 (estimativa por caracteres, a medir na gravação) | Em mil novecentos e noventa e quatro, Peter Shor mostrou que um computador quântico consegue fazer isso: fatorar esses números em horas ou dias, não em bilhões de anos. |
 | V1N06 | `não serve só para o RSA` | "não serve só para o RSA" [os anônimos piscam] | 0,077 | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
+| V1N06 | `Era teoria` | "Era teoria" [a folha de papel sobre o ponto 1994] | 0,254 (estimativa por caracteres, a medir na gravação) | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
 | V1N06 | `últimos anos` | "nos últimos anos" [a linha do tempo] | 0,394 | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
+| V1N06 | `saindo do papel` | "saindo do papel" [a folha encolhe e some atrás do 1994] | 0,585 (estimativa por caracteres, a medir na gravação) | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
+| V1N06 | `talvez` | "e talvez a aposta" [a linha segue tracejada rumo ao "?"] | 0,718 (estimativa por caracteres, a medir na gravação) | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
 | V1N06 | `prazo de validade` | "prazo de validade" [a quebra; hoje capada em 3,29 s antes do fim] | 0,873 | E o truque não serve só para o RSA. Era teoria, mas nos últimos anos a máquina vem saindo do papel, e talvez a aposta tenha prazo de validade. |
 | V1N07 | `contas bancárias` | "contas bancárias" [as três palavras saem do cadeado quebrado] | 0,070 | Nesse dia, contas bancárias, compras online e mensagens privadas ficam abertas para quem tiver a máquina. E o que for gravado hoje já pode ser aberto depois. |
+| V1N07 | `ficam abertas` | "ficam abertas" [os três cadeados mini abrem em cascata] | 0,414 (estimativa por caracteres, a medir na gravação) | Nesse dia, contas bancárias, compras online e mensagens privadas ficam abertas para quem tiver a máquina. E o que for gravado hoje já pode ser aberto depois. |
+| V1N07 | `quem tiver a máquina` | "quem tiver a máquina" [os qubits de "hoje" acendem e ligam as palavras] | 0,535 (estimativa por caracteres, a medir na gravação) | Nesse dia, contas bancárias, compras online e mensagens privadas ficam abertas para quem tiver a máquina. E o que for gravado hoje já pode ser aberto depois. |
 | V1N07 | `gravado hoje` | "gravado hoje" [o envelope fechado desliza] | 0,752 | Nesse dia, contas bancárias, compras online e mensagens privadas ficam abertas para quem tiver a máquina. E o que for gravado hoje já pode ser aberto depois. |
 | V1N07 | `aberto depois` | "aberto depois" [a aba do envelope abre] | 0,911 | Nesse dia, contas bancárias, compras online e mensagens privadas ficam abertas para quem tiver a máquina. E o que for gravado hoje já pode ser aberto depois. |
+| V1N08 | `algoritmo de Shor` | "do algoritmo de Shor" ["Shor" pisca em ciano no título] | 0,350 (estimativa por caracteres, a medir na gravação) | Essa é a promessa, ou a ameaça, do algoritmo de Shor. E é exatamente o que esta série vai construir. |
 | V1N08 | `esta série` | "esta série" [os quatro vídeos saem do título] | 0,750 | Essa é a promessa, ou a ameaça, do algoritmo de Shor. E é exatamente o que esta série vai construir. |
 | V1N09 | `neles eu passo` | "neles eu passo por cada peça" [o 1 acende; piso de 85% da fala] | 0,263 | São quatro vídeos no total, e neles eu passo por cada peça necessária para entender como se chega nesse algoritmo. |
 | V1N10 | `somar` | "É somar" — trecho 2 da decupagem (cap. 2, parcelas 6 + 5) | 0,276 (5,6 s / 20,3) | No vídeo dois vou mostrar a aritmética modular, que é a base matemática de toda a série. É somar, multiplicar e elevar a potências num mundo onde os números dão a volta, e só o que sobra importa. No fim aparece até um jeito de dividir, sem dividir de verdade. |
@@ -75,6 +100,49 @@ segundos dos 20,3 s estimados.
 | V1N14 | `até sobrar` | "até sobrar a ordem" [os picos crescem] | 0,833 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
 | V1N14 | `algoritmo de Shor` | "E esse é o algoritmo de Shor" [a seta no pico] | 0,939 | Por último, mostro como o computador quântico usa a lógica incomum da física quântica. A superposição põe todos os valores em jogo ao mesmo tempo, o emaranhamento amarra cada valor ao seu resultado, e a interferência apaga as respostas erradas até sobrar a ordem. E esse é o algoritmo de Shor. |
 
+### Âncoras novas do redesenho a medir no áudio (19)
+
+As 19 âncoras do redesenho, com a fração do pt ainda estimada por caracteres. Medir cada
+palavra-alvo na locução (início da palavra, em fração da duração do `.wav`) e trocar o
+número: o pt em `SINC["pt"]`, o inglês em `SINC["en"]`, os dois em
+`shor/videos/sincronias_v1.py`, com a mesma chave. Depois de medir, tirar o "(estimativa
+por caracteres…)" da linha na tabela acima.
+
+- **pt:** cinco já podem ser medidas, porque a fala tem `.wav` (V1N01, V1N04, V1N08). As
+  outras 14 esperam a gravação de V1N00, V1N02, V1N03, V1N05, V1N06 e V1N07.
+- **en:** as 19 já podem ser medidas — as dez primeiras falas estão gravadas em
+  `audio/en/` e medidas em `duracoes_en.py`. A tabela `SINC["en"]` do vídeo 1 está
+  inteira vazia, então as outras 49 âncoras do vídeo 1 também caem no pt, com aviso, e
+  entram na mesma rodada de medição (palavras-alvo em inglês em
+  `roteiros/en/roteiro_video1_introducao.md`, seção "Âncoras de sincronia em inglês").
+
+| tag | âncora | gesto | palavra-alvo em pt | palavra-alvo em inglês | pt: dá para medir já? |
+|---|---|---|---|---|---|
+| V1N00 | `talvez` | os qubits apagados piscam nas bordas e derivam | "E talvez ela esteja" | "may" (em "it may be close") | não — falta gravar |
+| V1N01 | `o que se aposta` | a ficha salta para a faixa das setas | "o que se aposta" | "the bet is" | sim |
+| V1N01 | `até onde se sabe` | um "?" vai para a fechadura e pisca | "até onde se sabe" | "as far as anyone knows" | sim |
+| V1N02 | `grandes` | os primos crescem em dígitos | "primos grandes" | "large" | não — falta gravar |
+| V1N02 | `é fácil` | a ida rápida, a parede de dígitos | "é fácil" | "is easy" | não — falta gravar |
+| V1N02 | `tempo razoável` | a barra de progresso | "em tempo razoável" | "a reasonable time" | não — falta gravar |
+| V1N03 | `computador comum` | o chip cinza e a fila de divisões | "Um computador comum" | "An ordinary computer" | não — falta gravar |
+| V1N03 | `tudo que essa aposta protege` | os fantasmas pela fresta | "tudo que essa aposta protege" | "everything this bet protects" | não — falta gravar |
+| V1N04 | `peça por peça` | a vista explodida e os quatro rótulos | "peça por peça" | "piece by piece" | sim |
+| V1N04 | `do zero` | as peças voltam, o arco trava | "do zero" | "from zero" | sim |
+| V1N05 | `Peter Shor` | as interrogações voltam | "Peter Shor" | "Peter Shor" | não — falta gravar |
+| V1N05 | `computador quântico` | o chip volta e passa a ciano | "um computador quântico" | "a quantum computer" | não — falta gravar |
+| V1N05 | `horas ou dias` | o contador despenca até "horas" | "em horas ou dias" | "hours or days" | não — falta gravar |
+| V1N06 | `Era teoria` | a folha sobre o ponto 1994 | "Era teoria" | "It was only theory" | não — falta gravar |
+| V1N06 | `saindo do papel` | a folha encolhe e some | "saindo do papel" | "come off the drawing board" | não — falta gravar |
+| V1N06 | `talvez` | o tracejado rumo ao "?" | "e talvez a aposta" | "may" (em "the bet may have") | não — falta gravar |
+| V1N07 | `ficam abertas` | os cadeados mini abrem | "ficam abertas" | "are open" | não — falta gravar |
+| V1N07 | `quem tiver a máquina` | os qubits de "hoje" ligam as palavras | "quem tiver a máquina" | "whoever has the machine" | não — falta gravar |
+| V1N08 | `algoritmo de Shor` | "Shor" pisca em ciano | "do algoritmo de Shor" | "Shor's algorithm" | sim |
+
+Depois de medir, rodar a conferência de novo nos dois idiomas (quadros por âncora e folga
+de cada `narra()`): os tetos do V1N03 ("bilhões de anos"), do V1N04 ("do zero"), do V1N06
+("prazo de validade") e do V1N07 ("gravado hoje", "aberto depois") dependem das frações
+medidas.
+
 ### O que a tabela não cobre
 
 - **Tetos e pisos, que não dependem do idioma.** No V1N03 ("bilhões") e no
@@ -98,6 +166,15 @@ segundos dos 20,3 s estimados.
   - V1N11: "Fermat" → "Euler" (5,4 s) e o resto da decupagem, em sequência
     depois de `teoremas`;
   - V1N12: o resto da decupagem, em sequência depois de `RSA`;
+
+  No redesenho do V1N00 ao V1N08 (sessões 2 a 7), entram na lista:
+  - V1N01: a ficha rola e para ao pé do cadeado em "Essa aposta", no mesmo
+    movimento do cadeado que desce;
+  - V1N02: a ficha volta ao pé do cadeado junto com "fatoração";
+  - V1N05: o ponto e o rótulo "1994" aparecem no começo da fala ("Em mil
+    novecentos e noventa e quatro"); as interrogações deixam o começo e
+    passam a voltar na âncora `Peter Shor`;
+  - V1N06: o chip ciano e o "horas" do V1N05 saem no começo da fala.
 
 ## Âncoras do C11N10 e do encerramento do vídeo 4 (8)
 

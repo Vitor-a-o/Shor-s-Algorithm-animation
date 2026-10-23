@@ -196,11 +196,19 @@ class VideoIntro(Scene):
     mora em shor/videos/video1.py)."""
     def construct(self):
         self.camera.background_color = COR_FUNDO
-        cad, bloco, interrogacoes = video1.abertura(self)
-        interrogacoes = video1.corpo_fatoracao(self, cad, bloco, interrogacoes)
-        malha = video1.corpo_rsa(self, cad)
-        cacos = video1.corpo_shor(self, cad, malha, interrogacoes)
-        titulo, trilha, marca = video1.corpo_serie(self, cacos)
+        cad, bloco, duvidas, ficha = video1.abertura(self)
+        interrogacoes, primos, chip, contador, anos, ficha = \
+            video1.corpo_fatoracao(self, cad, bloco, duvidas, ficha)
+        # rotulos (p·q, mod n, φ(n), e·d, fora de cena) voltam no V1N08; os
+        # nomes da rede ficam em cena até lá
+        malha, rotulos, nomes = video1.corpo_rsa(self, cad, ficha)
+        # tempo: a linha do tempo do V1N06, que fica em cena para o V1N07;
+        # ficha: as duas metades da ficha rachada, que o V1N08 recolhe
+        cacos, tempo, ficha = video1.corpo_shor(
+            self, cad, malha, ficha, interrogacoes, duvidas, primos, chip,
+            contador, anos)
+        titulo, trilha, marca = video1.corpo_serie(self, cacos, tempo, ficha,
+                                                   rotulos)
         titulo, trilha = video1.corpo_previa2(self, titulo, trilha, marca)
         titulo, trilha = video1.corpo_previa3(self, titulo, trilha)
         titulo, trilha, moldura = video1.corpo_previa4(self, titulo, trilha)

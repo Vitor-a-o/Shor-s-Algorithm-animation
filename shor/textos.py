@@ -178,6 +178,11 @@ TEXTOS = {
     "v1.mensagens_privadas": {"pt": "mensagens privadas", "en": "private messages"},
     "v1.fatoracao": {"pt": "fatoração", "en": "factoring"},
     "v1.hoje": {"pt": "hoje", "en": "today"},
+    # redesenho do V1N04: os nomes pequenos e cinzas sob dois anônimos da rede
+    "v1.diffie_hellman": {"pt": "Diffie-Hellman", "en": "Diffie-Hellman"},
+    "v1.curvas_elipticas": {"pt": "curvas elípticas", "en": "elliptic curves"},
+    # redesenho do V1N05: onde o contador de anos despenca
+    "v1.horas": {"pt": "horas", "en": "hours"},
     # ------------------------------------------------------------- v0
     # apresentação do autor (V0N00) — apresentacao() em videos/comum.py
     "v0.nome": {"pt": "Vitor", "en": "Vitor"},

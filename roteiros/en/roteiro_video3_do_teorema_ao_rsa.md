@@ -1,7 +1,7 @@
 # Script — Video 3: From theorem to RSA (English)
 
 Tradução de `roteiros/pt/roteiro_video3_do_teorema_ao_rsa.md`. Mesmas tags, mesma ordem; a
-coluna "Entra em" é a do português, porque a animação é a mesma. Termos:
+coluna "Entra em" é a do português, porque a animação é a mesma. T****ermos:
 `roteiros/glossario.md`. Est. a 2,6 palavras/s até haver gravação em inglês.
 
 Capítulos 6 a 8, na ordem de montagem.
