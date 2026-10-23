@@ -35,7 +35,13 @@ def _tratar(wav):
     import noisereduce as nr
     wav = Path(wav)
     saida = RAIZ / "media" / "audio_tratado" / IDIOMA / wav.name
-    if saida.exists() and saida.stat().st_mtime >= wav.stat().st_mtime:
+    # Reuso só se o registro .fonte (tamanho + mtime_ns do original) bater exatamente:
+    # data da cópia não basta, pois mv/renomear preserva o mtime e reaproveitava o
+    # tratado de outra fala.
+    est = wav.stat()
+    fonte = saida.with_name(wav.name + ".fonte")
+    registro = f"{est.st_size} {est.st_mtime_ns}"
+    if saida.exists() and fonte.exists() and fonte.read_text().strip() == registro:
         return saida
     d, sr = sf.read(str(wav), always_2d=True)          # (amostras, canais)
     info = sf.info(str(wav))
@@ -56,6 +62,7 @@ def _tratar(wav):
     saida.parent.mkdir(parents=True, exist_ok=True)
     sf.write(str(saida), out, sr, subtype=info.subtype)
     assert sf.info(str(saida)).frames == info.frames, wav.name
+    fonte.write_text(registro + "\n")
     return saida
 
 def _add_som(cena, wav):
