@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from manim import *
 import numpy as np
+from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import na_palavra
 
 # ============================================================================
 # CAPÍTULO 4 — Exponenciação modular (slides 30–35): 3⁶, Square and Multiply
-#   Narração: C4N01 … C4N16 (roteiro_video2_aritmetica_modular.md)
+#   Narração: C4N01 … C4N15 (roteiro_video2_aritmetica_modular.md)
 #   Os agrupamentos nascem EM VOLTA dos próprios "3" da corrente — nada
 #   desce para uma segunda linha.
 # ============================================================================
@@ -67,19 +70,31 @@ def parte4(cena):
                 T("7", 24, LARANJA).move_to([-3.05, 0.45, 0]),
                 T("7", 24, LARANJA).move_to([0.45, 0.45, 0]))
     with narra(cena, "C4N02", 6.7):
+        na = partial(na_palavra, cena, _agora(cena), "C4N02", 6.7)
         cena.play(LaggedStart(*[(Create(s) if isinstance(s, Line)
                                  else FadeIn(s)) for s in segs],
                               lag_ratio=0.08), run_time=1.2 * VEL)
-        cena.play(*[Create(s) for s in baixo[:3]], FadeIn(baixo[3]),
-                  FadeIn(rb), run_time=1.0 * VEL)
+        # "setecentos": a reta tracejada pulsa (o 729 não está escrito: é o
+        # comprimento dela), junto da linha c + 7 + 7 que nasce
+        cena.play(*[Create(s, run_time=1.0 * VEL) for s in baixo[:3]],
+                  FadeIn(baixo[3], run_time=1.0 * VEL),
+                  FadeIn(rb, run_time=1.0 * VEL),
+                  na("setecentos", realce(*segs)))
+        # "setes": os dois setes de baixo, em cascata; "resto": o c verde
+        cena.play(na("setes", LaggedStart(realce(baixo[1], rb[1]),
+                                          realce(baixo[2], rb[2]),
+                                          lag_ratio=0.5)))
+        cena.play(na("resto", realce(baixo[0], rb[0])))
 
     # ---- o CUSTO aqui é de outra natureza (terceiro elo da corrente):
     # o expoente cresce, a corrente de trêses cresce DEVAGAR, e é a reta
     # tracejada do resultado que estoura para fora dos dois lados do
     # quadro, engolindo o "…"
     with narra(cena, "C4N03", 12.1):
-        cena.play(Indicate(tre[1], color=VERMELHO, scale_factor=1.6),
-                  run_time=0.9 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C4N03", 12.1)
+        cena.play(na("expoente",
+                     Indicate(tre[1], color=VERMELHO, scale_factor=1.6,
+                              run_time=0.9 * VEL)))
         prod_v, segs_v, eq_v = prod, segs, eq
         for m, Wc, Wr in ((12, 11.5, 8.0), (24, 12.5, 10.0),
                           (48, 13.5, 12.5)):
@@ -135,10 +150,13 @@ def parte4(cena):
                  T("(", 34, PRETO).next_to(q3, LEFT, buff=0.08),
                  T(")", 34, PRETO).next_to(q3, RIGHT, buff=0.08))
     with narra(cena, "C4N05", 8.8):
+        na = partial(na_palavra, cena, _agora(cena), "C4N05", 8.8)
         cena.play(ReplacementTransform(VGroup(prod[0], prod[1], prod[2]), q1),
                   ReplacementTransform(VGroup(prod[4], prod[5], prod[6]), q2),
                   ReplacementTransform(VGroup(prod[8], prod[9], prod[10]), q3),
                   ReplacementTransform(pe, pe2), run_time=1.4 * VEL)
+        # "quadrado": só os expoentes 2, não a base 3
+        cena.play(na("quadrado", realce(q1[1], q2[1], q3[1])))
     so_fala(cena, "C4N06", 6.2)
 
     # ---- um nível acima: [3² × 3²] vira 3^2² e [3²] vira 3^2¹ — e a
@@ -151,22 +169,46 @@ def parte4(cena):
     grupoA = VGroup(br[0], pe2[0], q1, pe2[1], prod[3], pe2[2], q2, pe2[3],
                     br[1])
     grupoB = VGroup(br[2], pe2[4], q3, pe2[5], br[3])
-    with narra(cena, "C4N07", 1.7):
-        # só p1 e p2 ficam em cena — o 3^2⁰ ainda não existe
-        cena.play(ReplacementTransform(grupoA, p1),
-                  ReplacementTransform(grupoB, p2),
-                  ReplacementTransform(prod[7], linha[1]),
-                  run_time=1.2 * VEL)
+    # posições finais da linha (y = 0.85, lugar do p3 à direita); p1 e p2
+    # nascem agora NO LUGAR de grupoA e de grupoB e só descem no C4N08
+    p1_fim, p2_fim = p1.get_center(), p2.get_center()
+    p1.move_to(grupoA.get_center())
+    p2.move_to(grupoB.get_center())
+    with narra(cena, "C4N07", 6.5):
+        na = partial(na_palavra, cena, _agora(cena), "C4N07", 6.5)
+        # só p1 e p2 ficam em cena — o 3^2⁰ ainda não existe; o × entre
+        # os colchetes (prod[7]) fica onde está, entre os dois: nada desce.
+        # "juntamos": as duas condensações; "potências de dois": os
+        # expoentes 2² e 2¹ pulsam
+        cena.play(na("juntamos",
+                     ReplacementTransform(grupoA, p1, run_time=1.2 * VEL),
+                     ReplacementTransform(grupoB, p2, run_time=1.2 * VEL)))
+        cena.play(na("potências de dois", realce(p1[1], p2[1])))
 
-    # ---- o expoente 6 dá à luz "1 1 0" (slide 33) — DEPOIS das potências
+    # ---- o expoente 6 dá à luz "1 1 0" (slide 33) — DEPOIS das potências;
+    # no mesmo play dos bits, a expressão desce para a faixa central (o ×
+    # entre os colchetes vira o × da linha final)
     with narra(cena, "C4N08", 5.0):
-        digs = origina_binario(cena, tre[1], ["1", "1", "0"], y=2.05)
+        na = partial(na_palavra, cena, _agora(cena), "C4N08", 5.0)
+        # "potências de dois": os expoentes 2² e 2¹, antes dos bits
+        cena.play(na("potências de dois", realce(p1[1], p2[1])))
+        digs = origina_binario(
+            cena, tre[1], ["1", "1", "0"], y=2.05,
+            junto=(p1.animate.move_to(p1_fim),
+                   p2.animate.move_to(p2_fim),
+                   ReplacementTransform(prod[7], linha[1])))
+        # "expoente": o 6 de onde os bits acabam de nascer. O play do
+        # nascimento tem run_time próprio e a palavra cai logo depois dele
+        cena.play(na("expoente", realce(tre[1])))
 
     # ---- o último bit está desligado: o termo dele NASCE apagado
     p3.set_opacity(0.25)
     with narra(cena, "C4N09", 5.0):
-        cena.play(TransformFromCopy(digs[2], p3), FadeIn(linha[3]),
-                  run_time=1.2 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C4N09", 5.0)
+        cena.play(na("último bit", realce(digs[2])))
+        cena.play(na("termo dele",
+                     TransformFromCopy(digs[2], p3, run_time=1.2 * VEL),
+                     FadeIn(linha[3], run_time=1.2 * VEL)))
 
     # ---- cada fator reduzido (mod 7) em paralelo: caixas cinzas do
     # slide 34 (a do bit 0, escura), bits em caixas e setas — emendados
@@ -191,6 +233,7 @@ def parte4(cena):
                              max_tip_length_to_length_ratio=0.3)
                        for b, e in zip(bits_cx, (e1, e2, e3))])
     with narra(cena, "C4N10", 7.5):
+        na = partial(na_palavra, cena, _agora(cena), "C4N10", 7.5)
         cena.play(ReplacementTransform(p1, e1), ReplacementTransform(p2, e2),
                   ReplacementTransform(p3, e3),
                   FadeOut(linha[1]), FadeOut(linha[3]), run_time=1.4 * VEL)
@@ -198,6 +241,8 @@ def parte4(cena):
                     for d, b in zip(digs, bits_cx)], run_time=1.0 * VEL)
         cena.play(LaggedStart(*[GrowArrow(s) for s in setas_b], lag_ratio=0.2),
                   run_time=1.2 * VEL)
+        # "sete": o módulo de cada caixa (e1[1] = (pot, (mod 7)))
+        cena.play(na("sete", realce(e1[1][1][1], e2[1][1][1], e3[1][1][1])))
 
     # ---- árvore do slide 34: resultados verdes convergem para o produto
     res = VGroup(T("4", 34, VERDE).move_to([-3.9, -0.9, 0]),
@@ -209,10 +254,13 @@ def parte4(cena):
                            max_tip_length_to_length_ratio=0.3)
                      for e, r in zip((e1, e2, e3), res)])
     with narra(cena, "C4N11", 5.8):
+        na = partial(na_palavra, cena, _agora(cena), "C4N11", 5.8)
+        # o realce do bit 0 pulsa o dígito (bits_cx[2][1]), não a caixa cinza
         cena.play(LaggedStart(*[AnimationGroup(GrowArrow(s), FadeIn(r))
-                                for s, r in zip(setas, res)], lag_ratio=0.2),
-                  run_time=1.5 * VEL)
-    so_fala(cena, "C4N12", 4.2)
+                                for s, r in zip(setas, res)], lag_ratio=0.2,
+                              run_time=1.5 * VEL),
+                  na("bit desligado", realce(bits_cx[2][1])))
+        cena.play(na("é o um", realce(res[2])))
 
     soma_f = formula(("(", PRETO), ("4", VERDE), ("×", PRETO), ("2", VERDE),
                      ("×", PRETO), ("1", VERDE), (")", PRETO),
@@ -223,17 +271,37 @@ def parte4(cena):
                             buff=0, color=PRETO, stroke_width=2.5,
                             max_tip_length_to_length_ratio=0.25)
                       for r, dx in zip(res, (-1.6, 0.0, 1.6))])
-    with narra(cena, "C4N13", 3.8):
-        cena.play(*[GrowArrow(s) for s in setas2], FadeIn(soma),
-                  run_time=1.2 * VEL)
+    with narra(cena, "C4N12", 3.8):
+        na = partial(na_palavra, cena, _agora(cena), "C4N12", 3.8)
+        # "os três": os três resultados pulsam em cascata enquanto as setas
+        # descem; "sete": o módulo do produto
+        cena.play(*[GrowArrow(s, run_time=1.2 * VEL) for s in setas2],
+                  FadeIn(soma, run_time=1.2 * VEL),
+                  na("os três", LaggedStart(*[realce(r) for r in res],
+                                            lag_ratio=0.5)))
+        cena.play(na("sete", realce(soma_f[8])))
 
     um = T("1", 42, VERDE).move_to([0, -3.25, 0])
     tre2 = pot("3", "6", AZUL, VERMELHO, 38)
     eq2 = VGroup(T("1", 38, VERDE), T("≡", 38, PRETO), tre2, fmod("7", 38))
     eq2.arrange(RIGHT, buff=0.16).move_to(eq)
-    with narra(cena, "C4N14", 1.7):
-        cena.play(TransformFromCopy(soma_f, um), run_time=0.9 * VEL)
-        cena.play(ReplacementTransform(eq, eq2),
-                  TransformFromCopy(um, eq2[0]), run_time=1.0 * VEL)
-    so_fala(cena, "C4N15", 12.9)
-    so_fala(cena, "C4N16", 8.8)
+    with narra(cena, "C4N13", 1.7):
+        na = partial(na_palavra, cena, _agora(cena), "C4N13", 1.7)
+        # "um": o um nasce do produto e o eq → eq2 vem logo depois, numa
+        # sequência só — a fala é curta e a espera do na_palavra é encurtada
+        # para os dois gestos caberem
+        cena.play(na("um", Succession(
+            TransformFromCopy(soma_f, um, run_time=0.5 * VEL,
+                              introducer=True),
+            AnimationGroup(ReplacementTransform(eq, eq2, introducer=True),
+                           TransformFromCopy(um, eq2[0], introducer=True),
+                           run_time=0.6 * VEL, introducer=True),
+            introducer=True)))
+
+    # ---- o fecho: o expoente (tre2[1]) e os bits (bits_cx, em cascata)
+    with narra(cena, "C4N14", 12.9):
+        na = partial(na_palavra, cena, _agora(cena), "C4N14", 12.9)
+        cena.play(na("expoente", realce(tre2[1])))
+        cena.play(na("bits", LaggedStart(*[realce(b[1]) for b in bits_cx],
+                                         lag_ratio=0.3)))
+    so_fala(cena, "C4N15", 8.8)

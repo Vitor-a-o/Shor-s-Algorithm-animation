@@ -148,10 +148,35 @@ def caixa_cinza(conteudo, pad=0.22, fundo=CAIXA):
     return VGroup(r, conteudo)
 
 
-def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36):
+def _cor_da_peca(m):
+    """A cor com que a peça foi desenhada: o fill do primeiro glifo (ou o
+    traço, nas linhas). `Text.get_color()` devolve o preto do invólucro."""
+    for f in m.get_family():
+        if f.has_points():
+            return (f.get_fill_color() if f.get_fill_opacity() > 0
+                    else f.get_stroke_color())
+    return m.get_color()
+
+
+def realce(*mobs):
+    """O realce do vídeo 2: quando a fala nomeia um número ou variável que
+    está na tela, a peça pulsa (Indicate) na cor DELA — nunca no amarelo
+    padrão, que é o papel do x. Várias peças (a cópia na equação e a barra
+    na reta) pulsam no mesmo instante, cada uma em volta do próprio centro
+    e na própria cor: um Indicate no VGroup escalaria em volta do centro do
+    grupo e jogaria longe peças que estão distantes (o 11 do topo e a
+    barra). Para disparar na palavra: sincronias.na_palavra."""
+    return AnimationGroup(*[Indicate(m, color=_cor_da_peca(m),
+                                     scale_factor=1.25, run_time=0.6 * VEL)
+                            for m in mobs])
+
+
+def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36,
+                    junto=()):
     """REGRA 4: os dígitos binários NASCEM do número decimal — cópias do
     número voam, se separam e se metamorfoseiam nos bits (1 azul-claro,
-    0 amarelo, como nos slides). Retorna o VGroup dos dígitos."""
+    0 amarelo, como nos slides). Retorna o VGroup dos dígitos.
+    `junto`: animações que entram no MESMO play do nascimento dos dígitos."""
     seta = Arrow(fonte.get_bottom() + 0.06 * DOWN,
                  fonte.get_bottom() + 0.72 * DOWN,
                  buff=0, color=PRETO, stroke_width=3,
@@ -164,7 +189,7 @@ def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36):
         digs.set_y(y)
     cena.play(GrowArrow(seta), FadeIn(mini), run_time=0.7 * VEL)
     cena.play(LaggedStart(*[ReplacementTransform(fonte.copy(), d) for d in digs],
-                          lag_ratio=0.22), run_time=1.7 * VEL)
+                          lag_ratio=0.22), *junto, run_time=1.7 * VEL)
     cena.play(FadeOut(seta), FadeOut(mini), run_time=0.4 * VEL)
     return digs
 

@@ -2,8 +2,12 @@
 from manim import *
 import numpy as np
 
+from functools import partial
+
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import na_palavra
 
 # ============================================================================
 # CAPÍTULO 2 — Adição modular (slides 10–17): 6 + 5 (mod 7), com o x amarelo
@@ -18,8 +22,12 @@ def parte2(cena):
                       include_ticks=True, tick_size=0.06).shift(2.45 * DOWN)
     n2 = reta.n2p
     with narra(cena, "C2N01", 9.6):
+        na = partial(na_palavra, cena, _agora(cena), "C2N01", 9.6)
         cena.play(Write(eq), run_time=1.0 * VEL)
         cena.play(Create(reta), run_time=0.7 * VEL)
+        # "números": as duas parcelas pulsam; "resto": o c
+        cena.play(na("números", realce(eq[2], eq[4])))
+        cena.play(na("resto", realce(eq[0])))
 
     def teste(xv, ok):
         """O teste dos slides 14–16 já resolvido: "2 > 6 ✗" (ou "7 > 6 ✓")."""
@@ -66,14 +74,25 @@ def parte2(cena):
         ex0[j].move_to(exf[j])
     rx2 = T("2", 22, AMARELO).move_to(rx)
     with narra(cena, "C2N03", 7.9):
-        cena.play(Write(ex0), run_time=0.9 * VEL)
-        cena.play(ReplacementTransform(VGroup(*ex0[2:]), VGroup(*exf[2:5])),
-                  run_time=0.8 * VEL)
-        cena.play(FadeIn(exf[5]), FadeIn(exf[6], scale=1.3),
-                  run_time=0.7 * VEL)
-        # o rótulo do traço amarelo revela o valor: x = 2
-        cena.play(Flash(x2.get_center(), color=AMARELO, flash_radius=0.4),
-                  ReplacementTransform(rx, rx2), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C2N03", 7.9)
+        cena.play(na("um x", Write(ex0, run_time=0.9 * VEL)))
+        # "por n" / "menos a": a variável na fórmula, a barra e o rótulo
+        cena.play(na("por n", realce(ex0[2], n7, rn)),
+                  na("menos a", realce(ex0[4], a5, r5)))
+        cena.play(na("Sete", ReplacementTransform(
+            VGroup(*ex0[2:]), VGroup(*exf[2:5]), run_time=0.8 * VEL)))
+        # peças distintas, cada uma na sua palavra e todas no mesmo play:
+        # em cascata, a fila de realces empurraria o fim da fala
+        cena.play(realce(exf[2]),
+                  na("cinco", realce(exf[4])),
+                  na("a dois",
+                     FadeIn(exf[5], run_time=0.7 * VEL),
+                     FadeIn(exf[6], scale=1.3, run_time=0.7 * VEL)),
+                  # o rótulo do traço amarelo revela o valor: x = 2
+                  na("traço amarelo",
+                     Flash(x2.get_center(), color=AMARELO, flash_radius=0.4,
+                           run_time=0.8 * VEL),
+                     ReplacementTransform(rx, rx2, run_time=0.8 * VEL)))
     ex = VGroup(ex0[0], ex0[1], *exf[2:])   # x = 7 − 5 = 2 (visível)
 
     # o TESTE dos slides 14–16: "x > b ?" — enquanto o x não passa do b,
@@ -84,11 +103,16 @@ def parte2(cena):
     for j in range(4):
         tst0[j].move_to(tst[j])
     with narra(cena, "C2N04", 9.6):
-        cena.play(Write(tst0), run_time=0.7 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C2N04", 9.6)
+        cena.play(na("comparação", Write(tst0, run_time=0.7 * VEL)))
+        cena.play(na("x é", realce(tst0[0], x2)))
+        cena.play(na("que b", realce(tst0[2], b6, r6)))
         cena.play(ReplacementTransform(VGroup(*tst0[:3]), VGroup(*tst[:3])),
                   run_time=0.6 * VEL)
         cena.play(FadeOut(tst0[3], scale=0.5), FadeIn(tst[3], scale=1.4),
                   run_time=0.5 * VEL)
+        cena.play(na("módulo", realce(n7, rn)))
+        cena.play(na("soma", realce(b6, a5)))
 
     # deu ✗  →  c = b − x, na mesma sequência do x
     t2f = formula(("c", VERDE), ("=", PRETO), ("6", VERMELHO), ("−", PRETO),
@@ -100,21 +124,35 @@ def parte2(cena):
         t2s[j].move_to(t2f[j])
     rc4 = T("4", 24, VERDE).move_to(rc)
     with narra(cena, "C2N05", 5.0):
+        na = partial(na_palavra, cena, _agora(cena), "C2N05", 5.0)
         cena.play(Write(t2s), run_time=0.8 * VEL)
-        cena.play(ReplacementTransform(VGroup(*t2s[2:]), VGroup(*t2f[2:5])),
-                  run_time=0.8 * VEL)
-        cena.play(FadeIn(t2f[5]), FadeIn(t2f[6], scale=1.3),
-                  run_time=0.7 * VEL)
-        # o c foi DESCOBERTO: o rótulo "c" da reta vira "4" (slide 17)
-        cena.play(Flash(cver.get_center(), color=VERDE, flash_radius=0.5),
-                  ReplacementTransform(rc, rc4), run_time=0.9 * VEL)
+        # peças distintas, cada uma na sua palavra e no mesmo play: em
+        # cascata, a fila de realces empurraria o fim da fala
+        cena.play(na("resto", realce(t2s[0], cver, rc)),
+                  na("a b", realce(t2s[2], b6, r6)),
+                  na("menos x", realce(t2s[4], x2, rx2)))
+        cena.play(na("Seis", ReplacementTransform(
+            VGroup(*t2s[2:]), VGroup(*t2f[2:5]), run_time=0.8 * VEL)))
+        cena.play(na("dois", realce(t2f[4])),
+                  # o c foi DESCOBERTO: o rótulo "c" da reta vira "4" (slide 17)
+                  na("quatro",
+                     FadeIn(t2f[5], run_time=0.7 * VEL),
+                     FadeIn(t2f[6], scale=1.3, run_time=0.7 * VEL),
+                     Flash(cver.get_center(), color=VERDE, flash_radius=0.5,
+                           run_time=0.9 * VEL),
+                     ReplacementTransform(rc, rc4, run_time=0.9 * VEL)))
     t2 = VGroup(t2s[0], t2s[1], *t2f[2:])   # c = 6 − 2 = 4 (visível)
 
     # a equação do topo se completa: c vira 4
     eq2 = formula(("4", VERDE), ("≡", PRETO), ("6", VERMELHO), ("+", PRETO),
                   ("5", AZUL), *MOD("7"), tamanho=38).move_to(eq)
     with narra(cena, "C2N06", 7.1):
+        na = partial(na_palavra, cena, _agora(cena), "C2N06", 7.1)
         cena.play(ReplacementTransform(eq, eq2), run_time=1.0 * VEL)
+        cena.play(na("seis", realce(eq2[2])))
+        cena.play(na("cinco", realce(eq2[4])))
+        cena.play(na("quatro", realce(eq2[0], rc4)))
+        cena.play(na("sete", realce(eq2[6], rn)))
 
     # ---------- e se n CRESCER? o x cresce junto, até passar do b ----------
     # (estado atual: barras b6/a5, x2 [4,6], n7 [4,11], cver [0,4])
@@ -142,9 +180,12 @@ def parte2(cena):
 
     #        0    1   2     3   4    5    6   7   8    9
     atual = VGroup(n7, x2, cver, rn, rx2, rc4, ex, t2, eq2, tst)
-    # a fala só anuncia a pergunta; o laço n = 8…11 roda mudo depois dela,
-    # fora de qualquer narra — a tela mostra sozinha o que acontece
-    so_fala(cena, "C2N07", 2.9)
+    # a fala só anuncia a pergunta (e o módulo pulsa na palavra); o laço
+    # n = 8…11 roda mudo depois dela, fora de qualquer narra — a tela
+    # mostra sozinha o que acontece
+    with narra(cena, "C2N07", 2.9):
+        na = partial(na_palavra, cena, _agora(cena), "C2N07", 2.9)
+        cena.play(na("módulo", realce(rn, n7, eq2[6])))
     for n in (8, 9, 10, 11):
         novo = estado(n)
         cena.play(*[ReplacementTransform(a, b)
@@ -165,6 +206,7 @@ def parte2(cena):
     eqc = formula(("c", VERDE), ("≡", PRETO), ("6", VERMELHO), ("+", PRETO),
                   ("5", AZUL), *MOD("12"), tamanho=38).move_to(eq2)
     with narra(cena, "C2N08", 6.7):
+        na = partial(na_palavra, cena, _agora(cena), "C2N08", 6.7)
         cena.play(ReplacementTransform(atual[0], bn12),
                   ReplacementTransform(atual[1], bx12),
                   ReplacementTransform(atual[3], ln12),
@@ -175,9 +217,14 @@ def parte2(cena):
                   # o c antigo e a regra c = b − x deixam de valer: somem
                   FadeOut(atual[2]), FadeOut(atual[5]), FadeOut(atual[7]),
                   run_time=1.0 * VEL)
-        cena.play(Flash(tst12[3].get_center(), color=VERDE, flash_radius=0.35),
-                  Indicate(tst12[3], color=VERDE, scale_factor=1.4),
-                  run_time=0.7 * VEL)
+        cena.play(na("doze", realce(ln12, eqc[6], fx12[2])))
+        cena.play(na("amarelo", realce(bx12, lx12)))
+        cena.play(na("vermelho", realce(b6, r6)))
+        cena.play(na("teste",
+                     Flash(tst12[3].get_center(), color=VERDE,
+                           flash_radius=0.35, run_time=0.7 * VEL),
+                     Indicate(tst12[3], color=VERDE, scale_factor=1.4,
+                              run_time=0.7 * VEL)))
 
     # sem dar a volta, o resto é a própria soma: c = a + b — e a reta verde
     # NASCE do vermelho + azul, um degrau abaixo, para caber inteira
@@ -189,17 +236,31 @@ def parte2(cena):
                   ("5", AZUL), ("=", PRETO), ("11", VERDE),
                   tamanho=30).move_to(t2f)
     with narra(cena, "C2N09", 9.6):
-        cena.play(Write(f2ab), run_time=0.8 * VEL)
-        cena.play(TransformFromCopy(VGroup(b6, a5), bc12), FadeIn(lc12),
-                  run_time=0.9 * VEL)
-        cena.play(ReplacementTransform(f2ab, f2n), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C2N09", 9.6)
+        cena.play(Write(f2ab, run_time=0.8 * VEL),
+                  na("módulo", realce(bn12, ln12)))
+        cena.play(na("resto",
+                     TransformFromCopy(VGroup(b6, a5), bc12,
+                                       run_time=0.9 * VEL),
+                     FadeIn(lc12, run_time=0.9 * VEL)))
+        cena.play(na("Seis", ReplacementTransform(f2ab, f2n,
+                                                  run_time=0.8 * VEL)))
+        cena.play(realce(f2n[2]), na("cinco", realce(f2n[4])),
+                  na("onze", realce(f2n[6])))
 
     # a reta e a equação confirmam: c = 11
     lc11 = T("11", 24, VERDE).move_to(lc12)
     eq12 = formula(("11", VERDE), ("≡", PRETO), ("6", VERMELHO), ("+", PRETO),
                    ("5", AZUL), *MOD("12"), tamanho=38).move_to(eq2)
     with narra(cena, "C2N10", 10.4):
-        cena.play(Flash(bc12.get_center(), color=VERDE, flash_radius=0.5),
-                  ReplacementTransform(lc12, lc11),
-                  ReplacementTransform(eqc, eq12), run_time=1.0 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C2N10", 10.4)
+        cena.play(na("Onze é",
+                     Flash(bc12.get_center(), color=VERDE, flash_radius=0.5,
+                           run_time=1.0 * VEL),
+                     ReplacementTransform(lc12, lc11, run_time=1.0 * VEL),
+                     ReplacementTransform(eqc, eq12, run_time=1.0 * VEL)))
+        cena.play(na("a onze", realce(*eq12[2:5])))
+        cena.play(na("doze", realce(eq12[6], ln12)))
+        cena.play(na("x maior", realce(tst12[0], bx12)))
+        cena.play(na("que b", realce(tst12[2], b6)))
     so_fala(cena, "C2N11", 4.2)
