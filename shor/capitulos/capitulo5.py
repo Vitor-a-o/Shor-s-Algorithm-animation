@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from manim import *
 import numpy as np
+from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import na_palavra
 
 # ============================================================================
 # CAPÍTULO 5 — Inverso modular (slides 37–57): busca, ciclo do 3, tabela
@@ -28,8 +31,11 @@ def parte5(cena):
     rmeio = T("½", 26, VERMELHO).next_to(meio, UP, buff=0.10)
     xmeio = T("✗", 30, VERMELHO).next_to(rmeio, RIGHT, buff=0.25)
     with narra(cena, "C5N02", 7.1):
+        na = partial(na_palavra, cena, _agora(cena), "C5N02", 7.1)
         cena.play(Create(reta), run_time=1.0 * VEL)
-        cena.play(Create(meio), FadeIn(rmeio), run_time=0.8 * VEL)
+        # "meio número" (a primeira das duas): o traço e o ½ nascem
+        cena.play(na("meio número", Create(meio, run_time=0.8 * VEL),
+                     FadeIn(rmeio, run_time=0.8 * VEL)))
         cena.play(Flash(meio.get_end(), color=VERMELHO, flash_radius=0.35),
                   FadeIn(xmeio, scale=1.4), Wiggle(meio), run_time=1.0 * VEL)
         cena.play(FadeOut(meio), FadeOut(rmeio), FadeOut(xmeio),
@@ -38,8 +44,13 @@ def parte5(cena):
     eq2 = formula(("2", VERMELHO), ("·", PRETO), ("x", PRETO), ("≡", PRETO),
                   ("1", VERDE), *MOD("9"), tamanho=38).move_to(eq)
     with narra(cena, "C5N03", 7.9):
+        na = partial(na_palavra, cena, _agora(cena), "C5N03", 7.9)
         cena.play(ReplacementTransform(eq, eq2), run_time=0.9 * VEL)
-    so_fala(cena, "C5N04", 3.3)
+        # "qual número": o x (preto neste capítulo, então pulsa em preto)
+        cena.play(na("qual número", realce(eq2[2])))
+    with narra(cena, "C5N04", 3.3):
+        na = partial(na_palavra, cena, _agora(cena), "C5N04", 3.3)
+        cena.play(na("inverso", realce(eq2[2])))
 
     # testes na reta segmentada (slides 40–42): x segmentos de TAMANHO 2 —
     # as três filas correm emendadas, sob uma locução só
@@ -47,6 +58,7 @@ def parte5(cena):
     x0 = -3.9
     linhas_teste = VGroup()
     with narra(cena, "C5N05", 6.3):
+        na = partial(na_palavra, cena, _agora(cena), "C5N05", 6.3)
         for fila, x in enumerate((3, 4, 5)):
             y = 1.45 - fila * 1.0
             rot = formula(("2", VERMELHO), ("·", PRETO), (str(x), PRETO),
@@ -72,7 +84,13 @@ def parte5(cena):
             cena.play(FadeIn(rot), Create(n9), run_time=0.5 * VEL)
             cena.play(LaggedStart(*[Create(s) for s in vs], lag_ratio=0.2),
                       run_time=0.6 * VEL)
-            cena.play(*[FadeIn(m) for m in grupo[3:]], run_time=0.6 * VEL)
+            if fila < 2:
+                cena.play(*[FadeIn(m) for m in grupo[3:]], run_time=0.6 * VEL)
+            else:
+                # só o fecho da última fila (a sobra verde, o 1 e o ✓)
+                # espera "resto um"
+                cena.play(na("resto um", *[FadeIn(m, run_time=0.6 * VEL)
+                                           for m in grupo[3:]]))
             linhas_teste.add(grupo)
 
     def eq_inv(n):
@@ -82,7 +100,12 @@ def parte5(cena):
 
     eq3 = eq_inv(9)
     with narra(cena, "C5N06", 3.3):
+        na = partial(na_palavra, cena, _agora(cena), "C5N06", 3.3)
         cena.play(ReplacementTransform(eq2, eq3), run_time=0.9 * VEL)
+        # "cinco" (o inverso), "dois", "nove": cada número da equação
+        cena.play(na("Cinco", realce(eq3[2])))
+        cena.play(na("dois", realce(eq3[0])))
+        cena.play(na("nove", realce(eq3[6])))
 
     par = formula(("5", PRETO), ("≡", PRETO), ("1", VERDE), ("/", PRETO),
                   ("2", VERMELHO), (tx("geral.e"), CINZA), ("2", VERMELHO),
@@ -109,8 +132,11 @@ def parte5(cena):
         y_e -= gap
         gap *= 0.82
     with narra(cena, "C5N08", 8.8):
-        cena.play(Indicate(eq3[6], color=LARANJA, scale_factor=1.6),
-                  run_time=0.9 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C5N08", 8.8)
+        # "módulo" (a primeira das duas ocorrências)
+        cena.play(na("módulo",
+                     Indicate(eq3[6], color=LARANJA, scale_factor=1.6,
+                              run_time=0.9 * VEL)))
         # o módulo cresce MUITO em cena (9 → 27 → 81 → 243) enquanto as
         # filas se multiplicam em ondas; o par sai antes da cascata descer
         eq_v = eq3
@@ -170,50 +196,73 @@ def parte5(cena):
     eq4 = formula(("3", VERMELHO), ("·", PRETO), ("x", PRETO), ("≡", PRETO),
                   ("1", VERDE), *MOD("9"), tamanho=38).move_to(eq3)
     with narra(cena, "C5N10", 7.1):
+        na = partial(na_palavra, cena, _agora(cena), "C5N10", 7.1)
         cena.play(ReplacementTransform(eq3, eq4), run_time=0.9 * VEL)
+        cena.play(na("inverso", realce(eq4[2])))
 
     # as seis filas do contra-exemplo correm emendadas, num bloco só
     linhas3 = VGroup()
+    filas = []
+    for fila, x in enumerate((1, 2, 3, 4, 5, 6)):
+        y = 1.6 - fila * 0.72
+        rot = formula(("3", VERMELHO), ("·", PRETO), (str(x), PRETO),
+                      tamanho=28).move_to([-5.3, y + 0.2, 0])
+        vs = VGroup(*[traco([x0 + i * 3 * u, y + 0.35, 0],
+                            [x0 + (i + 1) * 3 * u, y + 0.35, 0],
+                            VERMELHO, w=6) for i in range(x)])
+        n9 = traco([x0, y, 0], [x0 + 9 * u, y, 0], LARANJA, w=6)
+        prod = 3 * x
+        resto = prod % 9
+        resu = T(str(resto), 30,
+                 CINZA if resto else VERMELHO).move_to(
+                     [x0 + max(prod, 9) * u + 0.55, y + 0.35, 0])
+        marca = T("✗", 30, VERMELHO).next_to(resu, RIGHT, buff=0.25)
+        grupo = VGroup(rot, vs, n9, resu, marca)
+        filas.append(AnimationGroup(
+            FadeIn(rot, run_time=0.6 * VEL), Create(n9, run_time=0.6 * VEL),
+            LaggedStart(*[Create(s) for s in vs], lag_ratio=0.2,
+                        run_time=0.6 * VEL),
+            FadeIn(resu, run_time=0.6 * VEL),
+            FadeIn(marca, run_time=0.6 * VEL),
+            run_time=0.6 * VEL, introducer=True))
+        linhas3.add(grupo)
     with narra(cena, "C5N11", 3.8):
-        for fila, x in enumerate((1, 2, 3, 4, 5, 6)):
-            y = 1.6 - fila * 0.72
-            rot = formula(("3", VERMELHO), ("·", PRETO), (str(x), PRETO),
-                          tamanho=28).move_to([-5.3, y + 0.2, 0])
-            vs = VGroup(*[traco([x0 + i * 3 * u, y + 0.35, 0],
-                                [x0 + (i + 1) * 3 * u, y + 0.35, 0],
-                                VERMELHO, w=6) for i in range(x)])
-            n9 = traco([x0, y, 0], [x0 + 9 * u, y, 0], LARANJA, w=6)
-            prod = 3 * x
-            resto = prod % 9
-            resu = T(str(resto), 30,
-                     CINZA if resto else VERMELHO).move_to(
-                         [x0 + max(prod, 9) * u + 0.55, y + 0.35, 0])
-            marca = T("✗", 30, VERMELHO).next_to(resu, RIGHT, buff=0.25)
-            grupo = VGroup(rot, vs, n9, resu, marca)
-            cena.play(FadeIn(rot), Create(n9),
-                      LaggedStart(*[Create(s) for s in vs], lag_ratio=0.2),
-                      FadeIn(resu), FadeIn(marca), run_time=0.6 * VEL)
-            linhas3.add(grupo)
+        na = partial(na_palavra, cena, _agora(cena), "C5N11", 3.8)
+        # as seis filas numa Succession só (cada uma com os mesmos 0,6 s de
+        # antes), para os realces do 3 e do 9 da equação correrem em
+        # paralelo a elas, cada um na sua palavra, sem atrasá-las
+        cena.play(Succession(*filas, introducer=True),
+                  na("três", realce(eq4[0])), na("nove", realce(eq4[6])))
 
     # o padrão se repete para sempre: 3, 6, 0, 3, 6, 0, … nunca dá 1
     ciclo = VGroup(*[T(s, 30, VERMELHO if s == "…" else CINZA)
                      for s in ["3", "6", "0", "3", "6", "0", "…"]])
     ciclo.arrange(RIGHT, buff=0.5).move_to([0, -2.75, 0])
     with narra(cena, "C5N12", 5.8):
+        na = partial(na_palavra, cena, _agora(cena), "C5N12", 5.8)
         cena.play(LaggedStart(
             *[TransformFromCopy(linhas3[j][3], ciclo[j]) for j in range(6)],
             FadeIn(ciclo[6], shift=0.2 * DOWN),
             lag_ratio=0.2), run_time=1.8 * VEL)
+        # "o um": o 1 da equação, que não está no ciclo
+        cena.play(na("O um", realce(eq4[4])))
 
     xis = T("✗", 44, VERMELHO).next_to(eq4, RIGHT, buff=0.4)
     with narra(cena, "C5N13", 5.4):
-        cena.play(FadeIn(xis, scale=1.5), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C5N13", 5.4)
+        cena.play(FadeIn(xis, scale=1.5, run_time=0.8 * VEL),
+                  na("três", realce(eq4[0])), na("nove", realce(eq4[6])))
 
     mdc3 = formula((tx("geral.mdc"), PRETO), ("3", VERMELHO), (", ", PRETO),
                    ("9", LARANJA), (") = 3", PRETO),
                    tamanho=30, buff=0.08).move_to([0, -3.4, 0])
     with narra(cena, "C5N14", 5.0):
+        na = partial(na_palavra, cena, _agora(cena), "C5N14", 5.0)
         cena.play(Write(mdc3), run_time=1.0 * VEL)
+        # "módulo" (o 9) e "um fator" (o "= 3", preto): no mesmo play, cada
+        # um na sua âncora — a ordem das duas palavras muda em en
+        cena.play(na("módulo", realce(mdc3[3])),
+                  na("um fator", realce(mdc3[4])))
 
     # a tabela (slides 55–57)
     tam = 0.52
@@ -240,11 +289,14 @@ def parte5(cena):
                    ("·", PRETO), (tx("c5.coluna"), AZUL), *MOD("9"),
                    tamanho=24, buff=0.10).move_to([3.6, 1.9, 0])
     with narra(cena, "C5N15", 7.5):
+        na = partial(na_palavra, cena, _agora(cena), "C5N15", 7.5)
         cena.play(FadeOut(linhas3), FadeOut(ciclo), FadeOut(mdc3),
                   FadeOut(xis), FadeOut(eq4), run_time=0.6 * VEL)
         cena.play(FadeIn(titulo_tab), FadeIn(head_c), FadeIn(head_l),
                   Create(lin_h), Create(lin_v), run_time=0.9 * VEL)
         cena.play(Write(como), run_time=1.0 * VEL)
+        # "módulo": o 9 da regra, depois do Write(como)
+        cena.play(na("módulo", realce(como[6])))
 
     # exemplo — justamente o par das retas: linha 2, coluna 5 — e a tabela
     # inteira nascendo da célula, tudo emendado num bloco só
@@ -274,9 +326,18 @@ def parte5(cena):
                         for i in range(1, 9) for j in range(1, 9)
                         if (i * j) % 9 == 1])
     with narra(cena, "C5N17", 10.4):
+        na = partial(na_palavra, cena, _agora(cena), "C5N17", 10.4)
         cena.play(FadeOut(como), FadeOut(ex25), run_time=0.5 * VEL)
-        cena.play(LaggedStart(*[Create(c) for c in circulos], lag_ratio=0.12),
-                  Write(inv1), run_time=1.5 * VEL)
+        # a regra a · b ≡ 1 vem antes dos círculos: o a e o b pulsam sobre
+        # ela, e um Write em curso brigaria com o pulso
+        cena.play(Write(inv1), run_time=1.0 * VEL)
+        # "dá um": os círculos nascem; "linha"/"coluna": o a e o b pulsam
+        # com os cabeçalhos, cada um na sua palavra, no mesmo play
+        cena.play(na("dá um", LaggedStart(*[Create(c) for c in circulos],
+                                          lag_ratio=0.12,
+                                          run_time=1.5 * VEL)),
+                  na("linha", realce(inv1[0], *head_l)),
+                  na("coluna", realce(inv1[2], *head_c)))
         cena.play(FadeIn(inv2), run_time=0.7 * VEL)
 
     # RESSALTA o exemplo das retas: 2 e 5 são inversos
@@ -299,6 +360,7 @@ def parte5(cena):
                    ("1", VERDE), ("✗", VERMELHO),
                    tamanho=22, buff=0.10).move_to([3.6, -1.05, 0])
     with narra(cena, "C5N19", 9.2):
+        na = partial(na_palavra, cena, _agora(cena), "C5N19", 9.2)
         cena.play(*[linhas_cel[i].animate.set_opacity(0.2) for i in (0, 3, 6)],
                   *[head_l[i].animate.set_opacity(0.3) for i in (0, 3, 6)],
                   LaggedStart(*[Create(m) for m in mortos], lag_ratio=0.2),
@@ -306,6 +368,9 @@ def parte5(cena):
         cena.play(FadeIn(m_rot), run_time=0.7 * VEL)
         cena.play(Write(rec2), Indicate(mortos[1], color=VERMELHO),
                   run_time=1.0 * VEL)
+        # "números sem inverso": o "0, 3, 6" e os três cabeçalhos mortos
+        cena.play(na("números sem inverso",
+                     realce(m_rot[0], head_l[0], head_l[3], head_l[6])))
 
     # conclusão em duas linhas (sem cortar na borda)
     c1 = formula((tx("geral.mdc"), PRETO), ("a", VERMELHO), (", ", PRETO),
@@ -317,4 +382,6 @@ def parte5(cena):
     caixa = SurroundingRectangle(concl, color=VERDE, buff=0.2,
                                  corner_radius=0.12)
     with narra(cena, "C5N20", 6.7):
+        na = partial(na_palavra, cena, _agora(cena), "C5N20", 6.7)
         cena.play(Write(concl), Create(caixa), run_time=1.2 * VEL)
+        cena.play(na("módulo", realce(c1[3])))

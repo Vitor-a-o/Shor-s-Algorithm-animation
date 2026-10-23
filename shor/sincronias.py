@@ -130,6 +130,29 @@ SINC = {
         ("C4N13", "um"): 0.870,               # o um nasce; eq → eq2 logo depois, na mesma sequência
         ("C4N14", "expoente"): 0.776,         # tre2[1] (o 6 do eq2) pulsa
         ("C4N14", "bits"): 0.945,             # os dígitos de bits_cx pulsam em cascata
+        # vídeo 2, capítulo 5 — idem (estimativa por caracteres)
+        ("C5N02", "meio número"): 0.452,            # meio + rmeio nascem na palavra (a primeira das duas)
+        ("C5N03", "qual número"): 0.349,            # eq2[2] (o x) pulsa
+        ("C5N04", "inverso"): 0.439,                # eq2[2] (o x) pulsa
+        ("C5N05", "resto um"): 0.889,               # o 1 verde, a sobra e o ✓ da última fila nascem
+        ("C5N06", "Cinco"): 0.000,                  # eq3[2] pulsa
+        ("C5N06", "dois"): 0.538,                   # eq3[0] pulsa
+        ("C5N06", "nove"): 0.872,                   # eq3[6] pulsa
+        ("C5N08", "módulo"): 0.323,                 # Indicate(eq3[6]) (o 9 laranja, escala 1,6)
+        ("C5N10", "inverso"): 0.714,                # eq4[2] (o x) pulsa
+        ("C5N11", "três"): 0.471,                   # eq4[0] pulsa, em paralelo com as filas
+        ("C5N11", "nove"): 0.706,                   # eq4[6] pulsa, em paralelo com as filas
+        ("C5N12", "O um"): 0.756,                   # eq4[4] pulsa
+        ("C5N13", "três"): 0.164,                   # eq4[0] pulsa
+        ("C5N13", "nove"): 0.329,                   # eq4[6] pulsa
+        ("C5N14", "módulo"): 0.554,                 # mdc3[3] (o 9) pulsa
+        ("C5N14", "um fator"): 0.862,               # mdc3[4] (o "= 3") pulsa
+        ("C5N15", "módulo"): 0.765,                 # como[6] (o 9) pulsa, depois do Write(como)
+        ("C5N17", "dá um"): 0.424,                  # os circulos nascem
+        ("C5N17", "linha"): 0.475,                  # inv1[0] (o a) + head_l pulsam
+        ("C5N17", "coluna"): 0.532,                 # inv1[2] (o b) + head_c pulsam
+        ("C5N19", "números sem inverso"): 0.841,    # m_rot[0] + head_l[0], [3], [6] pulsam
+        ("C5N20", "módulo"): 0.921,                 # c1[3] (o 9) pulsa
     },
     "en": {
         **_V1["en"],
@@ -228,6 +251,29 @@ SINC = {
         ("C4N13", "um"): 0.833,               # "one"
         ("C4N14", "expoente"): 0.787,         # "exponent"
         ("C4N14", "bits"): 0.940,             # "bits"
+        # vídeo 2, capítulo 5 — idem
+        ("C5N02", "meio número"): 0.483,            # "half a number"
+        ("C5N03", "qual número"): 0.358,            # "which number"
+        ("C5N04", "inverso"): 0.810,                # "inverse"
+        ("C5N05", "resto um"): 0.911,               # "is one"
+        ("C5N06", "Cinco"): 0.000,                  # "Five"
+        ("C5N06", "dois"): 0.575,                   # "two"
+        ("C5N06", "nove"): 0.875,                   # "nine"
+        ("C5N08", "módulo"): 0.336,                 # "modulus"
+        ("C5N10", "inverso"): 0.734,                # "inverse"
+        ("C5N11", "três"): 0.417,                   # "three"
+        ("C5N11", "nove"): 0.688,                   # "nine"
+        ("C5N12", "O um"): 0.806,                   # "One is"
+        ("C5N13", "três"): 0.167,                   # "three"
+        ("C5N13", "nove"): 0.347,                   # "nine"
+        ("C5N14", "módulo"): 0.884,                 # "modulus"
+        ("C5N14", "um fator"): 0.623,               # "a factor"
+        ("C5N15", "módulo"): 0.759,                 # "modulus"
+        ("C5N17", "dá um"): 0.444,                  # "is one"
+        ("C5N17", "linha"): 0.523,                  # "row"
+        ("C5N17", "coluna"): 0.575,                 # "column"
+        ("C5N19", "números sem inverso"): 0.820,    # "numbers with no inverse"
+        ("C5N20", "módulo"): 0.789,                 # "modulus"
     },
 }
 
