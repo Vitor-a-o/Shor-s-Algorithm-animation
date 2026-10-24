@@ -32,7 +32,7 @@ Capítulos 6 a 8, na ordem de montagem.
 | C6N06 | The numbers are the same, just in a different order. | 3,8 | `LaggedStart(Create(arcos))` — cada arco liga `A[j]` (embaixo) ao `B` igual a ele (em cima). Entre `A` e `B` não há mais nada: os arcos ligam dois números iguais |
 | C6N07 | And that holds for any multiplier: it only reorders the row. | 4,2 | Animação nova — **a varredura**, num `play` só (`Succession`, ~0,8 s por linha). Para cada linha r em 4, 5, 6 e 2: `el3` desliza até a linha r e `Indicate(head_l[r−1])`; as cópias da linha r caem em cima de `B`, cada `B[j]` se transforma no lugar no novo valor (vermelho, mesmo tamanho) e os `arcos` se transformam nos arcos do novo arranjo; as cópias somem. Fechando a sequência (~0,6 s), `el3`, `B` e `arcos` voltam à linha 3. Os valores de `B` seguem a tabela: 4 → 4 1 5 2 6 3; 5 → 5 3 1 6 4 2; 6 → 6 5 4 3 2 1; 2 → 2 4 6 1 3 5; 3 → 3 6 2 5 1 4 |
 | C6N08 | Since order doesn't matter in multiplication, we can write the following congruence. | 4,6 | `eq0` = `(3·1)(3·2)(3·3)(3·4)(3·5)(3·6) ≡ (1·2·3·4·5·6) (mod 7)` em [0, −2,4, 0]: cada `3` vermelho nasce de cópia de `head_l[2]` e cada número preto de cópia do `A[j]`, os parênteses por `Write`; o lado direito nasce de `TransformFromCopy(A → …)`, o `≡` e o `(mod 7)` por `FadeIn`. Emendado, `FadeIn(nota)` em [0, −1,75, 0]. A `nota` fica em cena até o começo do `C6N09` |
-| C6N09 | Now we pull the multiplier out of each factor, one at a time, and they merge into a single power. | 7,3 | Animação nova — **a extração dos 3**, num `play` só e fluida (`Succession` de seis passos, ~0,5 s cada, sem pausa entre eles), com `FadeOut(nota)` no primeiro passo. O lado direito não se mexe. Passo 1: o `3` do primeiro parêntese sai para a frente do produto, os parênteses dele se desfazem e um parêntese grande se abre em volta do resto: `3·(1·(3·2)(3·3)(3·4)(3·5)(3·6))`. Passos 2 a 6: o `3` do parêntese seguinte voa e se funde ao `3` da frente — o expoente azul nasce como `2` no passo 2 e sobe para `3`, `4`, `5`, `6` —; os parênteses daquele par somem, o número preto entra na fila de dentro com um `·`, e o que sobra à direita desliza para fechar o buraco. Estado final: `3⁶·(1·2·3·4·5·6) ≡ (1·2·3·4·5·6) (mod 7)` — o `eq` (base vermelha, expoente azul), na mesma posição |
+| C6N09 | Factoring out the multiplier, we're left with a power times the same product as before. | 5,8 | Animação nova — **a extração dos 3**, num `play` só e fluida (`Succession` de seis passos, ~0,5 s cada, sem pausa entre eles), com `FadeOut(nota)` no primeiro passo. O lado direito não se mexe. Passo 1: o `3` do primeiro parêntese sai para a frente do produto, os parênteses dele se desfazem e um parêntese grande se abre em volta do resto: `3·(1·(3·2)(3·3)(3·4)(3·5)(3·6))`. Passos 2 a 6: o `3` do parêntese seguinte voa e se funde ao `3` da frente — o expoente azul nasce como `2` no passo 2 e sobe para `3`, `4`, `5`, `6` —; os parênteses daquele par somem, o número preto entra na fila de dentro com um `·`, e o que sobra à direita desliza para fechar o buraco. Estado final: `3⁶·(1·2·3·4·5·6) ≡ (1·2·3·4·5·6) (mod 7)` — o `eq` (base vermelha, expoente azul), na mesma posição |
 | C6N10 | As we saw in the previous chapter, remainders that share no factor with the modulus have an inverse. | 6,9 | `FadeIn(nota2)` |
 | C6N11 | Since the modulus is prime, every factor in this list has an inverse: we can divide both sides by the whole product and simplify. | 9,2 | `Write(div_e)` + `Write(div_d)` |
 | C6N12 | What's left is a power congruent to one, modulo seven. | 3,8 | `resultado` |
@@ -40,7 +40,7 @@ Capítulos 6 a 8, na ordem de montagem.
 | C6N14 | This is Fermat's little theorem. | 1,9 | **A virada.** Um `play` só: a tabela inteira, `el1`, `el3`, `A`, `B`, `mod_rot` e `arcos` saem em `FadeOut`, e **no mesmo bloco** o `geral` sobe para [0, −0,5, 0] e cresce de 28 para 40 — ele não é reposicionado depois da limpeza, ele **sobrevive** a ela. O `resultado` sai meio segundo atrasado em relação ao resto (`lag_ratio` ou `FadeOut` próprio), para que o caso particular seja a última coisa a desaparecer debaixo do geral. Fechando o bloco, `titulo = T("Pequeno Teorema de Fermat", 40)` nasce em [0, 0,9, 0] por `Write` |
 | C6N15 | Notice the condition: the modulus has to be prime. That's what breaks in the next chapter. | 6,2 | Título e equação parados em cena. Em "precisa ser primo", `Indicate` no `(n primo)` cinza que o `geral` já carrega |
 
-**Subtotal: 89,8 s** (cartão + 15 locuções)
+**Subtotal: 88,3 s** (cartão + 15 locuções)
 
 ---
 
@@ -173,28 +173,20 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 | Tag | Âncora (pt) | Palavra em en | Realça | Observação |
 |---|---|---|---|---|
 | C6N01 | módulo sete | modulus seven | `titulo_tab` (o sete está escrito nele) | |
-| C6N02 | restos | remainders | `A` nasce na palavra (o `TransformFromCopy` da primeira linha) | o `Create(el1)` segue no começo |
-| C6N02 | sete | seven | `titulo_tab` | |
-| C6N03 | cada um deles | each of them | `A` | |
-| C6N03 | mesmo número | same number | `head_l[2]` (o 3) | os `prods` seguem nascendo no começo |
-| C6N04 | cada produto | each product | `prods` | |
-| C6N04 | módulo | modulo seven | o `FadeIn(mod_rot)` na palavra | |
-| C6N05 | resultado | result | `B` | |
-| C6N05 | multiplicador | multiplier | o `Create(el3)` + `Indicate(head_l[2])` que já existem, agora na palavra | as `copias` e o `Indicate(B)` vêm depois, como hoje |
+| C6N02 | sete | seven | `titulo_tab` | o `Create(el1)` e o `A` seguem no começo |
 | C6N06 | Os números | The numbers | `A` + `B` | |
-| C6N06 | multiplicador | multiplier | `head_l[2]` | |
-| C6N08 | restos | remainders | `eq[3]` (a lista `1·2·3·4·5·6`) | |
-| C6N08 | módulo | modulus | `eq[4]` (o 7) | |
-| C6N09 | módulo | modulus | `eq[4]` | |
-| C6N09 | produto inteiro | whole product | `div_e` + `div_d` nascem na palavra | |
-| C6N10 | potência | power | `resultado[0]` (o `3⁶`) | o `ReplacementTransform` segue no começo |
-| C6N10 | a um | to one | `resultado[2]` | |
-| C6N10 | sete | seven | `resultado[3]` | |
-| C6N11 | módulo é primo | modulus is prime | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo; o realce vem logo depois dele |
-| C6N11 | valor a | value a | `geral[0][0]` (o a) | |
-| C6N11 | múltiplo do módulo | multiple of the modulus | `geral[3]` + o n do expoente | |
-| C6N13 | o módulo precisa | the modulus has | `geral[3]` + o n do expoente | |
-| C6N13 | precisa ser primo | has to be prime | o `Indicate(geral[4])` que já existe, agora na palavra | |
+| C6N10 | restos | remainders | `eq[3]` (a lista `1·2·3·4·5·6`) | |
+| C6N10 | módulo | modulus | o 7 de `eq[4]` | |
+| C6N11 | módulo | modulus | o 7 de `eq[4]` | |
+| C6N11 | produto inteiro | whole product | `div_e` + `div_d` nascem na palavra | |
+| C6N12 | potência | power | `resultado[0]` (o `3⁶`) | o `ReplacementTransform` segue no começo |
+| C6N12 | a um | to one | `resultado[2]` | |
+| C6N12 | sete | seven | o 7 de `resultado[3]` | |
+| C6N13 | módulo é primo | modulus is prime | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo; o realce vem logo depois dele |
+| C6N13 | valor a | value a | `geral[0][0]` (o a) | |
+| C6N13 | múltiplo do módulo | multiple of the modulus | `geral[3]` + o n do expoente | |
+| C6N15 | o módulo precisa | the modulus has | `geral[3]` + o n do expoente | |
+| C6N15 | precisa ser primo | has to be prime | o `Indicate(geral[4])` que já existe, agora na palavra | |
 | C7N02 | multiplicador | multiplier | o `Indicate(head_l[1])` que já existe, agora na palavra, junto do `2⁸` (`esq[0]`) | o `Write(eq)` e o `Create(el2)` seguem no começo |
 | C7N02 | lista de restos | list of remainders | `esq[1:]` + `dir_[0:5]` | |
 | C7N03 | cancelar a lista | canceling the list | `div_e` + `div_d` nascem na palavra | |
@@ -277,8 +269,8 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 contagens e nomes ("quatro operações" e "dois teoremas" no `V3N00`, "primeiro teorema" no
 `CAP06`), números de capítulo e de vídeo (`C7N05`, `V3N02`), o "módulo nove" do `C7N01` (o
 nove não está escrito na tela), a fase figurativa do capítulo 8 (`C8N01`–`C8N11`: canal,
-chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N12`,
-`C7N09`, `C7N10`, `C7N13`, `C7N14`, `C8N22`, `C8N25`, `C8N33`, `C8N42`).
+chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N08`, `C6N09`, `C6N14`,
+`C7N09`, `C7N10`, `C7N13`, `C7N14`, `C8N22`, `C8N25`, `C8N33`, `C8N42`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
 
 ---
 
@@ -287,13 +279,13 @@ chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C
 | Bloco | Locuções | Fala |
 |---|---|---|
 | Abertura | 1 | 9,2 s |
-| Capítulo 6 | 14 | 77,3 s |
+| Capítulo 6 | 16 | 88,3 s |
 | Capítulo 7 | 15 | 80,4 s |
 | Capítulo 8 | 45 | 304,5 s |
 | Encerramento | 2 | 14,6 s |
-| **Total** | **77** | **486,0 s** |
+| **Total** | **79** | **497,0 s** |
 
-Somando o `PAD` de 0,35 s por locução (26,9 s), os dois cartões silenciosos (~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 8 min 49 s**. Como no português, `C6N07`, `C8N04`, `C8N08`, `C8N33` e `C8N34` têm animação mais longa que a fala e somam uns 12 a 15 s ao render real.
+Somando o `PAD` de 0,35 s por locução (27,7 s), os dois cartões silenciosos (~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 02 s**. Como no português, `C8N04`, `C8N08`, `C8N33` e `C8N34` têm animação mais longa que a fala e somam uns 12 a 15 s ao render real.
 
 ---
 
@@ -304,7 +296,7 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 | Tag | Ordem mantida |
 |---|---|
 | V3N00 | "uses them to build RSA" antes de "two theorems" |
-| C6N13 | "has to be prime" (o `Indicate` no `(n prime)`) |
+| C6N15 | "has to be prime" (o `Indicate` no `(n prime)`) |
 | C7N08 | "phi of n" nomeado aqui pela primeira vez; o capítulo 8 repete o nome |
 | C7N14 | "is built on it" no fim (o `Indicate` no `φ(n)`) |
 | C8N19 | o `e` antes do `d`: "one undoing the other" fecha a frase |

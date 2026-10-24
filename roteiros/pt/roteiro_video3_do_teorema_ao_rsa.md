@@ -28,7 +28,7 @@ Capítulos 6 a 8, na ordem de montagem.
 | C6N06 | Os números são os mesmos mas em outra ordem. | 3,8 | `LaggedStart(Create(arcos))` — cada arco liga `A[j]` (embaixo) ao `B` igual a ele (em cima). Entre `A` e `B` não há mais nada: os arcos ligam dois números iguais |
 | C6N07 | E isso vale para qualquer multiplicador: ele só reordena a linha. | 4,6 | Animação nova — **a varredura**, num `play` só (`Succession`, ~0,8 s por linha). Para cada linha r em 4, 5, 6 e 2: `el3` desliza até a linha r e `Indicate(head_l[r−1])`; as cópias da linha r caem em cima de `B`, cada `B[j]` se transforma no lugar no novo valor (vermelho, mesmo tamanho) e os `arcos` se transformam nos arcos do novo arranjo; as cópias somem. Fechando a sequência (~0,6 s), `el3`, `B` e `arcos` voltam à linha 3. Os valores de `B` seguem a tabela: 4 → 4 1 5 2 6 3; 5 → 5 3 1 6 4 2; 6 → 6 5 4 3 2 1; 2 → 2 4 6 1 3 5; 3 → 3 6 2 5 1 4 |
 | C6N08 | Como a ordem não importa na multiplicação, podemos fazer a seguinte congruência. | 5,0 | `eq0` = `(3·1)(3·2)(3·3)(3·4)(3·5)(3·6) ≡ (1·2·3·4·5·6) (mod 7)` em [0, −2,4, 0]: cada `3` vermelho nasce de cópia de `head_l[2]` e cada número preto de cópia do `A[j]`, os parênteses por `Write`; o lado direito nasce de `TransformFromCopy(A → …)`, o `≡` e o `(mod 7)` por `FadeIn`. Emendado, `FadeIn(nota)` em [0, −1,75, 0]. A `nota` fica em cena até o começo do `C6N09` |
-| C6N09 | Agora tiramos o multiplicador de cada parêntese, um por vez, e eles vão se juntando numa potência. | 7,1 | Animação nova — **a extração dos 3**, num `play` só e fluida (`Succession` de seis passos, ~0,5 s cada, sem pausa entre eles), com `FadeOut(nota)` no primeiro passo. O lado direito não se mexe. Passo 1: o `3` do primeiro parêntese sai para a frente do produto, os parênteses dele se desfazem e um parêntese grande se abre em volta do resto: `3·(1·(3·2)(3·3)(3·4)(3·5)(3·6))`. Passos 2 a 6: o `3` do parêntese seguinte voa e se funde ao `3` da frente — o expoente azul nasce como `2` no passo 2 e sobe para `3`, `4`, `5`, `6` —; os parênteses daquele par somem, o número preto entra na fila de dentro com um `·`, e o que sobra à direita desliza para fechar o buraco. Estado final: `3⁶·(1·2·3·4·5·6) ≡ (1·2·3·4·5·6) (mod 7)` — o `eq` (base vermelha, expoente azul), na mesma posição |
+| C6N09 | Colocando o multiplicador em evidência, ficamos com uma potência vezes o mesmo produto de antes. | 6,3 | Animação nova — **a extração dos 3**, num `play` só e fluida (`Succession` de seis passos, ~0,5 s cada, sem pausa entre eles), com `FadeOut(nota)` no primeiro passo. O lado direito não se mexe. Passo 1: o `3` do primeiro parêntese sai para a frente do produto, os parênteses dele se desfazem e um parêntese grande se abre em volta do resto: `3·(1·(3·2)(3·3)(3·4)(3·5)(3·6))`. Passos 2 a 6: o `3` do parêntese seguinte voa e se funde ao `3` da frente — o expoente azul nasce como `2` no passo 2 e sobe para `3`, `4`, `5`, `6` —; os parênteses daquele par somem, o número preto entra na fila de dentro com um `·`, e o que sobra à direita desliza para fechar o buraco. Estado final: `3⁶·(1·2·3·4·5·6) ≡ (1·2·3·4·5·6) (mod 7)` — o `eq` (base vermelha, expoente azul), na mesma posição |
 | C6N10 | Como vimos no capítulo anterior, restos que não têm fator comum com o módulo possuem inverso. | 6,7 | `FadeIn(nota2)` |
 | C6N11 | Como o módulo é primo, todo fator dessa lista tem inverso: podemos dividir o produto inteiro dos dois lados e simplificar. | 8,8 | `Write(div_e)` + `Write(div_d)` |
 | C6N12 | O que sobra é uma potência congruente a um módulo sete. | 4,6 | `resultado` |
@@ -36,7 +36,7 @@ Capítulos 6 a 8, na ordem de montagem.
 | C6N14 | Esse é o Pequeno Teorema de Fermat. | 2,9 | **A virada.** Um `play` só: a tabela inteira, `el1`, `el3`, `A`, `B`, `mod_rot` e `arcos` saem em `FadeOut`, e **no mesmo bloco** o `geral` sobe para [0, −0,5, 0] e cresce de 28 para 40 — ele não é reposicionado depois da limpeza, ele **sobrevive** a ela. O `resultado` sai meio segundo atrasado em relação ao resto (`lag_ratio` ou `FadeOut` próprio), para que o caso particular seja a última coisa a desaparecer debaixo do geral. Fechando o bloco, `titulo = T("Pequeno Teorema de Fermat", 40)` nasce em [0, 0,9, 0] por `Write` |
 | C6N15 | Repare na condição: o módulo precisa ser primo. É ela que vai quebrar no próximo capítulo. | 6,7 | Título e equação parados em cena. Em "precisa ser primo", `Indicate` no `(n primo)` cinza que o `geral` já carrega |
 
-**Subtotal: 93,6 s** (cartão + 15 locuções)
+**Subtotal: 92,8 s** (cartão + 15 locuções)
 
 ---
 
@@ -169,28 +169,20 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 | Tag | Âncora (pt) | Palavra em en | Realça | Observação |
 |---|---|---|---|---|
 | C6N01 | módulo sete | modulus seven | `titulo_tab` (o sete está escrito nele) | |
-| C6N02 | restos | remainders | `A` nasce na palavra (o `TransformFromCopy` da primeira linha) | o `Create(el1)` segue no começo |
-| C6N02 | sete | seven | `titulo_tab` | |
-| C6N03 | cada um deles | each of them | `A` | |
-| C6N03 | mesmo número | same number | `head_l[2]` (o 3) | os `prods` seguem nascendo no começo |
-| C6N04 | cada produto | each product | `prods` | |
-| C6N04 | módulo | modulo seven | o `FadeIn(mod_rot)` na palavra | |
-| C6N05 | resultado | result | `B` | |
-| C6N05 | multiplicador | multiplier | o `Create(el3)` + `Indicate(head_l[2])` que já existem, agora na palavra | as `copias` e o `Indicate(B)` vêm depois, como hoje |
+| C6N02 | sete | seven | `titulo_tab` | o `Create(el1)` e o `A` seguem no começo |
 | C6N06 | Os números | The numbers | `A` + `B` | |
-| C6N06 | multiplicador | multiplier | `head_l[2]` | |
-| C6N08 | restos | remainders | `eq[3]` (a lista `1·2·3·4·5·6`) | |
-| C6N08 | módulo | modulus | `eq[4]` (o 7) | |
-| C6N09 | módulo | modulus | `eq[4]` | |
-| C6N09 | produto inteiro | whole product | `div_e` + `div_d` nascem na palavra | |
-| C6N10 | potência | power | `resultado[0]` (o `3⁶`) | o `ReplacementTransform` segue no começo |
-| C6N10 | a um | to one | `resultado[2]` | |
-| C6N10 | sete | seven | `resultado[3]` | |
-| C6N11 | módulo é primo | modulus is prime | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo; o realce vem logo depois dele |
-| C6N11 | valor a | value a | `geral[0][0]` (o a) | |
-| C6N11 | múltiplo do módulo | multiple of the modulus | `geral[3]` + o n do expoente | |
-| C6N13 | o módulo precisa | the modulus has | `geral[3]` + o n do expoente | |
-| C6N13 | precisa ser primo | has to be prime | o `Indicate(geral[4])` que já existe, agora na palavra | |
+| C6N10 | restos | remainders | `eq[3]` (a lista `1·2·3·4·5·6`) | |
+| C6N10 | módulo | modulus | o 7 de `eq[4]` | |
+| C6N11 | módulo | modulus | o 7 de `eq[4]` | |
+| C6N11 | produto inteiro | whole product | `div_e` + `div_d` nascem na palavra | |
+| C6N12 | potência | power | `resultado[0]` (o `3⁶`) | o `ReplacementTransform` segue no começo |
+| C6N12 | a um | to one | `resultado[2]` | |
+| C6N12 | sete | seven | o 7 de `resultado[3]` | |
+| C6N13 | módulo é primo | modulus is prime | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo; o realce vem logo depois dele |
+| C6N13 | valor a | value a | `geral[0][0]` (o a) | |
+| C6N13 | múltiplo do módulo | multiple of the modulus | `geral[3]` + o n do expoente | |
+| C6N15 | o módulo precisa | the modulus has | `geral[3]` + o n do expoente | |
+| C6N15 | precisa ser primo | has to be prime | o `Indicate(geral[4])` que já existe, agora na palavra | |
 | C7N02 | multiplicador | multiplier | o `Indicate(head_l[1])` que já existe, agora na palavra, junto do `2⁸` (`esq[0]`) | o `Write(eq)` e o `Create(el2)` seguem no começo |
 | C7N02 | lista de restos | list of remainders | `esq[1:]` + `dir_[0:5]` | |
 | C7N03 | cancelar a lista | canceling the list | `div_e` + `div_d` nascem na palavra | |
@@ -273,8 +265,8 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 contagens e nomes ("quatro operações" e "dois teoremas" no `V3N00`, "primeiro teorema" no
 `CAP06`), números de capítulo e de vídeo (`C7N05`, `V3N02`), o "módulo nove" do `C7N01` (o
 nove não está escrito na tela), a fase figurativa do capítulo 8 (`C8N01`–`C8N11`: canal,
-chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N12`,
-`C7N09`, `C7N10`, `C7N13`, `C7N14`, `C8N22`, `C8N25`, `C8N33`, `C8N42`).
+chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N08`, `C6N09`, `C6N14`,
+`C7N09`, `C7N10`, `C7N13`, `C7N14`, `C8N22`, `C8N25`, `C8N33`, `C8N42`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
 
 ---
 
@@ -283,14 +275,14 @@ chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C
 | Bloco | Locuções | Fala |
 |---|---|---|
 | Abertura | 1 | 8,8 s |
-| Capítulo 6 | 16 | 93,6 s |
+| Capítulo 6 | 16 | 92,8 s |
 | Capítulo 7 | 15 | 86,6 s |
 | Capítulo 8 | 45 | 314,8 s |
 | Encerramento | 2 | 15,8 s |
-| **Total** | **79** | **519,6 s** |
+| **Total** | **79** | **518,8 s** |
 
 Somando o `PAD` de 0,35 s por locução (27,7 s), os dois cartões silenciosos
-(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 24 s** —
+(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 23 s** —
 passa um pouco da faixa de 8–9 min que a estimativa por `cena.play` previa, puxada pelas
 falas reescritas da fase 0 e do fecho. A fase 0 do capítulo 8
 responde por ~93,0 s desse total; as fases B e C continuam somando vinte e quatro `play`
@@ -336,30 +328,22 @@ passa como áudio faltando.
 
 ## Pendências de código do capítulo 6 (`parte6`)
 
-1. `with narra` envolvendo os headers e o `LaggedStart(linhas_cel)` num bloco só
-   (`C6N01`).
-2. `Create(el1)` emendado com o `TransformFromCopy` da linha 1 (`C6N02`).
-3. `Create(el3)` + `Indicate`, o movimento das `copias` e o `FadeOut(copias)` +
-   `Indicate(B)` num bloco só (`C6N05`).
-4. `eq0` emendado com o `FadeIn(nota)` e o `ReplacementTransform(eq0 → eq)` (`C6N07`).
-5. **Separar** `FadeIn(nota2)` de `Write(div_e)`/`Write(div_d)` em dois `play`: hoje rodam
-   juntos e a narração precisa de dois tempos (`C6N08` e `C6N09`).
-6. **Final novo (`C6N12`)** — o pouso do teorema, em um `play` único:
-   - `FadeOut` de `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `el1`, `el3`, `A`,
-     `B`, `prods`, `mod_rot` e `arcos`;
-   - no mesmo `play`, `geral.animate.move_to([0, -0.5, 0]).scale(40/28)`;
-   - `resultado` com `FadeOut` atrasado (~0,5 s) em relação ao resto;
-   - `Write(titulo)` fechando o bloco, com `titulo = T("Pequeno Teorema de Fermat", 40)`
-     em [0, 0.9, 0].
-
-   Não precisa de ferramenta nova — é `T()`, um `FadeOut` em grupo e um `.animate`. O que
-   precisa é que o `geral` **não** seja recriado no centro: tem que ser o mesmo mobject
-   viajando, senão a limpeza lê como corte e a equação perde a continuidade.
-7. O `(n primo)` cinza que o `geral` já carrega **sobrevive** à limpeza — ele é a hipótese,
-   e é o alvo do `Indicate` do `C6N13`.
-8. Os `cena.wait(0.5)` entre `prods`/`mod_rot` e entre `mod_rot`/`el3` saem: o respiro
-   passa a ser o `PAD` da locução. O `cena.wait(1.6)` final também sai — quem sustenta o
-   título em cena agora é o `C6N13`.
+1. **Tabela em dois tempos (`C6N01`)** — moldura primeiro, linhas depois, num `play` só com
+   `Succession`.
+2. **Um número só (`C6N03`–`C6N04`)** — animação nova: o `3·5` nascendo embaixo do `A[4]` e
+   virando o `B[4]`; o `circ` na célula (3, 5) com os dois cabeçalhos pulsando; a cópia da
+   célula caindo sobre o `B[4]`.
+3. **A linha inteira (`C6N05`)** — cada produto vira o próprio resto por
+   `ReplacementTransform`, de modo que nenhum `prods` fica em cena depois desta linha. O
+   `circ` sai quando a `el3` entra.
+4. **Arcos (`C6N06`)** — cada arco liga `A[j]` ao `B` de mesmo valor.
+5. **Varredura (`C6N07`)** — animação nova: linhas 4, 5, 6 e 2, com `el3`, `B` e `arcos` se
+   transformando a cada linha, e a volta à linha 3.
+6. **`eq0` (`C6N08`)** — os pares `(3·j)` nascem de `head_l[2]` e de `A`; o lado direito
+   `(1·2·3·4·5·6)` nasce de `A`.
+7. **Extração dos 3 (`C6N09`)** — animação nova e fluida, de `eq0` até o `eq`, um `3` por vez,
+   com o expoente subindo de um em um.
+8. **`C6N14`** — a lista do `FadeOut` não inclui `prods` nem `circ`, que já saíram antes.
 9. A saída do título para o cartão `CAP07` precisa ser **um movimento só**, com o
    `limpar()` emendado no cartão. São dois momentos tipográficos de tela cheia em
    sequência, e o mesmo risco que o cartão de abertura do vídeo 2 já tinha: separados,
@@ -379,7 +363,7 @@ passa como áudio faltando.
    das cruzes.
 6. **`Create(caixa)` sai.** O título do `C7N13` assume a função que o retângulo verde
    tinha, e manter os dois deixa a tela com duas molduras concorrendo.
-7. **Final novo (`C7N13`)** — mesmo pouso do `C6N12`, em um `play` único:
+7. **Final novo (`C7N13`)** — mesmo pouso do `C6N14`, em um `play` único:
    - `FadeOut` de `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `el2`, `cruzes`,
      `sobr`, `phi`, `eq2`, `div2_e` e `div2_d`;
    - no mesmo `play`, `geral.animate.move_to([0, -0.5, 0]).scale(40/28)`;
@@ -387,7 +371,7 @@ passa como áudio faltando.
    - `Write(titulo)` fechando o bloco, com `titulo = T("Teorema de Euler", 40)` em
      [0, 0.9, 0].
 
-   Vale extrair isso e o `C6N12` numa função só em `ferramentas.py` — algo como
+   Vale extrair isso e o `C6N14` numa função só em `ferramentas.py` — algo como
    `pousar_teorema(cena, formula, texto, resto)` — já que os dois capítulos fazem
    exatamente o mesmo movimento com objetos diferentes.
 8. O `cena.wait(1.6)` final sai: quem sustenta o título em cena agora é o `C7N14`.

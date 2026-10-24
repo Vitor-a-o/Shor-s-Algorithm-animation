@@ -317,7 +317,7 @@ def parte6(cena):
                 t.move_to(pn[id(t)])
                 anims.append(Write(t))
         passos.append(_etapa(*anims, run_time=0.5 * VEL))
-    with narra(cena, "C6N09", 7.1):
+    with narra(cena, "C6N09", 6.3):
         cena.play(_serie(*passos))
         # o 3 da frente (R[1]) fez o papel de 3², …, 3⁶; o eq leva o tre[6]
         cena.replace(R[1], tre[6])
