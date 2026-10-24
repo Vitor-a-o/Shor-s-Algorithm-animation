@@ -1,16 +1,35 @@
 # -*- coding: utf-8 -*-
 from manim import *
 import numpy as np
+from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
 from ..ferramentas import _agora
-from ..sincronias import _ate
+from ..sincronias import _ate, na_palavra
 
 
 # ---------------------------------------------------------------------------
 # peças do capítulo 10
 # ---------------------------------------------------------------------------
+def _dur(run_time, *anims):
+    """O `run_time` do play, posto em cada animação: o play não pode levá-lo
+    quando leva também um na_palavra, que sobrescreveria o do Wait."""
+    for a in anims:
+        a.run_time = run_time
+    return anims
+
+
+def _pulso(*mobs):
+    """O realce para peças que têm fundo e texto (os cartões): cresce e
+    volta em volta do próprio centro, SEM trocar de cor. O `realce()` pinta
+    a peça inteira com a cor do fundo, e o número preto dentro do cartão
+    sumiria durante o pulso."""
+    return AnimationGroup(*[m.animate(rate_func=there_and_back,
+                                      run_time=0.6 * VEL).scale(1.25).build()
+                            for m in mobs])
+
+
 def _carta_qubit(w=0.78, h=1.02, tam=22):
     """Cartão de qubit em superposição (gradiente verde↔laranja dos slides)."""
     r = RoundedRectangle(corner_radius=0.10, width=w, height=h,
@@ -202,9 +221,13 @@ def p10_fundamentos(cena):
     fila = _fila_classica()
     rot_cl = T(tx("c11.computacao_classica"), 26, CINZA).next_to(fila, UP, buff=0.55)
     with narra(cena, "C11N01", 7.9):
+        na = partial(na_palavra, cena, _agora(cena), "C11N01", 7.9)
         cena.play(LaggedStart(*[FadeIn(c, scale=0.8) for c in fila],
                               lag_ratio=0.12),
                   FadeIn(rot_cl), run_time=1.8 * VEL)
+        # "bits": a fila inteira pulsa, em cascata
+        cena.play(na("bits", LaggedStart(*[_pulso(c) for c in fila],
+                                         lag_ratio=0.1)))
 
     # o cartão do meio se destaca crescendo e esgota o repertório do bit:
     # 0 → 1 → 0, e acabou. É esse esgotamento que dá sentido ao gradiente
@@ -212,9 +235,11 @@ def p10_fundamentos(cena):
     bit_1 = _carta_fixa("1", VERDE).scale(1.5).move_to(meio)
     bit_0 = _carta_fixa("0", LARANJA).scale(1.5).move_to(meio)
     with narra(cena, "C11N02", 5.8):
-        cena.play(Succession(
-            ReplacementTransform(meio, bit_1, run_time=1.2 * VEL),
-            ReplacementTransform(bit_1, bit_0, run_time=1.2 * VEL)))
+        na = partial(na_palavra, cena, _agora(cena), "C11N02", 5.8)
+        cena.play(na("zero", _pulso(meio)))
+        cena.play(na("ele é um",
+                     ReplacementTransform(meio, bit_1, run_time=1.2 * VEL)))
+        cena.play(ReplacementTransform(bit_1, bit_0, run_time=1.2 * VEL))
 
     # a fila sai inteira MENOS o cartão do meio: ele já foi consumido pelo
     # ReplacementTransform e um FadeOut(fila) o traria de volta piscando
@@ -231,14 +256,20 @@ def p10_fundamentos(cena):
     t1 = T(tx("c11.superposicao"), 26, PRETO).move_to([-4.0, 2.6, 0])
     q1 = _carta_qubit().scale(1.15).move_to([-4.0, 1.3, 0])
     with narra(cena, "C11N05", 7.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N05", 7.0)
         cena.play(FadeIn(t1), ReplacementTransform(qub, q1),
                   run_time=1.4 * VEL)
+        cena.play(na("zero", realce(q1[2])))
+        cena.play(na("ou um", realce(q1[1])))
 
     # as duas barras nascem do próprio gradiente (q1[0]), não do vazio
     barras = _barras_peso(q1)
     with narra(cena, "C11N06", 7.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N06", 7.0)
         cena.play(*[TransformFromCopy(q1[0], b) for b in barras],
                   run_time=1.2 * VEL)
+        # "cada um dos dois": as duas barras e o 1 e o 0 do cartão
+        cena.play(na("cada um dos dois", realce(*barras, q1[1], q1[2])))
 
     t2 = T(tx("c11.emaranhamento"), 26, PRETO).move_to([2.6, 2.6, 0])
     qa = _carta_qubit().move_to([1.2, 1.3, 0])
@@ -325,6 +356,9 @@ def p10_esquema(cena):
             # âncora da fala (shor/sincronias.py)
             Succession(_ate(cena, t0, tag, est, "outro exemplo"),
                        Write(eqc, run_time=1.2 * VEL)))
+        # "um n": o 21 que acabou de ser escrito
+        cena.play(na_palavra(cena, t0, tag, est, "um n",
+                             realce(eqc[3][1])))
 
     # linha de cima: os bits do expoente, um por coluna; embaixo, a caixa
     # que cada um liga ou desliga
@@ -337,13 +371,18 @@ def p10_esquema(cena):
     ret_cx = T("…", 28, PRETO).move_to([XRET + DX, YCX, 0])
     setas1 = VGroup(*[_seta(b, c) for b, c in zip(bits, caixas)])
     with narra(cena, "C11N11", 9.0):
-        cena.play(LaggedStart(*[FadeIn(b, scale=0.8) for b in bits],
-                              lag_ratio=0.12),
-                  FadeIn(ret_bit), run_time=1.6 * VEL)
-        cena.play(LaggedStart(*[AnimationGroup(GrowArrow(s), FadeIn(c))
-                                for s, c in zip(setas1, caixas)],
-                              lag_ratio=0.14),
-                  FadeIn(ret_cx), run_time=2.2 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N11", 9.0)
+        # cada peça nasce na sua palavra: as caixas de bit em "cada bit",
+        # as caixas cinzas (e as setas) em "uma potência"
+        cena.play(na("cada bit",
+                     LaggedStart(*[FadeIn(b, scale=0.8) for b in bits],
+                                 lag_ratio=0.12, run_time=1.6 * VEL),
+                     FadeIn(ret_bit, run_time=1.6 * VEL)))
+        cena.play(na("uma potência",
+                     LaggedStart(*[AnimationGroup(GrowArrow(s), FadeIn(c))
+                                   for s, c in zip(setas1, caixas)],
+                                 lag_ratio=0.14, run_time=2.2 * VEL),
+                     FadeIn(ret_cx, run_time=2.2 * VEL)))
 
     # cada caixa devolve um resto — é a linha verde do slide 34, aqui com
     # letra em vez de número porque o b é genérico
@@ -368,15 +407,19 @@ def p10_esquema(cena):
     saida = T("c", 42, VERDE).move_to([prod.get_x(), YC, 0])
     seta4 = _seta(prod, saida)
     with narra(cena, "C11N12", 7.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N12", 7.0)
         cena.play(LaggedStart(*[AnimationGroup(GrowArrow(s), FadeIn(r))
                                 for s, r in zip(setas2, restos)],
                               lag_ratio=0.12),
                   FadeIn(ret_res), run_time=1.6 * VEL)
         cena.play(LaggedStart(*[GrowArrow(s) for s in setas3], lag_ratio=0.1),
                   run_time=1.2 * VEL)
-        cena.play(FadeIn(prod), run_time=0.9 * VEL)
-        cena.play(GrowArrow(seta4), TransformFromCopy(eqc[0], saida),
-                  run_time=1.1 * VEL)
+        # "potência inteira": a caixa do produto nasce na palavra
+        cena.play(na("potência inteira", FadeIn(prod, run_time=0.9 * VEL)))
+        # "resto": o c nasce do c da equação, que pulsa junto
+        cena.play(na("resto", *_dur(1.1 * VEL, GrowArrow(seta4),
+                                    TransformFromCopy(eqc[0], saida)),
+                     realce(eqc[0])))
 
     cena.esquema = dict(eqc=eqc, bits=bits, caixas=caixas, ret_bit=ret_bit,
                         ret_cx=ret_cx, setas1=setas1, setas2=setas2,
@@ -473,9 +516,19 @@ def p10_circuito(cena):
     # no Manim 0.20.1 um `FadeIn` de retângulo preenchido junto do conteúdo
     # deixa o conteúdo ATRÁS do preenchimento, e a letra some
     with narra(cena, "C11N14", 6.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N14", 6.0)
         cena.play(FadeIn(carta_b[0]), FadeIn(carta_c[0]), run_time=1.0 * VEL)
-        cena.play(TransformFromCopy(eqc[2][1], letra_b),
-                  saida_circ.animate.move_to(carta_c), run_time=1.5 * VEL)
+        # cada letra na sua palavra: o b nasce do b da equação ("expoente b")
+        # e o c desliza para o painel de baixo ("resto c"), cada um com o
+        # seu da equação pulsando junto
+        cena.play(na("expoente b",
+                     TransformFromCopy(eqc[2][1], letra_b,
+                                       run_time=1.5 * VEL),
+                     realce(eqc[2][1])))
+        cena.play(na("resto c",
+                     saida_circ.animate(run_time=1.5 * VEL)
+                     .move_to(carta_c).build(),
+                     realce(eqc[0])))
 
     # cada bit clássico vira o QUBIT do seu fio — a caixa cinza que veio do
     # esquema abre no cartão-gradiente —, e a letra b abre na coluna dos
@@ -483,17 +536,25 @@ def p10_circuito(cena):
     inis = VGroup(*[_carta_qubit(0.5, 0.66, 15).move_to([x0 + 0.75, yc, 0])
                     for yc in CTRLS])
     with narra(cena, "C11N15", 3.9):
-        cena.play(LaggedStart(*[ReplacementTransform(b, i)
-                                for b, i in zip(e["bits"], inis)],
-                              lag_ratio=0.15), run_time=1.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N15", 3.9)
+        cena.play(na("cada bit",
+                     LaggedStart(*[ReplacementTransform(b, i)
+                                   for b, i in zip(e["bits"], inis)],
+                                 lag_ratio=0.15, run_time=1.8 * VEL)))
 
     with narra(cena, "C11N16", 9.6):
-        cena.play(ReplacementTransform(letra_b, carta_b[1]),
-                  FadeIn(carta_b[2]), run_time=1.6 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N16", 9.6)
+        cena.play(na("todos eles",
+                     *_dur(1.6 * VEL, ReplacementTransform(letra_b, carta_b[1]),
+                           FadeIn(carta_b[2]))))
 
     with narra(cena, "C11N17", 7.0):
-        cena.play(ReplacementTransform(saida_circ, carta_c[1]),
-                  FadeIn(carta_c[2]), run_time=1.6 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N17", 7.0)
+        # "o expoente": a coluna que acabou de nascer pulsa
+        cena.play(na("o expoente", realce(carta_b[1])))
+        cena.play(na("resto c",
+                     *_dur(1.6 * VEL, ReplacementTransform(saida_circ, carta_c[1]),
+                           FadeIn(carta_c[2]))))
 
     # medimos o fio alvo: sai UM dos restos possíveis — c = 4 (slide 157)
     med = caixa_cinza(T("M", 20, PRETO), pad=0.14).move_to([3.07, yt, 0])
@@ -511,10 +572,17 @@ def p10_circuito(cena):
     cartao_c = _carta_valor("4", VERDE, VERDE2).move_to(carta_c)
     bs_de_4 = _troca_coluna(lista_b, ["2", "8", "14", "20"], AZUL)
     with narra(cena, "C11N19", 10.2):
-        cena.play(Flash(med.get_center(), color=VERDE, flash_radius=0.5),
-                  ReplacementTransform(carta_c, cartao_c),
-                  ReplacementTransform(lista_b, bs_de_4),
-                  run_time=1.2 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N19", 10.2)
+        # os dois registradores colapsam juntos, cada um na sua palavra: o de
+        # baixo em "resto possível", o de cima em "expoentes"
+        cena.play(na("resto possível",
+                     *_dur(1.2 * VEL,
+                           Flash(med.get_center(), color=VERDE,
+                                 flash_radius=0.5),
+                           ReplacementTransform(carta_c, cartao_c))))
+        cena.play(na("expoentes",
+                     ReplacementTransform(lista_b, bs_de_4,
+                                          run_time=1.2 * VEL)))
     lista_b, cnum = bs_de_4, cartao_c[1]
 
     # o rodízio: o resto medido podia ter sido qualquer um do ciclo de 2
@@ -606,6 +674,7 @@ def p10_circuito(cena):
         return m
 
     with narra(cena, "C11N22", 15.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N22", 15.0)
         # 1. as probabilidades: a peça do C11N06 volta em miniatura, uma por
         #    entrada da coluna, nascendo do próprio número
         cena.play(LaggedStart(*[TransformFromCopy(n, br)
@@ -628,7 +697,10 @@ def p10_circuito(cena):
                   run_time=1.2 * VEL)
         # 4. o pagamento: com um expoente sozinho a pergunta do C11N21 perde
         #    a resposta possível, e ela vira a cor de "isto não funciona"
-        cena.play(pergunta_r.animate.set_color(VERMELHO), run_time=0.8 * VEL)
+        #    e ela cai na palavra: "interessa: o r"
+        cena.play(na("interessa: o r",
+                     pergunta_r.animate(run_time=0.8 * VEL)
+                     .set_color(VERMELHO).build()))
         # 5. e tudo desfaz. O desfazer É o argumento, não um detalhe: a
         #    medida NÃO aconteceu, e a cena volta ao quadro do C11N21
         cena.play(*[ApplyFunction(lambda x, g=g: opacidade(x, g), m)
@@ -649,14 +721,19 @@ def p10_circuito(cena):
                  ("512", PRETO), tamanho=24,
                  buff=0.08).next_to(tqf, UP, buff=0.2)
     with narra(cena, "C11N23", 10.9):
+        na = partial(na_palavra, cena, _agora(cena), "C11N23", 10.9)
         # "nos fios de cima": eles estão em cena desde o C11N13 e a fala os
         # nomeia ANTES de nomear a TQF — o azul é o do b que eles carregam.
         # scale_factor=1.0 porque um fio esticado a 1,2 sai do quadro
         cena.play(Indicate(VGroup(*fios[:4]), color=AZUL, scale_factor=1.0),
                   run_time=0.6 * VEL)
         cena.play(FadeIn(tqf), Write(rot_tqf), run_time=1.0 * VEL)
+        # "informação do r": a pergunta, em cena desde o C11N21, pulsa token
+        # a token (o `=` e o `?` não são o r)
+        cena.play(na("informação do r", realce(*pergunta_r)))
     with narra(cena, "C11N24", 6.7):
-        cena.play(FadeIn(nq), run_time=0.7 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N24", 6.7)
+        cena.play(na("potência de dois", FadeIn(nq, run_time=0.7 * VEL)))
 
     # o painel de b entra na saída DESMONTADO — fundo, ⋮ e a coluna viva de
     # números —, e não como `carta_b`: a coluna original foi consumida pelo
@@ -730,6 +807,7 @@ def p10_ato1(cena):
     # a cena, que é o problema anotado no C11N22
     desloc = np.array([0.0, 1.35, 0.0]) - VGroup(lista_b, tres_b).get_center()
     with narra(cena, "C11N25", 13.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N25", 13.0)
         # sem `run_time` no `play`: aqui cada peça tem o seu, porque o
         # circuito precisa ter sumido ANTES de o cinza fechar — senão ele
         # reaparece de relance quando o cinza abre
@@ -752,6 +830,11 @@ def p10_ato1(cena):
             # o tamanho do registrador encolhe para o canto oposto e
             # espera: é ele que o C11N28 acende quando a reta chega a 512
             nq.animate(run_time=2.6 * VEL).scale(0.8).to_corner(UR, buff=0.4))
+        # as duas palavras caem depois da entrada (2,6 s): a coluna e o `⋮`
+        # que atravessaram pulsam em "expoentes que sobreviveram", e a
+        # pergunta em "pergunta"
+        cena.play(na("expoentes que sobreviveram", realce(lista_b, tres_b)))
+        cena.play(na("pergunta", realce(*pergunta_r)))
 
     retaZ = NumberLine(x_range=[0, 32, 4], length=12, color=CINZA,
                        stroke_width=2, include_ticks=True, tick_size=0.06)
@@ -792,6 +875,7 @@ def p10_ato1(cena):
         # NOME e não tem número
         chaves.add(VGroup(ch, T("r", 20, AMARELO).next_to(ch, UP, buff=0.07)))
     with narra(cena, "C11N27", 4.6):
+        na = partial(na_palavra, cena, _agora(cena), "C11N27", 4.6)
         # cada `r` de chave nasce do `r` do `pergunta_r`, que fica em cena
         # exatamente como está. Esta linha diz ONDE a ordem está escrita —
         # no espaçamento —, nunca quanto ela vale: o pente é o estado
@@ -802,7 +886,10 @@ def p10_ato1(cena):
         nasce_r = [AnimationGroup(FadeIn(c[0]),
                                   TransformFromCopy(pergunta_r[0], c[1]))
                    for c in chaves]
-        cena.play(LaggedStart(*nasce_r, lag_ratio=0.25), run_time=1.6 * VEL)
+        cena.play(na("a ordem",
+                     LaggedStart(*nasce_r, lag_ratio=0.25,
+                                 run_time=1.6 * VEL),
+                     realce(pergunta_r[0])))
 
     # zoom-out: rótulos saem ANTES da compressão (sem sobreposição)
     retaF = NumberLine(x_range=[0, N, 64], length=12, color=CINZA,
@@ -813,6 +900,7 @@ def p10_ato1(cena):
     dentesF = VGroup(*[dente(retaF, b, 0.45) for b in bs_zoom])
     resto = VGroup(*[dente(retaF, b, 0.45) for b in PENTE[5:]])
     with narra(cena, "C11N28", 6.8):
+        na = partial(na_palavra, cena, _agora(cena), "C11N28", 6.8)
         cena.play(FadeOut(rotulos_b), FadeOut(chaves), FadeOut(rotZ),
                   run_time=0.5 * VEL)
         cena.play(ReplacementTransform(retaZ, retaF),
@@ -823,8 +911,11 @@ def p10_ato1(cena):
         # desde o C11N25: sem este destaque o número fica em cena sem
         # nunca ser cobrado
         cena.play(LaggedStart(*[GrowFromEdge(d, DOWN) for d in resto],
-                              lag_ratio=0.01), Indicate(nq),
-                  run_time=2.2 * VEL)
+                              lag_ratio=0.01), run_time=2.2 * VEL)
+        # o Indicate durava os 2,2 s do play; agora é o pulso de 0,6 s, na
+        # palavra
+        cena.play(na("fim do registrador",
+                     Indicate(nq, run_time=0.6 * VEL)))
 
     cena.pente_grupo = VGroup(retaF, dentesF, resto)
     # o que sai junto quando o pente sobe, no topo do `C11N29`: os rótulos
@@ -1140,6 +1231,7 @@ def p10_ondas(cena):
                        .next_to([x, GY, 0], DOWN, buff=0.14).set_z_index(1))
 
     with narra(cena, "C11N34", 8.9):
+        na = partial(na_palavra, cena, _agora(cena), "C11N34", 8.9)
         cena.play(FadeOut(VGroup(guia, fracos, fortes, rots_raio, corrente,
                                  cursor, pontos, ponta, ondas, rots_onda,
                                  resto_ondas)),
@@ -1150,9 +1242,12 @@ def p10_ondas(cena):
                   # de onde a coluna de saída nasce
                   rot_soma.animate.move_to([GX0 + 0.85, GY - 0.30, 0]),
                   run_time=1.8 * VEL)
-        cena.play(LaggedStart(*[AnimationGroup(Create(l), FadeIn(r))
-                                for l, r in zip(marcas, rots_marca)],
-                              lag_ratio=0.15), run_time=2.2 * VEL)
+        # as marcas nascem em "múltiplos"; os k·N/r pulsam em "ordem"
+        cena.play(na("múltiplos",
+                     LaggedStart(*[AnimationGroup(Create(l), FadeIn(r))
+                                   for l, r in zip(marcas, rots_marca)],
+                                 lag_ratio=0.15, run_time=2.2 * VEL)))
+        cena.play(na("ordem", realce(*rots_marca[1:])))
 
     cena.grafico_soma = VGroup(traco, base_soma, rot_soma)
     # onde a cascata pega o gráfico: as linhas saem no C11N35, por baixo do
@@ -1247,9 +1342,14 @@ def p10_ato4(cena):
     # continua sendo os quatro fios — e a coluna vira um número só
     unico_k = T("85", 34, LARANJA).move_to(fundo_k).set_z_index(1)
     with narra(cena, "C11N36", 2.9):
+        na = partial(na_palavra, cena, _agora(cena), "C11N36", 2.9)
         cena.play(FadeIn(med_k), run_time=0.4 * VEL)
-        cena.play(Flash(med_k.get_center(), color=LARANJA, flash_radius=0.5),
-                  ReplacementTransform(coluna_k, unico_k), run_time=1.1 * VEL)
+        # o Flash e a coluna virando 85 caem em "oitenta e cinco"
+        cena.play(na("oitenta e cinco",
+                     *_dur(1.1 * VEL,
+                           Flash(med_k.get_center(), color=LARANJA,
+                                 flash_radius=0.5),
+                           ReplacementTransform(coluna_k, unico_k))))
 
     # cascata: cada linha se TRANSFORMA na conclusão seguinte
     linhas = VGroup(
@@ -1293,6 +1393,7 @@ def p10_ato4(cena):
     # registrador de saída; o `pergunta_r` fica, porque é no C11N39 que
     # ele vira a resposta
     with narra(cena, "C11N37", 6.7):
+        na = partial(na_palavra, cena, _agora(cena), "C11N37", 6.7)
         cena.play(FadeOut(VGroup(cena.volta_circuito, tqf, rot_tqf,
                                  med_k, fundo_k)),
                   # o `85` SAI do registrador e vira o `85` da equação: a
@@ -1304,27 +1405,41 @@ def p10_ato4(cena):
         # da cena e deixaria as soltas
         cena.remove(eq_k[0], resto_eq)
         cena.add(eq_k)
+        # "tamanho do registrador": o N da equação, antes de a conta virar
+        # 85/512 (o N só vira 512 na troca logo abaixo)
+        cena.play(na("tamanho do registrador", realce(eq_k[4])))
         # dividir os dois lados pelo tamanho do registrador é exatamente o
         # que a fala diz, e é aí que o `N` vira `512`
         cena.play(ReplacementTransform(eq_k, linhas[0]), run_time=1.1 * VEL)
+        # "a ordem": o r, que já está na primeira linha
+        cena.play(na("a ordem", realce(linhas[0][6])))
     with narra(cena, "C11N38", 8.3):
-        cena.play(Write(linhas[1]), run_time=1.0 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N38", 8.3)
+        cena.play(na("fração reduzida",
+                     Write(linhas[1], run_time=1.0 * VEL)))
         # "que se esconde ali" fecha a frase, e o "ali" é o 85/512 da
         # PRIMEIRA linha, em cena desde o C11N37 — a de baixo, que começa
         # igual, nasce agora e está fora pela regra 2. Circumscribe porque
         # é um pedaço da fórmula; laranja é a cor da leitura k no ato todo
-        cena.play(Circumscribe(linhas[0][0:3], color=LARANJA),
-                  run_time=0.7 * VEL)
+        cena.play(na("ali", Circumscribe(linhas[0][0:3], color=LARANJA,
+                                         run_time=0.7 * VEL)))
     with narra(cena, "C11N39", 3.5):
+        na = partial(na_palavra, cena, _agora(cena), "C11N39", 3.5)
+        # "denominador": o 6 de 85/512 ≈ 1/6
+        cena.play(na("denominador", realce(linhas[1][6])))
         # o único lugar do capítulo em que o valor de r aparece, e é o
         # lugar certo: depois da medida e das frações contínuas, que é
         # quando o algoritmo de fato o conhece. O `r = ?` que espera na
         # borda desde o C11N29, e que nasceu lá no C11N21, VIRA o `r = 6`
         # — pergunta e resposta são o mesmo objeto na tela
-        cena.play(ReplacementTransform(cena.pergunta_r, linhas[2]),
-                  run_time=1.0 * VEL)
+        cena.play(na("ordem que faltava",
+                     ReplacementTransform(cena.pergunta_r, linhas[2],
+                                          run_time=1.0 * VEL)))
     with narra(cena, "C11N40", 5.4):
-        cena.play(Write(linhas[3]), run_time=1.0 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C11N40", 5.4)
+        cena.play(na("potência", Write(linhas[3], run_time=1.0 * VEL)))
+        # "devolve um": o 1 do `2⁶ ≡ 1`, já escrito
+        cena.play(na("devolve um", realce(linhas[3][2])))
     # ---- o parêntese: a medida podia ter caído em outro pico ----------
     # O mecanismo da falha: o pico medido é x·N/r, e as frações contínuas
     # só sabem devolver x/r REDUZIDA. Quando x e r têm fator comum — aqui
@@ -1365,12 +1480,18 @@ def p10_ato4(cena):
                   TransformFromCopy(linhas[1], frac_esq), run_time=1.4 * VEL)
 
     with narra(cena, "C11N42", 6.6):
+        na = partial(na_palavra, cena, _agora(cena), "C11N42", 6.6)
         # a fração se reduz: 2/6 é o que a medida guarda, 1/3 é tudo o que
         # as frações contínuas sabem devolver
-        cena.play(TransformFromCopy(VGroup(*frac_esq[4:]), frac_dir),
-                  run_time=1.0 * VEL)
+        cena.play(na("fração",
+                     TransformFromCopy(VGroup(*frac_esq[4:]), frac_dir,
+                                       run_time=1.0 * VEL)))
+        # "denominador": o 3, que acabou de nascer
+        cena.play(na("denominador", realce(frac_dir[3])))
         # e o denominador vira o r candidato, nascendo do r que valeu
-        cena.play(TransformFromCopy(linhas[2], falha_r), run_time=1.1 * VEL)
+        cena.play(na("da ordem",
+                     TransformFromCopy(linhas[2], falha_r,
+                                       run_time=1.1 * VEL)))
 
     with narra(cena, "C11N43", 5.8):
         # a mesma conferência, rodada no candidato errado: nasce da linha
@@ -1389,7 +1510,10 @@ def p10_ato4(cena):
     caixa = SurroundingRectangle(linhas[-1], color=VERDE, buff=0.22,
                                  corner_radius=0.15)
     with narra(cena, "C11N46", 3.5):
+        na = partial(na_palavra, cena, _agora(cena), "C11N46", 3.5)
         cena.play(Write(linhas[6]), Create(caixa), run_time=1.1 * VEL)
+        # "o número": o 21, já escrito na moldura
+        cena.play(na("o número", realce(linhas[6][0])))
 
     # a moldura verde (o "21 = 3 × 7" E a caixa) sobrevive ao capítulo: o
     # encerramento do vídeo 4 (V4N01) pousa o cadeado em cima dela, sem
