@@ -3,9 +3,12 @@
 (roteiro_video3_do_teorema_ao_rsa.md)."""
 
 from manim import *
+from functools import partial
 
 from ..paleta import CINZA, LARANJA, PRETO, VEL
-from ..ferramentas import T, narra, pot
+from ..ferramentas import T, narra, pot, realce
+from ..ferramentas import _agora
+from ..sincronias import na_palavra
 from ..montagem import TITULOS
 from ..textos import tx
 from .comum import VIDEOS, apresentacao
@@ -92,9 +95,13 @@ def encerramento(cena, tese):
     cad = cadeado("fechado").scale(1.25)
     cad.next_to(tese, UP, buff=0)
     with narra(cena, "V3N01", 7.9):
+        na = partial(na_palavra, cena, _agora(cena), "V3N01", 7.9)
         cena.play(FadeIn(cad, shift=0.7 * DOWN), run_time=1.4 * VEL)
         # "ninguém sabe fatorar": a frase se grava no corpo do cadeado
         gravar(cena, cad, tx("geral.fatorar_n"), tamanho=24, run_time=1.2)
+        # "número grande": o n da tese, depois do gravar() (a palavra cai
+        # depois dele)
+        cena.play(na("número grande", realce(tese[0][3])))
 
     # a rachadura CORRE pelo arco e para no meio — devagar, porque é a
     # última imagem do vídeo. Ele não quebra: a quebra é o vídeo 4

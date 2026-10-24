@@ -1098,7 +1098,11 @@ def parte8(cena):
         # logo depois, como hoje
         cena.play(na("módulo grande", AnimationGroup(
             ReplacementTransform(tab15[0], malha35),
-            FadeOut(VGroup(*tab15[1:])), FadeOut(uns15), FadeOut(riscos),
+            # cada peça que de fato está em cena: um VGroup montado na hora
+            # (ou um grupo cujas peças entraram uma a uma) some da tela mas
+            # não sai da cena, e o FadeOut devolve a opacidade no fim
+            FadeOut(tab15[1]), FadeOut(tab15[2]), FadeOut(tab15[3]),
+            *[FadeOut(c) for c in uns15], *[FadeOut(r) for r in riscos],
             ReplacementTransform(l2, l2b),
             ReplacementTransform(conta, conta35), run_time=1.4 * VEL)))
         cena.play(ReplacementTransform(malha35, malha77),
