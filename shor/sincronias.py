@@ -170,23 +170,23 @@ SINC = {
         ("C6N15", "o módulo precisa"): 0.222,       # geral[3][1] + n do expoente
         ("C6N15", "precisa ser primo"): 0.322,      # Indicate(geral[4])
         # vídeo 3, capítulo 7 — idem (estimativa por caracteres)
-        ("C7N02", "multiplicador"): 0.275,          # head_l[1] + esq[0] (o 2⁸) pulsam, depois do Write(eq)
-        ("C7N02", "lista de restos"): 0.686,        # esq[1:] + dir_[0:5] pulsam
-        ("C7N03", "cancelar a lista"): 0.584,       # div_e + div_d nascem
-        ("C7N04", "dois desses fatores"): 0.383,    # os 3 e 6 roxos de esq, dir_, div_e, div_d pulsam
-        ("C7N04", "módulo"): 0.942,                 # o 9 de exp2 e o de dir_ pulsam
-        ("C7N05", "linhas"): 0.129,                 # o primeiro play (linhas 3 e 6 + Indicate roxos) começa
-        ("C7N06", "números que não têm inverso"): 0.627,  # cruzes + cruzes_eq nascem
-        ("C7N07", "números"): 0.284,                # sobr nasce
-        ("C7N07", "módulo"): 0.896,                 # dir_[6] (o 9) pulsa
-        ("C7N08", "contagem"): 0.049,               # Write(phi) começa
-        ("C7N08", "fi de ene"): 0.878,              # phi pulsa
-        ("C7N11", "potência"): 0.294,               # res[0] (o 2⁶) pulsa
-        ("C7N11", "a um"): 0.588,                   # res[2] (o 1) pulsa
-        ("C7N11", "nove"): 0.926,                   # res[4] (o 9) pulsa
-        ("C7N12", "qualquer módulo"): 0.136,        # geral[3][1] + n do expoente, logo depois do Write
-        ("C7N12", "o expoente"): 0.320,             # geral[0][1] (o φ(n)) pulsa
-        ("C7N12", "totiente"): 0.913,               # geral[0][1] pulsa
+        ("C7N02", "multiplicador"): 0.275,          # Create(el2) + Indicate(head_l[1]), e a linha 2 cai sobre B
+        ("C7N02", "lista de restos"): 0.686,        # A pulsa
+        ("C7N04", "cancelar a lista"): 0.584,       # div_e + div_d nascem
+        ("C7N05", "dois desses fatores"): 0.383,    # os 3 e 6 marrons de esq, dir_, div_e, div_d pulsam
+        ("C7N05", "módulo"): 0.942,                 # o 9 de exp2 e o de dir_ pulsam
+        ("C7N06", "linhas"): 0.129,                 # o bloco (linhas 3 e 6 + Indicate marrons) começa
+        ("C7N07", "números que não têm inverso"): 0.627,  # cruzes + cruzes_eq nascem
+        ("C7N08", "números"): 0.284,                # sobr nasce
+        ("C7N08", "módulo"): 0.896,                 # dir_[6] (o 9) pulsa
+        ("C7N09", "contagem"): 0.049,               # Write(phi) começa
+        ("C7N09", "fi de ene"): 0.878,              # phi pulsa
+        ("C7N12", "potência"): 0.294,               # res[0] (o 2⁶) pulsa
+        ("C7N12", "a um"): 0.588,                   # res[2] (o 1) pulsa
+        ("C7N12", "nove"): 0.926,                   # res[4] (o 9) pulsa
+        ("C7N13", "qualquer módulo"): 0.136,        # geral[3][1] + n do expoente, logo depois do Write
+        ("C7N13", "o expoente"): 0.320,             # geral[0][1] (o φ(n)) pulsa
+        ("C7N13", "totiente"): 0.913,               # geral[0][1] pulsa
         # vídeo 3, capítulo 8 (C8N12–C8N24) — idem (estimativa por caracteres)
         ("C8N12", "número a"): 0.045,                     # Indicate(L[0][0]) na palavra
         ("C8N12", "Multiplicamos"): 0.673,                # L → L2
@@ -502,24 +502,24 @@ SINC = {
         # vídeo 3, capítulo 7 — medidas no audio/en com faster-whisper
         # (small.en; início da palavra ÷ duração; ouviu "reminders", "rules",
         # "modules", "9" no lugar de "remainders", "rows", "modulus", "nine"; no
-        # C7N11 não transcreveu o "to" de "to one": vale o "one")
+        # C7N12 não transcreveu o "to" de "to one": vale o "one")
         ("C7N02", "multiplicador"): 0.224,          # "multiplier"
         ("C7N02", "lista de restos"): 0.554,        # "list of remainders"
-        ("C7N03", "cancelar a lista"): 0.611,       # "canceling the list"
-        ("C7N04", "dois desses fatores"): 0.415,    # "two of these factors"
-        ("C7N04", "módulo"): 0.912,                 # "modulus"
-        ("C7N05", "linhas"): 0.132,                 # "rows"
-        ("C7N06", "números que não têm inverso"): 0.558,  # "numbers that have no inverse"
-        ("C7N07", "números"): 0.269,                # "numbers"
-        ("C7N07", "módulo"): 0.821,                 # "modulus"
-        ("C7N08", "contagem"): 0.042,               # "how many"
-        ("C7N08", "fi de ene"): 0.773,              # "phi of n"
-        ("C7N11", "potência"): 0.395,               # "power"
-        ("C7N11", "a um"): 0.557,                   # "(to) one"
-        ("C7N11", "nove"): 0.904,                   # "nine"
-        ("C7N12", "qualquer módulo"): 0.104,        # "any modulus"
-        ("C7N12", "o expoente"): 0.271,             # "the exponent"
-        ("C7N12", "totiente"): 0.839,               # "totient"
+        ("C7N04", "cancelar a lista"): 0.611,       # "canceling the list"
+        ("C7N05", "dois desses fatores"): 0.415,    # "two of these factors"
+        ("C7N05", "módulo"): 0.912,                 # "modulus"
+        ("C7N06", "linhas"): 0.132,                 # "rows"
+        ("C7N07", "números que não têm inverso"): 0.558,  # "numbers that have no inverse"
+        ("C7N08", "números"): 0.269,                # "numbers"
+        ("C7N08", "módulo"): 0.821,                 # "modulus"
+        ("C7N09", "contagem"): 0.042,               # "how many"
+        ("C7N09", "fi de ene"): 0.773,              # "phi of n"
+        ("C7N12", "potência"): 0.395,               # "power"
+        ("C7N12", "a um"): 0.557,                   # "(to) one"
+        ("C7N12", "nove"): 0.904,                   # "nine"
+        ("C7N13", "qualquer módulo"): 0.104,        # "any modulus"
+        ("C7N13", "o expoente"): 0.271,             # "the exponent"
+        ("C7N13", "totiente"): 0.839,               # "totient"
         # vídeo 3, capítulo 8 (C8N12–C8N24) — medidas no audio/en com
         # faster-whisper (small.en; início da palavra ÷ duração). No C8N19 o
         # transcritor ouviu "when" no lugar de "one" em "one undoing" (5,72 s)

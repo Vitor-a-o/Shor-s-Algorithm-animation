@@ -45,22 +45,23 @@ Capítulos 6 a 8, na ordem de montagem.
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
 | CAP07 | O Teorema de Euler é uma generalização do teorema visto no capítulo anterior. | 5,4 | cartão |
-| C7N01 | Vamos tentar fazer os mesmos passos, porém agora com a tabela do módulo nove, que não é primo. | 7,5 | headers + `linhas_cel` num bloco só |
-| C7N02 | Escolhemos um multiplicador para a lista de restos. | 3,3 | `Create(el2)` + `Indicate(head_l[1])` emendados com `Write(eq)` |
-| C7N03 | E aqui vem o passo que fez Fermat funcionar: cancelar a lista dos dois lados. | 6,2 | `Write(div_e)` + `Write(div_d)` |
-| C7N04 | Só que cancelar é multiplicar pelo inverso, e dois desses fatores não têm inverso, pois compartilham fator com o módulo. | 8,3 | `FadeIn(exp1)` + `Write(exp2)` emendados |
-| C7N05 | São exatamente as linhas que o capítulo cinco já tinha marcado como mortas. Então o cancelamento não é permitido, e a congruência não vale. | 10,0 | as linhas 3 e 6 apagando + os `Indicate`, o `Wiggle` e o `Transform(eq[1] → neq)` — os três `play` num bloco só |
-| C7N06 | A saída de Euler é simplesmente não incluir os números que não têm inverso. | 5,8 | `Create(cruzes)` + `Create(cruzes_eq)` + saída de `exp1`/`exp2` |
-| C7N07 | Assim sobram só os números que não compartilham fator com o módulo. | 5,0 | `FadeIn(sobr)` — `play` próprio |
-| C7N08 | E a contagem deles é dada pela função totiente de Euler, que se escreve fi de ene. | 7,1 | `Write(phi)` — `play` próprio. É aqui, e só aqui, que o símbolo ganha nome falado: o capítulo 8 diz "fi de ene" sete vezes e depende desta emenda |
-| C7N09 | Com a lista refeita, a mesma conta roda de novo. | 4,2 | `ReplacementTransform(eq → eq2)` + `FadeOut(cruzes_eq)` |
-| C7N10 | Agora todo fator tem inverso, e o cancelamento é legítimo. | 4,2 | `div2_e` + `div2_d` |
-| C7N11 | Sobra outra vez uma potência congruente a um, desta vez módulo nove. | 5,0 | `res` |
-| C7N12 | Ele vale para qualquer módulo, e o expoente deixou de ser o módulo menos um: agora é a função totiente. | 8,3 | `Write(geral)`, ainda no rodapé e no tamanho de hoje. **Sem** o `Create(caixa)` |
-| C7N13 | Esse é o Teorema de Euler. | 2,5 | **A virada, espelhando o `C6N14`.** Um `play` só: `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `el2`, `cruzes`, `sobr`, `phi`, `eq2`, `div2_e` e `div2_d` saem em `FadeOut`, e no mesmo bloco o `geral` sobe para [0, −0,5, 0] e cresce de 28 para 40. O `res` sai meio segundo atrasado, como o `resultado` no capítulo 6. Fechando, `titulo = T("Teorema de Euler", 40)` nasce em [0, 0,9, 0] por `Write` |
-| C7N14 | Guarde essa fórmula: o próximo capítulo sai inteiro dela. | 3,8 | Título e equação parados em cena. Em "sai inteiro dela", `Indicate` no `φ(n)` do expoente — é exatamente a peça que o capítulo 8 vai consumir |
+| C7N01 | Vamos tentar fazer os mesmos passos, porém agora com a tabela do módulo nove, que não é primo. | 7,5 | A tabela entra em dois tempos dentro de um `play` só (`Succession`), como no `C6N01`: primeiro a moldura — `FadeIn(titulo_tab)` com o título "Tabela multiplicativa (mod 9)" acima da tabela, `head_c` e `head_l` em `LaggedStart` e `Create(lin_h)` + `Create(lin_v)`, ~1,5 s —, depois o `LaggedStart(linhas_cel)`, uma linha por vez, ~2,5 s |
+| C7N02 | Escolhemos um multiplicador para a lista de restos. | 3,3 | Num bloco só. No começo, `Create(el1)` (verde, linha 1) + `TransformFromCopy(linhas_cel[0] → A)`: a lista, preta, na área da direita. Em "multiplicador", `Create(el2)` — **verde**, como as elipses do capítulo 6 — na linha 2 + `Indicate(head_l[1])`, e logo em seguida as cópias de `linhas_cel[1]` caem sobre `B` (vermelho, embaixo de `A`) com `FadeIn(mod_rot)` à esquerda de `B`. Em "lista de restos", `realce(A)` |
+| C7N03 | A linha do multiplicador também só reordena a lista, e chegamos a uma congruência como a do capítulo anterior. | 7,5 | `LaggedStart(Create(arcos))` — cada arco liga `A[j]` ao `B` de mesmo valor, como no `C6N06` (módulo nove, a linha do 2 é 2 4 6 8 1 3 5 7, um rearranjo de 1…8). Emendado, `eq0` = `(2·1)(2·2)…(2·8) ≡ (1·2·3·4·5·6·7·8) (mod 9)` em [0, −2,35, 0], nascendo como o do `C6N08` (cada `2` de cópia de `head_l[1]`, cada número de cópia do `A[j]`, o lado direito de `A`); o `3` e o `6` já nascem marrons. Fechando, a extração dos `2` como no `C6N09`, mais rápida (oito passos de ~0,35 s), até `2⁸·(1·2·3·4·5·6·7·8) ≡ (1·2·3·4·5·6·7·8) (mod 9)` — o `eq`, com o `2⁸` por `pot` (base vermelha, expoente azul) |
+| C7N04 | E aqui vem o passo que fez Fermat funcionar: cancelar a lista dos dois lados. | 6,2 | No começo (~0,5 s), `FadeOut` de `A`, `B`, `arcos` e `mod_rot`: a área da direita fica livre para o `exp1`/`exp2`. Em "cancelar a lista", `Write(div_e)` + `Write(div_d)` nascem na palavra |
+| C7N05 | Só que cancelar é multiplicar pelo inverso, e dois desses fatores não têm inverso, pois compartilham fator com o módulo. | 8,3 | `FadeIn(exp1)` + `Write(exp2)` emendados |
+| C7N06 | São exatamente as linhas que o capítulo cinco já tinha marcado como mortas. Então o cancelamento não é permitido, e a congruência não vale. | 10,0 | as linhas 3 e 6 apagando + os `Indicate`, o `Wiggle` e o `Transform(eq[1] → neq)` — os três `play` num bloco só |
+| C7N07 | A saída de Euler é simplesmente não incluir os números que não têm inverso. | 5,8 | `Create(cruzes)` + `Create(cruzes_eq)` + saída de `exp1`/`exp2` |
+| C7N08 | Assim sobram só os números que não compartilham fator com o módulo. | 5,0 | `FadeIn(sobr)` — `play` próprio |
+| C7N09 | E a contagem deles é dada pela função totiente de Euler, que se escreve fi de ene. | 7,1 | `Write(phi)` — `play` próprio. É aqui, e só aqui, que o símbolo ganha nome falado: o capítulo 8 diz "fi de ene" sete vezes e depende desta emenda |
+| C7N10 | Com a lista refeita, a mesma conta roda de novo. | 4,2 | Animação nova, num `play` só (≤ 3,9 s): `A2` — os seis números de `sobr` copiados para a área da direita, pretos, embaixo do `phi` — e as cópias de `linhas_cel[1]` nas colunas 1, 2, 4, 5, 7 e 8 caindo sobre `B2` (vermelho: 2 4 8 1 5 7), com `mod_rot2` à esquerda de `B2`; `arcos2` ligando cada `A2[j]` ao `B2` igual; `FadeOut(eq)` + `FadeOut(cruzes_eq)` e `eq0b` = `(2·1)(2·2)(2·4)(2·5)(2·7)(2·8) ≡ (1·2·4·5·7·8) (mod 9)` nascendo de `head_l[1]` e de `A2`; a extração dos `2` em seis passos de ~0,3 s até o `eq2` = `2⁶·(1·2·4·5·7·8) ≡ (1·2·4·5·7·8) (mod 9)`, com o `2⁶` por `pot` |
+| C7N11 | Agora todo fator tem inverso, e o cancelamento é legítimo. | 4,2 | `div2_e` + `div2_d` |
+| C7N12 | Sobra outra vez uma potência congruente a um, desta vez módulo nove. | 5,0 | `res`, com o `2⁶` por `pot` (base vermelha, expoente azul) |
+| C7N13 | Ele vale para qualquer módulo, e o expoente deixou de ser o módulo menos um: agora é a função totiente. | 8,3 | `Write(geral)`, ainda no rodapé e no tamanho de hoje. **Sem** o `Create(caixa)` |
+| C7N14 | Esse é o Teorema de Euler. | 2,5 | **A virada, espelhando o `C6N14`.** Um `play` só: `titulo_tab`, `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `el1`, `el2`, `cruzes`, `sobr`, `phi`, `A2`, `B2`, `arcos2`, `mod_rot2`, `eq2`, `div2_e` e `div2_d` saem em `FadeOut`, e no mesmo bloco o `geral` sobe para [0, −0,5, 0] e cresce de 28 para 40. O `res` sai meio segundo atrasado, como o `resultado` no capítulo 6. Fechando, `titulo = T("Teorema de Euler", 40)` nasce em [0, 0,9, 0] por `Write` |
+| C7N15 | Guarde essa fórmula: o próximo capítulo sai inteiro dela. | 3,8 | Título e equação parados em cena. Em "sai inteiro dela", `Indicate` no `φ(n)` do expoente — é exatamente a peça que o capítulo 8 vai consumir |
 
-**Subtotal: 86,6 s** (cartão + 14 locuções)
+**Subtotal: 94,1 s** (cartão + 15 locuções)
 
 ---
 
@@ -183,23 +184,23 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 | C6N13 | múltiplo do módulo | multiple of the modulus | `geral[3]` + o n do expoente | |
 | C6N15 | o módulo precisa | the modulus has | `geral[3]` + o n do expoente | |
 | C6N15 | precisa ser primo | has to be prime | o `Indicate(geral[4])` que já existe, agora na palavra | |
-| C7N02 | multiplicador | multiplier | o `Indicate(head_l[1])` que já existe, agora na palavra, junto do `2⁸` (`esq[0]`) | o `Write(eq)` e o `Create(el2)` seguem no começo |
-| C7N02 | lista de restos | list of remainders | `esq[1:]` + `dir_[0:5]` | |
-| C7N03 | cancelar a lista | canceling the list | `div_e` + `div_d` nascem na palavra | |
-| C7N04 | dois desses fatores | two of these factors | os `3` e `6` roxos: `esq[2]`, `esq[4]`, `dir_[1]`, `dir_[3]`, `div_e[2]`, `div_e[4]`, `div_d[2]`, `div_d[4]` | |
-| C7N04 | módulo | modulus | o 9 de `exp2` e o 9 de `dir_` (`dir_[6]`) | |
-| C7N05 | linhas | rows | o primeiro `play` (linhas 3 e 6 apagando + os `Indicate` roxos) começa na palavra | o `Wiggle` e o `≢` vêm depois, como hoje |
-| C7N06 | números que não têm inverso | numbers that have no inverse | `cruzes` + `cruzes_eq` nascem na palavra | |
-| C7N07 | números | numbers | `sobr` nasce na palavra | |
-| C7N07 | módulo | modulus | `dir_[6]` (o 9) | |
-| C7N08 | contagem | how many | `Write(phi)` na palavra | |
-| C7N08 | fi de ene | phi of n | `phi` | |
-| C7N11 | potência | power | `res[0]` (o `2⁶`) | o `ReplacementTransform` segue no começo |
-| C7N11 | a um | to one | `res[2]` | |
-| C7N11 | nove | nine | `res[4]` | |
-| C7N12 | qualquer módulo | any modulus | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo |
-| C7N12 | o expoente | the exponent | `geral[0][1]` (o `φ(n)`) | |
-| C7N12 | totiente | totient | `geral[0][1]` | |
+| C7N02 | multiplicador | multiplier | `Create(el2)` + `Indicate(head_l[1])` na palavra | `el1` e `A` seguem no começo da linha |
+| C7N02 | lista de restos | list of remainders | `A` | |
+| C7N04 | cancelar a lista | canceling the list | `div_e` + `div_d` nascem na palavra | |
+| C7N05 | dois desses fatores | two of these factors | os `3` e `6` marrons: `esq[2]`, `esq[4]`, `dir_[1]`, `dir_[3]`, `div_e[2]`, `div_e[4]`, `div_d[2]`, `div_d[4]` | |
+| C7N05 | módulo | modulus | o 9 de `exp2` e o 9 de `dir_` (`dir_[6]`) | |
+| C7N06 | linhas | rows | o primeiro `play` (linhas 3 e 6 apagando + os `Indicate` marrons) começa na palavra | o `Wiggle` e o `≢` vêm depois, como hoje |
+| C7N07 | números que não têm inverso | numbers that have no inverse | `cruzes` + `cruzes_eq` nascem na palavra | |
+| C7N08 | números | numbers | `sobr` nasce na palavra | |
+| C7N08 | módulo | modulus | `dir_[6]` (o 9) | |
+| C7N09 | contagem | how many | `Write(phi)` na palavra | |
+| C7N09 | fi de ene | phi of n | `phi` | |
+| C7N12 | potência | power | `res[0]` (o `2⁶`) | o `ReplacementTransform` segue no começo |
+| C7N12 | a um | to one | `res[2]` | |
+| C7N12 | nove | nine | `res[4]` | |
+| C7N13 | qualquer módulo | any modulus | `geral[3]` (o n) + o n do expoente | o `Write(geral)` segue no começo |
+| C7N13 | o expoente | the exponent | `geral[0][1]` (o `φ(n)`) | |
+| C7N13 | totiente | totient | `geral[0][1]` | |
 | C8N12 | número a | number a | o `Indicate(L[0][0])` que já existe, agora na palavra | a caixa `SEGREDO` e os glifos seguem antes |
 | C8N12 | Multiplicamos | We multiply | `L → L2` na palavra | |
 | C8N13 | se somam | add up | `L2 → L3` na palavra | |
@@ -263,10 +264,10 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 
 **Ficam sem realce**, porque o que a fala nomeia não é um número nem uma variável em cena:
 contagens e nomes ("quatro operações" e "dois teoremas" no `V3N00`, "primeiro teorema" no
-`CAP06`), números de capítulo e de vídeo (`C7N05`, `V3N02`), o "módulo nove" do `C7N01` (o
+`CAP06`), números de capítulo e de vídeo (`C7N06`, `V3N02`), o "módulo nove" do `C7N01` (o
 nove não está escrito na tela), a fase figurativa do capítulo 8 (`C8N01`–`C8N11`: canal,
 chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N08`, `C6N09`, `C6N14`,
-`C7N09`, `C7N10`, `C7N13`, `C7N14`, `C8N22`, `C8N25`, `C8N33`, `C8N42`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
+`C7N03`, `C7N10`, `C7N11`, `C7N14`, `C7N15`, `C8N22`, `C8N25`, `C8N33`, `C8N42`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
 
 ---
 
@@ -276,13 +277,13 @@ chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C
 |---|---|---|
 | Abertura | 1 | 8,8 s |
 | Capítulo 6 | 16 | 92,8 s |
-| Capítulo 7 | 15 | 86,6 s |
+| Capítulo 7 | 16 | 94,1 s |
 | Capítulo 8 | 45 | 314,8 s |
 | Encerramento | 2 | 15,8 s |
-| **Total** | **79** | **518,8 s** |
+| **Total** | **80** | **526,3 s** |
 
-Somando o `PAD` de 0,35 s por locução (27,7 s), os dois cartões silenciosos
-(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 23 s** —
+Somando o `PAD` de 0,35 s por locução (28,0 s), os dois cartões silenciosos
+(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 31 s** —
 passa um pouco da faixa de 8–9 min que a estimativa por `cena.play` previa, puxada pelas
 falas reescritas da fase 0 e do fecho. A fase 0 do capítulo 8
 responde por ~93,0 s desse total; as fases B e C continuam somando vinte e quatro `play`
@@ -318,7 +319,7 @@ passa como áudio faltando.
 - [ ] Abertura — V3N00
 - [ ] Cartões — CAP06 a CAP08
 - [ ] Capítulo 6 — C6N01 a C6N15
-- [ ] Capítulo 7 — C7N01 a C7N14
+- [ ] Capítulo 7 — C7N01 a C7N15
 - [ ] Capítulo 8 — C8N01 a C8N44
 - [ ] Encerramento — V3N01 e V3N02
 - [ ] `python medir.py`
@@ -351,32 +352,28 @@ passa como áudio faltando.
 
 ## Pendências de código do capítulo 7 (`parte7`)
 
-1. Headers + `linhas_cel` num bloco só (`C7N01`).
-2. `Create(el2)` + `Indicate` emendados com `Write(eq)` (`C7N02`).
-3. `FadeIn(exp1)` + `Write(exp2)` num bloco só (`C7N04`).
-4. As opacidades das linhas 3 e 6, o `Wiggle` e o `Transform(eq[1] → neq)` num bloco só —
-   hoje são três `play` (`C7N05`).
-5. **Quebrar em três** o `play` que hoje é único: `Create(cruzes)` + `Create(cruzes_eq)` +
-   saída de `exp1`/`exp2` (`C7N06`), depois `FadeIn(sobr)` sozinho (`C7N07`), depois
-   `Write(phi)` sozinho (`C7N08`). Quem sobrevive e como se chama a contagem são dois
-   beats, e a definição de φ é a carga do capítulo — não pode dividir tempo com a saída
-   das cruzes.
-6. **`Create(caixa)` sai.** O título do `C7N13` assume a função que o retângulo verde
-   tinha, e manter os dois deixa a tela com duas molduras concorrendo.
-7. **Final novo (`C7N13`)** — mesmo pouso do `C6N14`, em um `play` único:
-   - `FadeOut` de `head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `el2`, `cruzes`,
-     `sobr`, `phi`, `eq2`, `div2_e` e `div2_d`;
-   - no mesmo `play`, `geral.animate.move_to([0, -0.5, 0]).scale(40/28)`;
-   - `res` com `FadeOut` atrasado (~0,5 s) em relação ao resto;
-   - `Write(titulo)` fechando o bloco, com `titulo = T("Teorema de Euler", 40)` em
-     [0, 0.9, 0].
-
-   Vale extrair isso e o `C6N14` numa função só em `ferramentas.py` — algo como
-   `pousar_teorema(cena, formula, texto, resto)` — já que os dois capítulos fazem
-   exatamente o mesmo movimento com objetos diferentes.
-8. O `cena.wait(1.6)` final sai: quem sustenta o título em cena agora é o `C7N14`.
-9. A saída do título para o cartão `CAP08` precisa ser **um movimento só**, com o
-   `limpar()` emendado no cartão — mesma nota do fim do capítulo 6.
+1. **Tabela em dois tempos, com título (`C7N01`)** — como o `C6N01`.
+2. **Lista e linha do multiplicador na área da direita (`C7N02`)** — `el1` e `el2` verdes;
+   `A` saindo da linha 1, a linha 2 caindo sobre `B`.
+3. **Os passos do capítulo 6, comprimidos (`C7N03`)** — arcos, `eq0` e a extração dos `2`
+   até o `eq`. Os gestos são os do capítulo 6; o que servir aos dois capítulos pode ir para
+   `ferramentas.py`.
+4. **Área da direita livre (`C7N04`)** — `A`, `B`, `arcos` e `mod_rot` saem antes do
+   `exp1`/`exp2`.
+5. **Fatores sem inverso em marrom (`C7N05`–`C7N08`)** — cor nova `MARROM` na paleta; o roxo
+   do capítulo fica só com o `a` da fórmula de Euler.
+6. As opacidades das linhas 3 e 6, o `Wiggle` e o `Transform(eq[1] → neq)` num bloco só —
+   hoje são três `play` (`C7N06`).
+7. **A lista refeita também se rearranja (`C7N10`)** — `A2`, `B2`, `arcos2` e a extração
+   dos `2` até o `eq2`.
+8. **Potências por `pot` (`C7N03`, `C7N10`, `C7N12`)** — `2⁸` e `2⁶` com base vermelha e
+   expoente azul, como o `3⁶` do capítulo 6.
+9. **Virada (`C7N14`)** — a lista do `FadeOut` inclui `titulo_tab`, `el1`, `A2`, `B2`,
+   `arcos2` e `mod_rot2`. Vale extrair isso e o `C6N14` numa função só em `ferramentas.py`
+   — algo como `pousar_teorema(cena, formula, texto, resto)` — já que os dois capítulos
+   fazem exatamente o mesmo movimento com objetos diferentes.
+10. A saída do título para o cartão `CAP08` precisa ser **um movimento só**, com o
+    `limpar()` emendado no cartão — mesma nota do fim do capítulo 6.
 
 ## Pendências de código do capítulo 8 (`parte8`)
 

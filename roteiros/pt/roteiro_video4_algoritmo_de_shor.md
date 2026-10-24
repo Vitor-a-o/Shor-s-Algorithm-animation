@@ -47,7 +47,7 @@ mesmo gesto do `C8N39` do vídeo 3.
 | C9N09 | O caminho é um ciclo fechado. Daqui em diante, ele só se repete. | 5,1 | Dois `play` sob esta linha: `Create(fecha)` + `Indicate(c00)` e, em seguida, `Write(VGroup(mult[0], mult[1], mult[2]))`. **A congruência mudou de dono**: ela era a fala cortada e agora entra sob "ele só se repete" — sem isso o `mult` nunca nasce e os `TransformFromCopy` do `C9N10` e do `C9N11` ficam sem origem |
 | C9N10 | E cada volta completa no ciclo devolve potências congruentes ao mesmo resto. | 5,6 | Os quatro `play` das duas voltas extras num bloco só: `volta_no_ciclo()`, o `4⁶` nascendo por `TransformFromCopy`, `volta_no_ciclo()` de novo e o `4⁹` com o `(mod 9)`. É a irmã do laço inteiro sob um `with narra` do `C5N11` |
 | C9N11 | O menor deles é o que interessa. | 2,4 | Um `play` só: `Write(rdef[0])` + `Write(rdef[1])` + `TransformFromCopy(mult[2][1], rdef[2])` — o `3` amarelo nasce do expoente que fechou o ciclo, não de um `Write` do vazio. Cabe com folga nos 2,4 s da fala |
-| C9N12 | Ele é a ordem modular dessa base. | 2,4 | **A virada, igual à do `C6N12` e à do `C7N13`.** Um `play` só: a tabela (`head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `seta4`, `zig`) e a coluna direita inteira (`eq`, `escolha`, `f0`, `nota`, `fs`, `mult`) saem em `FadeOut`, e no mesmo bloco `caixa_d` e `borda` nascem já centrados. O `rdef` sai meio segundo atrasado em relação ao resto, e o `r` amarelo dele chega ao `r` do `d2`/`d3` por `TransformFromCopy` — o caso particular é a última coisa a desaparecer debaixo do geral. O `d1` já diz "ordem modular de a módulo n", então **não** entra título separado aqui. **É a linha mais apertada do capítulo**: 2,4 s de fala para o movimento mais complexo dele — ver a pendência 9 |
+| C9N12 | Ele é a ordem modular dessa base. | 2,4 | **A virada, igual à do `C6N14` e à do `C7N14`.** Um `play` só: a tabela (`head_c`, `head_l`, `lin_h`, `lin_v`, `linhas_cel`, `seta4`, `zig`) e a coluna direita inteira (`eq`, `escolha`, `f0`, `nota`, `fs`, `mult`) saem em `FadeOut`, e no mesmo bloco `caixa_d` e `borda` nascem já centrados. O `rdef` sai meio segundo atrasado em relação ao resto, e o `r` amarelo dele chega ao `r` do `d2`/`d3` por `TransformFromCopy` — o caso particular é a última coisa a desaparecer debaixo do geral. O `d1` já diz "ordem modular de a módulo n", então **não** entra título separado aqui. **É a linha mais apertada do capítulo**: 2,4 s de fala para o movimento mais complexo dele — ver a pendência 9 |
 | C9N13 | E ela pode ser enorme: no pior caso, do tamanho da contagem de Euler. | 5,3 | **O pior caso ACONTECENDO, na mesma tabela e com outra base.** Quatro `play`: (1) `Write(d4)`; (2) a definição encolhe para a coluna da direita (`bloco.animate.scale(0.8).move_to([3.3, 0, 0])`) e por baixo dela a tabela mod 9 volta — `FadeIn(tab9)` + `lin_h` + `lin_v`, a legenda `a = 5` `(mod 9)` e o `GrowArrow(seta5)` na linha 5, com o `Create(ini5)` no 1 de partida; (3) o ciclo do 5 inteiro num `LaggedStart(*degraus, lag_ratio=0.8)` — `1 → 5 → 7 → 8 → 4 → 2 → 1`, seis degraus, um por resto invertível, a ida atravessando a tabela para a direita e a volta descendo pela esquerda até o `ini5`, que só pisca (`Indicate`) porque já está lá; (4) `Write(cont9)` (`r = 6 = φ(9)`) com o `Indicate` no `φ(` `n` `)` cinza do `d4` em "a contagem de Euler" — a peça que o capítulo 7 definiu e o 8 gastou. **A fala não lê nenhum degrau**: aqui não entra congruência escrita, o que a tela mostra é o comprimento do caminho. Base 5 é raiz primitiva mod 9, então o ciclo passa pelos seis invertíveis e `r` bate exatamente em `φ(9)` — é o `d4` virando exemplo. **Quatro `play` em 5,3 s** — ver a pendência 9 |
 | C9N14 | Procurar testando um expoente por vez custa muito caro para módulos grandes. | 5,9 | **O módulo cresce, como no `C8N39`.** Cinco `play`: (1) `tab9`, `caminho5`, `ini5` e `seta5` saem e as duas linhas da tabela mod 9 se desdobram na malha inteira — `ReplacementTransform(VGroup(lin_h, lin_v), malha21)`, a legenda vira `n = 21` e a contagem vira `φ(21) = 12`; (2) `malha21 → malha39` com `n = 39` e `φ(39) = 24`; (3) `malha39 → malha77` com `n = 77` e `φ(77) = ?`; (4) a contagem COLAPSA dentro do `φ(n)` do `d4` (`move_to(phi4).scale(0.2).set_opacity(0)` + `Indicate(phi4)`) — a conta que ninguém faz à mão; (5) a malha e a legenda saem e a definição retoma o centro em `scale(1 / 0.8)`. O quadrado do miolo é **fixo**: quem cresce é o número de células, por isso os dígitos saem e sobra só malha. **Cinco `play` em 5,9 s** — ver a pendência 9 |
 | C9N15 | Guarde a pergunta: qual é o menor expoente que devolve um. O próximo capítulo mostra que ela leva à fatoração. | 8,6 | `so_fala` — a caixa parada em cena. Em "o menor expoente", `Indicate` no `r` amarelo do `d3` |
@@ -243,6 +243,149 @@ de verdade.
 | — | *(cartão final, ~3 s)* | — | "Do Zero ao Algoritmo de Shor Quântico" e, embaixo, "fim" |
 
 **Subtotal: 61,0 s** (4 locuções) + cartão ~3 s
+
+---
+
+## Realces — número ou variável nomeado na fala
+
+Mesma regra dos vídeos 2 e 3: **quando a fala nomeia um número ou uma variável que está na
+tela, a peça é realçada na palavra.** As ferramentas são as do vídeo 2: `realce(*peças)` em
+`shor/ferramentas.py` (cada peça pulsa na própria cor, em volta do próprio centro) e
+`na_palavra(cena, t0, tag, est, âncora, *anims)` em `shor/sincronias.py`, que dispara as
+animações na âncora, no mesmo `play` da animação principal da linha, sem empurrar a linha
+para fora da locução. A chave da âncora é `(tag, âncora em pt)`; âncora repetida na fala é a
+primeira ocorrência.
+
+- **Nascimento conta como realce.** Quando a peça nasce na própria palavra, ela não ganha
+  `Indicate` extra; o que muda é o instante do nascimento, que passa a cair na âncora.
+- **Gesto que já existe vai para a palavra.** Os `Indicate`, `Flash` e `Circumscribe` que o
+  código já faz sobre a peça nomeada não ganham um segundo realce: passam a disparar na
+  âncora. É o caso da maior parte do capítulo 10, que já aponta para quase tudo o que diz.
+- **Todas as cópias juntas.** Quando o mesmo valor está em mais de um lugar da tela, todas
+  as cópias realçam no mesmo instante.
+- As âncoras que o código já usa (`C11N10`, `V4N01`, `V4N03`, `V4N04`) não mudam.
+- As frações começam estimadas por caracteres (pt e en) e entram em `roteiros/sincronias.md`
+  marcadas "a medir na gravação".
+
+| Tag | Âncora (pt) | Palavra em en | Realça | Observação |
+|---|---|---|---|---|
+| V4N00 | número grande | large number | o `Indicate(cad[2])` (o "fatorar n" gravado) que já existe, agora na palavra | a aproximação lenta segue antes |
+| C9N01 | o resto | the remainder | `eq[0]` (o c) | o `Write(eq)` segue no começo |
+| C9N02 | módulo | modulus | `escolha[2]` (o 9) + o 9 de `eq` (`eq[3]`) | o `FadeIn(escolha)` segue no começo |
+| C9N02 | a base | the base | `escolha[6]` (o 4) + o 4 de `eq` (`eq[2][0]`) | |
+| C9N02 | expoente | exponent | o b de `eq` (`eq[2][1]`) | |
+| C9N03 | módulo | modulus | `escolha[2]` + `eq[3]` | a tabela segue nascendo no começo |
+| C9N04 | linha da base | base's row | o `GrowArrow(seta4)` + `Indicate(head_l[4])` que já existem, agora na palavra | |
+| C9N05 | expoente zero | exponent zero | `f0[0]` (o `4⁰`) | o `Create(c00)` + `Write(f0)` seguem no começo |
+| C9N05 | vale um | is one | `f0[2]` + `c00` | |
+| C9N06 | no expoente | in the exponent | o b de `eq` | |
+| C9N06 | pela base | by the base | o 4 de `eq` + `head_l[4]` | |
+| C9N07 | linha da base | base's row | `head_l[4]` + `seta4` | em paralelo com o laço |
+| C9N07 | resultado | the result | `fs[0][2]` (o 4), assim que estiver escrito | em paralelo com o laço |
+| C9N08 | o um | on one | `fs[2][2]` + `c00` | depois do `Write(fs[2])`; o `Flash` segue no fim |
+| C9N10 | potências | powers | `mult[2]`, `mult[4]`, `mult[6]` (as que já estiverem em cena) | |
+| C9N10 | mesmo resto | same remainder | `mult[0]` (o 1) | |
+| C9N11 | O menor | The smallest | o `play` do `rdef` começa na palavra | |
+| C9N13 | contagem de Euler | Euler's count | o `Write(cont9)` + `Indicate(phi4)` que já existem, agora na palavra | |
+| C9N14 | um expoente | one exponent | `d3[0][1]` (o r) | |
+| C9N14 | módulos grandes | large moduli | o primeiro salto (`malha21`, `l21`, `c21`) começa na palavra | |
+| C9N15 | o menor expoente | the smallest exponent | o `Indicate(d3[0][1])` que já existe, agora na palavra | |
+| C9N15 | devolve um | gives back one | `d3[2]` | |
+| C10N01 | número do RSA | RSA number | o `Indicate(obj[2])` (o 35) que já existe, agora na palavra | o `Write(obj)` segue no começo |
+| C10N01 | dois primos | two primes | os `Indicate(obj[4])` + `Indicate(obj[6])` que já existem, agora na palavra | |
+| C10N02 | uma base | any base | `Write(base)` na palavra | |
+| C10N03 | pela base | by the base | o 8 de `base` (`base[3]`) + o 8 de `rotulo` (`rotulo[3]`) | em paralelo com o laço |
+| C10N04 | Quatro passos | four steps | os `Indicate` dos quatro `×8` que já existem, agora na palavra | |
+| C10N04 | ordem é quatro | order is four | o `Write(rper)` + `Indicate(rper[2])` que já existem, agora na palavra | |
+| C10N06 | Diminuindo um | Subtracting one | o `e1 → e2` + `Indicate(e2[1])` que já existem, agora na palavra | a saída da cadeia segue no começo |
+| C10N06 | a ordem | the order | `rper` | |
+| C10N06 | múltiplo do número | multiple of the number | o `FadeIn(nota)` + `Indicate(nota[2])` que já existem, agora na palavra, com o 35 de `obj` (`obj[2]`) | |
+| C10N07 | potência menos um | power minus one | `e3[0]` + `e3[1]` | o `e2 → e3` segue no começo |
+| C10N07 | 35 | thirty-five | o `Indicate(e3[4])` que já existe, agora na palavra | |
+| C10N07 | vezes x | times x | o `Indicate(e3[2])` que já existe, agora na palavra | |
+| C10N08 | tronco | trunk | o `Indicate(rb)` que já existe, agora na palavra | |
+| C10N08 | os fatores | the factors | o `Indicate(fBx, fB35)` que já existe, agora na palavra | |
+| C10N09 | o x | find x | o `Write(ex)` + `Indicate(fBx)` que já existem, agora na palavra | |
+| C10N10 | potência menos um | power minus one | o `Indicate(eqB_a)` que já existe, agora na palavra | |
+| C10N11 | ordem r | order r | o `TransformFromCopy(rper[0], d0[0])` na palavra, com `rper[0]` realçando junto | |
+| C10N12 | mesmo número | same number | os `Indicate(ra)` + `Indicate(rb)` que já existem, agora na palavra | |
+| C10N13 | fatores de 35 | factors of thirty-five | os `Indicate(fB35, nB[2], nB[3])` que já existem, agora na palavra | |
+| C10N13 | os de 117 | one hundred seventeen | os `Indicate(fB117, nB[0], nB[1])` que já existem, agora na palavra | |
+| C10N15 | p e q | p and q | os `Indicate` do p (`nA[0]`, `nB[3]`) na palavra e os do q (`nA[3]`, `nB[2]`) logo depois | |
+| C10N16 | dois números | two numbers | o `Indicate(fA65, fA63)` que já existe, agora na palavra | |
+| C10N16 | número que queremos fatorar | number we want to factor | o `Indicate(obj[0])` que já existe, agora na palavra, com `obj[2]` (o 35) junto | |
+| C10N18 | p e q | p and q | os `Indicate(fim[2], fim[4])` que já existem, agora na palavra | |
+| C10N19 | O número | The number | `obj2[2]` (o 35) | depois do `obj → obj2` |
+| C10N22 | ordem par | even order | o `Indicate(u0[6])` que já existe, agora na palavra | |
+| C10N24 | dois primos | two primes | os `Indicate(nU[0], nU[1])` que já existem, agora na palavra | |
+| C10N25 | esse número | this number | o `Indicate(fu1)` que já existe, agora na palavra, com o `FadeIn(multi)` + `GrowArrow(setam)` | |
+| C10N25 | de 35 | thirty-five | o `Indicate(multi[1])` que já existe, agora na palavra | |
+| C10N26 | 35 | thirty-five | o `Indicate(m3[5])` que já existe, agora na palavra | |
+| C10N27 | número do outro lado | number on the other side | `fu2` + `m4[1]` (o 13823) | |
+| C10N27 | nenhum fator | no factor | o `Indicate(m4[5])` (o 1) que já existe, agora na palavra | |
+| C10N28 | dois fatores triviais | two trivial factors | os `Indicate(m3[5], m4[5])` que já existem, agora na palavra | |
+| C10N28 | de 35 | thirty-five | `fim[0]` (o 35 da moldura) | |
+| C10N29 | a base | the base | `u0[2]` (o 24) | |
+| C10N30 | dois primos | both primes | `fim[2]` + `fim[4]` | o `fim.copy() → r1` segue no começo |
+| C10N30 | contagem de Euler | Euler's count | o `Indicate(r1[12])` que já existe, agora na palavra, com `r1[0:3]` (o `φ(35)`) | |
+| C10N31 | a chave privada | the private key | o `Indicate(r2[2])` (o d) que já existe, agora na palavra | |
+| C10N31 | chave pública | public key | o `Indicate(r2[0])` + `Indicate(r2[5:8])` que já existem, agora na palavra | |
+| C10N32 | módulo | modulus | `r3[1]` (o n) | depois do `Write(r3)` |
+| C11N01 | bits | bits | a `fila` inteira, em cascata | depois do `LaggedStart` que a faz nascer |
+| C11N02 | zero | zero | `meio` (o cartão 0) | |
+| C11N02 | ele é um | or one | `meio → bit_1` na palavra; `bit_1 → bit_0` logo depois | |
+| C11N05 | zero | zero | o `0` do `q1` (`q1[2]`) | o `ReplacementTransform(qub, q1)` segue no começo |
+| C11N05 | ou um | or one | o `1` do `q1` (`q1[1]`) | |
+| C11N06 | cada um dos dois | each of the two | as duas `barras` + o `1` e o `0` do `q1` | as barras seguem nascendo no começo |
+| C11N10 | um n | an n | o 21 de `eqc` (`eqc[3][1]`) | depois do `Write(eqc)`, que já cai em "outro exemplo" |
+| C11N11 | cada bit | each bit | as caixas de bit (`bits`) nascem na palavra | |
+| C11N11 | uma potência | a power | as caixas cinzas (`caixas`) nascem na palavra | |
+| C11N12 | potência inteira | whole power | o `FadeIn(prod)` na palavra | |
+| C11N12 | resto | remainder | o `GrowArrow(seta4)` + `TransformFromCopy(eqc[0], saida)` na palavra, com `eqc[0]` realçando junto | |
+| C11N14 | expoente b | exponent b | o `TransformFromCopy(eqc[2][1], letra_b)` na palavra, com `eqc[2][1]` realçando junto | |
+| C11N14 | resto c | remainder c | o `saida_circ` deslizando para o painel na palavra, com `eqc[0]` junto | |
+| C11N15 | cada bit | each bit | o `LaggedStart` dos bits virando qubits começa na palavra | |
+| C11N16 | todos eles | all of them | o `letra_b → carta_b[1]` + `FadeIn(carta_b[2])` na palavra | |
+| C11N17 | o expoente | the exponent | `carta_b[1]` (a coluna) | |
+| C11N17 | resto c | remainder c | o `saida_circ → carta_c[1]` + `FadeIn(carta_c[2])` na palavra | |
+| C11N19 | resto possível | possible remainder | o `Flash(med)` + `carta_c → cartao_c` na palavra | |
+| C11N19 | expoentes | exponents | o `lista_b → bs_de_4` na palavra | |
+| C11N22 | interessa: o r | matters: r | a batida 4 (o `pergunta_r` ficando vermelho) cai na palavra | a batida 5 vem logo depois |
+| C11N23 | informação do r | information about r | `pergunta_r` | |
+| C11N24 | potência de dois | power of two | o `FadeIn(nq)` na palavra | |
+| C11N25 | expoentes que sobreviveram | exponents that survived | `lista_b` + `tres_b` (a coluna e o `⋮`) | em paralelo com a entrada na transformada |
+| C11N25 | pergunta | question | `pergunta_r` | |
+| C11N27 | a ordem | the order | o `LaggedStart` das chaves com os `r` na palavra, com `pergunta_r[0]` realçando junto | |
+| C11N28 | fim do registrador | end of the register | o `Indicate(nq)` que já existe, agora na palavra | |
+| C11N34 | múltiplos | multiples | o `LaggedStart` das marcas (`marcas` + `rots_marca`) começa na palavra | |
+| C11N34 | ordem | order | `rots_marca[1:]` (os `k·N/r`) | |
+| C11N36 | oitenta e cinco | eighty-five | o `Flash` + `coluna_k → unico_k` que já existem, agora na palavra | |
+| C11N37 | tamanho do registrador | register size | o `N` de `eq_k` (`eq_k[4]`) | |
+| C11N37 | a ordem | the order | o `r` de `linhas[0]` (`linhas[0][6]`) | depois da troca |
+| C11N38 | fração reduzida | reduced fraction | o `Write(linhas[1])` na palavra | |
+| C11N38 | ali | there | o `Circumscribe` que já existe, agora na palavra | |
+| C11N39 | denominador | denominator | o 6 de `linhas[1]` (`linhas[1][6]`) | |
+| C11N39 | ordem que faltava | missing order | o `pergunta_r → linhas[2]` na palavra | |
+| C11N40 | potência | power | o `Write(linhas[3])` na palavra | |
+| C11N40 | devolve um | gives back one | `linhas[3][2]` | |
+| C11N42 | fração | fraction | o `frac_esq → frac_dir` na palavra | |
+| C11N42 | denominador | denominator | `frac_dir[3]` (o 3) | |
+| C11N42 | da ordem | of the order | o `TransformFromCopy(linhas[2], falha_r)` na palavra | |
+| C11N46 | o número | the number | `linhas[6][0]` (o 21) | depois do `Write(linhas[6])` |
+| V4N02 | o exemplo | number we just factored | o `Indicate(caixa[0][0])` (o 21) que já existe, agora na palavra | |
+| V4N02 | dois dígitos | two digits | o `TransformFromCopy(caixa[0][0], semente)` na palavra | |
+| V4N02 | centenas | hundreds | o segundo `LaggedStart` de dígitos começa na palavra | |
+| V4N02 | milhares de qubits | thousands of stable qubits | as `cartas` começam a entrar na palavra | |
+
+**Ficam sem realce**, porque o que a fala nomeia não é um número nem uma variável em cena:
+números de capítulo e de vídeo ("capítulo quatro do segundo vídeo" no `C9N01`, "capítulo
+cinco" no `C9N02` e no `C10N17`, "capítulo quatro" no `C11N10`, "capítulo nove" no `C11N21`,
+"Quatro vídeos" no `V4N04`); valores que não estão escritos na tela ("ordem ímpar" no
+`C10N20`, "cinquenta por cento" no `C10N29`); contagens ("Dois máximos divisores comuns" no
+`C11N45`); as linhas em que o número nasce junto com a fala inteira (`C9N12`, `C11N20`,
+`C11N26`, `C11N29`) e as linhas sem número nomeado (`C9N09`, `C10N05`, `C10N14`, `C10N17`,
+`C10N21`, `C10N23`, `C10N33`, `C11N03`, `C11N04`, `C11N07`–`C11N09`, `C11N13`, `C11N18`,
+`C11N21`, `C11N30`–`C11N33`, `C11N35`, `C11N41`, `C11N43`, `C11N44`, `V4N01`, `V4N03`).
 
 ---
 

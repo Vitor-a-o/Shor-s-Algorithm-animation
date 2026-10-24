@@ -320,7 +320,7 @@ def parte9(cena):
     borda = SurroundingRectangle(caixa_d, color=VERDE, buff=0.25,
                                  corner_radius=0.12)
 
-    # A VIRADA, o mesmo pouso do C6N14 e do C7N13: a tabela e a coluna do
+    # A VIRADA, o mesmo pouso do C6N14 e do C7N14: a tabela e a coluna do
     # exemplo saem enquanto o geral nasce, num play único. O rdef é a última
     # coisa a sumir — e o r dele não morre: viaja por cópia para os dois
     # lugares onde a definição o usa, o d2 e o expoente do d3

@@ -5,46 +5,13 @@ from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
-from ..ferramentas import _agora
+from ..ferramentas import _agora, _etapa, _serie, _copia, _vira, _mv
 from ..sincronias import na_palavra
 
 # ============================================================================
 # CAPÍTULO 6 — Fermat NA TABELA multiplicativa mod 7 (slides 59–66)
 #   Narração: C6N01 … C6N15 (roteiro_video3_do_teorema_ao_rsa.md)
 # ============================================================================
-def _etapa(*anims, **kw):
-    """Uma etapa de Succession: introducer, para o que NASCE nela só entrar
-    em cena na vez dela (e não no primeiro quadro do play)."""
-    return AnimationGroup(*anims, introducer=True, **kw)
-
-
-def _serie(*etapas):
-    return Succession(*etapas, introducer=True)
-
-
-def _copia(origem, alvo):
-    """TransformFromCopy marcado como introducer: o alvo só aparece quando a
-    animação começa, mesmo dentro de um Succession."""
-    a = TransformFromCopy(origem, alvo)
-    a.introducer = True
-    return a
-
-
-def _vira(m, alvo):
-    """m assume o desenho de `alvo` — para dentro de um Succession, no lugar
-    do ReplacementTransform. No Cairo, durante um play só é desenhado o que
-    estava em cena quando ele começou, e o ReplacementTransform só põe o
-    alvo em cena no fim do play: o alvo não aparece e a origem deformada
-    fica congelada. Depois do play, cena.replace(m, alvo) troca a peça pela
-    canônica (mesmo desenho, mesmo lugar)."""
-    return Transform(m, alvo.copy())
-
-
-def _mv(m, ponto):
-    """Move m até ponto (centro) — alvo explícito, sem .animate."""
-    return Transform(m, m.copy().move_to(ponto))
-
-
 def _alvo(valor, sobre):
     """O número vermelho do tamanho de B, em cima de `sobre`."""
     return T(str(valor), 30, VERMELHO).move_to(sobre)
@@ -207,120 +174,23 @@ def parte6(cena):
         cena.play(_serie(*etapas))
 
     # ------------------------------------------------------------------
-    # O produto da linha 3, (3·1)…(3·6), e a extração dos 3 (slides 61–62).
-    # Cada peça é um token próprio; o estado final é o `eq` (os mesmos
-    # tokens), então nada sobra em cena. O lado direito já nasce no lugar
-    # final e não se mexe; o lado esquerdo se junta contra ele.
-    TK = 26
-    PO = {k: T("(", TK, PRETO) for k in range(1, 7)}
-    PC = {k: T(")", TK, PRETO) for k in range(1, 7)}
-    R = {k: T("3", TK, VERMELHO) for k in range(1, 7)}
-    D = {k: T("·", TK, PRETO) for k in range(1, 7)}
-    N = {k: T(str(k), TK, PRETO) for k in range(1, 7)}
-    pto = {k: T("·", TK, PRETO) for k in range(2, 7)}      # os · da fila de dentro
-    BO, BC = T("(", TK, PRETO), T(")", TK, PRETO)           # o parêntese grande
-
-    meio = [D[1], BO, N[1]]
-    for k in range(2, 7):
-        meio += [pto[k], N[k]]
-    meio.append(BC)
-    tre = {m: pot("3", str(m), VERMELHO, AZUL, TK) for m in range(2, 7)}
-    mid = VGroup(*meio).arrange(RIGHT, buff=0.04)
-    igual = T("≡", TK, PRETO)
-    rd = []
-    for k in range(1, 7):
-        rd += [T(str(k), TK, PRETO)] + ([T("·", TK, PRETO)] if k < 6 else [])
-    ro, rc = T("(", TK, PRETO), T(")", TK, PRETO)
-    rhs = VGroup(ro, *rd, rc).arrange(RIGHT, buff=0.04)
-    mod7 = fmod("7", 24)
-    eq = VGroup(tre[6], mid, igual, rhs, mod7)
-    eq.arrange(RIGHT, buff=0.15).move_to([0, -2.4, 0])
-    ref_x, ref_y = meio[-1].get_right()[0], meio[0].get_center()[1]
-
-    def estado(m):
-        """(front, tokens) do estado m da extração (0 … 6)."""
-        if m == 0:
-            return None, [t for k in range(1, 7)
-                          for t in (PO[k], R[k], D[k], N[k], PC[k])]
-        toks = [D[1], BO, N[1]]
-        for i in range(2, m + 1):
-            toks += [pto[i], N[i]]
-        if m < 6:
-            toks.append(pto[m + 1])
-            for k in range(m + 1, 7):
-                toks += [PO[k], R[k], D[k], N[k], PC[k]]
-        toks.append(BC)
-        return (R[1] if m == 1 else tre[m]), toks
-
-    def posicoes(m):
-        """centro de cada token do estado m, alinhado ao eq final. Calculado
-        com cópias, com a mesma receita de arrange do eq."""
-        front, toks = estado(m)
-        cp = [t.copy() for t in toks]
-        g = VGroup(*cp).arrange(RIGHT, buff=0.04)
-        todos = list(cp)
-        cf = None
-        if front is not None:
-            cf = front.copy()
-            VGroup(cf, g).arrange(RIGHT, buff=0.15)
-            todos.append(cf)
-        dx, dy = ref_x - cp[-1].get_right()[0], ref_y - cp[0].get_center()[1]
-        for c in todos:
-            c.shift(dx * RIGHT + dy * UP)
-        pos = {id(t): c.get_center() for t, c in zip(toks, cp)}
-        return (None if cf is None else cf.get_center()), pos
-
-    pos_est = [posicoes(m) for m in range(7)]
-    est_tok = [estado(m) for m in range(7)]
-    # estado 0: os tokens vão para o lugar antes de nascerem
-    for t in est_tok[0][1]:
-        t.move_to(pos_est[0][1][id(t)])
+    # O produto da linha 3, (3·1)…(3·6), e a extração dos 3 (slides 61–62):
+    # evidencia() em ferramentas.py, a mesma do capítulo 7. O estado final é
+    # o `eq` (os mesmos tokens), então nada sobra em cena.
+    ev = evidencia("3", range(1, 7), [0, -2.4, 0], tam=26, mod="7")
+    eq = ev.eq
 
     nota = T(tx("c6.comutativa"), 20, CINZA).move_to([0, -1.75, 0])
     with narra(cena, "C6N08", 5.0):
-        esq = LaggedStart(*[AnimationGroup(
-            Write(PO[k]), _copia(head_l[2], R[k]), Write(D[k]),
-            _copia(A[k - 1], N[k]), Write(PC[k])) for k in range(1, 7)],
-            lag_ratio=0.15, run_time=2.2 * VEL)
-        digs = [t for t in rd if t.text != "·"]
-        dir_ = LaggedStart(*[_copia(A[j], digs[j]) for j in range(6)],
-                           lag_ratio=0.1, run_time=1.4 * VEL)
-        resto = AnimationGroup(
-            FadeIn(igual), FadeIn(mod7), FadeIn(ro), FadeIn(rc),
-            *[FadeIn(t) for t in rd if t.text == "·"], run_time=0.8 * VEL)
-        cena.play(esq, dir_, resto, FadeIn(nota, run_time=0.6 * VEL))
+        cena.play(*ev.nasce(head_l[2], A, 2.2 * VEL, 1.4 * VEL, 0.8 * VEL),
+                  FadeIn(nota, run_time=0.6 * VEL))
 
     # a extração dos 3: seis passos de ~0,5 s, sem pausa entre eles
-    passos = []
-    for m in range(1, 7):
-        fa, ta = est_tok[m - 1]
-        fn, tn = est_tok[m]
-        pa, pn = pos_est[m - 1][1], pos_est[m][1]
-        pf = pos_est[m][0]
-        anims = []
-        if m == 1:
-            anims.append(FadeOut(nota))
-        for t in (PO[m], PC[m]) + ((D[m],) if m >= 2 else ()):
-            anims.append(FadeOut(t))
-        if m == 1:
-            anims.append(_mv(R[1], pf))
-        else:
-            tre[m].move_to(pf)
-            anims.append(FadeOut(R[m], target_position=pf))
-            anims.append(_vira(R[1], tre[m]))
-        antes = {id(t) for t in ta}
-        for t in tn:
-            if id(t) in antes:
-                if np.linalg.norm(pn[id(t)] - pa[id(t)]) > 1e-3:
-                    anims.append(_mv(t, pn[id(t)]))
-            else:
-                t.move_to(pn[id(t)])
-                anims.append(Write(t))
-        passos.append(_etapa(*anims, run_time=0.5 * VEL))
+    passos = ev.passos(0.5 * VEL, primeiro=[FadeOut(nota)])
     with narra(cena, "C6N09", 6.3):
         cena.play(_serie(*passos))
-        # o 3 da frente (R[1]) fez o papel de 3², …, 3⁶; o eq leva o tre[6]
-        cena.replace(R[1], tre[6])
+        # o 3 da frente (R[1]) fez o papel de 3², …, 3⁶; o eq leva o pots[6]
+        cena.replace(ev.R[1], ev.pots[6])
 
     # dividir os dois lados pela MESMA multiplicação (slides 64–65) — a
     # narração separa em dois tempos: primeiro o porquê (inverso), depois o ato

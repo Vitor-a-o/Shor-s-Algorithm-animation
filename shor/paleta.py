@@ -3,7 +3,8 @@
 Paleta de cores e parâmetros globais do filme "Do Zero ao Algoritmo de Shor
 Quântico" — tons extraídos dos slides (fundo branco):
     c verde, a azul-marinho, b vermelho, n laranja, x amarelo,
-    bits 1 azul-claro / 0 amarelo, p rosa, q verde-claro, a roxo no RSA.
+    bits 1 azul-claro / 0 amarelo, p rosa, q verde-claro, a roxo no RSA,
+    marrom nos fatores sem inverso (capítulo 7).
 """
 
 VEL = 1.0
@@ -20,6 +21,7 @@ CIANO    = "#2596d1"   # bits "1" (azul-claro dos slides)
 ROSA     = "#f050b0"   # p
 VERDE2   = "#58b32e"   # q (verde-claro dos slides)
 ROXO     = "#8c52ff"   # a no RSA / Euler
+MARROM   = "#9a5b2e"   # fatores sem inverso (capítulo 7)
 CAIXA    = "#e3e3e3"   # caixas cinzas dos diagramas (slides 27 e 34)
 CARTAO_ESCURO = "#123a46"   # caixa da mensagem no RSA (azul-petróleo)
 CAIXA2   = "#c9c9c9"   # caixa do bit 0 (cinza mais escuro dos slides)

@@ -5,8 +5,10 @@ from manim import *
 import numpy as np
 
 from .paleta import COR_TEXTO, CINZA, PRETO, CAIXA, CIANO, AMARELO, LARANJA, VEL, R, N, M
+from .paleta import VERMELHO, AZUL
 
 from contextlib import contextmanager
+from types import SimpleNamespace
 from importlib import import_module
 from pathlib import Path
 
@@ -176,6 +178,173 @@ def realce(*mobs):
     return AnimationGroup(*[Indicate(m, color=_cor_da_peca(m),
                                      scale_factor=1.25, run_time=0.6 * VEL)
                             for m in mobs])
+
+
+# ----------------------------------------------------------------------------
+# Succession no Cairo — os gestos da tabela dos capítulos 6 e 7
+# ----------------------------------------------------------------------------
+def _etapa(*anims, **kw):
+    """Uma etapa de Succession: introducer, para o que NASCE nela só entrar
+    em cena na vez dela (e não no primeiro quadro do play)."""
+    return AnimationGroup(*anims, introducer=True, **kw)
+
+
+def _serie(*etapas):
+    return Succession(*etapas, introducer=True)
+
+
+def _copia(origem, alvo):
+    """TransformFromCopy marcado como introducer: o alvo só aparece quando a
+    animação começa, mesmo dentro de um Succession."""
+    a = TransformFromCopy(origem, alvo)
+    a.introducer = True
+    return a
+
+
+def _vira(m, alvo):
+    """m assume o desenho de `alvo` — para dentro de um Succession, no lugar
+    do ReplacementTransform. No Cairo, durante um play só é desenhado o que
+    estava em cena quando ele começou, e o ReplacementTransform só põe o
+    alvo em cena no fim do play: o alvo não aparece e a origem deformada
+    fica congelada. Depois do play, cena.replace(m, alvo) troca a peça pela
+    canônica (mesmo desenho, mesmo lugar)."""
+    return Transform(m, alvo.copy())
+
+
+def _mv(m, ponto):
+    """Move m até ponto (centro) — alvo explícito, sem .animate."""
+    return Transform(m, m.copy().move_to(ponto))
+
+
+def evidencia(base, nums, centro, tam=26, mod="7", tam_mod=24, cores=None):
+    """O produto da linha do multiplicador, (b·n₁)(b·n₂)…(b·nₖ) ≡ (n₁·…·nₖ)
+    (mod m), e a extração do b em evidência até bᵏ·(n₁·…·nₖ) ≡ (n₁·…·nₖ)
+    (mod m) — C6N08–C6N09, C7N03 e C7N10. Cada peça é um token próprio; o
+    estado final, `eq` = VGroup(bᵏ, mid, igual, rhs, modg), é feito dos
+    mesmos tokens, então nada sobra em cena. O lado direito já nasce no
+    lugar final (eq centrado em `centro`) e não se mexe; o lado esquerdo se
+    junta contra ele. `cores`: {n: cor} dos números que não são pretos, nos
+    dois lados.
+
+    Devolve um SimpleNamespace com os tokens (PO, PC, R, D, N, pto, BO, BC,
+    pots, mid, igual, rd, ro, rc, rhs, modg), o `eq` e:
+    - nasce(fonte_b, fontes, rt_esq, rt_dir, rt_resto): as três animações
+      do nascimento — cada b de cópia de fonte_b, cada número dos dois
+      lados de cópia de fontes[i];
+    - passos(rt, primeiro=()): as k etapas da extração, para _serie;
+      `primeiro` entra na primeira. Depois do play, R[1] fez o papel de
+      b², …, bᵏ: cena.replace(R[1], pots[k])."""
+    nums = list(nums)
+    k = len(nums)
+    cor = lambda n: (cores or {}).get(n, PRETO)
+    PO = {i: T("(", tam, PRETO) for i in range(1, k + 1)}
+    PC = {i: T(")", tam, PRETO) for i in range(1, k + 1)}
+    R = {i: T(base, tam, VERMELHO) for i in range(1, k + 1)}
+    D = {i: T("·", tam, PRETO) for i in range(1, k + 1)}
+    N = {i: T(str(n), tam, cor(n)) for i, n in enumerate(nums, 1)}
+    pto = {i: T("·", tam, PRETO) for i in range(2, k + 1)}   # os · da fila de dentro
+    BO, BC = T("(", tam, PRETO), T(")", tam, PRETO)          # o parêntese grande
+
+    meio = [D[1], BO, N[1]]
+    for i in range(2, k + 1):
+        meio += [pto[i], N[i]]
+    meio.append(BC)
+    pots = {m: pot(base, str(m), VERMELHO, AZUL, tam) for m in range(2, k + 1)}
+    mid = VGroup(*meio).arrange(RIGHT, buff=0.04)
+    igual = T("≡", tam, PRETO)
+    rd = []
+    for i, n in enumerate(nums, 1):
+        rd += [T(str(n), tam, cor(n))] + ([T("·", tam, PRETO)] if i < k else [])
+    ro, rc = T("(", tam, PRETO), T(")", tam, PRETO)
+    rhs = VGroup(ro, *rd, rc).arrange(RIGHT, buff=0.04)
+    modg = fmod(mod, tam_mod)
+    eq = VGroup(pots[k], mid, igual, rhs, modg)
+    eq.arrange(RIGHT, buff=0.15).move_to(centro)
+    ref_x, ref_y = meio[-1].get_right()[0], meio[0].get_center()[1]
+
+    def estado(m):
+        """(front, tokens) do estado m da extração (0 … k)."""
+        if m == 0:
+            return None, [t for i in range(1, k + 1)
+                          for t in (PO[i], R[i], D[i], N[i], PC[i])]
+        toks = [D[1], BO, N[1]]
+        for i in range(2, m + 1):
+            toks += [pto[i], N[i]]
+        if m < k:
+            toks.append(pto[m + 1])
+            for i in range(m + 1, k + 1):
+                toks += [PO[i], R[i], D[i], N[i], PC[i]]
+        toks.append(BC)
+        return (R[1] if m == 1 else pots[m]), toks
+
+    def posicoes(m):
+        """centro de cada token do estado m, alinhado ao eq final. Calculado
+        com cópias, com a mesma receita de arrange do eq."""
+        front, toks = estado(m)
+        cp = [t.copy() for t in toks]
+        g = VGroup(*cp).arrange(RIGHT, buff=0.04)
+        todos = list(cp)
+        cf = None
+        if front is not None:
+            cf = front.copy()
+            VGroup(cf, g).arrange(RIGHT, buff=0.15)
+            todos.append(cf)
+        dx, dy = ref_x - cp[-1].get_right()[0], ref_y - cp[0].get_center()[1]
+        for c in todos:
+            c.shift(dx * RIGHT + dy * UP)
+        pos = {id(t): c.get_center() for t, c in zip(toks, cp)}
+        return (None if cf is None else cf.get_center()), pos
+
+    pos_est = [posicoes(m) for m in range(k + 1)]
+    est_tok = [estado(m) for m in range(k + 1)]
+    # estado 0: os tokens vão para o lugar antes de nascerem
+    for t in est_tok[0][1]:
+        t.move_to(pos_est[0][1][id(t)])
+
+    def nasce(fonte_b, fontes, rt_esq, rt_dir, rt_resto):
+        esq = LaggedStart(*[AnimationGroup(
+            Write(PO[i]), _copia(fonte_b, R[i]), Write(D[i]),
+            _copia(fontes[i - 1], N[i]), Write(PC[i])) for i in range(1, k + 1)],
+            lag_ratio=0.15, run_time=rt_esq)
+        digs = rd[0::2]
+        dir_ = LaggedStart(*[_copia(fontes[j], digs[j]) for j in range(k)],
+                           lag_ratio=0.1, run_time=rt_dir)
+        resto = AnimationGroup(
+            FadeIn(igual), FadeIn(modg), FadeIn(ro), FadeIn(rc),
+            *[FadeIn(t) for t in rd[1::2]], run_time=rt_resto)
+        return esq, dir_, resto
+
+    def passos(rt, primeiro=()):
+        etapas = []
+        for m in range(1, k + 1):
+            fa, ta = est_tok[m - 1]
+            fn, tn = est_tok[m]
+            pa, pn = pos_est[m - 1][1], pos_est[m][1]
+            pf = pos_est[m][0]
+            anims = list(primeiro) if m == 1 else []
+            for t in (PO[m], PC[m]) + ((D[m],) if m >= 2 else ()):
+                anims.append(FadeOut(t))
+            if m == 1:
+                anims.append(_mv(R[1], pf))
+            else:
+                pots[m].move_to(pf)
+                anims.append(FadeOut(R[m], target_position=pf))
+                anims.append(_vira(R[1], pots[m]))
+            antes = {id(t) for t in ta}
+            for t in tn:
+                if id(t) in antes:
+                    if np.linalg.norm(pn[id(t)] - pa[id(t)]) > 1e-3:
+                        anims.append(_mv(t, pn[id(t)]))
+                else:
+                    t.move_to(pn[id(t)])
+                    anims.append(Write(t))
+            etapas.append(_etapa(*anims, run_time=rt))
+        return etapas
+
+    return SimpleNamespace(PO=PO, PC=PC, R=R, D=D, N=N, pto=pto, BO=BO, BC=BC,
+                           pots=pots, mid=mid, igual=igual, rd=rd, ro=ro,
+                           rc=rc, rhs=rhs, modg=modg, eq=eq,
+                           nasce=nasce, passos=passos)
 
 
 def origina_binario(cena, fonte, bits, y=None, ref=None, espac=0.55, tam=36,
