@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 from manim import *
 import numpy as np
+from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import na_palavra
+from .capitulo9 import _dur, _na_janela, _resto
 
 # ============================================================================
 # CAPÍTULO 9b — Da Ordem Modular à fatoração (slides do anexo)
@@ -69,16 +73,22 @@ def parte9b(cena):
                   ("=", PRETO), ("p", ROSA), ("×", PRETO), ("q", VERDE2),
                   ("?", PRETO), tamanho=34).to_edge(UP, buff=0.45)
     with narra(cena, "C10N01", 6.3):
+        na = partial(na_palavra, cena, _agora(cena), "C10N01", 6.3)
         cena.play(Write(obj), run_time=1.0 * VEL)
-        cena.play(Indicate(obj[2], color=LARANJA), run_time=0.8 * VEL)
-        cena.play(Indicate(obj[4], color=ROSA), Indicate(obj[6], color=VERDE2),
-                  run_time=0.8 * VEL)
+        # cada destaque na sua palavra, no mesmo play: o 35 em "número do
+        # RSA", o p e o q em "dois primos"
+        cena.play(na("número do RSA",
+                     Indicate(obj[2], color=LARANJA, run_time=0.8 * VEL)),
+                  na("dois primos",
+                     Indicate(obj[4], color=ROSA, run_time=0.8 * VEL),
+                     Indicate(obj[6], color=VERDE2, run_time=0.8 * VEL)))
 
     # escolhemos a base a = 8
     base = formula((tx("c10.base"), CINZA), ("a", VERMELHO), ("=", PRETO),
                    ("8", VERMELHO), tamanho=28).move_to([0, 2.90, 0])
     with narra(cena, "C10N02", 2.3):
-        cena.play(Write(base), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N02", 2.3)
+        cena.play(na("uma base", Write(base, run_time=0.8 * VEL)))
 
     # ENCONTRANDO a ordem modular de 8 módulo 35 (o gesto do Capítulo 9,
     # traduzido da tabela para a reta — ver o cabeçalho do arquivo)
@@ -115,20 +125,29 @@ def parte9b(cena):
     # a busca inteira cabe numa fala só: o laço roda DENTRO do with, porque
     # "multiplicando pela base até o um voltar" é um gesto contínuo
     with narra(cena, "C10N03", 8.3):
-        cena.play(Write(rotulo), run_time=0.9 * VEL)
-        cena.play(Create(reta, lag_ratio=0.02), FadeIn(lim),
-                  FadeIn(marcas[0]), run_time=0.9 * VEL)
+        t0 = _agora(cena)
+        # "pela base": o 8 da base e o do rótulo pulsam em paralelo com o
+        # laço, dentro do play em que a palavra cai
+        pend = [("pela base", lambda: (realce(base[3], rotulo[3]),))]
+
+        def junto(d):
+            return _na_janela(cena, t0, "C10N03", 8.3, pend, d)
+        cena.play(*_dur(0.9 * VEL, Write(rotulo)), *junto(0.9 * VEL))
+        cena.play(*_dur(0.9 * VEL, Create(reta, lag_ratio=0.02), FadeIn(lim),
+                        FadeIn(marcas[0])), *junto(0.9 * VEL))
         for k in range(3):
-            cena.play(Create(saltos[k]), FadeIn(rots[k]),
-                      FadeIn(marcas[k + 1]), run_time=0.9 * VEL)
+            cena.play(*_dur(0.9 * VEL, Create(saltos[k]), FadeIn(rots[k]),
+                            FadeIn(marcas[k + 1])), *junto(0.9 * VEL))
         # o quarto ×8 é o que reencontra o 1 do começo
-        cena.play(Create(saltos[3]), FadeIn(rots[3]),
-                  Indicate(marcas[0], color=VERDE), run_time=0.9 * VEL)
+        cena.play(*_dur(0.9 * VEL, Create(saltos[3]), FadeIn(rots[3]),
+                        Indicate(marcas[0], color=VERDE)), *junto(0.9 * VEL))
         # o ciclo se fecha: o flash amarelo corre a trilha inteira
-        cena.play(Flash(_cx(1), color=VERDE, flash_radius=0.42),
-                  Succession(*[ShowPassingFlash(
-                      s.copy().set_stroke(AMARELO, width=6), time_width=0.7)
-                      for s in trilha]), run_time=0.9 * VEL)
+        cena.play(*_dur(0.9 * VEL, Flash(_cx(1), color=VERDE, flash_radius=0.42),
+                        Succession(*[ShowPassingFlash(
+                            s.copy().set_stroke(AMARELO, width=6),
+                            time_width=0.7) for s in trilha])),
+                  *junto(0.9 * VEL))
+        _resto(cena, t0, "C10N03", 8.3, pend)
 
     # quatro saltos ×8 para voltar ao 1 ⇒ r = 4
     rper = formula(("r", AMARELO), ("=", PRETO), ("4", AMARELO),
@@ -139,9 +158,11 @@ def parte9b(cena):
     # estado sem preenchimento que o Write instala no começo e o devolveria
     # no fim, deixando o 4 invisível
     with narra(cena, "C10N04", 4.9):
-        cena.play(LaggedStart(*[Indicate(m, color=LARANJA) for m in rots],
-                              lag_ratio=0.25), run_time=1.4 * VEL)
-        cena.play(Write(rper), run_time=1.0 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N04", 4.9)
+        cena.play(na("Quatro passos",
+                     LaggedStart(*[Indicate(m, color=LARANJA) for m in rots],
+                                 lag_ratio=0.25, run_time=1.4 * VEL)))
+        cena.play(na("ordem é quatro", Write(rper, run_time=1.0 * VEL)))
         cena.play(Indicate(rper[2], color=AMARELO), run_time=0.6 * VEL)
 
     # a ordem escrita como congruência — nasce do passeio
@@ -167,25 +188,37 @@ def parte9b(cena):
     # traz o e2 injetaria o "− 1" na cena como peça avulsa, que sobreviveria
     # ao e2 → e3 e ficaria de fantasma em cima do e4
     with narra(cena, "C10N06", 8.4):
+        na = partial(na_palavra, cena, _agora(cena), "C10N06", 8.4)
         cena.play(FadeOut(VGroup(reta, lim, marcas, saltos, rots,
                                  base, rotulo)),
                   rper.animate.move_to([6.0, 2.6, 0]),
                   run_time=0.8 * VEL)
-        cena.play(ReplacementTransform(e1, e2), run_time=1.0 * VEL)
+        cena.play(na("Diminuindo um",
+                     ReplacementTransform(e1, e2, run_time=1.0 * VEL)))
         cena.play(Indicate(e2[1], color=PRETO), run_time=0.6 * VEL)
-        # a nota escreve a frase que a fala acaba de dizer
-        cena.play(FadeIn(nota), run_time=0.8 * VEL)
-        cena.play(Indicate(nota[2], color=LARANJA), run_time=0.6 * VEL)
+        # "a ordem": o r que subiu para o canto
+        cena.play(na("a ordem", realce(rper)))
+        # a nota escreve a frase que a fala acaba de dizer; o 35 do topo
+        # pulsa junto com o dela
+        cena.play(na("múltiplo do número", FadeIn(nota, run_time=0.8 * VEL)))
+        cena.play(Indicate(nota[2], color=LARANJA, run_time=0.6 * VEL),
+                  realce(obj[2]))
 
     # quantas vezes o 35 cabe? 8⁴ − 1 = x · 35
     e3 = VGroup(pot("8", "4", VERMELHO, AMARELO, 32), T("− 1 =", 32, PRETO),
                 T("x", 32, PRETO), T("·", 32, PRETO), T("35", 32, LARANJA))
     e3.arrange(RIGHT, buff=0.15).move_to(e2)
     with narra(cena, "C10N07", 5.3):
+        na = partial(na_palavra, cena, _agora(cena), "C10N07", 5.3)
         cena.play(ReplacementTransform(e2, e3), FadeOut(nota),
                   run_time=1.0 * VEL)
-        cena.play(Indicate(e3[4], color=LARANJA), Indicate(e3[2], color=PRETO),
-                  run_time=0.9 * VEL)
+        # cada destaque na sua palavra, no mesmo play (as palavras estão
+        # coladas: dois play em fila empurrariam o segundo)
+        cena.play(na("potência menos um", realce(*e3[0], e3[1])),
+                  na("35", Indicate(e3[4], color=LARANJA,
+                                    run_time=0.9 * VEL)),
+                  na("vezes x", Indicate(e3[2], color=PRETO,
+                                         run_time=0.9 * VEL)))
 
     # a PRIMEIRA ÁRVORE nasce junto da conta: 8⁴ − 1 se abre em x e 35.
     # A ordem dos ramos é a ordem da conta — x à esquerda, 35 à direita —
@@ -198,14 +231,17 @@ def parte9b(cena):
     fB35 = T("35", 28, LARANJA).move_to([4.45, -1.55, 0])
     linB = VGroup(liga(rb, fBx), liga(rb, fB35))
     with narra(cena, "C10N08", 6.9):
+        na = partial(na_palavra, cena, _agora(cena), "C10N08", 6.9)
         cena.play(ReplacementTransform(VGroup(e3[0], e3[1]).copy(), rb),
                   run_time=0.9 * VEL)
         cena.play(Create(linB[0]), Create(linB[1]),
                   ReplacementTransform(e3[2].copy(), fBx),
                   ReplacementTransform(e3[4].copy(), fB35), run_time=0.9 * VEL)
         # "o tronco em cima" e "os fatores embaixo": a árvore que reparte
-        cena.play(Indicate(rb, color=CINZA), run_time=0.7 * VEL)
-        cena.play(Indicate(VGroup(fBx, fB35), color=CINZA), run_time=0.7 * VEL)
+        cena.play(na("tronco", Indicate(rb, color=CINZA,
+                                        run_time=0.7 * VEL)),
+                  na("os fatores", Indicate(VGroup(fBx, fB35), color=CINZA,
+                                            run_time=0.7 * VEL)))
 
     # x = (8⁴ − 1)/35 = 117 — a conta preenche a árvore e DESCE para a faixa
     # da própria árvore, devolvendo o topo do quadro para a diferença de
@@ -229,7 +265,9 @@ def parte9b(cena):
     eqB = VGroup(eqB_a, eqB_b).arrange(RIGHT, buff=0.16)
     eqB.move_to([3.5, 0.62, 0])
     with narra(cena, "C10N09", 7.9):
-        cena.play(Write(ex), Indicate(fBx, color=PRETO), run_time=0.9 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N09", 7.9)
+        cena.play(na("o x", Write(ex, run_time=0.9 * VEL),
+                     Indicate(fBx, color=PRETO, run_time=0.9 * VEL)))
         cena.play(ReplacementTransform(e3, e4), FadeOut(ex),
                   ReplacementTransform(fBx, fB117), run_time=1.0 * VEL)
         cena.play(ReplacementTransform(e4, eqB_a), run_time=1.0 * VEL)
@@ -251,7 +289,9 @@ def parte9b(cena):
     # animação curta sob fala longa: depois do Write o quadro fica parado o
     # resto da linha, segurando a identidade genérica em cena
     with narra(cena, "C10N10", 8.8):
-        cena.play(Indicate(eqB_a, color=CINZA), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N10", 8.8)
+        cena.play(na("potência menos um",
+                     Indicate(eqB_a, color=CINZA, run_time=0.8 * VEL)))
         # a identidade se escreve devagar, token a token, sem passar por texto
         cena.play(Write(dgen), run_time=2.0 * VEL)
 
@@ -266,8 +306,11 @@ def parte9b(cena):
     # esta linha é só o "r par ⇒" nascendo — nada mais compete pelo tempo
     # dela, e é isso que faz a condição pesar antes da manobra continuar
     with narra(cena, "C10N11", 4.6):
-        cena.play(TransformFromCopy(rper[0], d0[0]), Write(d0[1:3]),
-                  run_time=2.6 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N11", 4.6)
+        cena.play(na("ordem r",
+                     *_dur(2.6 * VEL, TransformFromCopy(rper[0], d0[0]),
+                           Write(d0[1:3])),
+                     realce(rper[0])))
 
     # a substituição x → 8² roda em silêncio, como a segunda árvore que nasce
     # muda antes do C10N12: nem C10N10 nem C10N11 dizem "oito" em voz alta.
@@ -320,14 +363,23 @@ def parte9b(cena):
                     ("35", LARANJA), tamanho=30,
                     buff=0.12).move_to([0, 2.15, 0])
     with narra(cena, "C10N12", 5.5):
-        cena.play(ReplacementTransform(d2, eqA_a), run_time=0.9 * VEL)
-        cena.play(TransformFromCopy(eqA_a[2:5], junta[0]),
-                  TransformFromCopy(eqB_a[2:5], junta[2:4]),
-                  Write(junta[1]), run_time=1.0 * VEL)
+        t0 = _agora(cena)
+        # "mesmo número": os dois troncos acendem juntos — é o mesmo número
+        # aberto de dois jeitos. Eles já estão em cena: entram no play em que
+        # a palavra cai
+        pend = [("mesmo número",
+                 lambda: (Indicate(ra, color=CINZA, run_time=0.9 * VEL),
+                          Indicate(rb, color=CINZA, run_time=0.9 * VEL)))]
+
+        def junto(d):
+            return _na_janela(cena, t0, "C10N12", 5.5, pend, d)
+        cena.play(*_dur(0.9 * VEL, ReplacementTransform(d2, eqA_a)),
+                  *junto(0.9 * VEL))
+        cena.play(*_dur(1.0 * VEL, TransformFromCopy(eqA_a[2:5], junta[0]),
+                        TransformFromCopy(eqB_a[2:5], junta[2:4]),
+                        Write(junta[1])), *junto(1.0 * VEL))
         cena.add(junta)
-        # os dois troncos acendem juntos: é o mesmo número aberto de dois jeitos
-        cena.play(Indicate(ra, color=CINZA), Indicate(rb, color=CINZA),
-                  run_time=0.9 * VEL)
+        _resto(cena, t0, "C10N12", 5.5, pend)
 
     # dentro do 117 moram z e y; dentro do 35, q e p — e a cauda reservada da
     # equação da direita é preenchida com esses mesmos quatro fatores
@@ -341,15 +393,20 @@ def parte9b(cena):
                  ("q", VERDE2), ("·", PRETO), ("p", ROSA), (")", PRETO),
                  tamanho=30, buff=0.10).move_to(junta)
     with narra(cena, "C10N13", 8.3):
+        na = partial(na_palavra, cena, _agora(cena), "C10N13", 8.3)
         cena.play(*[Create(l) for l in linB2], FadeIn(nB), run_time=0.9 * VEL)
         cena.play(Write(eqB_b), ReplacementTransform(junta, j2),
                   run_time=1.1 * VEL)
         # cada galho acende JUNTO do que pende dele: "fatores de 35" são os
         # dois primos (nB é z, y, q, p), "os de 117" são os dois batizados
-        cena.play(Indicate(fB35, color=LARANJA), Indicate(nB[2], color=VERDE2),
-                  Indicate(nB[3], color=ROSA), run_time=0.7 * VEL)
-        cena.play(Indicate(fB117, color=PRETO), Indicate(nB[0], color=PRETO),
-                  Indicate(nB[1], color=PRETO), run_time=0.7 * VEL)
+        cena.play(na("fatores de 35",
+                     Indicate(fB35, color=LARANJA, run_time=0.7 * VEL),
+                     Indicate(nB[2], color=VERDE2, run_time=0.7 * VEL),
+                     Indicate(nB[3], color=ROSA, run_time=0.7 * VEL)),
+                  na("os de 117",
+                     Indicate(fB117, color=PRETO, run_time=0.7 * VEL),
+                     Indicate(nB[0], color=PRETO, run_time=0.7 * VEL),
+                     Indicate(nB[1], color=PRETO, run_time=0.7 * VEL)))
 
     # a igualdade do meio ATRAVESSA: os MESMOS quatro fatores, na MESMA ordem,
     # descem para a cauda reservada da equação da esquerda. Nada comuta aqui —
@@ -385,6 +442,7 @@ def parte9b(cena):
     # a comutatividade reagrupa e, com sorte, separa: o p mora no 65 E no 35;
     # o q, no 63 E no 35 — cada um caiu de um lado
     with narra(cena, "C10N15", 8.7):
+        na = partial(na_palavra, cena, _agora(cena), "C10N15", 8.7)
         # o "65 · 63" do j2 vira o reagrupamento; o lado direito só acompanha
         # o deslocamento, e a cauda da equação da árvore comuta junto
         cena.play(ReplacementTransform(j2[0], j3[0:5]),
@@ -394,17 +452,24 @@ def parte9b(cena):
         cena.add(j3, eqA_b2)
         # reagrupados, os fatores encontram os galhos da árvore da esquerda
         cena.play(*[Create(l) for l in linA2], FadeIn(nA), run_time=0.9 * VEL)
-        cena.play(Indicate(nA[0], color=ROSA), Indicate(nB[3], color=ROSA),
-                  run_time=0.9 * VEL)
+        # "p e q": o p na palavra, o q logo depois
+        cena.play(na("p e q",
+                     Indicate(nA[0], color=ROSA, run_time=0.9 * VEL),
+                     Indicate(nB[3], color=ROSA, run_time=0.9 * VEL)))
         cena.play(Indicate(nA[3], color=VERDE2), Indicate(nB[2], color=VERDE2),
                   run_time=0.9 * VEL)
 
     with narra(cena, "C10N16", 8.4):
-        # "os dois números que acabamos de calcular"
-        cena.play(Indicate(fA65, color=PRETO), Indicate(fA63, color=PRETO),
-                  run_time=0.9 * VEL)
-        # "o número que queremos fatorar": o n do topo, herdado do C10N15
-        cena.play(Indicate(obj[0], color=LARANJA), run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N16", 8.4)
+        # as duas palavras no mesmo play: cada destaque na sua
+        cena.play(na("dois números",
+                     Indicate(fA65, color=PRETO, run_time=0.9 * VEL),
+                     Indicate(fA63, color=PRETO, run_time=0.9 * VEL)),
+                  # "o número que queremos fatorar": o n do topo, herdado do
+                  # C10N15, com o 35 dele pulsando junto
+                  na("número que queremos fatorar",
+                     Indicate(obj[0], color=LARANJA, run_time=0.8 * VEL),
+                     realce(obj[2])))
 
     # o mdc PESCA os fatores compartilhados
     m1 = formula((tx("geral.mdc"), PRETO), ("63", PRETO), (", ", PRETO),
@@ -424,18 +489,23 @@ def parte9b(cena):
                   ("7", VERDE2), tamanho=36).move_to([-0.2, -3.0, 0])
     cxa = SurroundingRectangle(fim, color=VERDE, buff=0.2, corner_radius=0.14)
     with narra(cena, "C10N18", 7.3):
+        na = partial(na_palavra, cena, _agora(cena), "C10N18", 7.3)
         cena.play(ReplacementTransform(VGroup(m1, m2), fim), Create(cxa),
                   run_time=1.1 * VEL)
         # "os fatores p e q"
-        cena.play(Indicate(fim[2], color=ROSA), Indicate(fim[4], color=VERDE2),
-                  run_time=0.9 * VEL)
+        cena.play(na("p e q",
+                     Indicate(fim[2], color=ROSA, run_time=0.9 * VEL),
+                     Indicate(fim[4], color=VERDE2, run_time=0.9 * VEL)))
 
     obj2 = formula(("n", LARANJA), ("=", PRETO), ("35", LARANJA),
                    ("=", PRETO), ("5", ROSA), ("×", PRETO), ("7", VERDE2),
                    ("✓", VERDE), tamanho=34).move_to(obj)
     with narra(cena, "C10N19", 3.8):
+        na = partial(na_palavra, cena, _agora(cena), "C10N19", 3.8)
         cena.play(ReplacementTransform(obj, obj2), run_time=1.0 * VEL)
-        cena.play(Indicate(obj2[7], color=VERDE), run_time=0.7 * VEL)
+        # "O número": o 35, depois da troca
+        cena.play(Indicate(obj2[7], color=VERDE, run_time=0.7 * VEL),
+                  na("O número", realce(obj2[2])))
 
     # ---------- o caso INÚTIL (slides 19–20): a = 24 ----------
     # a limpeza pertence a ESTA fala e vai EMENDADA no FadeIn: separada, ela
@@ -456,8 +526,10 @@ def parte9b(cena):
                  ("→", CINZA), ("r", AMARELO), ("=", PRETO), ("6", AMARELO),
                  tamanho=28).move_to([0, 1.7, 0])
     with narra(cena, "C10N22", 5.8):
+        na = partial(na_palavra, cena, _agora(cena), "C10N22", 5.8)
         cena.play(Write(u0), run_time=0.9 * VEL)
-        cena.play(Indicate(u0[6], color=AMARELO), run_time=0.8 * VEL)
+        cena.play(na("ordem par",
+                     Indicate(u0[6], color=AMARELO, run_time=0.8 * VEL)))
 
     # a mesma manobra do C10N10–C10N11 (x → 24³ na diferença de quadrados),
     # só que rápida: a fala é seca de propósito, a tela repete um trajeto
@@ -489,14 +561,16 @@ def parte9b(cena):
     linU2 = VGroup(liga(fu1, nU[0]), liga(fu1, nU[1]),
                    liga(fu2, nU[2]), liga(fu2, nU[3]))
     with narra(cena, "C10N24", 5.5):
+        na = partial(na_palavra, cena, _agora(cena), "C10N24", 5.5)
         cena.play(ReplacementTransform(VGroup(u1[0], u1[1]).copy(), ru),
                   run_time=0.9 * VEL)
         cena.play(Create(linU[0]), Create(linU[1]),
                   ReplacementTransform(u1[2].copy(), fu1),
                   ReplacementTransform(u1[4].copy(), fu2), run_time=0.9 * VEL)
         cena.play(*[Create(l) for l in linU2], FadeIn(nU), run_time=1.0 * VEL)
-        cena.play(Indicate(nU[0], color=ROSA), Indicate(nU[1], color=VERDE2),
-                  run_time=0.9 * VEL)
+        cena.play(na("dois primos",
+                     Indicate(nU[0], color=ROSA, run_time=0.9 * VEL),
+                     Indicate(nU[1], color=VERDE2, run_time=0.9 * VEL)))
 
     multi = formula((tx("c10.multiplo_de"), CINZA), ("35", LARANJA),
                     tamanho=20, buff=0.10).move_to([-5.45, -0.5, 0])
@@ -504,9 +578,12 @@ def parte9b(cena):
                   fu1.get_top() + 0.08 * UP, buff=0, color=PRETO,
                   stroke_width=3, max_tip_length_to_length_ratio=0.2)
     with narra(cena, "C10N25", 5.5):
-        cena.play(FadeIn(multi), GrowArrow(setam),
-                  Indicate(fu1, color=PRETO), run_time=1.1 * VEL)
-        cena.play(Indicate(multi[1], color=LARANJA), run_time=0.7 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N25", 5.5)
+        cena.play(na("esse número",
+                     *_dur(1.1 * VEL, FadeIn(multi), GrowArrow(setam),
+                           Indicate(fu1, color=PRETO))))
+        cena.play(na("de 35", Indicate(multi[1], color=LARANJA,
+                                       run_time=0.7 * VEL)))
 
     # o mdc devolve só fatores TRIVIAIS: 35 e 1
     m3 = formula((tx("geral.mdc"), PRETO), ("13825", PRETO), (", ", PRETO),
@@ -519,12 +596,19 @@ def parte9b(cena):
     # dentro do Write ele guardaria o estado sem preenchimento do começo e o
     # devolveria no fim, deixando o resultado invisível o resto do capítulo
     with narra(cena, "C10N26", 3.5):
+        na = partial(na_palavra, cena, _agora(cena), "C10N26", 3.5)
         cena.play(Write(m3), run_time=0.9 * VEL)
-        cena.play(Indicate(m3[5], color=LARANJA), run_time=0.7 * VEL)
+        cena.play(na("35", Indicate(m3[5], color=LARANJA,
+                                    run_time=0.7 * VEL)))
 
     with narra(cena, "C10N27", 5.7):
+        na = partial(na_palavra, cena, _agora(cena), "C10N27", 5.7)
         cena.play(Write(m4), run_time=0.9 * VEL)
-        cena.play(Indicate(m4[5], color=PRETO), run_time=0.7 * VEL)
+        # as duas palavras no mesmo play: o 13823 do outro lado em "número do
+        # outro lado" (o da árvore e o do mdc), o 1 em "nenhum fator"
+        cena.play(na("número do outro lado", realce(fu2, m4[1])),
+                  na("nenhum fator", Indicate(m4[5], color=PRETO,
+                                              run_time=0.7 * VEL)))
 
     triv = formula((tx("c10.fatores_triviais"), VERMELHO), ("✗", VERMELHO),
                    tamanho=24, buff=0.12).move_to([3.7, -1.95, 0])
@@ -533,9 +617,14 @@ def parte9b(cena):
     # "os dois fatores triviais": o ✗ vermelho e os dois resultados do mdc que
     # o justificam. O `sol` NÃO entra aqui — ele espera a fala que o explica
     with narra(cena, "C10N28", 7.7):
+        na = partial(na_palavra, cena, _agora(cena), "C10N28", 7.7)
         cena.play(Write(triv), run_time=1.0 * VEL)
-        cena.play(Indicate(m3[5], color=LARANJA), Indicate(m4[5], color=PRETO),
-                  run_time=0.9 * VEL)
+        # "de 35": o 35 da moldura verde pulsa; os dois resultados do mdc, em
+        # "dois fatores triviais"
+        cena.play(na("dois fatores triviais",
+                     Indicate(m3[5], color=LARANJA, run_time=0.9 * VEL),
+                     Indicate(m4[5], color=PRETO, run_time=0.9 * VEL)),
+                  na("de 35", realce(fim[0])))
 
     # animação curta sob fala longa: o cartão da solução aparece exatamente
     # quando ela é dita, e o quadro fica parado no ✗ vermelho o resto da linha
@@ -544,8 +633,11 @@ def parte9b(cena):
     # FadeIn, o Indicate guardaria o `sol` ainda invisível (o FadeIn zera a
     # opacidade antes) e devolveria esse estado no fim — o cartão não apareceria
     with narra(cena, "C10N29", 10.4):
+        na = partial(na_palavra, cena, _agora(cena), "C10N29", 10.4)
         cena.play(FadeIn(sol), run_time=0.8 * VEL)
         cena.play(Indicate(sol, color=CINZA), run_time=0.7 * VEL)
+        # "a base": o 24 da base que vai ser trocada
+        cena.play(na("a base", realce(u0[2])))
 
     # ---------- POR QUE isso quebra o RSA (lembrete do Capítulo 8) ----------
     # com p e q em mãos, φ(n) sai de graça — e com φ(n), a chave privada d.
@@ -556,11 +648,20 @@ def parte9b(cena):
                  ("(", PRETO), ("7", VERDE2), ("− 1)", PRETO), ("=", PRETO),
                  ("24", PRETO), tamanho=30, buff=0.10).move_to([0, 1.8, 0])
     with narra(cena, "C10N30", 4.3):
-        cena.play(FadeOut(VGroup(cap5, u0, u1, ru, linU, fu1, fu2, nU, linU2,
-                                 multi, setam, m3, m4, triv, sol)),
-                  ReplacementTransform(fim.copy(), r1), run_time=1.1 * VEL)
-        # "a contagem de Euler": o 24 que a conta acabou de entregar
-        cena.play(Indicate(r1[12], color=PRETO), run_time=0.7 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C10N30", 4.3)
+        # "dois primos": o 5 e o 7 da moldura, que não saem, pulsam no play
+        # da limpeza e do `fim.copy() → r1`
+        cena.play(*_dur(1.1 * VEL,
+                        FadeOut(VGroup(cap5, u0, u1, ru, linU, fu1, fu2, nU,
+                                       linU2, multi, setam, m3, m4, triv,
+                                       sol)),
+                        ReplacementTransform(fim.copy(), r1)),
+                  na("dois primos", realce(fim[2], fim[4])))
+        # "a contagem de Euler": o 24 que a conta acabou de entregar, com o
+        # φ(35) do começo da conta
+        cena.play(na("contagem de Euler",
+                     Indicate(r1[12], color=PRETO, run_time=0.7 * VEL),
+                     realce(*r1[0:3])))
 
     r2 = formula(("e", VERMELHO), ("·", PRETO), ("d", AZUL), ("≡", PRETO),
                  ("1", VERDE), ("(mod φ(", PRETO), ("n", LARANJA),
@@ -568,13 +669,16 @@ def parte9b(cena):
                  (tx("c10.encontrado"), PRETO),
                  tamanho=28, buff=0.10).move_to([0, 0.7, 0])
     with narra(cena, "C10N31", 6.7):
+        na = partial(na_palavra, cena, _agora(cena), "C10N31", 6.7)
         cena.play(Write(r2), run_time=1.0 * VEL)
         # "a chave privada" é o d; "o inverso da chave pública" é o e com o
         # módulo da contagem — a tabela de inversos do C8N17 sendo cobrada
-        cena.play(Indicate(r2[2], color=AZUL), run_time=0.7 * VEL)
-        cena.play(Indicate(r2[0], color=VERMELHO),
-                  Indicate(VGroup(r2[5], r2[6], r2[7]), color=LARANJA),
-                  run_time=0.8 * VEL)
+        cena.play(na("a chave privada",
+                     Indicate(r2[2], color=AZUL, run_time=0.7 * VEL)),
+                  na("chave pública",
+                     Indicate(r2[0], color=VERMELHO, run_time=0.8 * VEL),
+                     Indicate(VGroup(r2[5], r2[6], r2[7]), color=LARANJA,
+                              run_time=0.8 * VEL)))
 
     r3 = formula((tx("geral.fatorar"), PRETO), ("n", LARANJA), ("=", PRETO),
                  (tx("c10.descobrir_chave_privada"), PRETO),
@@ -582,7 +686,10 @@ def parte9b(cena):
     cxa2 = SurroundingRectangle(r3, color=VERDE, buff=0.2,
                                 corner_radius=0.14)
     with narra(cena, "C10N32", 5.9):
+        na = partial(na_palavra, cena, _agora(cena), "C10N32", 5.9)
         cena.play(Write(r3), Create(cxa2), run_time=1.1 * VEL)
+        # "módulo": o n, depois de escrito
+        cena.play(na("módulo", realce(r3[1])))
         # o sinal de igual é literalmente "são a mesma coisa"
         cena.play(Indicate(r3[2], color=VERDE), run_time=0.7 * VEL)
 
