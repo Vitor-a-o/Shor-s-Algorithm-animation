@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from manim import *
 import numpy as np
+from functools import partial
 
 from ..paleta import *
 from ..ferramentas import *
+from ..ferramentas import _agora
+from ..sincronias import na_palavra, _em, _f
 
 # ============================================================================
 # CAPÍTULO 9 — Ordem Modular NA TABELA multiplicativa (slides 107–119)
@@ -33,19 +36,58 @@ def _malha(m, w=0.9):
                stroke_width=w) for k in range(m + 1)])
 
 
+def _dur(run_time, *anims):
+    """O `run_time` do play, posto em cada animação: o play não pode levá-lo
+    quando leva também um na_palavra, que sobrescreveria o do Wait."""
+    for a in anims:
+        a.run_time = run_time
+    return anims
+
+
+def _na_janela(cena, t0, tag, est, pend, dur):
+    """Realces pendentes (ancora, fn -> animações) cuja palavra cai neste
+    play de `dur` s: entram nele, em paralelo, em vez de ganhar um play
+    próprio que empurraria o laço. O realce dura 0,6 s: se a palavra cai
+    nos últimos 0,3 s do play, ele sobraria para fora e atrasaria o laço, e
+    é melhor esperar o play seguinte (atraso menor que a sobra)."""
+    fim = _agora(cena) + dur
+    saida = []
+    for p in list(pend):
+        ancora, fn = p
+        if t0 + _em(tag, est, _f(tag, ancora)) < fim - 0.3 * VEL:
+            pend.remove(p)
+            saida.append(na_palavra(cena, t0, tag, est, ancora, *fn()))
+    return saida
+
+
+def _resto(cena, t0, tag, est, pend):
+    """Os que a palavra só alcança depois do último play do laço."""
+    for ancora, fn in pend:
+        cena.play(na_palavra(cena, t0, tag, est, ancora, *fn()))
+    pend.clear()
+
+
 def parte9(cena):
     # slide 108: tabela multiplicativa + exponenciação modular
     eq = VGroup(T("c", 34, VERDE), T("≡", 34, PRETO),
                 pot("4", "b", VERMELHO, AZUL, 34), fmod("9", 32))
     eq.arrange(RIGHT, buff=0.15).to_edge(UP, buff=0.4)
     with narra(cena, "C9N01", 8.5):
+        na = partial(na_palavra, cena, _agora(cena), "C9N01", 8.5)
         cena.play(Write(eq), run_time=1.0 * VEL)
+        cena.play(na("o resto", realce(eq[0])))
     escolha = formula(("n", LARANJA), ("=", PRETO), ("9", LARANJA),
                       (tx("geral.e"), CINZA), ("a", VERMELHO), ("=", PRETO),
                       ("4", VERMELHO), (tx("geral.inversivel"), CINZA),
                       tamanho=22, buff=0.12).move_to([3.6, 2.55, 0])
     with narra(cena, "C9N02", 8.2):
+        na = partial(na_palavra, cena, _agora(cena), "C9N02", 8.2)
         cena.play(FadeIn(escolha), run_time=0.7 * VEL)
+        # cada número na palavra: o 9 (eq[3][1]) e o 4 (eq[2][0]) da equação
+        # pulsam junto com o da escolha; o b é só da equação
+        cena.play(na("módulo", realce(escolha[2], eq[3][1])))
+        cena.play(na("a base", realce(escolha[6], eq[2][0])))
+        cena.play(na("expoente", realce(eq[2][1])))
         # "tem inverso": a condição do capítulo 5 já está escrita ali
         cena.play(Indicate(escolha[7], color=VERMELHO), run_time=0.8 * VEL)
 
@@ -70,18 +112,22 @@ def parte9(cena):
                            for j in range(9)]) for i in range(9)]
     # a grade e o miolo num movimento só: a tabela entra como UMA peça
     with narra(cena, "C9N03", 6.1):
+        na = partial(na_palavra, cena, _agora(cena), "C9N03", 6.1)
         cena.play(LaggedStart(
             AnimationGroup(FadeIn(head_c), FadeIn(head_l), Create(lin_h),
                            Create(lin_v), run_time=0.9 * VEL),
             LaggedStart(*[FadeIn(l) for l in linhas_cel], lag_ratio=0.1,
                         run_time=1.8 * VEL),
-            lag_ratio=0.6))
+            lag_ratio=0.6),
+            na("módulo", realce(escolha[2], eq[3][1])))
     seta4 = Arrow(canto + [-1.05, -5 * tam, 0], canto + [-0.35, -5 * tam, 0],
                   buff=0, color=VERMELHO, stroke_width=5,
                   max_tip_length_to_length_ratio=0.4)
     with narra(cena, "C9N04", 2.6):
-        cena.play(GrowArrow(seta4), Indicate(head_l[4], color=VERMELHO),
-                  run_time=0.8 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C9N04", 2.6)
+        cena.play(na("linha da base",
+                     *_dur(0.8 * VEL, GrowArrow(seta4),
+                           Indicate(head_l[4], color=VERMELHO))))
 
     # slide 110: objetivo — todos os restos c possíveis, um b de cada vez
     def circ(i, j):
@@ -94,13 +140,20 @@ def parte9(cena):
     f0.arrange(RIGHT, buff=0.12).move_to([3.6, 1.75, 0])
     c00 = circ(1, 1)
     with narra(cena, "C9N05", 3.6):
+        na = partial(na_palavra, cena, _agora(cena), "C9N05", 3.6)
         cena.play(Create(c00), Write(f0), run_time=0.9 * VEL)
+        # o 4⁰ pulsa token a token: a base vermelha e o expoente azul
+        cena.play(na("expoente zero", realce(*f0[0])))
+        cena.play(na("vale um", realce(f0[2], c00)))
 
     # slide 112: somar 1 em b = multiplicar o resultado anterior por 4
     nota = T(tx("c9.somar_1_em_b"), 20,
              CINZA).move_to([3.6, 1.2, 0])
     with narra(cena, "C9N06", 7.5):
+        na = partial(na_palavra, cena, _agora(cena), "C9N06", 7.5)
         cena.play(FadeIn(nota), run_time=0.7 * VEL)
+        cena.play(na("no expoente", realce(eq[2][1])))
+        cena.play(na("pela base", realce(eq[2][0], head_l[4])))
 
     # o ZIGUE-ZAGUE dos slides 113–115: descer para a linha 4 multiplica;
     # o resultado vira a coluna do próximo salto
@@ -117,16 +170,18 @@ def parte9(cena):
     zig = VGroup(c00)
     trilha = VGroup()           # o caminho do ciclo, para as voltas extras
 
-    def _passo(k):
+    def _passo(k, junto=lambda d: ()):
         """Um degrau do zigue-zague: desce até a linha da base, escreve a
-        potência e sobe de volta na coluna do resultado."""
+        potência e sobe de volta na coluna do resultado. `junto(d)`: os
+        realces que entram, em paralelo, em um play de `d` segundos."""
         j = (1, 4, 7)[k]
         desce = Arrow(ponto(1, j) + 0.22 * DOWN, ponto(4, j) + 0.24 * UP,
                       buff=0, color=VERDE, stroke_width=2.5,
                       max_tip_length_to_length_ratio=0.18)
         alvo = circ(4, j)
-        cena.play(GrowArrow(desce), Create(alvo), run_time=0.7 * VEL)
-        cena.play(Write(fs[k]), run_time=0.7 * VEL)
+        cena.play(*_dur(0.7 * VEL, GrowArrow(desce), Create(alvo)),
+                  *junto(0.7 * VEL))
+        cena.play(*_dur(0.7 * VEL, Write(fs[k])), *junto(0.7 * VEL))
         zig.add(desce, alvo)
         trilha.add(Line(ponto(1, j) + 0.22 * DOWN, ponto(4, j) + 0.24 * UP))
         if k < 2:
@@ -136,19 +191,31 @@ def parte9(cena):
                                     angle=-0.55, color=VERDE,
                                     stroke_width=2.0)
             topo = circ(1, prox_j)
-            cena.play(Create(sobe), Create(topo), run_time=0.7 * VEL)
+            cena.play(*_dur(0.7 * VEL, Create(sobe), Create(topo)),
+                      *junto(0.7 * VEL))
             zig.add(sobe, topo)
             trilha.add(sobe.copy())
 
     # os dois primeiros degraus inteiros sob uma fala só: o with envolve o
     # laço, não cada iteração dele
     with narra(cena, "C9N07", 6.2):
+        t0 = _agora(cena)
+        # os realces correm dentro do play do laço em que a palavra cai
+        pend = [("linha da base", lambda: (realce(head_l[4], seta4),))]
+
+        def junto(d):
+            return _na_janela(cena, t0, "C9N07", 6.2, pend, d)
         for k in range(2):
-            _passo(k)
+            _passo(k, junto)
+            if k == 0:       # o 4 de fs[0] só existe depois do Write
+                pend.append(("resultado", lambda: (realce(fs[0][2]),)))
+        _resto(cena, t0, "C9N07", 6.2, pend)
 
     # o terceiro degrau é o que devolve o 1 — o Flash pertence a ele
     with narra(cena, "C9N08", 4.7):
+        na = partial(na_palavra, cena, _agora(cena), "C9N08", 4.7)
         _passo(2)
+        cena.play(na("o um", realce(fs[2][2], c00)))
         cena.play(Flash(ponto(4, 7), color=VERDE, flash_radius=0.5),
                   run_time=0.7 * VEL)
 
@@ -196,24 +263,41 @@ def parte9(cena):
 
     # as duas voltas extras correm sob uma fala só — o "e assim por diante"
     with narra(cena, "C9N10", 5.6):
+        t0 = _agora(cena)
+        pend = [("mesmo resto", lambda: (realce(mult[0]),))]
+
+        def junto(d):
+            return _na_janela(cena, t0, "C9N10", 5.6, pend, d)
         anims, trocas = _sobe_expoentes(1)
-        cena.play(volta_no_ciclo(), *anims, run_time=1.3 * VEL)
+        cena.play(*_dur(1.3 * VEL, volta_no_ciclo(), *anims),
+                  *junto(1.3 * VEL))
         _troca(trocas)
-        cena.play(FadeIn(mult[3]), TransformFromCopy(mult[2], mult[4]),
-                  run_time=0.8 * VEL)
+        cena.play(*_dur(0.8 * VEL, FadeIn(mult[3]),
+                        TransformFromCopy(mult[2], mult[4])),
+                  *junto(0.8 * VEL))
+        # "potências": só as que já estão em cena (o 4⁶ nasceu agora, o 4⁹
+        # ainda não); cada uma pulsa token a token
+        pend.append(("potências",
+                     lambda: (realce(*mult[2], *mult[4]),)))
         anims, trocas = _sobe_expoentes(2)
-        cena.play(volta_no_ciclo(), *anims, run_time=1.3 * VEL)
+        cena.play(*_dur(1.3 * VEL, volta_no_ciclo(), *anims),
+                  *junto(1.3 * VEL))
         _troca(trocas)
-        cena.play(FadeIn(mult[5]), TransformFromCopy(mult[4], mult[6]),
-                  FadeIn(mult[7]), run_time=0.8 * VEL)
+        cena.play(*_dur(0.8 * VEL, FadeIn(mult[5]),
+                        TransformFromCopy(mult[4], mult[6]),
+                        FadeIn(mult[7])),
+                  *junto(0.8 * VEL))
+        _resto(cena, t0, "C9N10", 5.6, pend)
 
     # slides 116–117: 3 passos para fechar o ciclo ⇒ o r NASCE do expoente 3
     rdef = VGroup(T("r", 38, AMARELO), T("=", 38, PRETO),
                   T("3", 38, AMARELO))
     rdef.arrange(RIGHT, buff=0.16).move_to([3.6, -2.5, 0])
     with narra(cena, "C9N11", 2.4):
-        cena.play(Write(rdef[0]), Write(rdef[1]),
-                  TransformFromCopy(mult[2][1], rdef[2]), run_time=0.9 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C9N11", 2.4)
+        cena.play(na("O menor",
+                     *_dur(0.9 * VEL, Write(rdef[0]), Write(rdef[1]),
+                           TransformFromCopy(mult[2][1], rdef[2]))))
 
     # slide 117 (definição) + slide 119 (pior caso r = φ(n))
     d1 = formula((tx("c9.ordem_modular_de"), PRETO), ("a", VERMELHO),
@@ -236,7 +320,7 @@ def parte9(cena):
     borda = SurroundingRectangle(caixa_d, color=VERDE, buff=0.25,
                                  corner_radius=0.12)
 
-    # A VIRADA, o mesmo pouso do C6N12 e do C7N13: a tabela e a coluna do
+    # A VIRADA, o mesmo pouso do C6N14 e do C7N13: a tabela e a coluna do
     # exemplo saem enquanto o geral nasce, num play único. O rdef é a última
     # coisa a sumir — e o r dele não morre: viaja por cópia para os dois
     # lugares onde a definição o usa, o d2 e o expoente do d3
@@ -307,15 +391,19 @@ def parte9(cena):
                     ("=", PRETO), ("φ(", CINZA), ("9", LARANJA), (")", CINZA),
                     tamanho=26, buff=0.10).move_to([_MEIO_X, -3.15, 0])
     with narra(cena, "C9N13", 5.3):
+        na = partial(na_palavra, cena, _agora(cena), "C9N13", 5.3)
         cena.play(Write(d4), run_time=0.8 * VEL)
         # a definição encolhe para a direita e a tabela volta por baixo dela
         cena.play(bloco.animate.scale(0.8).move_to([3.3, 0, 0]),
                   FadeIn(tab9), FadeIn(lin_h), FadeIn(lin_v), FadeIn(leg5),
                   GrowArrow(seta5), Create(ini5), run_time=1.2 * VEL)
-        cena.play(LaggedStart(*degraus, lag_ratio=0.8), run_time=2.2 * VEL)
-        # "a contagem de Euler": a peça que o capítulo 7 definiu e o 8 gastou
-        cena.play(Write(cont9), Indicate(phi4, color=LARANJA),
-                  run_time=0.9 * VEL)
+        # "a contagem de Euler": a peça que o capítulo 7 definiu e o 8 gastou.
+        # A palavra cai ainda durante o ciclo, e a contagem nasce ao lado da
+        # tabela, sem tocar nos degraus: entra no mesmo play deles
+        cena.play(LaggedStart(*degraus, lag_ratio=0.8, run_time=2.2 * VEL),
+                  na("contagem de Euler",
+                     *_dur(0.9 * VEL, Write(cont9),
+                           Indicate(phi4, color=LARANJA))))
 
     # ------------------------------------------------------------------------
     # C9N14 — o custo: o módulo cresce, os dígitos somem e o que sobra é malha,
@@ -337,12 +425,16 @@ def parte9(cena):
     c39 = _conta("39", "24", AMARELO)
     c77 = _conta("77", "?", CINZA)
     with narra(cena, "C9N14", 5.9):
-        # as duas linhas da tabela mod 9 é que se desdobram na malha inteira
-        cena.play(FadeOut(tab9), FadeOut(caminho5), FadeOut(ini5),
-                  FadeOut(seta5),
-                  ReplacementTransform(VGroup(lin_h, lin_v), malha21),
-                  ReplacementTransform(leg5, l21),
-                  ReplacementTransform(cont9, c21), run_time=1.5 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C9N14", 5.9)
+        cena.play(na("um expoente", realce(d3[0][1])))
+        # "módulos grandes": as duas linhas da tabela mod 9 é que se
+        # desdobram na malha inteira; os saltos seguintes vêm encadeados
+        cena.play(na("módulos grandes", *_dur(
+            1.5 * VEL, FadeOut(tab9), FadeOut(caminho5), FadeOut(ini5),
+            FadeOut(seta5),
+            ReplacementTransform(VGroup(lin_h, lin_v), malha21),
+            ReplacementTransform(leg5, l21),
+            ReplacementTransform(cont9, c21))))
         cena.play(ReplacementTransform(malha21, malha39),
                   ReplacementTransform(l21, l39),
                   ReplacementTransform(c21, c39), run_time=1.1 * VEL)
@@ -361,7 +453,10 @@ def parte9(cena):
     # a caixa fica parada em cena; só o r pisca, porque é o que o capítulo
     # seguinte vem cobrar
     with narra(cena, "C9N15", 8.6):
-        cena.play(Indicate(d3[0][1], color=AMARELO), run_time=0.9 * VEL)
+        na = partial(na_palavra, cena, _agora(cena), "C9N15", 8.6)
+        cena.play(na("o menor expoente",
+                     Indicate(d3[0][1], color=AMARELO, run_time=0.9 * VEL)))
+        cena.play(na("devolve um", realce(d3[2])))
 
     # a caixa da definição (a borda E o conteúdo) sobrevive ao capítulo: ela
     # não sai por um limpar(), sai DENTRO do play em que o cartão do capítulo
