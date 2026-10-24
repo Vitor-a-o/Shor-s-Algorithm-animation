@@ -2,6 +2,8 @@
 """Vídeo 4 — O algoritmo de Shor: abertura e encerramento próprios
 (roteiro_video4_algoritmo_de_shor.md)."""
 
+from functools import partial
+
 from manim import *
 
 from ..paleta import AMARELO, CINZA, LARANJA, PRETO, VERDE, VERMELHO, VEL
@@ -9,7 +11,7 @@ from ..ferramentas import T, _agora, narra
 from ..montagem import TITULOS, CARTOES
 from ..cadeado import avancar, estado_v3, quebrar, rede
 from ..capitulos.capitulo10 import _carta_qubit
-from ..sincronias import _ate
+from ..sincronias import _ate, na_palavra
 from ..textos import tx
 from .comum import VIDEOS, apresentacao, trilha_videos
 
@@ -38,13 +40,21 @@ def abertura(cena):
     with narra(cena, "V4N00", 13.1):
         # "a série inteira levou a uma frase": aproximação lenta no cadeado,
         # o mesmo empurrão de câmera da abertura do filme (ABN01). Ela vem
-        # em duas partes só porque o Indicate no meio é um play à parte
-        cena.play(cad.animate.scale(1.025), run_time=3.4 * VEL,
+        # em duas partes só porque o Indicate no meio é um play à parte.
+        # A primeira corre até "número grande", onde a frase gravada pulsa;
+        # a segunda fecha o mesmo trecho de 6,9 s de antes, com a mesma
+        # velocidade de aproximação e o Indicate com a duração do realce
+        t0 = _agora(cena)
+        ate = _ate(cena, t0, "V4N00", 13.1, "número grande").run_time
+        pulso = 0.6 * VEL
+        resto = max(0.3, 6.9 * VEL - ate - pulso)
+        zoom = (1.025 * 1.02) ** (1 / (ate + resto))   # por segundo
+        cena.play(cad.animate.scale(zoom ** ate), run_time=ate,
                   rate_func=linear)
-        # "quebrar o RSA é fatorar": a frase está gravada no corpo
+        # "número grande": a frase está gravada no corpo
         cena.play(Indicate(cad[2], color=VERMELHO, scale_factor=1.25),
-                  run_time=1.8 * VEL)
-        cena.play(cad.animate.scale(1.02), run_time=1.7 * VEL,
+                  run_time=pulso)
+        cena.play(cad.animate.scale(zoom ** resto), run_time=resto,
                   rate_func=linear)
         # "o algoritmo que faz isso": a fissura tenta andar e para de novo —
         # ela só chega às pontas no encerramento
@@ -193,35 +203,41 @@ def encerramento(cena, caixa):
              for c, d in zip(_FANTASIA[2 * _LADO:], rola)]
 
     with narra(cena, "V4N02", 14.6):
+        na = partial(na_palavra, cena, _agora(cena), "V4N02", 14.6)
+        # cada gesto na sua palavra, na ordem de sempre
         # "o exemplo que acabou de rodar": o 21 da moldura. Indicate porque
         # ele devolve a peça idêntica — a moldura tem de chegar inteira lá
-        cena.play(Indicate(caixa[0][0], color=AMARELO, scale_factor=1.25),
-                  run_time=1.5 * VEL)
-        # "tem dois dígitos": o número sobe da moldura para a faixa, do
-        # mesmo tamanho — dois dígitos sozinhos no alto do quadro
-        cena.play(TransformFromCopy(caixa[0][0], semente), run_time=1.3 * VEL)
+        cena.play(na("o exemplo",
+                     Indicate(caixa[0][0], color=AMARELO, scale_factor=1.25,
+                              run_time=1.5 * VEL)))
+        # "dois dígitos": o número sobe da moldura para a faixa, do mesmo
+        # tamanho — dois dígitos sozinhos no alto do quadro
+        cena.play(na("dois dígitos",
+                     TransformFromCopy(caixa[0][0], semente,
+                                       run_time=1.3 * VEL)))
         # e começa a crescer, um dígito de cada lado por vez
         cena.play(LaggedStart(*[AnimationGroup(FadeIn(e, scale=0.4),
                                                FadeIn(d, scale=0.4))
                                 for e, d in pares[:5]], lag_ratio=0.8),
                   run_time=1.5 * VEL)
         # "os números do RSA têm centenas": o mesmo passo, sem parar, até a
-        # fila sair pelas duas bordas do quadro
-        cena.play(LaggedStart(*[AnimationGroup(FadeIn(e, scale=0.4),
-                                               FadeIn(d, scale=0.4))
-                                for e, d in pares[5:]], lag_ratio=0.8),
-                  run_time=4.9 * VEL)
-        # "milhares de qubits": as cartas entram enquanto os dígitos ainda
-        # correm — num bloco só, porque é a simultaneidade que argumenta.
-        # Elas não crescem nem se multiplicam: são cinco, do tamanho de
-        # sempre, contra um número que já não cabe na tela
-        cena.play(Succession(LaggedStart(*[FadeIn(c, scale=0.7)
-                                           for c in cartas],
-                                         lag_ratio=0.45, run_time=1.4 * VEL),
-                             Wait(0.8 * VEL)),
-                  LaggedStart(*[Transform(d, n) for d, n in zip(rola, novos)],
-                              lag_ratio=0.15),
-                  run_time=2.2 * VEL)
+        # fila sair pelas duas bordas do quadro. "milhares de qubits": as
+        # cartas entram enquanto os dígitos ainda correm — no mesmo play,
+        # porque é a simultaneidade que argumenta. Elas não crescem nem se
+        # multiplicam: são cinco, do tamanho de sempre, contra um número que
+        # já não cabe na tela
+        cena.play(na("centenas",
+                     LaggedStart(*[AnimationGroup(FadeIn(e, scale=0.4),
+                                                  FadeIn(d, scale=0.4))
+                                   for e, d in pares[5:]], lag_ratio=0.8,
+                                 run_time=4.9 * VEL)),
+                  na("milhares de qubits",
+                     LaggedStart(*[FadeIn(c, scale=0.7) for c in cartas],
+                                 lag_ratio=0.45, run_time=1.4 * VEL)))
+        # a rolagem: os dígitos que o quadro mostra viram outros, quando a
+        # fila já está inteira
+        cena.play(LaggedStart(*[Transform(d, n) for d, n in zip(rola, novos)],
+                              lag_ratio=0.15, run_time=2.2 * VEL))
         # "nenhuma máquina de hoje chega perto disso": saem só as peças
         # deste bloco, e o que fica é o quadro do fim do V4N01
         cena.play(FadeOut(fila), FadeOut(cartas), run_time=1.6 * VEL)
