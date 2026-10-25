@@ -78,11 +78,11 @@ trecho conceitualmente difícil da série inteira, e ganha as únicas linhas lon
 capítulo. O **esquema simbólico** (`C8N20`–`C8N25`) nomeia as peças em frases curtas — e
 é onde os dois cartões vazios da fase 0 finalmente se preenchem. O **exemplo numérico**
 (`C8N26`–`C8N35`) roda quase em silêncio — a tela já está fazendo todas as contas, e ler
-número por número seria legenda. O fecho (`C8N36`–`C8N44`) abre com a pergunta que a fase 0 deixou em aberto — se os dois
+número por número seria legenda. O fecho (`C8N36`–`C8N47`) abre com a pergunta que a fase 0 deixou em aberto — se os dois
 expoentes são inversos um do outro, por que a privada não sai da pública? — e é onde mora
 a explicação da escolha do módulo: as quatro fórmulas do `parte8` já estavam na tela, mas a fala passava
 por elas sem dizer por que valem. Agora ela diz — inclusive que fi de ene é uma contagem,
-que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem nomear.
+que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem nomear. É também onde o módulo é montado: quem recebe precisa de fi de ene tanto quanto o intruso não pode tê-lo, e o produto de dois primos é a montagem que separa os dois — a maneira específica que o `C8N26` promete e o `C8N42` mostra.
 
 | Tag | Fala | Est. | Entra em |
 |---|---|---|---|
@@ -112,7 +112,7 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | C8N23 | A segunda potência desfaz a primeira e devolve a mensagem original. | 4,6 | `atravessar(pacA, RIGHT)` (dois `play`). Depois, emendados, `FadeIn(p['xis'])` + `ch_priv.animate.move_to(mão)` + `Write(f2s)` (`(aᵉ)ᵈ (mod n)`). Por fim `abrir(pacA, T('a', ROXO))` sozinho — a segunda potência devolve o `a` |
 | C8N24 | E o expoente que desfaz junto com o módulo é a chave privada — essa não sai da mão de quem recebe. | 9,1 | Um `play` só: `ReplacementTransform(ch_priv → rpriv)` — a chave amarela da fase 0 virando o retângulo — emendado com o `FadeIn` de `privada(d, n)` e o `d`/`n` chegando de cópias de `f2s`. Depois `piscar(VERDE)` (dois `play`) e, por fim, `privS.animate.move_to(pouso)` sozinho |
 | C8N25 | O esquema está montado. Falta ver ele rodar com números. | 4,2 | Um `play` só: `FadeOut` de `pacA`, `f1s`, `f2s`, `pubS`, `privS` e `L6`, junto com `FadeOut` do `cenario`, do `olho`, do `prat`, do `xis` e do que sobrou na prateleira |
-| C8N26 | Quem vai receber escolhe o módulo de uma maneira específica, que vai ser mostrada mais para frente. | 7,1 | `Write(esc)` + `Write(E1)` emendados. Depois `FadeIn(inter, shift=DOWN)` sozinho — o "?" cinza nasce colado no `33`, marcando a dívida que o `C8N42` paga |
+| C8N26 | Quem vai receber escolhe o módulo de uma maneira específica, que vai ser mostrada mais para frente. | 7,1 | `Write(esc)` + `Write(E1)` emendados. Depois `FadeIn(inter, shift=DOWN)` sozinho — o "?" cinza nasce colado no `33`, marcando a dívida que o `C8N45` paga |
 | C8N27 | Com o módulo na mão, ele calcula fi de ene — o módulo do expoente. | 5,8 | `Write(phi)` + `ReplacementTransform(E1 → E2)` emendados, num `play` só |
 | C8N28 | E procura ali um par de inversos. | 2,9 | Dois `play` separados: `Write(ed2)` primeiro, depois `ReplacementTransform(ed2 → edn)` |
 | C8N29 | As duas chaves nascem desse par: uma leva cada expoente, e as duas levam o mesmo módulo. | 7,1 | Dois `play`, um por cartão: primeiro `Create(pub[0])` com `pública(3, 33)` se preenchendo, o `3` puxado de `edn` e o `33` de `esc` por `ReplacementTransform`; depois o mesmo para `priv[0]` e `privada(7, 33)` |
@@ -126,13 +126,16 @@ que é o fato de onde a dificuldade inteira vem e que o capítulo 7 define sem n
 | C8N37 | Inverter é fácil para quem conhece o módulo. E o módulo, aqui, é fi de ene. | 6,7 | `FadeIn(faixa)` + `Indicate(_tab_lin(tab, 2), color=VERMELHO)` emendados — a faixa amarela entra pela linha do `e`. Depois `ReplacementTransform(faixa → alvo)` + `Indicate(_tab_cel(tab, 2, 5), color=VERDE)` emendados — a faixa encolhe até parar na célula com `1`. Depois `Indicate(_tab_col(tab, 5), color=AZUL)` sozinho, saindo pela coluna do `d`. Depois `Write(c1)` sozinho (`achar d ⇒ achar φ(n)`). Por fim `Indicate(phin, color=LARANJA)` + `Indicate(VGroup(lphi[1], lphi[2], lphi[3]), color=LARANJA)` emendados — o `φ(n)` da fórmula e o da legenda acendem juntos |
 | C8N38 | E fi de ene é uma contagem: quantos números abaixo do módulo não compartilham fator com ele. | 7,1 | Um `play` grande: a legenda perde o `φ(` e o `)` enquanto o resto vira `(mod n)` por `ReplacementTransform`, `FadeIn(l2)` traz `n = 15`, e a grade módulo 9 (`tab`, `eixo_e`, `eixo_d`, `uns`, `alvo`) some enquanto `tab15` nasce — tudo junto. Depois `LaggedStart(Create(uns15))` sozinho. Depois `LaggedStart(Create(riscos))` sozinho — as linhas que compartilham fator com 15 riscadas uma a uma. Por fim `LaggedStart(Indicate(vivas, color=VERDE))` + `FadeIn(conta)` emendados — as linhas sobreviventes acendem enquanto `φ(15) = 8` aparece embaixo |
 | C8N39 | Para um módulo grande, contar um por um é impossível. | 4,2 | Três `play`: primeiro a malha cresce de `tab15` para `malha35` (`ReplacementTransform`), os dígitos e riscos da grade de 15 somem, e a legenda e a contagem viram `n = 35`/`φ(35) = ?`, tudo emendado. Depois o mesmo salto de `malha35` para `malha77`, com `n = 77`/`φ(77) = ?`. Por fim `conta77` encolhe, apaga e viaja até dentro do `φ(n)` do `c1`, emendado com `Indicate(phin, color=LARANJA)` — a contagem que ninguém faz à mão colapsa na fórmula |
-| C8N40 | Se o módulo fosse primo, a contagem sairia de graça — nenhum número abaixo de um primo compartilha fator com ele — e qualquer um teria a chave privada. | 11,2 | `FadeOut(malha77)` + `FadeIn(tab11)` + `ReplacementTransform(l2c → l2d)` emendados — a grade vira módulo 11, primo. Depois `LaggedStart(Create(uns11))` sozinho. Depois `LaggedStart(Indicate(tab11[2], color=VERDE))` + `FadeIn(conta11)` emendados — todas as linhas acendem, nenhuma riscada, e `φ(11) = 10` aparece. Depois `Write(c2[0:6])` sozinho (`n primo: φ(n) = n`). Depois `ReplacementTransform(conta11[3].copy() → VGroup(c2[6], c2[7]))` sozinho — o `− 1` chega puxado da própria contagem. Depois `Indicate(VGroup(c2[6], c2[7]), color=LARANJA)` sozinho. Depois `FadeIn(c2[8], scale=1.6)` sozinho — o `✗` que já existe no código. Por fim `Indicate(c1[1], color=AZUL)` sozinho, no `d` — com `φ(n)` de graça, ele sai da pública na mão de qualquer um |
-| C8N41 | Com o produto de dois primos, os únicos que compartilham fator são os múltiplos de p e os de q. | 8,3 | `FadeOut(tab11)` + `FadeOut(uns11)` + `FadeIn(tab15b)` + `FadeIn(uns15b)` + `ReplacementTransform(l2d → l2e)` + `ReplacementTransform(conta11 → conta15)` emendados — a grade volta ao módulo 15 do `C8N38`. Depois `Write(c3[0:5])` sozinho (`n = p × q`). Depois `LaggedStart(Create(r_p))` + `Indicate(c3[2], color=ROSA)` emendados — as linhas 3, 6, 9 e 12 riscadas de rosa. Por fim `LaggedStart(Create(r_q))` + `Indicate(c3[4], color=VERDE2)` emendados — as linhas 5 e 10 riscadas de verde-claro |
-| C8N42 | Dá para descontar todos de uma vez com uma fórmula, sem ter que contar um por um. | 7,0 | `Write(c3[5:10])` sozinho (`⇒ φ(n) =`). Depois `FadeIn(c3[10])` + `FadeIn(c3[12])` + `ReplacementTransform(c3[2].copy() → c3[11])` emendados — o `(p − 1)` nasce do `p`. Depois o mesmo para o `q`, formando `(q − 1)`. Depois `FadeIn(c3[17], scale=1.5)` + `Indicate(conta15, color=VERDE)` emendados — o `✓` e a contagem da grade fecham juntos. Por fim `LaggedStart(FadeIn(c3b, shift=UP))` sozinho: a linha instanciada `33 = 3 × 11 ⇒ φ(33) = 2 × 10 = 20`, que paga as dívidas abertas no `C8N26` e no `C8N27` |
-| C8N43 | Mas o atalho só serve para quem conhece p e q. Quem só possui o produto dos dois teria que fatorar para descobrir. | 9,6 | `ReplacementTransform(l2e → l2f)` + `FadeOut(r_p)` + `FadeOut(r_q)` emendados — a fatoração some da legenda e os riscos somem da grade. Depois `ReplacementTransform(conta15 → conta_q)` sozinho — a contagem volta a ser `φ(15) = ?`. Depois `Indicate(c3[0], color=LARANJA)` sozinho, no `n`. Depois `GrowArrow(volta3)` sozinho — a mesma seta do `C8N10` e do `V1N01`, agora tentando o caminho de volta do `n` para `p × q`. Por fim `LaggedStart(FadeIn(cacos3, shift=UP))` sozinho — ela se despedaça no meio do caminho |
-| C8N44 | E a série se fecha em cima de si mesma: quebrar o RSA é fatorar esse número. | 7,1 | Um `play` só: `FadeOut(VGroup(tab15b, uns15b, lpre, ln, l2f, conta_q))` — a coluna da grade sai inteira — emendado com `VGroup(c1, c2, c3, c3b, volta3, cacos3).animate.shift(LEFT)`, a coluna das fórmulas deslizando para o centro. Depois `Write(c4)` + `Create(caixa)` emendados — a tese `quebrar RSA = fatorar n` se desenha devagar dentro do retângulo verde |
+| C8N40 | Só que quem recebe também precisa dessa contagem. Então o módulo tem que ser montado de um jeito especial: fácil de contar para quem monta, e impossível para quem só vê o resultado. | 13,8 | Em "dessa contagem", realce de `phin` + `Indicate(c1[1], color=AZUL)` emendados — o `achar d ⇒ achar φ(n)` lembra por que quem recebe também precisa da contagem. Em "montado", `FadeOut(malha77)` + `ReplacementTransform(l2c → l2q)` emendados: `n = 77` vira `n = ?` (o `?` cinza) e o quadrado da grade fica vazio — o módulo deixa de ser dado e passa a ser montado. O resto da fala corre em silêncio |
+| C8N41 | Se o módulo fosse primo, a contagem sairia de graça — nenhum número abaixo de um primo compartilha fator com ele — e qualquer um teria a chave privada. | 11,2 | `FadeIn(tab11)` + `ReplacementTransform(l2q → l2d)` emendados — a grade vira módulo 11, primo, no quadrado que o `C8N40` deixou vazio. Depois `LaggedStart(Create(uns11))` sozinho. Depois `LaggedStart(Indicate(tab11[2], color=VERDE))` + `FadeIn(conta11)` emendados — todas as linhas acendem, nenhuma riscada, e `φ(11) = 10` aparece. Depois `Write(c2[0:6])` sozinho (`n primo: φ(n) = n`). Depois `ReplacementTransform(conta11[3].copy() → VGroup(c2[6], c2[7]))` sozinho — o `− 1` chega puxado da própria contagem. Depois `Indicate(VGroup(c2[6], c2[7]), color=LARANJA)` sozinho. Depois `FadeIn(c2[8], scale=1.6)` sozinho — o `✗` que já existe no código. Por fim `Indicate(c1[1], color=AZUL)` sozinho, no `d` — com `φ(n)` de graça, ele sai da pública na mão de qualquer um |
+| C8N42 | A maneira específica de escolher o módulo, prometida no exemplo, é outra: quem recebe escolhe dois primos e multiplica um pelo outro. | 9,2 | **A montagem do módulo.** No começo, `FadeOut(tab11)` + `FadeOut(uns11)` + `FadeOut(conta11)` emendados — o `c2` com o `✗` fica. Em "escolher o módulo", realce de `l2d[0]` e `ln[1]`. Em "dois primos", `ReplacementTransform(l2d → l2m)`: a legenda vira `n = 3 × 5`, o 3 rosa e o 5 verde-claro — os dois primos escolhidos. Em "multiplica", num `play` só: `l2m → l2e` (`n = 15 = 3 × 5`, com o `15` nascendo de cópias do 3 e do 5 e o segundo `=` por `FadeIn`), `FadeIn(tab15b)` + `FadeIn(uns15b)` + `FadeIn(conta15)` — a grade do produto, a mesma do `C8N38` — e `Write(c3[0:5])` (`n = p × q`): a montagem acontece no caso particular e na fórmula ao mesmo tempo |
+| C8N43 | Com o produto de dois primos, os únicos que compartilham fator são os múltiplos de p e os de q. | 8,3 | Em "dois primos", realce de `c3[2]`, `c3[4]`, `l2e[4]` e `l2e[6]`. Depois `LaggedStart(Create(r_p))` + `Indicate(c3[2], color=ROSA)` emendados — as linhas 3, 6, 9 e 12 riscadas de rosa. Por fim `LaggedStart(Create(r_q))` + `Indicate(c3[4], color=VERDE2)` emendados — as linhas 5 e 10 riscadas de verde-claro |
+| C8N44 | E quantos são dá para saber sem olhar a grade: abaixo do produto, os múltiplos de cada primo são tantos quanto vale o outro, menos um. | 10,4 | Animação nova. `Write(c3[5:10])` sozinho (`⇒ φ(n) =`), com o lado direito ainda vazio. Embaixo, em [X_F, −1,75] — o lugar que o `c3b` vai ocupar —, nasce a linha provisória `dedu` = `(n − 1) − (q − 1) − (p − 1)`, em dois tempos. Em "abaixo do produto", `dedu[0:3]` (`(n − 1)`) nasce de uma cópia do cabeçalho de linhas `tab15b[2]` (os catorze números abaixo do 15) encolhendo até lá. Em "vale o outro", num `play` só: cópias dos quatro riscos rosa `r_p` se juntam em `dedu[3:7]` (`− (q − 1)`) com `Indicate(l2e[6], color=VERDE2)` no 5 da legenda, e cópias dos dois riscos verde-claro `r_q` se juntam em `dedu[7:11]` (`− (p − 1)`) com `Indicate(l2e[4], color=ROSA)` no 3 — os múltiplos de um primo contam pelo outro |
+| C8N45 | Dá para descontar todos de uma vez com uma fórmula, sem ter que contar um por um. | 7,0 | Animação nova. `dedu → dedu2` (`pq − p − q + 1`) sozinho, depois `dedu2 → dedu3` (`(p − 1) × (q − 1)`) sozinho. Depois `ReplacementTransform(dedu3 → c3[10:17])` sozinho — o produto sobe e completa o `c3`. Depois `FadeIn(c3[17], scale=1.5)` + `Indicate(conta15, color=VERDE)` emendados — o `✓` e a contagem da grade fecham juntos. Por fim `LaggedStart(FadeIn(c3b, shift=UP))` sozinho, no lugar que a `dedu` desocupou: a linha instanciada `33 = 3 × 11 ⇒ φ(33) = 2 × 10 = 20`, que paga as dívidas abertas no `C8N26` e no `C8N27` |
+| C8N46 | Mas o atalho só serve para quem conhece p e q. Quem só possui o produto dos dois teria que fatorar para descobrir. | 9,6 | `ReplacementTransform(l2e → l2f)` + `FadeOut(r_p)` + `FadeOut(r_q)` emendados — a fatoração some da legenda e os riscos somem da grade. Depois `ReplacementTransform(conta15 → conta_q)` sozinho — a contagem volta a ser `φ(15) = ?`. Depois `Indicate(c3[0], color=LARANJA)` sozinho, no `n`. Depois `GrowArrow(volta3)` sozinho — a mesma seta do `C8N10` e do `V1N01`, agora tentando o caminho de volta do `n` para `p × q`. Por fim `LaggedStart(FadeIn(cacos3, shift=UP))` sozinho — ela se despedaça no meio do caminho |
+| C8N47 | E a série se fecha em cima de si mesma: quebrar o RSA é fatorar esse número. | 7,1 | Um `play` só: `FadeOut(VGroup(tab15b, uns15b, lpre, ln, l2f, conta_q))` — a coluna da grade sai inteira — emendado com `VGroup(c1, c2, c3, c3b, volta3, cacos3).animate.shift(LEFT)`, a coluna das fórmulas deslizando para o centro. Depois `Write(c4)` + `Create(caixa)` emendados — a tese `quebrar RSA = fatorar n` se desenha devagar dentro do retângulo verde |
 
-**Subtotal: 314,8 s** (cartão + 44 locuções)
+**Subtotal: 348,2 s** (cartão + 47 locuções)
 
 ---
 
@@ -251,15 +254,22 @@ para fora da locução. A chave da âncora é `(tag, âncora em pt)`.
 | C8N38 | abaixo do módulo | below the modulus | `l2` (n = 15) + `ln[1]` | |
 | C8N38 | não compartilham fator | share no factor | o `Indicate(vivas)` + `FadeIn(conta)` que já existem, agora na palavra | |
 | C8N39 | módulo grande | large modulus | o salto para 35 começa na palavra | |
-| C8N40 | fosse primo | were prime | o primeiro `play` (grade 11, `l2c → l2d`) começa na palavra | |
-| C8N40 | contagem | the count | o `Indicate(tab11[2])` + `FadeIn(conta11)` que já existem, agora na palavra | |
-| C8N40 | chave privada | private key | o `Indicate(c1[1])` que já existe, agora na palavra | |
-| C8N41 | dois primos | two primes | `Write(c3[0:5])` na palavra | |
-| C8N41 | múltiplos de p | multiples of p | os riscos `r_p` + `Indicate(c3[2])` que já existem, agora na palavra, com o `3` de `l2e` | |
-| C8N41 | os de q | those of q | os riscos `r_q` + `Indicate(c3[4])` que já existem, agora na palavra, com o `5` de `l2e` | |
-| C8N43 | p e q | p and q | `c3[2]`, `c3[4]`, `c3[11]`, `c3[15]` | |
-| C8N43 | produto dos dois | their product | o `Indicate(c3[0])` que já existe, agora na palavra | |
-| C8N44 | esse número | this number | o n de `c4` (`c4[3]`) + `c3[0]` | depois do `Write(c4)` |
+| C8N40 | dessa contagem | that count | `phin` + o `d` de `c1` (`c1[1]`) | |
+| C8N40 | montado | built | `FadeOut(malha77)` + `l2c → l2q` começam na palavra: o `77` da legenda vira `?` | |
+| C8N41 | fosse primo | were prime | o primeiro `play` (grade 11, `l2q → l2d`) começa na palavra | |
+| C8N41 | contagem | the count | o `Indicate(tab11[2])` + `FadeIn(conta11)` que já existem, agora na palavra | |
+| C8N41 | chave privada | private key | o `Indicate(c1[1])` que já existe, agora na palavra | |
+| C8N42 | escolher o módulo | picking the modulus | `l2d[0]` + `ln[1]` (o n da legenda e o do `(mod n)`) | |
+| C8N42 | dois primos | two primes | `l2d → l2m` na palavra: o 3 e o 5 de `n = 3 × 5` nascem | |
+| C8N42 | multiplica | multiplies | `l2m → l2e` (o `15` nasce de cópias do 3 e do 5), a grade 15 e `Write(c3[0:5])` na palavra | |
+| C8N43 | dois primos | two primes | `c3[2]`, `c3[4]` + o 3 e o 5 de `l2e` (`l2e[4]`, `l2e[6]`) | |
+| C8N43 | múltiplos de p | multiples of p | os riscos `r_p` + `Indicate(c3[2])` que já existem, agora na palavra, com o `3` de `l2e` | |
+| C8N43 | os de q | those of q | os riscos `r_q` + `Indicate(c3[4])` que já existem, agora na palavra, com o `5` de `l2e` | |
+| C8N44 | abaixo do produto | below the product | `dedu[0:3]` (`(n − 1)`) nasce na palavra, de cópia do cabeçalho de linhas | |
+| C8N44 | vale o outro | the other prime | `dedu[3:7]` e `dedu[7:11]` nascem na palavra, dos riscos, com o 5 e o 3 de `l2e` | |
+| C8N46 | p e q | p and q | `c3[2]`, `c3[4]`, `c3[11]`, `c3[15]` | |
+| C8N46 | produto dos dois | their product | o `Indicate(c3[0])` que já existe, agora na palavra | |
+| C8N47 | esse número | this number | o n de `c4` (`c4[3]`) + `c3[0]` | depois do `Write(c4)` |
 | V3N01 | número grande | large number | o n da tese (`tese[0][3]`) | junto do fim do `gravar` |
 
 **Ficam sem realce**, porque o que a fala nomeia não é um número nem uma variável em cena:
@@ -267,7 +277,7 @@ contagens e nomes ("quatro operações" e "dois teoremas" no `V3N00`, "primeiro 
 `CAP06`), números de capítulo e de vídeo (`C7N06`, `V3N02`), o "módulo nove" do `C7N01` (o
 nove não está escrito na tela), a fase figurativa do capítulo 8 (`C8N01`–`C8N11`: canal,
 chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C6N07`, `C6N08`, `C6N09`, `C6N14`,
-`C7N03`, `C7N10`, `C7N11`, `C7N14`, `C7N15`, `C8N22`, `C8N25`, `C8N33`, `C8N42`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
+`C7N03`, `C7N10`, `C7N11`, `C7N14`, `C7N15`, `C8N22`, `C8N25`, `C8N33`, `C8N45`). No `C6N03`–`C6N05`, os realces de `A[4]`, `head_l[2]`, `head_c[4]` e `B` acompanham a animação desde o começo da linha, sem âncora.
 
 ---
 
@@ -278,18 +288,18 @@ chaves e cadeado, sem número nem variável) e as linhas sem número nomeado (`C
 | Abertura | 1 | 8,8 s |
 | Capítulo 6 | 16 | 92,8 s |
 | Capítulo 7 | 16 | 94,1 s |
-| Capítulo 8 | 45 | 314,8 s |
+| Capítulo 8 | 48 | 348,2 s |
 | Encerramento | 2 | 15,8 s |
-| **Total** | **80** | **526,3 s** |
+| **Total** | **83** | **559,7 s** |
 
-Somando o `PAD` de 0,35 s por locução (28,0 s), os dois cartões silenciosos
-(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 9 min 31 s** —
-passa um pouco da faixa de 8–9 min que a estimativa por `cena.play` previa, puxada pelas
-falas reescritas da fase 0 e do fecho. A fase 0 do capítulo 8
+Somando o `PAD` de 0,35 s por locução (29,1 s), os dois cartões silenciosos
+(~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 10 min 6 s** —
+passa da faixa de 8–9 min que a estimativa por `cena.play` previa, puxada pelas
+falas reescritas da fase 0 e pela montagem do módulo no fecho. A fase 0 do capítulo 8
 responde por ~93,0 s desse total; as fases B e C continuam somando vinte e quatro `play`
 sob catorze locuções curtas, porque a tela faz as contas sozinha.
 
-O capítulo 8 sozinho passa de 5 minutos de fala, e a fase 0 segue perto de um quinto do vídeo.
+O capítulo 8 sozinho passa de 5 minutos de fala, e a fase 0 segue perto de um sexto do vídeo.
 Duas linhas já foram enxugadas ali — a moral do fracasso saiu inteira, e a premissa que o
 `C8N03` e o `C8N04` diziam duas vezes agora é dita uma. O que sobrou não tem gordura: o
 `C8N06` é o mais longo do bloco porque é ele que carrega a justificativa da fase inteira
@@ -320,7 +330,7 @@ passa como áudio faltando.
 - [ ] Cartões — CAP06 a CAP08
 - [ ] Capítulo 6 — C6N01 a C6N15
 - [ ] Capítulo 7 — C7N01 a C7N15
-- [ ] Capítulo 8 — C8N01 a C8N44
+- [ ] Capítulo 8 — C8N01 a C8N47
 - [ ] Encerramento — V3N01 e V3N02
 - [ ] `python medir.py`
 - [ ] Render de conferência com `NARRA = True`

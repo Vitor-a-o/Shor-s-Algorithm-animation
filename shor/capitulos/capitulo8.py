@@ -359,7 +359,7 @@ def _fase0(cena, p):
 
 
 # ============================================================================
-# A TABELA MULTIPLICATIVA DA FASE C (C8N36–C8N43)
+# A TABELA MULTIPLICATIVA DA FASE C (C8N36–C8N46)
 #
 # É a mesma grade do C8N17, agora com o módulo variável — e é ela que carrega
 # o argumento de segurança inteiro. A leitura é sempre a mesma: a linha e a
@@ -371,7 +371,8 @@ def _fase0(cena, p):
 # A legenda mora EM CIMA da grade, em duas linhas: a primeira diz em que
 # módulo a tabela vive (φ(n) enquanto o assunto é inverter, n a partir do
 # C8N38, quando vira contar) e a segunda carrega o caso da vez — o módulo
-# crescendo no C8N39, o primo no C8N40, o p × q no C8N41.
+# crescendo no C8N39, o lugar vazio do módulo no C8N40, o primo no C8N41,
+# o p × q montado no C8N42.
 # ============================================================================
 _TAB_LADO = 4.8                                # lado do quadrado da grade
 _TAB_CANTO = np.array([-6.50, 2.00, 0.0])      # célula (0, 0): os cabeçalhos
@@ -778,7 +779,7 @@ def parte8(cena):
         f.move_to(r)
         return VGroup(r, f)
 
-    # 1) o criador escolhe o módulo: n = 33 (o C8N42 é que paga essa dívida)
+    # 1) o criador escolhe o módulo: n = 33 (o C8N45 é que paga essa dívida)
     esc = formula(("n", LARANJA), ("=", PRETO), ("33", LARANJA),
                   tamanho=30).move_to([0, 2.55, 0])
     # 2) partimos de a^(1 (mod φ(n))) ≡ a, com n = 33 — no lugar de honra
@@ -790,7 +791,7 @@ def parte8(cena):
     # é a promessa em cena: nasce colado no 33 do esc, passa para o 33 do
     # módulo no C8N33 e acompanha o exemplo numérico inteiro. Sai no C8N36
     # com o resto do exemplo — a tela tem de ficar limpa para o argumento
-    # final —, e quem quita a dívida é o c3b do C8N42
+    # final —, e quem quita a dívida é o c3b do C8N45
     inter = T("?", 22, CINZA).next_to(esc[2], UR, buff=0.05)
     with narra(cena, "C8N26", 7.1):
         na = partial(na_palavra, cena, _agora(cena), "C8N26", 7.1)
@@ -1113,6 +1114,19 @@ def parte8(cena):
                   Indicate(phin, color=LARANJA), run_time=1.1 * VEL)
         cena.remove(conta77)
 
+    # o módulo deixa de ser dado e passa a ser montado: o 77 vira "?" e o
+    # quadrado da grade fica vazio
+    l2q = formula(("n", LARANJA), ("=", PRETO), ("?", CINZA),
+                  tamanho=20, buff=0.10).move_to(l2c)
+    with narra(cena, "C8N40", 13.8):
+        na = partial(na_palavra, cena, _agora(cena), "C8N40", 13.8)
+        cena.play(na("dessa contagem", realce(*phin),
+                     Indicate(c1[1], color=AZUL, run_time=0.8 * VEL)))
+        cena.play(na("montado", AnimationGroup(
+            FadeOut(malha77), Transform(l2c, l2q.copy()),
+            run_time=1.2 * VEL)))
+        cena.replace(l2c, l2q)
+
     # slide 100: n primo entrega φ(n) de graça — não serve. A grade volta a um
     # tamanho legível, e agora NENHUMA linha é riscada
     c2 = formula(("n", LARANJA), (tx("c8.primo_dois_pontos"), PRETO), ("φ(", PRETO),
@@ -1125,11 +1139,11 @@ def parte8(cena):
                   (tx("c8.primo"), CINZA), tamanho=20, buff=0.12).move_to(l2)
     conta11 = formula(("φ(", PRETO), ("11", LARANJA), (") =", PRETO),
                       ("10", VERDE), tamanho=24, buff=0.08).move_to(conta)
-    with narra(cena, "C8N40", 11.2):
-        na = partial(na_palavra, cena, _agora(cena), "C8N40", 11.2)
+    with narra(cena, "C8N41", 11.2):
+        na = partial(na_palavra, cena, _agora(cena), "C8N41", 11.2)
         cena.play(na("fosse primo", AnimationGroup(
-            FadeOut(malha77), FadeIn(tab11), ReplacementTransform(l2c, l2d),
-            run_time=1.5 * VEL)))
+            FadeIn(tab11), Transform(l2q, l2d.copy()), run_time=1.5 * VEL)))
+        cena.replace(l2q, l2d)
         cena.play(LaggedStart(*[Create(c) for c in uns11], lag_ratio=0.10,
                               run_time=1.7 * VEL))
         cena.play(na("contagem",
@@ -1151,7 +1165,8 @@ def parte8(cena):
                      Indicate(c1[1], color=AZUL, run_time=0.7 * VEL)))
 
     # slides 101–104: com n = p × q, só o criador conhece φ(n). O c3 é escrito
-    # em DOIS tempos — o lado esquerdo no C8N41, o direito no C8N42
+    # em TRÊS tempos — o lado esquerdo no C8N42, o `⇒ φ(n) =` no C8N44 e o
+    # produto no C8N45, vindo da dedu
     c3 = formula(("n", LARANJA), ("=", PRETO), ("p", ROSA), ("×", PRETO),
                  ("q", VERDE2), ("⇒", PRETO), ("φ(", PRETO), ("n", LARANJA),
                  (")", PRETO), ("=", PRETO), ("(", PRETO), ("p", ROSA),
@@ -1168,13 +1183,39 @@ def parte8(cena):
                       ("8", VERDE), tamanho=24, buff=0.08).move_to(conta)
     r_p = VGroup(*[_tab_risco(15, i, ROSA) for i in (3, 6, 9, 12)])
     r_q = VGroup(*[_tab_risco(15, i, VERDE2) for i in (5, 10)])
-    with narra(cena, "C8N41", 8.3):
-        na = partial(na_palavra, cena, _agora(cena), "C8N41", 8.3)
-        cena.play(FadeOut(tab11), FadeOut(uns11), FadeIn(tab15b),
-                  FadeIn(uns15b), ReplacementTransform(l2d, l2e),
-                  ReplacementTransform(conta11, conta15), run_time=1.5 * VEL)
-        cena.play(na("dois primos",
-                     Write(VGroup(*c3[0:5]), run_time=1.1 * VEL)))
+    # C8N42: o módulo é MONTADO — dois primos escolhidos, multiplicados, e a
+    # legenda, a grade do produto e a fórmula geral nascem juntas
+    l2m = formula(("n", LARANJA), ("=", PRETO), ("3", ROSA), ("×", PRETO),
+                  ("5", VERDE2), tamanho=20, buff=0.10).move_to(l2d)
+    with narra(cena, "C8N42", 9.2):
+        na = partial(na_palavra, cena, _agora(cena), "C8N42", 9.2)
+        cena.play(FadeOut(tab11, run_time=0.9 * VEL),
+                  FadeOut(uns11, run_time=0.9 * VEL),
+                  FadeOut(conta11, run_time=0.9 * VEL),
+                  na("escolher o módulo", realce(l2d[0], ln[1])))
+        # o "11 primo" dá lugar ao 3 × 5: o 5 nasce do rótulo "primo"
+        cena.play(na("dois primos", AnimationGroup(
+            Transform(l2d[0], l2m[0].copy()), Transform(l2d[1], l2m[1].copy()),
+            Transform(l2d[2], l2m[2].copy()), Transform(l2d[3], l2m[3].copy()),
+            TransformFromCopy(l2d[3], l2m[4], introducer=True),
+            run_time=0.8 * VEL)))
+        cena.remove(l2d)
+        cena.add(l2m)
+        # o 15 nasce do 3 e do 5; a grade do produto e o n = p × q entram
+        # junto, no mesmo gesto
+        cena.play(na("multiplica", AnimationGroup(
+            Transform(l2m[0], l2e[0].copy()), Transform(l2m[1], l2e[1].copy()),
+            Transform(l2m[2], l2e[4].copy()), Transform(l2m[3], l2e[5].copy()),
+            Transform(l2m[4], l2e[6].copy()),
+            TransformFromCopy(VGroup(l2m[2], l2m[4]), l2e[2], introducer=True),
+            FadeIn(l2e[3]), FadeIn(tab15b), FadeIn(uns15b), FadeIn(conta15),
+            Write(VGroup(*c3[0:5])), run_time=1.4 * VEL)))
+        cena.remove(l2m)
+        cena.add(l2e)
+
+    with narra(cena, "C8N43", 8.3):
+        na = partial(na_palavra, cena, _agora(cena), "C8N43", 8.3)
+        cena.play(na("dois primos", realce(c3[2], c3[4], l2e[4], l2e[6])))
         # os riscos de p e de q, junto do p/q da fórmula e do 3/5 da legenda
         cena.play(na("múltiplos de p",
                      LaggedStart(*[Create(r) for r in r_p], lag_ratio=0.25,
@@ -1194,15 +1235,44 @@ def parte8(cena):
                   (")", PRETO), ("=", PRETO), ("2", ROSA), ("×", PRETO),
                   ("10", VERDE2), ("=", PRETO), ("20", PRETO),
                   tamanho=24, buff=0.08).move_to([X_F, -1.75, 0])
-    with narra(cena, "C8N42", 7.0):
+    # o que desconta de n − 1: abaixo do produto, os múltiplos de um primo são
+    # tantos quanto vale o outro, menos um — a linha provisória nasce do
+    # cabeçalho de linhas e dos riscos, e ocupa o lugar que o c3b vai tomar
+    dedu = formula(("(", PRETO), ("n", LARANJA), ("− 1)", PRETO), ("−", PRETO),
+                   ("(", PRETO), ("q", VERDE2), ("− 1)", PRETO), ("−", PRETO),
+                   ("(", PRETO), ("p", ROSA), ("− 1)", PRETO),
+                   tamanho=28, buff=0.08).move_to([X_F, -1.75, 0])
+    dedu2 = formula(("p", ROSA), ("q", VERDE2), ("−", PRETO), ("p", ROSA),
+                    ("−", PRETO), ("q", VERDE2), ("+ 1", PRETO),
+                    tamanho=28, buff=0.08).move_to(dedu)
+    dedu3 = formula(("(", PRETO), ("p", ROSA), ("− 1)", PRETO), ("×", PRETO),
+                    ("(", PRETO), ("q", VERDE2), ("− 1)", PRETO),
+                    tamanho=28, buff=0.08).move_to(dedu)
+    d_n1, d_q1, d_p1 = (VGroup(*dedu[0:3]), VGroup(*dedu[3:7]),
+                        VGroup(*dedu[7:11]))
+    with narra(cena, "C8N44", 10.4):
+        na = partial(na_palavra, cena, _agora(cena), "C8N44", 10.4)
         cena.play(Write(VGroup(*c3[5:10])), run_time=0.7 * VEL)
-        # o (p − 1) NASCE do p, e o (q − 1) do q — um de cada vez
-        cena.play(FadeIn(c3[10]), FadeIn(c3[12]),
-                  ReplacementTransform(c3[2].copy(), c3[11]),
-                  run_time=0.6 * VEL)
-        cena.play(FadeIn(c3[13]), FadeIn(c3[14]), FadeIn(c3[16]),
-                  ReplacementTransform(c3[4].copy(), c3[15]),
-                  run_time=0.6 * VEL)
+        cena.play(na("abaixo do produto",
+                     TransformFromCopy(tab15b[2], d_n1, run_time=0.8 * VEL)))
+        # os múltiplos de 3 (rosa) contam pelo 5, e os de 5 (verde-claro)
+        # pelo 3: cada risco vira o desconto do outro primo
+        cena.play(na("vale o outro", AnimationGroup(
+            TransformFromCopy(r_p, d_q1, introducer=True), Indicate(l2e[6], color=VERDE2),
+            TransformFromCopy(r_q, d_p1, introducer=True), Indicate(l2e[4], color=ROSA),
+            run_time=1.0 * VEL)))
+        # a linha inteira passa a ser um objeto só, para os passos do C8N45
+        cena.remove(d_n1, d_q1, d_p1)
+        cena.add(dedu)
+
+    with narra(cena, "C8N45", 7.0):
+        # a dedução fecha em três passos, na própria linha provisória:
+        # (n − 1) − (q − 1) − (p − 1) → pq − p − q + 1 → (p − 1) × (q − 1)
+        cena.play(TransformMatchingShapes(dedu, dedu2), run_time=0.7 * VEL)
+        cena.play(TransformMatchingShapes(dedu2, dedu3), run_time=0.7 * VEL)
+        # o produto sobe e completa o c3
+        cena.play(ReplacementTransform(dedu3, VGroup(*c3[10:17])),
+                  run_time=0.7 * VEL)
         # o ✓ e a contagem da grade fecham juntos: 2 × 4 são as oito linhas
         # que sobraram, sem contar nenhuma
         cena.play(FadeIn(c3[17], scale=1.5), Indicate(conta15, color=VERDE),
@@ -1210,15 +1280,15 @@ def parte8(cena):
         cena.play(LaggedStart(*[FadeIn(t, shift=0.15 * UP) for t in c3b],
                               lag_ratio=0.06), run_time=1.3 * VEL)
 
-    # C8N43: sem p e sem q, o atalho evapora — a fatoração some da legenda, os
+    # C8N46: sem p e sem q, o atalho evapora — a fatoração some da legenda, os
     # riscos somem da grade e a contagem volta a ser um ponto de interrogação
     l2f = formula(("n", LARANJA), ("=", PRETO), ("15", LARANJA), ("=", PRETO),
                   ("?", CINZA), ("×", PRETO), ("?", CINZA),
                   tamanho=20, buff=0.10).move_to(l2)
     conta_q = formula(("φ(", PRETO), ("15", LARANJA), (") =", PRETO),
                       ("?", CINZA), tamanho=24, buff=0.08).move_to(conta)
-    with narra(cena, "C8N43", 9.6):
-        na = partial(na_palavra, cena, _agora(cena), "C8N43", 9.6)
+    with narra(cena, "C8N46", 9.6):
+        na = partial(na_palavra, cena, _agora(cena), "C8N46", 9.6)
         cena.play(ReplacementTransform(l2e, l2f), FadeOut(r_p), FadeOut(r_q),
                   run_time=1.3 * VEL)
         cena.play(ReplacementTransform(conta15, conta_q), run_time=0.9 * VEL)
@@ -1246,8 +1316,8 @@ def parte8(cena):
                  ("n", LARANJA), tamanho=32).move_to([0, -3.0, 0])
     caixa = SurroundingRectangle(c4, color=VERDE, buff=0.2,
                                  corner_radius=0.14)
-    with narra(cena, "C8N44", 7.1):
-        na = partial(na_palavra, cena, _agora(cena), "C8N44", 7.1)
+    with narra(cena, "C8N47", 7.1):
+        na = partial(na_palavra, cena, _agora(cena), "C8N47", 7.1)
         cena.play(FadeOut(VGroup(tab15b, uns15b, lpre, ln, l2f, conta_q)),
                   VGroup(c1, c2, c3, c3b, volta3,
                          cacos3).animate.shift(X_F * LEFT),

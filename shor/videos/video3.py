@@ -78,7 +78,7 @@ def encerramento(cena, tese):
     """`tese` é o "quebrar RSA = fatorar n" dentro da moldura verde, que
     fecha o capítulo 8 e chega aqui intacto — quem chama esta função não
     passa por limpar() entre os dois. O resto do capítulo (a coluna de
-    fórmulas do C8N44, deslocada mas nunca apagada) ainda está em cena e
+    fórmulas do C8N47, deslocada mas nunca apagada) ainda está em cena e
     sai antes da primeira fala, em silêncio.
 
     A composição é a própria frase do V3N01: a segurança do RSA está

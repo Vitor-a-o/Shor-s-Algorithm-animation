@@ -216,7 +216,7 @@ SINC = {
         ("C8N23", "mensagem original"): 0.731,            # abrir(pacA) começa
         ("C8N24", "expoente que desfaz"): 0.041,          # fpriv[2] + o d de f2s pulsam
         ("C8N24", "módulo"): 0.367,                       # fpriv[4] + o n de f2s pulsam
-        # vídeo 3, capítulo 8 (C8N26–C8N44) e encerramento (V3N01) — idem (estimativa por caracteres)
+        # vídeo 3, capítulo 8 (C8N26–C8N47) e encerramento (V3N01) — idem (estimativa por caracteres)
         ("C8N26", "módulo"): 0.273,                           # Write(esc) + Write(E1) começam
         ("C8N27", "módulo"): 0.091,                           # esc[2] + os dois 33 de E1 pulsam
         ("C8N27", "fi de ene"): 0.500,                        # Write(phi) começa
@@ -239,15 +239,22 @@ SINC = {
         ("C8N38", "abaixo do módulo"): 0.478,                 # l2 (n = 15) + ln[1] pulsam
         ("C8N38", "não compartilham fator"): 0.663,           # Indicate(vivas) + FadeIn(conta)
         ("C8N39", "módulo grande"): 0.151,                    # o salto para 35 começa
-        ("C8N40", "fosse primo"): 0.079,                      # o primeiro play (grade 11, l2c → l2d) começa
-        ("C8N40", "contagem"): 0.179,                         # Indicate(tab11[2]) + FadeIn(conta11)
-        ("C8N40", "chave privada"): 0.907,                    # Indicate(c1[1])
-        ("C8N41", "dois primos"): 0.179,                      # Write(c3[0:5]) começa
-        ("C8N41", "múltiplos de p"): 0.737,                   # riscos r_p + Indicate(c3[2]) + o 3 de l2e
-        ("C8N41", "os de q"): 0.916,                          # riscos r_q + Indicate(c3[4]) + o 5 de l2e
-        ("C8N43", "p e q"): 0.351,                            # c3[2], c3[4], c3[11], c3[15] pulsam
-        ("C8N43", "produto dos dois"): 0.561,                 # Indicate(c3[0])
-        ("C8N44", "esse número"): 0.842,                      # c4[3] (o n) + c3[0] pulsam
+        ("C8N40", "dessa contagem"): 0.188,                   # phin + Indicate(c1[1])
+        ("C8N40", "montado"): 0.425,                          # FadeOut(malha77) + l2c → l2q começam
+        ("C8N41", "fosse primo"): 0.079,                      # o primeiro play (grade 11, l2q → l2d) começa
+        ("C8N41", "contagem"): 0.179,                         # Indicate(tab11[2]) + FadeIn(conta11)
+        ("C8N41", "chave privada"): 0.907,                    # Indicate(c1[1])
+        ("C8N42", "escolher o módulo"): 0.180,                # l2d[0] + ln[1] pulsam
+        ("C8N42", "dois primos"): 0.707,                      # l2d → l2m começa
+        ("C8N42", "multiplica"): 0.812,                       # l2m → l2e + grade 15 + Write(c3[0:5])
+        ("C8N43", "dois primos"): 0.179,                      # c3[2], c3[4], l2e[4], l2e[6] pulsam
+        ("C8N43", "múltiplos de p"): 0.737,                   # riscos r_p + Indicate(c3[2]) + o 3 de l2e
+        ("C8N43", "os de q"): 0.916,                          # riscos r_q + Indicate(c3[4]) + o 5 de l2e
+        ("C8N44", "abaixo do produto"): 0.351,                # dedu[0:3] nasce
+        ("C8N44", "vale o outro"): 0.828,                     # dedu[3:7] + dedu[7:11] nascem
+        ("C8N46", "p e q"): 0.351,                            # c3[2], c3[4], c3[11], c3[15] pulsam
+        ("C8N46", "produto dos dois"): 0.561,                 # Indicate(c3[0])
+        ("C8N47", "esse número"): 0.842,                      # c4[3] (o n) + c3[0] pulsam
         ("V3N01", "número grande"): 0.712,                    # o n da tese (tese[0][3]) pulsa
         # vídeo 4, abertura e capítulo 9 — idem (estimativa por caracteres)
         ("V4N00", "número grande"):         0.385,  # o Indicate(cad[2]) (o "fatorar n" gravado)
@@ -555,7 +562,7 @@ SINC = {
         ("C8N23", "mensagem original"): 0.765,            # "original message"
         ("C8N24", "expoente que desfaz"): 0.067,          # "exponent that undoes"
         ("C8N24", "módulo"): 0.416,                       # "modulus"
-        # vídeo 3, capítulo 8 (C8N26–C8N44) e V3N01 — medidas no audio/en com faster-whisper
+        # vídeo 3, capítulo 8 (C8N26–C8N47) e V3N01 — medidas no audio/en com faster-whisper
         # (small.en; início da palavra ÷ duração; "modules" no lugar de "modulus")
         ("C8N26", "módulo"): 0.229,                           # "modulus"
         ("C8N27", "módulo"): 0.085,                           # "modulus"
@@ -579,15 +586,22 @@ SINC = {
         ("C8N38", "abaixo do módulo"): 0.495,                 # "below the modulus"
         ("C8N38", "não compartilham fator"): 0.676,           # "share no factor"
         ("C8N39", "módulo grande"): 0.109,                    # "large modulus"
-        ("C8N40", "fosse primo"): 0.076,                      # "were prime"
-        ("C8N40", "contagem"): 0.192,                         # "the count"
-        ("C8N40", "chave privada"): 0.911,                    # "private key"
-        ("C8N41", "dois primos"): 0.143,                      # "two primes"
-        ("C8N41", "múltiplos de p"): 0.647,                   # "multiples of p"
-        ("C8N41", "os de q"): 0.880,                          # "those of q"
-        ("C8N43", "p e q"): 0.343,                            # "p and q"
-        ("C8N43", "produto dos dois"): 0.628,                 # "their product"
-        ("C8N44", "esse número"): 0.824,                      # "this number"
+        ("C8N40", "dessa contagem"): 0.131,                   # "that count" (estimativa por caracteres, a medir na gravação)
+        ("C8N40", "montado"): 0.364,                          # "built" (estimativa por caracteres, a medir na gravação)
+        ("C8N41", "fosse primo"): 0.076,                      # "were prime"
+        ("C8N41", "contagem"): 0.192,                         # "the count"
+        ("C8N41", "chave privada"): 0.911,                    # "private key"
+        ("C8N42", "escolher o módulo"): 0.136,                # "picking the modulus" (estimativa por caracteres, a medir na gravação)
+        ("C8N42", "dois primos"): 0.707,                      # "two primes" (estimativa por caracteres, a medir na gravação)
+        ("C8N42", "multiplica"): 0.810,                       # "multiplies" (estimativa por caracteres, a medir na gravação)
+        ("C8N43", "dois primos"): 0.143,                      # "two primes"
+        ("C8N43", "múltiplos de p"): 0.647,                   # "multiples of p"
+        ("C8N43", "os de q"): 0.880,                          # "those of q"
+        ("C8N44", "abaixo do produto"): 0.438,                # "below the product" (estimativa por caracteres, a medir na gravação)
+        ("C8N44", "vale o outro"): 0.815,                     # "the other prime" (estimativa por caracteres, a medir na gravação)
+        ("C8N46", "p e q"): 0.343,                            # "p and q"
+        ("C8N46", "produto dos dois"): 0.628,                 # "their product"
+        ("C8N47", "esse número"): 0.824,                      # "this number"
         ("V3N01", "número grande"): 0.746,                    # "large number"
         # vídeo 4, abertura e capítulo 9 — medidas no audio/en com faster-whisper
         ("V4N00", "número grande"):         0.436,  # "large"
