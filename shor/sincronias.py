@@ -628,9 +628,9 @@ SINC = {
         ("C11N14", "resto c"):                    0.817,  # "remainder c"
         ("C11N15", "cada bit"):                   0.351,  # "each bit"
         ("C11N16", "todos eles"):                 0.496,  # "all of them"
-        ("C11N17", "emaranhados"):                0.266,  # "entangled" — estimada, a medir na regravação (o audio/en/C11N17.wav atual é a fala antiga)
-        ("C11N17", "o expoente"):                 0.430,  # "the exponent" — estimada, a medir na regravação
-        ("C11N17", "resto c"):                    0.773,  # "remainder c" — estimada, a medir na regravação
+        ("C11N17", "emaranhados"):                0.259,  # "entangled" — medida no áudio en
+        ("C11N17", "o expoente"):                 0.481,  # "the exponent" — medida no áudio en
+        ("C11N17", "resto c"):                    0.761,  # "remainder c" — medida no áudio en
         ("C11N19", "resto possível"):             0.086,  # "possible remainder"
         ("C11N19", "expoentes"):                  0.644,  # "exponents"
         ("C11N22", "interessa: o r"):             0.883,  # "matters: r"

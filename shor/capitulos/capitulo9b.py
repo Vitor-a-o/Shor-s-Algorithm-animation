@@ -513,14 +513,40 @@ def parte9b(cena):
     # segue à vista enquanto a falha roda, e o C10N30 puxa φ(35) dele
     cap5 = T(tx("c10.as_vezes_inutil"),
              24).move_to([0, 2.45, 0])
+    # a ordem ímpar quebrando, rápida: o meio expoente da diferença de
+    # quadrados do C10N10 não é inteiro, e o fecho de erro é o da série
+    # (✗ + Wiggle, capítulos 1 e 5). A base é 11 (ordem 3 módulo 35) e não 16:
+    # 16^(3/2) = 64 é inteiro e a conta não quebraria
+    o0 = formula(("a", VERMELHO), ("=", PRETO), ("11", VERMELHO),
+                 ("→", CINZA), ("r", AMARELO), ("=", PRETO), ("3", AMARELO),
+                 tamanho=28).move_to([0, 1.7, 0])
+    o1 = VGroup(pot("11", "3", VERMELHO, AMARELO, 26), T("− 1 =", 26, PRETO),
+                T("(", 26, PRETO), pot("11", "3/2", VERMELHO, AMARELO, 26),
+                T("− 1)(", 26, PRETO), pot("11", "3/2", VERMELHO, AMARELO, 26),
+                T("+ 1)", 26, PRETO))
+    o1.arrange(RIGHT, buff=0.08).move_to([0, 0.9, 0])
+    xis = T("✗", 30, VERMELHO).next_to(o1, RIGHT, buff=0.3)
     with narra(cena, "C10N20", 9.6):
+        na = partial(na_palavra, cena, _agora(cena), "C10N20", 9.6)
         cena.play(FadeOut(VGroup(j3, eqA_a, eqA_b2, ra, linA, fA65, fA63, nA,
                                  linA2, eqB, rb, linB, fB117, fB35, nB, linB2,
                                  rper)),
                   FadeIn(cap5), run_time=0.8 * VEL)
+        cena.play(Write(o0), run_time=0.9 * VEL)
+        cena.play(Write(o1), run_time=1.0 * VEL)
+        # "a base": o 11
+        cena.play(na("a base", realce(o0[2])))
+        # "ordem ímpar": os dois 3/2, o ✗ e o 3 da ordem, num play só
+        cena.play(na("ordem ímpar",
+                     Wiggle(o1[3][1], run_time=0.8 * VEL),
+                     Wiggle(o1[5][1], run_time=0.8 * VEL),
+                     FadeIn(xis, run_time=0.8 * VEL),
+                     Indicate(o0[6], color=AMARELO, run_time=0.8 * VEL)))
 
+    # o "Ou" vira a página: a linha do u0 fica livre para o C10N22
     with narra(cena, "C10N21", 3.3):
-        cena.play(Indicate(cap5, color=CINZA), run_time=0.9 * VEL)
+        cena.play(Indicate(cap5, color=CINZA), FadeOut(VGroup(o0, o1, xis)),
+                  run_time=0.9 * VEL)
 
     u0 = formula(("a", VERMELHO), ("=", PRETO), ("24", VERMELHO),
                  ("→", CINZA), ("r", AMARELO), ("=", PRETO), ("6", AMARELO),
