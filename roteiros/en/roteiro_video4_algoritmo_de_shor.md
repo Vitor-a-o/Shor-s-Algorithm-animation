@@ -113,8 +113,8 @@ e o `C10N24` quebra.
 | C10N17 | And finding a common factor is easy, using Euclid's algorithm, the same one that came up in passing in chapter five. | 8,1 | **Dois `play` num bloco só:** `Write(m1)` com os `Indicate` no par verde-claro, depois `Write(m2)` com os `Indicate` no par rosa |
 | C10N18 | Finally we've found the factors p and q, which looked like an impossible task. | 5,4 | `ReplacementTransform(VGroup(m1, m2), fim)` + `Create(cxa)` |
 | C10N19 | The number that opened the chapter is factored. | 3,1 | `ReplacementTransform(obj, obj2)` — o `p × q ?` do topo vira os dois primos com ✓ |
-| C10N20 | But it's not all smooth sailing: things can go wrong — for example, the base can give an odd order. | 7,7 | O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda |
-| C10N21 | Or the order may give no useful information. | 3,1 | `so_fala` — o quadro parado. `Indicate(cap5)`, que é exatamente a frase que a fala diz |
+| C10N20 | But it's not all smooth sailing: things can go wrong — for example, the base can give an odd order. | 7,7 | **Cinco `play` num bloco só.** O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda. Depois, **animação nova — a ordem ímpar dando errado, rápida**: `Write(o0)`, `a = 11 → r = 3` no molde do `u0` (mesma posição, mesmos tokens e cores), e em seguida `Write(o1)`, `11³ − 1 = (11^{3/2} − 1)(11^{3/2} + 1)` no molde do `u1a` — a diferença de quadrados do `C10N10`, agora com meio expoente. Em "a base", `realce(o0[2])`, o 11. Em "ordem ímpar", o fecho de erro da série (capítulos 1 e 5), num `play` só: `Wiggle` nos dois expoentes `3/2`, `FadeIn` de um `✗` vermelho à direita de `o1` e `Indicate(o0[6], color=AMARELO)`, o 3. A base é 11 e não 16: as duas têm ordem 3, mas `16^{3/2} = 64` é inteiro e a conta não quebraria |
+| C10N21 | Or the order may give no useful information. | 3,1 | `Indicate(cap5)`, que é exatamente a frase que a fala diz, emendado com o `FadeOut` de `o0`, `o1` e do `✗`, num `play` só: o "Ou" vira a página para o segundo jeito de dar errado, e a linha do `u0` fica livre para o `C10N22` |
 | C10N22 | To see that happen, let's take another example, also with an even order. | 5,0 | Dois `play` sob esta linha: `Write(u0)` e `Indicate(u0[6], color=AMARELO)` — o `6` da ordem, em "também com a ordem par" |
 | C10N23 | Everything runs all the way through without a hitch. | 3,5 | `Write(u1a)` e `ReplacementTransform(u1a, u1)` — dois `play` sob esta linha. `u1a` já nasce como `24⁶ − 1 = (24³ − 1)(24³ + 1)` em tokens coloridos (`pot` para as duas potências de base 24), a mesma manobra do `C10N10`–`C10N11` com o `x` já substituído — sem texto corrido nem cor fora da paleta |
 | C10N24 | But this time the two primes don't split up: they land together, on the same side. | 6,2 | Quatro `play` num bloco só: tronco `ru`, `Create(linU)` com `fu1`/`fu2`, `Create(linU2)` + `FadeIn(nU)`, e por fim `Indicate(nU[0], color=ROSA)` + `Indicate(nU[1], color=VERDE2)` — o p e o q lado a lado sob o mesmo galho, que é o que a fala afirma |
@@ -198,7 +198,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N14 | The top wires carry the exponent b, and the bottom one holds the remainder c. | 5,8 | `FadeIn` dos dois fundos de painel primeiro e, no `play` seguinte, `TransformFromCopy(eqc[2][1], letra_b)` mais o `c` deslizando para dentro do painel de baixo. Fundo e conteúdo nunca no mesmo `play`: no Manim 0.20.1 o conteúdo fica atrás do preenchimento e some |
 | C11N15 | Except now, each bit of the exponent is a qubit. | 3,8 | `LaggedStart` de `ReplacementTransform` das quatro caixas de bit nos cartões-gradiente do fio, `lag_ratio=0.15` — cada bit vira qubit em cascata, na ordem em que estava no esquema. É o primeiro dos dois `play` do bloco antigo |
 | C11N16 | And then the exponent stops being a single number: it becomes all of them at once. That's the superposition we saw. | 8,1 | A letra `b` abrindo na coluna dos expoentes com o `⋮` embaixo — o segundo `play` do bloco antigo, agora com locução própria. A superposição ganha nome na fala e conteúdo na tela ao mesmo tempo, em vez de as duas coisas correrem sob uma locução de treze segundos. A animação é curta para a fala, e aqui isso é aceito: o painel que acaba de se montar precisa de tempo parado para ser lido |
-| C11N17 | Since the exponent carries every possibility, the remainder c must carry them too. | 5,0 | `ReplacementTransform(saida_circ, carta_c[1])` + `FadeIn(carta_c[2])` — o `c` genérico abre na coluna dos restos possíveis |
+| C11N17 | The gates leave the two registers entangled. So, since the exponent carries every possibility, the remainder c carries them too. | 7,7 | Dois `play`. No primeiro, cada gesto na sua palavra: em "emaranhados", os quatro `plugues` acendem em cascata, da esquerda para a direita (`LaggedStart`, `lag_ratio=0.2`) — o ponto de controle pulsa e um brilho azul (`ShowPassingFlash` de uma cópia da ligação, em `AZUL`, a cor do `b`) desce até a porta. O ponto com a ligação é o desenho do par emaranhado da `C11N07`, e é ele que a fala nomeia; nenhum texto entra. Em "o expoente", `realce(carta_b[1])`, no mesmo `play`. No segundo, em "resto c", `ReplacementTransform(saida_circ, carta_c[1])` + `FadeIn(carta_c[2])` — o `c` genérico abre na coluna dos restos possíveis. Na tela, como na fala, vem primeiro a causa e depois o efeito |
 | C11N18 | Now we measure the bottom wire. | 2,3 | `FadeIn(med)` — a caixinha `M` no fio alvo |
 | C11N19 | We get one possible remainder, and with it the whole system collapses: only the exponents that give that same remainder are left. | 8,5 | `Flash(med)` + os dois `ReplacementTransform` do colapso, num `play` só: o painel de baixo vira um número, e o de cima perde os expoentes que não devolvem aquele número. O de cima **não** vira um expoente — continua em superposição, agora só dos que sobreviveram |
 | C11N20 | It could have been any of the remainders in the cycle, and each one leaves a different set of exponents alive. | 8,1 | O laço do `rodizio` inteiro dentro do bloco: quatro `ReplacementTransform` de resto e de coluna, terminando de volta no resto com que o capítulo vai trabalhar. Um `with narra` cobrindo o `for`, nunca um por volta |
@@ -229,7 +229,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N45 | Two gcd calculations later... | 1,5 | `Write(linhas[5])` |
 | C11N46 | ...and at last the number is factored. | 2,7 | `Write(linhas[6])` + `Create(caixa)`. A moldura verde sobrevive ao capítulo: o `V4N01` pousa o cadeado em cima dela, sem `limpar()` no meio |
 
-**Subtotal: 276,2 s** (cartão + 46 locuções)
+**Subtotal: 278,9 s** (cartão + 46 locuções)
 
 ---
 
@@ -320,6 +320,8 @@ primeira ocorrência.
 | C10N16 | número que queremos fatorar | number we want to factor | o `Indicate(obj[0])` que já existe, agora na palavra, com `obj[2]` (o 35) junto | |
 | C10N18 | p e q | p and q | os `Indicate(fim[2], fim[4])` que já existem, agora na palavra | |
 | C10N19 | O número | The number | `obj2[2]` (o 35) | depois do `obj → obj2` |
+| C10N20 | a base | the base | `o0[2]` (o 11) | depois do `Write(o1)` |
+| C10N20 | ordem ímpar | odd order | `Indicate(o0[6])` (o 3), no mesmo `play` do `Wiggle` nos `3/2` e do `✗` | |
 | C10N22 | ordem par | even order | o `Indicate(u0[6])` que já existe, agora na palavra | |
 | C10N24 | dois primos | two primes | os `Indicate(nU[0], nU[1])` que já existem, agora na palavra | |
 | C10N25 | esse número | this number | o `Indicate(fu1)` que já existe, agora na palavra, com o `FadeIn(multi)` + `GrowArrow(setam)` | |
@@ -384,8 +386,8 @@ primeira ocorrência.
 **Ficam sem realce**, porque o que a fala nomeia não é um número nem uma variável em cena:
 números de capítulo e de vídeo ("capítulo quatro do segundo vídeo" no `C9N01`, "capítulo
 cinco" no `C9N02` e no `C10N17`, "capítulo quatro" no `C11N10`, "capítulo nove" no `C11N21`,
-"Quatro vídeos" no `V4N04`); valores que não estão escritos na tela ("ordem ímpar" no
-`C10N20`, "cinquenta por cento" no `C10N29`); contagens ("Dois máximos divisores comuns" no
+"Quatro vídeos" no `V4N04`); valores que não estão escritos na tela ("cinquenta por cento" no
+`C10N29`); contagens ("Dois máximos divisores comuns" no
 `C11N45`); as linhas em que o número nasce junto com a fala inteira (`C9N12`, `C11N20`,
 `C11N26`, `C11N29`) e as linhas sem número nomeado (`C9N09`, `C10N05`, `C10N14`, `C10N17`,
 `C10N21`, `C10N23`, `C10N33`, `C11N03`, `C11N04`, `C11N07`–`C11N09`, `C11N13`, `C11N18`,
@@ -400,11 +402,11 @@ cinco" no `C9N02` e no `C10N17`, "capítulo quatro" no `C11N10`, "capítulo nove
 | Abertura | 1 | 12,3 s |
 | Capítulo 9 | 16 | 90,4 s |
 | Capítulo 10 | 34 | 191,1 s |
-| Capítulo 11 | 47 | 276,2 s |
+| Capítulo 11 | 47 | 278,9 s |
 | Encerramento | 4 | 46,6 s |
-| **Total** | **102** | **616,6 s** |
+| **Total** | **102** | **619,3 s** |
 
-Somando o `PAD` de 0,35 s por locução (35,7 s), os dois cartões silenciosos (~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 11 min 09 s**. Como no português, `C11N33` tem animação mais longa que a fala e soma uns 3 s ao render real.
+Somando o `PAD` de 0,35 s por locução (35,7 s), os dois cartões silenciosos (~7 s) e os `limpar()` entre capítulos (~10 s), a projeção é de **cerca de 11 min 12 s**. Como no português, `C11N33` tem animação mais longa que a fala e soma uns 3 s ao render real.
 
 ---
 
@@ -428,6 +430,7 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 | C10N22, C10N25 | "also with an even order" e "a multiple of thirty-five" no fim |
 | C10N30, C10N31, C10N32 | "Euler's count" no fim; "the private key" antes de "the inverse of the public key"; "the same thing" no fim |
 | C11N10 ⏱ | "That's all the physics" no começo; "another example" (âncora `outro exemplo`) |
+| C11N17 ⏱ | "entangled" antes de "the exponent", e "the exponent" antes de "remainder c" |
 | C11N22 | as cinco batidas na ordem: probabilidades → uma medida → um valor só → "r" (a única vez que a letra é falada) |
 | C11N23 | "the top wires" antes de "quantum Fourier transform" |
 | C11N30 | "at each point" → "each wave becomes an arrow" → "chained tip to tail" |
@@ -446,6 +449,7 @@ Falas em que a tradução manteve a ordem porque a coluna "Entra em" ou o códig
 - [ ] Capítulo 9 — C9N01 a C9N15
 - [ ] Capítulo 10 — C10N01 a C10N33
 - [ ] Capítulo 11 — C11N01 a C11N46
+- [ ] Regravar C11N17 — a fala mudou (en)
 - [ ] Encerramento — V4N01 a V4N04
 - [ ] `python medir.py en`
 - [ ] Render de conferência: `IDIOMA=en manim -pqh filme_shor.py VideoShor`

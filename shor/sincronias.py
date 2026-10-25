@@ -288,8 +288,9 @@ SINC = {
         ("C11N14", "resto c"):                    0.884,  # o `saida_circ` desliza para o painel, com `eqc[0]` pulsando
         ("C11N15", "cada bit"):                   0.289,  # o `LaggedStart` dos bits virando qubits começa
         ("C11N16", "todos eles"):                 0.500,  # `letra_b → carta_b[1]` + `FadeIn(carta_b[2])`
-        ("C11N17", "o expoente"):                 0.062,  # `carta_b[1]` (a coluna) pulsa
-        ("C11N17", "resto c"):                    0.637,  # `saida_circ → carta_c[1]` + `FadeIn(carta_c[2])`
+        ("C11N17", "emaranhados"):                0.293,  # os quatro `plugues` em cascata: o ponto pulsa e o brilho azul desce a ligação — estimada
+        ("C11N17", "o expoente"):                 0.481,  # `carta_b[1]` (a coluna) pulsa — estimada
+        ("C11N17", "resto c"):                    0.827,  # `saida_circ → carta_c[1]` + `FadeIn(carta_c[2])` — estimada
         ("C11N19", "resto possível"):             0.094,  # `Flash(med)` + `carta_c → cartao_c`
         ("C11N19", "expoentes"):                  0.658,  # `lista_b → bs_de_4`
         ("C11N22", "interessa: o r"):             0.913,  # a batida 4 (`pergunta_r` fica vermelho); a 5 vem logo depois
@@ -344,6 +345,8 @@ SINC = {
         ("C10N16", "número que queremos fatorar"):0.769,  # o `Indicate(obj[0])` + `obj[2]` (o 35)
         ("C10N18", "p e q"):                      0.506,  # os `Indicate(fim[2], fim[4])`
         ("C10N19", "O número"):                   0.000,  # `obj2[2]` (o 35) pulsa, depois do `obj → obj2`
+        ("C10N20", "a base"):                     0.667,  # `realce(o0[2])` (o 11)
+        ("C10N20", "ordem ímpar"):                0.900,  # `Wiggle` nos `3/2` + `✗` + `Indicate(o0[6])`
         ("C10N22", "ordem par"):                  0.859,  # o `Indicate(u0[6])`
         ("C10N24", "dois primos"):                0.267,  # os `Indicate(nU[0], nU[1])`
         ("C10N25", "esse número"):                0.344,  # `FadeIn(multi)` + `GrowArrow(setam)` + `Indicate(fu1)`
@@ -625,8 +628,9 @@ SINC = {
         ("C11N14", "resto c"):                    0.817,  # "remainder c"
         ("C11N15", "cada bit"):                   0.351,  # "each bit"
         ("C11N16", "todos eles"):                 0.496,  # "all of them"
-        ("C11N17", "o expoente"):                 0.068,  # "the exponent"
-        ("C11N17", "resto c"):                    0.597,  # "remainder c"
+        ("C11N17", "emaranhados"):                0.266,  # "entangled" — estimada, a medir na regravação (o audio/en/C11N17.wav atual é a fala antiga)
+        ("C11N17", "o expoente"):                 0.430,  # "the exponent" — estimada, a medir na regravação
+        ("C11N17", "resto c"):                    0.773,  # "remainder c" — estimada, a medir na regravação
         ("C11N19", "resto possível"):             0.086,  # "possible remainder"
         ("C11N19", "expoentes"):                  0.644,  # "exponents"
         ("C11N22", "interessa: o r"):             0.883,  # "matters: r"
@@ -681,6 +685,8 @@ SINC = {
         ("C10N16", "número que queremos fatorar"):0.750,  # "number we want to factor"
         ("C10N18", "p e q"):                      0.345,  # "p and q"
         ("C10N19", "O número"):                   0.000,  # "The number"
+        ("C10N20", "a base"):                     0.680,  # "the base"
+        ("C10N20", "ordem ímpar"):                0.837,  # "odd order"
         ("C10N22", "ordem par"):                  0.818,  # "even order"
         ("C10N24", "dois primos"):                0.185,  # "two primes"
         ("C10N25", "esse número"):                0.264,  # "this number"

@@ -109,8 +109,8 @@ e o `C10N24` quebra.
 | C10N17 | E achar fator comum é fácil, utilizando o algoritmo de Euclides, o mesmo que apareceu de passagem no capítulo cinco. | 9,6 | **Dois `play` num bloco só:** `Write(m1)` com os `Indicate` no par verde-claro, depois `Write(m2)` com os `Indicate` no par rosa |
 | C10N18 | Finalmente conseguimos descobrir os fatores p e q, o que parecia uma tarefa impossível. | 7,3 | `ReplacementTransform(VGroup(m1, m2), fim)` + `Create(cxa)` |
 | C10N19 | O número que abriu o capítulo está fatorado. | 3,8 | `ReplacementTransform(obj, obj2)` — o `p × q ?` do topo vira os dois primos com ✓ |
-| C10N20 | Como nem tudo são flores, existe a chance de coisas darem errado — por exemplo, a base pode resultar em uma ordem ímpar. | 9,6 | O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda |
-| C10N21 | Ou a ordem pode não dar informações úteis. | 3,3 | `so_fala` — o quadro parado. `Indicate(cap5)`, que é exatamente a frase que a fala diz |
+| C10N20 | Como nem tudo são flores, existe a chance de coisas darem errado — por exemplo, a base pode resultar em uma ordem ímpar. | 9,6 | **Cinco `play` num bloco só.** O `FadeOut` das duas árvores e das contas emendado com `FadeIn(cap5)`, num `play` só. O `fim` dentro da moldura verde **fica em cena** o resto do capítulo: o sucesso segue à vista enquanto a falha roda. Depois, **animação nova — a ordem ímpar dando errado, rápida**: `Write(o0)`, `a = 11 → r = 3` no molde do `u0` (mesma posição, mesmos tokens e cores), e em seguida `Write(o1)`, `11³ − 1 = (11^{3/2} − 1)(11^{3/2} + 1)` no molde do `u1a` — a diferença de quadrados do `C10N10`, agora com meio expoente. Em "a base", `realce(o0[2])`, o 11. Em "ordem ímpar", o fecho de erro da série (capítulos 1 e 5), num `play` só: `Wiggle` nos dois expoentes `3/2`, `FadeIn` de um `✗` vermelho à direita de `o1` e `Indicate(o0[6], color=AMARELO)`, o 3. A base é 11 e não 16: as duas têm ordem 3, mas `16^{3/2} = 64` é inteiro e a conta não quebraria |
+| C10N21 | Ou a ordem pode não dar informações úteis. | 3,3 | `Indicate(cap5)`, que é exatamente a frase que a fala diz, emendado com o `FadeOut` de `o0`, `o1` e do `✗`, num `play` só: o "Ou" vira a página para o segundo jeito de dar errado, e a linha do `u0` fica livre para o `C10N22` |
 | C10N22 | Para ver isso acontecer, vamos a outro exemplo, também com a ordem par. | 5,8 | Dois `play` sob esta linha: `Write(u0)` e `Indicate(u0[6], color=AMARELO)` — o `6` da ordem, em "também com a ordem par" |
 | C10N23 | O caminho roda inteiro, sem nenhum erro. | 3,3 | `Write(u1a)` e `ReplacementTransform(u1a, u1)` — dois `play` sob esta linha. `u1a` já nasce como `24⁶ − 1 = (24³ − 1)(24³ + 1)` em tokens coloridos (`pot` para as duas potências de base 24), a mesma manobra do `C10N10`–`C10N11` com o `x` já substituído — sem texto corrido nem cor fora da paleta |
 | C10N24 | Só que desta vez os dois primos não se separam: caem juntos, do mesmo lado. | 5,5 | Quatro `play` num bloco só: tronco `ru`, `Create(linU)` com `fu1`/`fu2`, `Create(linU2)` + `FadeIn(nU)`, e por fim `Indicate(nU[0], color=ROSA)` + `Indicate(nU[1], color=VERDE2)` — o p e o q lado a lado sob o mesmo galho, que é o que a fala afirma |
@@ -194,7 +194,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N14 | Os fios de cima carregam o expoente b, e o de baixo guarda o resto c. | 6,0 | `FadeIn` dos dois fundos de painel primeiro e, no `play` seguinte, `TransformFromCopy(eqc[2][1], letra_b)` mais o `c` deslizando para dentro do painel de baixo. Fundo e conteúdo nunca no mesmo `play`: no Manim 0.20.1 o conteúdo fica atrás do preenchimento e some |
 | C11N15 | Só que agora cada bit do expoente é um qubit. | 3,9 | `LaggedStart` de `ReplacementTransform` das quatro caixas de bit nos cartões-gradiente do fio, `lag_ratio=0.15` — cada bit vira qubit em cascata, na ordem em que estava no esquema. É o primeiro dos dois `play` do bloco antigo |
 | C11N16 | E aí o expoente deixa de ser um número só: passa a ser todos eles de uma vez. Essa é a superposição que vimos. | 9,6 | A letra `b` abrindo na coluna dos expoentes com o `⋮` embaixo — o segundo `play` do bloco antigo, agora com locução própria. A superposição ganha nome na fala e conteúdo na tela ao mesmo tempo, em vez de as duas coisas correrem sob uma locução de treze segundos. A animação é curta para a fala, e aqui isso é aceito: o painel que acaba de se montar precisa de tempo parado para ser lido |
-| C11N17 | Como o expoente carrega todas as possibilidades, o resto c deve carregar também. | 7,0 | `ReplacementTransform(saida_circ, carta_c[1])` + `FadeIn(carta_c[2])` — o `c` genérico abre na coluna dos restos possíveis |
+| C11N17 | As portas deixam os dois registradores emaranhados. Então, como o expoente carrega todas as possibilidades, o resto c carrega também. | 11,6 | Dois `play`. No primeiro, cada gesto na sua palavra: em "emaranhados", os quatro `plugues` acendem em cascata, da esquerda para a direita (`LaggedStart`, `lag_ratio=0.2`) — o ponto de controle pulsa e um brilho azul (`ShowPassingFlash` de uma cópia da ligação, em `AZUL`, a cor do `b`) desce até a porta. O ponto com a ligação é o desenho do par emaranhado da `C11N07`, e é ele que a fala nomeia; nenhum texto entra. Em "o expoente", `realce(carta_b[1])`, no mesmo `play`. No segundo, em "resto c", `ReplacementTransform(saida_circ, carta_c[1])` + `FadeIn(carta_c[2])` — o `c` genérico abre na coluna dos restos possíveis. Na tela, como na fala, vem primeiro a causa e depois o efeito |
 | C11N18 | Medindo o fio de baixo. | 2,0 | `FadeIn(med)` — a caixinha `M` no fio alvo |
 | C11N19 | Obtemos um resto possível, e com ele o sistema inteiro colapsa: sobram só os expoentes que devolvem esse mesmo resto. | 10,2 | `Flash(med)` + os dois `ReplacementTransform` do colapso, num `play` só: o painel de baixo vira um número, e o de cima perde os expoentes que não devolvem aquele número. O de cima **não** vira um expoente — continua em superposição, agora só dos que sobreviveram |
 | C11N20 | Podia ter sido qualquer um dos restos do ciclo, e cada um deles deixa vivo um conjunto diferente de expoentes. | 9,2 | O laço do `rodizio` inteiro dentro do bloco: quatro `ReplacementTransform` de resto e de coluna, terminando de volta no resto com que o capítulo vai trabalhar. Um `with narra` cobrindo o `for`, nunca um por volta |
@@ -225,7 +225,7 @@ por isso que ele não pode ser medido flutuando sozinho: a medida é uma peça d
 | C11N45 | Dois máximos divisores comuns depois... | 3,4 | `Write(linhas[5])` |
 | C11N46 | ...e finalmente o número está fatorado. | 3,5 | `Write(linhas[6])` + `Create(caixa)`. A moldura verde sobrevive ao capítulo: o `V4N01` pousa o cadeado em cima dela, sem `limpar()` no meio |
 
-**Subtotal: 343,8 s** (cartão + 46 locuções)
+**Subtotal: 348,4 s** (cartão + 46 locuções)
 
 ---
 
@@ -316,6 +316,8 @@ primeira ocorrência.
 | C10N16 | número que queremos fatorar | number we want to factor | o `Indicate(obj[0])` que já existe, agora na palavra, com `obj[2]` (o 35) junto | |
 | C10N18 | p e q | p and q | os `Indicate(fim[2], fim[4])` que já existem, agora na palavra | |
 | C10N19 | O número | The number | `obj2[2]` (o 35) | depois do `obj → obj2` |
+| C10N20 | a base | the base | `o0[2]` (o 11) | depois do `Write(o1)` |
+| C10N20 | ordem ímpar | odd order | `Indicate(o0[6])` (o 3), no mesmo `play` do `Wiggle` nos `3/2` e do `✗` | |
 | C10N22 | ordem par | even order | o `Indicate(u0[6])` que já existe, agora na palavra | |
 | C10N24 | dois primos | two primes | os `Indicate(nU[0], nU[1])` que já existem, agora na palavra | |
 | C10N25 | esse número | this number | o `Indicate(fu1)` que já existe, agora na palavra, com o `FadeIn(multi)` + `GrowArrow(setam)` | |
@@ -380,8 +382,8 @@ primeira ocorrência.
 **Ficam sem realce**, porque o que a fala nomeia não é um número nem uma variável em cena:
 números de capítulo e de vídeo ("capítulo quatro do segundo vídeo" no `C9N01`, "capítulo
 cinco" no `C9N02` e no `C10N17`, "capítulo quatro" no `C11N10`, "capítulo nove" no `C11N21`,
-"Quatro vídeos" no `V4N04`); valores que não estão escritos na tela ("ordem ímpar" no
-`C10N20`, "cinquenta por cento" no `C10N29`); contagens ("Dois máximos divisores comuns" no
+"Quatro vídeos" no `V4N04`); valores que não estão escritos na tela ("cinquenta por cento" no
+`C10N29`); contagens ("Dois máximos divisores comuns" no
 `C11N45`); as linhas em que o número nasce junto com a fala inteira (`C9N12`, `C11N20`,
 `C11N26`, `C11N29`) e as linhas sem número nomeado (`C9N09`, `C10N05`, `C10N14`, `C10N17`,
 `C10N21`, `C10N23`, `C10N33`, `C11N03`, `C11N04`, `C11N07`–`C11N09`, `C11N13`, `C11N18`,
@@ -396,12 +398,12 @@ cinco" no `C9N02` e no `C10N17`, "capítulo quatro" no `C11N10`, "capítulo nove
 | Abertura | 1 | 13,1 s |
 | Capítulo 9 | 15 | 89,9 s |
 | Capítulo 10 | 33 | 214,8 s |
-| Capítulo 11 | 46 | 343,8 s |
+| Capítulo 11 | 46 | 348,4 s |
 | Encerramento | 4 | 61,0 s |
-| **Total** | **99** | **722,6 s** |
+| **Total** | **99** | **727,2 s** |
 
 Somando o `PAD` de 0,35 s por locução (34,7 s), os dois cartões silenciosos (~7 s) e os
-`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 54 s** — abaixo da
+`limpar()` entre capítulos (~10 s), a projeção é de **cerca de 12 min 59 s** — abaixo da
 faixa de 13–14 min que a estimativa por `cena.play` previa. A diferença vem de onde era
 esperado: os 118 `play` do bloco não pedem 118 falas, porque as duas árvores do capítulo 10
 e as varreduras do capítulo 11 são animações que se explicam sozinhas.
@@ -411,7 +413,7 @@ registrador, dez segundos sob sete e meio de locução. Some uns 3 s ao render r
 demais trechos longos (`C11N31`, `C11N32`, `C10N10`, `C10N28`) cabem dentro da fala com folga, e a
 folga é silêncio com imagem correndo — o padrão da série.
 
-Com o vídeo perto de 12 min 54 s, a costura para abrir o capítulo 11 num quinto vídeo
+Com o vídeo perto de 12 min 59 s, a costura para abrir o capítulo 11 num quinto vídeo
 continua **sem precisar ser usada** — a fronteira clássico/quântico fica dentro do mesmo
 upload, como decidido no plano. A margem, porém, acabou: o bloco de fundamentos cresceu de
 5 para 10 locuções e paga 35 s; a medida no circuito (`C11N36`) e o parêntese da medida que
@@ -428,6 +430,7 @@ roteiro: é reabrir a costura e fazer o quinto vídeo.**
 - [ ] Capítulo 9 — C9N01 a C9N15
 - [ ] Capítulo 10 — C10N01 a C10N33
 - [ ] Capítulo 11 — C11N01 a C11N46
+- [ ] Regravar C11N17 — a fala mudou (pt)
 - [ ] Encerramento — V4N01 a V4N04
 - [ ] `python medir.py`
 - [ ] Render de conferência com `NARRA = True`

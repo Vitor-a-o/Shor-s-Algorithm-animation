@@ -556,10 +556,22 @@ def p10_circuito(cena):
                      *_dur(1.6 * VEL, ReplacementTransform(letra_b, carta_b[1]),
                            FadeIn(carta_b[2]))))
 
-    with narra(cena, "C11N17", 7.0):
-        na = partial(na_palavra, cena, _agora(cena), "C11N17", 7.0)
-        # "o expoente": a coluna que acabou de nascer pulsa
-        cena.play(na("o expoente", realce(carta_b[1])))
+    with narra(cena, "C11N17", 11.6):
+        na = partial(na_palavra, cena, _agora(cena), "C11N17", 11.6)
+        # "emaranhados": o ponto de controle com a ligação até a porta é o
+        # desenho do par emaranhado do C11N07; acender os quatro, da esquerda
+        # para a direita, é mostrar onde o emaranhamento acontece, antes de a
+        # coluna dos restos abrir. Cada `liga` vai do ponto (em cima) à porta
+        # (embaixo), então o brilho desce. "o expoente": a coluna que acabou
+        # de nascer pulsa, no mesmo `play`
+        cena.play(na("emaranhados",
+                     LaggedStart(*[AnimationGroup(
+                         Indicate(p, color=PRETO, scale_factor=1.8),
+                         ShowPassingFlash(l.copy().set_stroke(AZUL, width=6),
+                                          time_width=0.6))
+                         for p, l in zip(pontos, ligas)],
+                         lag_ratio=0.2, run_time=1.4 * VEL)),
+                  na("o expoente", realce(carta_b[1])))
         cena.play(na("resto c",
                      *_dur(1.6 * VEL, ReplacementTransform(saida_circ, carta_c[1]),
                            FadeIn(carta_c[2]))))
