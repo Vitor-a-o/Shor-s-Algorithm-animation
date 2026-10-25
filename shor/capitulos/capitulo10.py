@@ -90,15 +90,19 @@ def _caixa_porta(i, w=1.72, h=1.15, tam=20):
     O gradiente entra a 0,7 de opacidade: cheio, ele tem a mesma
     luminosidade das cores da paleta que escrevem por cima dele e engolia
     o rótulo inteiro. Os cartõezinhos de qubit continuam a 1 — eles só
-    carregam preto."""
+    carregam preto. Por baixo do gradiente vai uma base branca opaca, como
+    no `_carta_super`: sem ela o fio do circuito apareceria através dele."""
+    base = RoundedRectangle(corner_radius=0.10, width=w, height=h,
+                            stroke_width=0).set_fill(BRANCO, opacity=1)
     r = RoundedRectangle(corner_radius=0.10, width=w, height=h,
                          stroke_width=0)
     r.set_fill(color=[LARANJA, VERDE], opacity=0.7)
     r.set_sheen_direction(UP)
+    fundo = VGroup(base, r)
     topo = VGroup(pot("2", _expo_2i(i), VERMELHO, tam=tam), fmod("21", 15))
     topo.arrange(RIGHT, buff=0.07).move_to(r.get_center() + [0, 0.26, 0])
     um = T("1", tam, PRETO).move_to(r.get_center() + [0, -0.30, 0])
-    return VGroup(r, topo, um)
+    return VGroup(fundo, topo, um)
 
 
 def _carta_super(valores, cor, cor2, passo=0.55, larg=1.16, tam=24, op=0.30):
@@ -450,6 +454,10 @@ def p10_circuito(cena):
     ys, yt, x0, x1, xp = YS, YT, X0, X1, XP
     fios = VGroup(*[Line([x0, y, 0], [x1, y, 0], color=PRETO,
                          stroke_width=2) for y in ys + [yt]])
+    # os fios vão para o fundo por z_index, e não pela ordem de entrada: as
+    # portas e os qubits nascem de peças antigas por `ReplacementTransform` e
+    # herdam a posição delas na pilha, que é anterior aos fios
+    fios.set_z_index(-1)
     kets = VGroup(*[T("|0⟩", 22, PRETO).next_to([x0, y, 0], LEFT, buff=0.15)
                     for y in ys])
     keta = T("|1⟩", 22, PRETO).next_to([x0, yt, 0], LEFT, buff=0.15)
@@ -727,6 +735,11 @@ def p10_circuito(cena):
         # scale_factor=1.0 porque um fio esticado a 1,2 sai do quadro
         cena.play(Indicate(VGroup(*fios[:4]), color=AZUL, scale_factor=1.0),
                   run_time=0.6 * VEL)
+        # o VGroup do Indicate leva os quatro fios para o fim de
+        # `cena.mobjects`, e o Manim desenha por cima do quadro estático tudo
+        # o que vem depois do primeiro mobject animado, sem olhar o z_index:
+        # os fios voltam para o começo da lista, senão cruzam o painel azul
+        cena.bring_to_back(*fios[:4])
         cena.play(FadeIn(tqf), Write(rot_tqf), run_time=1.0 * VEL)
         # "informação do r": a pergunta, em cena desde o C11N21, pulsa token
         # a token (o `=` e o `?` não são o r)
