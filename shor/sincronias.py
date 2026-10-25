@@ -586,19 +586,19 @@ SINC = {
         ("C8N38", "abaixo do módulo"): 0.495,                 # "below the modulus"
         ("C8N38", "não compartilham fator"): 0.676,           # "share no factor"
         ("C8N39", "módulo grande"): 0.109,                    # "large modulus"
-        ("C8N40", "dessa contagem"): 0.131,                   # "that count" (estimativa por caracteres, a medir na gravação)
-        ("C8N40", "montado"): 0.364,                          # "built" (estimativa por caracteres, a medir na gravação)
+        ("C8N40", "dessa contagem"): 0.100,                   # "that count"
+        ("C8N40", "montado"): 0.339,                          # "built"
         ("C8N41", "fosse primo"): 0.076,                      # "were prime"
         ("C8N41", "contagem"): 0.192,                         # "the count"
         ("C8N41", "chave privada"): 0.911,                    # "private key"
-        ("C8N42", "escolher o módulo"): 0.136,                # "picking the modulus" (estimativa por caracteres, a medir na gravação)
-        ("C8N42", "dois primos"): 0.707,                      # "two primes" (estimativa por caracteres, a medir na gravação)
-        ("C8N42", "multiplica"): 0.810,                       # "multiplies" (estimativa por caracteres, a medir na gravação)
+        ("C8N42", "escolher o módulo"): 0.144,                # "picking the modulus"
+        ("C8N42", "dois primos"): 0.689,                      # "two primes"
+        ("C8N42", "multiplica"): 0.812,                       # "multiplies"
         ("C8N43", "dois primos"): 0.143,                      # "two primes"
         ("C8N43", "múltiplos de p"): 0.647,                   # "multiples of p"
         ("C8N43", "os de q"): 0.880,                          # "those of q"
-        ("C8N44", "abaixo do produto"): 0.438,                # "below the product" (estimativa por caracteres, a medir na gravação)
-        ("C8N44", "vale o outro"): 0.815,                     # "the other prime" (estimativa por caracteres, a medir na gravação)
+        ("C8N44", "abaixo do produto"): 0.451,                # "below the product"
+        ("C8N44", "vale o outro"): 0.811,                     # "the other prime"
         ("C8N46", "p e q"): 0.343,                            # "p and q"
         ("C8N46", "produto dos dois"): 0.628,                 # "their product"
         ("C8N47", "esse número"): 0.824,                      # "this number"
