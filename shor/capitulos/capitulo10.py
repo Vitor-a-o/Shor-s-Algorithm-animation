@@ -899,8 +899,8 @@ def p10_ato1(cena):
         # o rótulo da chave é o `r`, não o valor dele: a distância tem
         # NOME e não tem número
         chaves.add(VGroup(ch, T("r", 20, AMARELO).next_to(ch, UP, buff=0.07)))
-    with narra(cena, "C11N27", 4.6):
-        na = partial(na_palavra, cena, _agora(cena), "C11N27", 4.6)
+    with narra(cena, "C11N27", 6.0):
+        na = partial(na_palavra, cena, _agora(cena), "C11N27", 6.0)
         # cada `r` de chave nasce do `r` do `pergunta_r`, que fica em cena
         # exatamente como está. Esta linha diz ONDE a ordem está escrita —
         # no espaçamento —, nunca quanto ela vale: o pente é o estado
@@ -1255,8 +1255,8 @@ def p10_ondas(cena):
         rots_marca.add(T("0" if mlt == 0 else f"{mlt}·N/r", 16, LARANJA)
                        .next_to([x, GY, 0], DOWN, buff=0.14).set_z_index(1))
 
-    with narra(cena, "C11N34", 8.9):
-        na = partial(na_palavra, cena, _agora(cena), "C11N34", 8.9)
+    with narra(cena, "C11N34", 13.3):
+        na = partial(na_palavra, cena, _agora(cena), "C11N34", 13.3)
         cena.play(FadeOut(VGroup(guia, fracos, fortes, rots_raio, corrente,
                                  cursor, pontos, ponta, ondas, rots_onda,
                                  resto_ondas)),
@@ -1267,6 +1267,13 @@ def p10_ondas(cena):
                   # de onde a coluna de saída nasce
                   rot_soma.animate.move_to([GX0 + 0.85, GY - 0.30, 0]),
                   run_time=1.8 * VEL)
+        # a base pulsa em "frequências": é o eixo de frequência do gráfico,
+        # cada k nele é uma onda que dá k voltas no registrador. Engrossa e
+        # volta, sem escalar: a base já ocupa a largura do quadro
+        cena.play(na("frequências",
+                     base_soma.animate(rate_func=there_and_back,
+                                       run_time=0.6 * VEL)
+                     .set_stroke(color=LARANJA, width=10).build()))
         # as marcas nascem em "múltiplos"; os k·N/r pulsam em "ordem"
         cena.play(na("múltiplos",
                      LaggedStart(*[AnimationGroup(Create(l), FadeIn(r))

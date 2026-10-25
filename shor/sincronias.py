@@ -298,10 +298,11 @@ SINC = {
         ("C11N24", "potência de dois"):           0.545,  # `FadeIn(nq)`
         ("C11N25", "expoentes que sobreviveram"): 0.440,  # `lista_b` + `tres_b` (a coluna e o `⋮`) pulsam
         ("C11N25", "pergunta"):                   0.727,  # `pergunta_r` pulsa
-        ("C11N27", "a ordem"):                    0.566,  # o `LaggedStart` das chaves com os `r` começa, com `pergunta_r[0]` pulsando
+        ("C11N27", "a ordem"):                    0.646,  # o `LaggedStart` das chaves com os `r` começa, com `pergunta_r[0]` pulsando
         ("C11N28", "fim do registrador"):         0.762,  # o `Indicate(nq)`
-        ("C11N34", "múltiplos"):                  0.412,  # o `LaggedStart` das marcas começa
-        ("C11N34", "ordem"):                      0.938,  # `rots_marca[1:]` (os `k·N/r`) pulsam
+        ("C11N34", "frequências"):                0.276,  # a `base_soma` engrossa e volta
+        ("C11N34", "múltiplos"):                  0.490,  # o `LaggedStart` das marcas começa
+        ("C11N34", "ordem"):                      0.959,  # `rots_marca[1:]` (os `k·N/r`) pulsam
         ("C11N36", "oitenta e cinco"):            0.515,  # `Flash` + `coluna_k → unico_k`
         ("C11N37", "tamanho do registrador"):     0.325,  # o `N` de `eq_k` (`eq_k[4]`) pulsa
         ("C11N37", "a ordem"):                    0.650,  # o `r` de `linhas[0]` (`linhas[0][6]`) pulsa, depois da troca
@@ -638,10 +639,11 @@ SINC = {
         ("C11N24", "potência de dois"):           0.599,  # "power of two"
         ("C11N25", "expoentes que sobreviveram"): 0.458,  # "exponents that survived"
         ("C11N25", "pergunta"):                   0.794,  # "question"
-        ("C11N27", "a ordem"):                    0.486,  # "the order"
+        ("C11N27", "a ordem"):                    0.577,  # "the order"
         ("C11N28", "fim do registrador"):         0.758,  # "end of the register"
-        ("C11N34", "múltiplos"):                  0.377,  # "multiples"
-        ("C11N34", "ordem"):                      0.901,  # "order"
+        ("C11N34", "frequências"):                0.279,  # "frequencies"
+        ("C11N34", "múltiplos"):                  0.530,  # "multiples"
+        ("C11N34", "ordem"):                      0.944,  # "order"
         ("C11N36", "oitenta e cinco"):            0.542,  # "eighty-five"
         ("C11N37", "tamanho do registrador"):     0.168,  # "register size"
         ("C11N37", "a ordem"):                    0.713,  # "the order"
